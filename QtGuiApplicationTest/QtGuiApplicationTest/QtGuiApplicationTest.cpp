@@ -11,9 +11,18 @@ QtGuiApplicationTest::QtGuiApplicationTest(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-
-    ui.mainToolBar->hide();
-    //ui.mainToolBar->setVisible(false);
+    this->connect(ui.closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.css");
+    if (mainTabStyle.open(QFile::ReadOnly))
+    {
+        QString styleSheet = QLatin1String(mainTabStyle.readAll());
+        ui.mainTabWidget->setStyleSheet(styleSheet);
+        mainTabStyle.close();
+    }
+    else
+    {
+        QString error = mainTabStyle.errorString();
+    }
 }
 
 QtGuiApplicationTest::~QtGuiApplicationTest()
@@ -42,6 +51,15 @@ void QtGuiApplicationTest::mousePressEvent(QMouseEvent *event)
     //              windowPos.x(), windowPos.y(),
     //              screenPos.x(), screenPos.y(),
     //              flags, eventType);
+
+    //  Geometry Testing
+    //QRect geometry = this->geometry();
+    //QRect frame = this->frameGeometry();
+
+    //LogUtil::Debug(CODE_LOCATION, "XY(%d,=%d) Geometry(%d,%d,%d,%d) Frame(%d,%d,%d,%d)",
+    //               this->x(), this->y(),
+    //               geometry.x(), geometry.y(), geometry.width(), geometry.height(),
+    //               frame.x(), frame.y(), frame.width(), frame.height());
 }
 
 void QtGuiApplicationTest::mouseReleaseEvent(QMouseEvent *event)

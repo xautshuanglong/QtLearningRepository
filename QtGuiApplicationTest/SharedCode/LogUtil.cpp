@@ -42,7 +42,7 @@ void LogUtil::Init(LogLevelType level, ZLogCallback zlogHandler/* =/* =nullptr *
     // zlog ≥ı ºªØ…Ë÷√
     if (mLoggerID == 0)
     {
-        mLoggerID = zlog::IZLogManager::getRef().createLogger("LogTool");
+        mLoggerID = zlog::IZLogManager::getRef().createLogger("LogUtil");
     }
     zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./log/");
     zlog::IZLogManager::getRef().setFilterLogLevel(mLoggerID, level);

@@ -31,6 +31,9 @@
     <Filter Include="QThreadTest">
       <UniqueIdentifier>{cc7bf101-e6f4-475c-af06-3c67237b8f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\qss">
+      <UniqueIdentifier>{91515bb5-061e-4ed4-bd8c-5ec4c5673f20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,5 +65,10 @@
     <ClInclude Include="ThreadWaitCondition.h">
       <Filter>QThreadTest</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qss\mainTabWidget.css">
+      <Filter>Resource Files\qss</Filter>
+    </None>
   </ItemGroup>
 </Project>
