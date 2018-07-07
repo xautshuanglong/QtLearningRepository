@@ -1,13 +1,14 @@
-#include "QtGuiApplicationTest.h"
-#include <QtWidgets/QApplication>
+#include "MyApplication.h"
+#include "MyMainWindow.h"
 
+#include <QtWidgets/QApplication>
 #include <QDebug>
 
 #include <LogUtil.h>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    MyApplication app(argc, argv);
 
 #ifdef _DEBUG
     LogUtil::Init(LOG_LEVEL_DEBUG);
@@ -15,9 +16,9 @@ int main(int argc, char *argv[])
     LogUtil::Init(LOG_LEVEL_INFO);
 #endif
 
-    QtGuiApplicationTest mainWindow;
-    Qt::WindowFlags oldFlags = mainWindow.windowFlags();
-    mainWindow.setWindowFlags(oldFlags | Qt::FramelessWindowHint);
+    MyMainWindow mainWindow;
+    //Qt::WindowFlags oldFlags = mainWindow.windowFlags();
+    //mainWindow.setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mainWindow.show();
 
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");

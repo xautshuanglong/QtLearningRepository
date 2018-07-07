@@ -39,17 +39,15 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtGuiApplicationTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadWaitCondition.cpp">
       <Filter>QThreadTest</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="QtGuiApplicationTest.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
+    <ClCompile Include="MyMainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -57,18 +55,26 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="QtGuiApplicationTest.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="ThreadWaitCondition.h">
       <Filter>QThreadTest</Filter>
+    </ClInclude>
+    <ClInclude Include="MyApplication.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qss\mainTabWidget.css">
       <Filter>Resource Files\qss</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MyMainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="QtGuiApplicationTest.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

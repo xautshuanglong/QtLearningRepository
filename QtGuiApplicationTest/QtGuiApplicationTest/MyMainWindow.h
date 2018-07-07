@@ -3,13 +3,13 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtGuiApplicationTest.h"
 
-class QtGuiApplicationTest : public QMainWindow
+class MyMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    QtGuiApplicationTest(QWidget *parent = Q_NULLPTR);
-    ~QtGuiApplicationTest();
+    MyMainWindow(QWidget *parent = Q_NULLPTR);
+    ~MyMainWindow();
 
 private:
     Ui::QtGuiApplicationTestClass ui;

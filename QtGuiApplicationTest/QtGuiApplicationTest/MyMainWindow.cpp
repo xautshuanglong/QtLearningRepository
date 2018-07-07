@@ -1,4 +1,4 @@
-#include "QtGuiApplicationTest.h"
+#include "MyMainWindow.h"
 
 #include <QDebug>
 #include <QMouseEvent>
@@ -7,7 +7,7 @@
 
 #include <LogUtil.h>
 
-QtGuiApplicationTest::QtGuiApplicationTest(QWidget *parent)
+MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
@@ -25,18 +25,18 @@ QtGuiApplicationTest::QtGuiApplicationTest(QWidget *parent)
     }
 }
 
-QtGuiApplicationTest::~QtGuiApplicationTest()
+MyMainWindow::~MyMainWindow()
 {
     ;
 }
 
-bool QtGuiApplicationTest::event(QEvent *event)
+bool MyMainWindow::event(QEvent *event)
 {
     //LogUtil::Info(CODE_LOCATION, "Type=%d", event->type());
     return __super::event(event);
 }
 
-void QtGuiApplicationTest::mousePressEvent(QMouseEvent *event)
+void MyMainWindow::mousePressEvent(QMouseEvent *event)
 {
     Qt::MouseEventFlags flags = event->flags();
     QEvent::Type eventType = event->type();
@@ -62,7 +62,7 @@ void QtGuiApplicationTest::mousePressEvent(QMouseEvent *event)
     //               frame.x(), frame.y(), frame.width(), frame.height());
 }
 
-void QtGuiApplicationTest::mouseReleaseEvent(QMouseEvent *event)
+void MyMainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     Qt::MouseEventFlags flags = event->flags();
     QEvent::Type eventType = event->type();
@@ -79,7 +79,7 @@ void QtGuiApplicationTest::mouseReleaseEvent(QMouseEvent *event)
     //              flags, eventType);
 }
 
-void QtGuiApplicationTest::mouseDoubleClickEvent(QMouseEvent *event)
+void MyMainWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Qt::MouseEventFlags flags = event->flags();
     QEvent::Type eventType = event->type();
@@ -110,7 +110,7 @@ void QtGuiApplicationTest::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
-void QtGuiApplicationTest::mouseMoveEvent(QMouseEvent *event)
+void MyMainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     Qt::MouseEventFlags flags = event->flags();
     QEvent::Type eventType = event->type();
@@ -129,7 +129,7 @@ void QtGuiApplicationTest::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void QtGuiApplicationTest::wheelEvent(QWheelEvent *event)
+void MyMainWindow::wheelEvent(QWheelEvent *event)
 {
     QEvent::Type eventType = event->type();
     QPoint mousePos = event->pos();
@@ -139,53 +139,53 @@ void QtGuiApplicationTest::wheelEvent(QWheelEvent *event)
                   eventType);
 }
 
-void QtGuiApplicationTest::keyPressEvent(QKeyEvent *event)
+void MyMainWindow::keyPressEvent(QKeyEvent *event)
 {
     __super::keyPressEvent(event);
 }
 
-void QtGuiApplicationTest::keyReleaseEvent(QKeyEvent *event)
+void MyMainWindow::keyReleaseEvent(QKeyEvent *event)
 {
     __super::keyReleaseEvent(event);
 }
 
 
-void QtGuiApplicationTest::focusInEvent(QFocusEvent *event)
+void MyMainWindow::focusInEvent(QFocusEvent *event)
 {
     __super::focusInEvent(event);
 }
 
-void QtGuiApplicationTest::focusOutEvent(QFocusEvent *event)
+void MyMainWindow::focusOutEvent(QFocusEvent *event)
 {
     __super::focusOutEvent(event);
 }
 
-void QtGuiApplicationTest::enterEvent(QEvent *event)
+void MyMainWindow::enterEvent(QEvent *event)
 {
     __super::enterEvent(event);
 }
 
-void QtGuiApplicationTest::leaveEvent(QEvent *event)
+void MyMainWindow::leaveEvent(QEvent *event)
 {
     __super::leaveEvent(event);
 }
 
-void QtGuiApplicationTest::paintEvent(QPaintEvent *event)
+void MyMainWindow::paintEvent(QPaintEvent *event)
 {
     __super::paintEvent(event);
 }
 
-void QtGuiApplicationTest::moveEvent(QMoveEvent *event)
+void MyMainWindow::moveEvent(QMoveEvent *event)
 {
     __super::moveEvent(event);
 }
 
-void QtGuiApplicationTest::resizeEvent(QResizeEvent *event)
+void MyMainWindow::resizeEvent(QResizeEvent *event)
 {
     __super::resizeEvent(event);
 }
 
-void QtGuiApplicationTest::closeEvent(QCloseEvent *event)
+void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
     __super::closeEvent(event);
