@@ -6,12 +6,15 @@
 #include <QImageWriter>
 
 #include <LogUtil.h>
+#include "TitleBar.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    TitleBar *pTitleBar = new TitleBar(this);
     this->connect(ui.closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.css");
     if (mainTabStyle.open(QFile::ReadOnly))
     {

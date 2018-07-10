@@ -127,6 +127,7 @@
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
+    <ClCompile Include="TitleBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
+    <QtMoc Include="TitleBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qss\mainTabWidget.css" />
