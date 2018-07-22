@@ -36,4 +36,6 @@ public:
     virtual void moveEvent(QMoveEvent *event) override;
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
+
+    virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 };

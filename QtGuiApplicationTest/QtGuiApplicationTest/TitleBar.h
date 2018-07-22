@@ -2,6 +2,7 @@
 #define TITL_EBAR_H
 
 #include <QToolBar>
+#include <QAbstractNativeEventFilter>
 
 class TitleBarPrivate;
 

@@ -17,8 +17,6 @@ int main(int argc, char *argv[])
 #endif
 
     MyMainWindow mainWindow;
-    //Qt::WindowFlags oldFlags = mainWindow.windowFlags();
-    //mainWindow.setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mainWindow.show();
 
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");

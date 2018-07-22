@@ -144,7 +144,7 @@
     <QtMoc Include="TitleBar.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\qss\mainTabWidget.css" />
+    <None Include="Resources\qss\mainTabWidget.qss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

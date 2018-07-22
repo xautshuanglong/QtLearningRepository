@@ -66,11 +66,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\qss\mainTabWidget.css">
-      <Filter>Resource Files\qss</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -82,5 +77,10 @@
     <QtRcc Include="QtGuiApplicationTest.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qss\mainTabWidget.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
   </ItemGroup>
 </Project>

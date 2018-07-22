@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/QtGuiApplicationTest">
-        <file>Resources/qss/mainTabWidget.css</file>
+        <file>Resources/qss/mainTabWidget.qss</file>
     </qresource>
 </RCC>
