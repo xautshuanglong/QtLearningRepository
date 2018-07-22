@@ -1,5 +1,6 @@
 ﻿#include "TitleBar.h"
 
+#include <QApplication>
 #include <QToolButton>
 #include <QMainWindow>
 #include <QMouseEvent>
@@ -28,7 +29,8 @@ TitleBar::TitleBar(QWidget *parent) : QToolBar(parent)
     m_private = new TitleBarPrivate;
     m_private->w = (QMainWindow *)window();
     //自定义标题初始化--直接操作主窗口，降低使用复杂性
-    m_private->w->setWindowFlags(Qt::FramelessWindowHint);//主窗口隐藏标题栏
+    Qt::WindowFlags oldFlags = m_private->w->windowFlags();
+    m_private->w->setWindowFlags(oldFlags | Qt::FramelessWindowHint); //主窗口隐藏标题栏
     m_private->w->addToolBar(this);//把标题栏添加到主窗口
     m_private->w->installEventFilter(this);//事件过滤器
     //设置此标题位置
@@ -52,21 +54,26 @@ TitleBar::TitleBar(QWidget *parent) : QToolBar(parent)
     m_private->toolButton_mini = new QToolButton(this);
     m_private->toolButton_max = new QToolButton(this);
     m_private->toolButton_close = new QToolButton(this);
-    m_private->toolButton_mini->setIcon(style()->
-                                        standardPixmap(QStyle::SP_TitleBarMinButton));
-    m_private->toolButton_max->setIcon(style()->
-                                       standardPixmap(QStyle::SP_TitleBarMaxButton));
-    m_private->toolButton_close->setIcon(style()->
-                                         standardPixmap(QStyle::SP_TitleBarCloseButton));
+
+    m_private->toolButton_mini->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMinButton));
+    m_private->toolButton_max->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
+    m_private->toolButton_close->setIcon(style()->standardPixmap(QStyle::SP_TitleBarCloseButton));
+
+    m_private->toolButton_mini->setToolTip("Minimize");
+    m_private->toolButton_max->setToolTip("Maximize");
+    m_private->toolButton_close->setToolTip("Close");
+
+    //m_private->toolButton_mini->setToolTip(QString::fromLocal8Bit("最小化"));
+    //m_private->toolButton_max->setToolTip(QStringLiteral("最大化"));
+    //m_private->toolButton_close->setToolTip(QStringLiteral("关闭"));
+
     addWidget(m_private->toolButton_mini);
     addWidget(m_private->toolButton_max);
     addWidget(m_private->toolButton_close);
-    connect(m_private->toolButton_mini, SIGNAL(clicked(bool)),
-            m_private->w, SLOT(showMinimized()));
-    connect(m_private->toolButton_max, SIGNAL(clicked(bool)),
-            this, SLOT(MaximizeButtonClicked()));
-    connect(m_private->toolButton_close, SIGNAL(clicked(bool)),
-            m_private->w, SLOT(close()));
+
+    connect(m_private->toolButton_mini, SIGNAL(clicked(bool)), m_private->w, SLOT(showMinimized()));
+    connect(m_private->toolButton_max, SIGNAL(clicked(bool)), this, SLOT(MaximizeButtonClicked()));
+    connect(m_private->toolButton_close, SIGNAL(clicked(bool)), m_private->w, SLOT(close()));
 }
 
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
@@ -114,29 +121,50 @@ void TitleBar::mouseMoveEvent(QMouseEvent *event)
 bool TitleBar::eventFilter(QObject *obj, QEvent *event)
 {
     switch (event->type())
-    {//只做了部分事件处理，其余可另行补充
-    case QEvent::WindowTitleChange: {//标题修改
+    {
+    case QEvent::WindowTitleChange: //标题修改
         m_private->title_label->setText(m_private->w->windowTitle());
-        return QToolBar::eventFilter(obj, event);
-    }
-    case QEvent::WindowIconChange: {//图标修改
-
+        break;
+    case QEvent::WindowIconChange: //图标修改
         m_private->icon_label->setFixedSize(m_private->w->iconSize());
         m_private->icon_label->setScaledContents(true);
-        m_private->icon_label->setPixmap(m_private->w->windowIcon().
-                                         pixmap(m_private->icon_label->size()));
-        return QToolBar::eventFilter(obj, event);
-    }
+        m_private->icon_label->setPixmap(m_private->w->windowIcon().pixmap(m_private->icon_label->size()));
+        break;
+    case QEvent::WindowStateChange:
+    case QEvent::Resize:
+        UpdateMaximizeButton();
+        break;
     default:
         return QToolBar::eventFilter(obj, event);
     }
+
+    return QToolBar::eventFilter(obj, event);
 }
 
 void TitleBar::MaximizeButtonClicked()
 {
-    auto w = window();//获取主窗口指针
+    auto w = window();
     if (w->isMaximized())
         w->showNormal();
     else
         w->showMaximized();
+}
+
+void TitleBar::UpdateMaximizeButton()
+{
+    QWidget *pMainWindow = this->window();
+    if (pMainWindow->isTopLevel())
+    {
+        bool maxFlag = pMainWindow->isMaximized();
+        if (maxFlag)
+        {
+            m_private->toolButton_max->setToolTip("Restore");
+            m_private->toolButton_max->setIcon(style()->standardPixmap(QStyle::SP_TitleBarNormalButton));
+        }
+        else
+        {
+            m_private->toolButton_max->setToolTip("Maximize");
+            m_private->toolButton_max->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
+        }
+    }
 }

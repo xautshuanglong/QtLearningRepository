@@ -35,7 +35,7 @@ MyMainWindow::~MyMainWindow()
 bool MyMainWindow::event(QEvent *event)
 {
     //LogUtil::Info(CODE_LOCATION, "Type=%d", event->type());
-    return __super::event(event);
+    return QMainWindow::event(event);
 }
 
 void MyMainWindow::mousePressEvent(QMouseEvent *event)
@@ -143,52 +143,52 @@ void MyMainWindow::wheelEvent(QWheelEvent *event)
 
 void MyMainWindow::keyPressEvent(QKeyEvent *event)
 {
-    __super::keyPressEvent(event);
+    QMainWindow::keyPressEvent(event);
 }
 
 void MyMainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    __super::keyReleaseEvent(event);
+    QMainWindow::keyReleaseEvent(event);
 }
 
 
 void MyMainWindow::focusInEvent(QFocusEvent *event)
 {
-    __super::focusInEvent(event);
+    QMainWindow::focusInEvent(event);
 }
 
 void MyMainWindow::focusOutEvent(QFocusEvent *event)
 {
-    __super::focusOutEvent(event);
+    QMainWindow::focusOutEvent(event);
 }
 
 void MyMainWindow::enterEvent(QEvent *event)
 {
-    __super::enterEvent(event);
+    QMainWindow::enterEvent(event);
 }
 
 void MyMainWindow::leaveEvent(QEvent *event)
 {
-    __super::leaveEvent(event);
+    QMainWindow::leaveEvent(event);
 }
 
 void MyMainWindow::paintEvent(QPaintEvent *event)
 {
-    __super::paintEvent(event);
+    QMainWindow::paintEvent(event);
 }
 
 void MyMainWindow::moveEvent(QMoveEvent *event)
 {
-    __super::moveEvent(event);
+    QMainWindow::moveEvent(event);
 }
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)
 {
-    __super::resizeEvent(event);
+    QMainWindow::resizeEvent(event);
 }
 
 void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
-    __super::closeEvent(event);
+    QMainWindow::closeEvent(event);
 }
