@@ -24,7 +24,7 @@ private:
     void UpdateMaximizeButton();
 
 private slots:
-    void MaximizeButtonClicked();
+    void SlotMaximizeButtonClicked();
 
 private:
     TitleBarPrivate *m_private;

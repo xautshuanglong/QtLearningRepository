@@ -51,7 +51,7 @@ TitleBar::TitleBar(QWidget *parent) : QToolBar(parent)
     addWidget(m_private->icon_label);
     addWidget(m_private->title_label);
     //中部占位
-    m_private->toolBar_seat = new QWidget;
+    m_private->toolBar_seat = new QWidget();
     m_private->toolBar_seat->setSizePolicy(QSizePolicy::Expanding,
                                            QSizePolicy::Expanding);//长宽自动扩展
     addWidget(m_private->toolBar_seat);
@@ -77,7 +77,7 @@ TitleBar::TitleBar(QWidget *parent) : QToolBar(parent)
     addWidget(m_private->toolButton_close);
 
     connect(m_private->toolButton_mini, SIGNAL(clicked(bool)), m_private->w, SLOT(showMinimized()));
-    connect(m_private->toolButton_max, SIGNAL(clicked(bool)), this, SLOT(MaximizeButtonClicked()));
+    connect(m_private->toolButton_max, SIGNAL(clicked(bool)), this, SLOT(SlotMaximizeButtonClicked()));
     connect(m_private->toolButton_close, SIGNAL(clicked(bool)), m_private->w, SLOT(close()));
 }
 
@@ -85,23 +85,22 @@ void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        MaximizeButtonClicked();
+        SlotMaximizeButtonClicked();
         m_private->mouse_left_doublePress = true;
     }
-    event->ignore();
-    QToolBar::mouseDoubleClickEvent(event);
+    event->accept();
+    //QToolBar::mouseDoubleClickEvent(event);
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)
 {
-    event->button();
     if (Qt::LeftButton == event->button() && !m_private->mouse_left_doublePress)
     {
         m_private->mouse_left_pressing = true;
         m_private->move_start_point = event->globalPos();
     }
-    event->ignore();
-    QToolBar::mousePressEvent(event);
+    event->accept();
+    //QToolBar::mousePressEvent(event);
 }
 
 void TitleBar::mouseReleaseEvent(QMouseEvent *event)
@@ -111,8 +110,8 @@ void TitleBar::mouseReleaseEvent(QMouseEvent *event)
         m_private->mouse_left_pressing = false;
         m_private->mouse_left_doublePress = false;
     }
-    event->ignore();
-    QToolBar::mouseReleaseEvent(event);
+    event->accept();
+    //QToolBar::mouseReleaseEvent(event);
 }
 
 void TitleBar::mouseMoveEvent(QMouseEvent *event)
@@ -147,8 +146,8 @@ void TitleBar::mouseMoveEvent(QMouseEvent *event)
             w->move(widgetPos.x() + movePoint.x(), widgetPos.y() + movePoint.y());
         }
     }
-    event->ignore();
-    QToolBar::mouseMoveEvent(event);
+    event->accept();
+    //QToolBar::mouseMoveEvent(event);
 }
 
 bool TitleBar::eventFilter(QObject *obj, QEvent *event)
@@ -174,7 +173,7 @@ bool TitleBar::eventFilter(QObject *obj, QEvent *event)
     return QToolBar::eventFilter(obj, event);
 }
 
-void TitleBar::MaximizeButtonClicked()
+void TitleBar::SlotMaximizeButtonClicked()
 {
     QWidget *pMainWindow = window();
     if (pMainWindow->isMaximized())

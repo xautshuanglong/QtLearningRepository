@@ -3,6 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtGuiApplicationTest.h"
 
+class TitleBar;
+
 class MyMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -12,7 +14,8 @@ public:
     ~MyMainWindow();
 
 private:
-    Ui::QtGuiApplicationTestClass ui;
+    Ui::QtGuiApplicationTestClass    ui;
+    TitleBar                        *mpTitleBar;
 
 public:
     virtual bool event(QEvent *event) override;
@@ -34,8 +37,8 @@ public:
 
     virtual void paintEvent(QPaintEvent *event) override;
     virtual void moveEvent(QMoveEvent *event) override;
-    virtual void resizeEvent(QResizeEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
 
+    virtual void resizeEvent(QResizeEvent *event);
     virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 };

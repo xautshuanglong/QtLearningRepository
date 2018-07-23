@@ -13,15 +13,14 @@
 #include <LogUtil.h>
 #include "TitleBar.h"
 
-MyMainWindow::MyMainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
 {
     ui.setupUi(this);
 
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     //setAttribute(Qt::WA_TranslucentBackground, true);
-    TitleBar *pTitleBar = new TitleBar(this);
+    mpTitleBar = new TitleBar(this);
 
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
     if (mainTabStyle.open(QFile::ReadOnly))
@@ -191,15 +190,20 @@ void MyMainWindow::moveEvent(QMoveEvent *event)
     QMainWindow::moveEvent(event);
 }
 
-void MyMainWindow::resizeEvent(QResizeEvent *event)
-{
-    QMainWindow::resizeEvent(event);
-}
-
 void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
     QMainWindow::closeEvent(event);
+}
+
+void MyMainWindow::resizeEvent(QResizeEvent *event)
+{
+    QRect winRect = this->rect();
+    QRect titleBarRect = mpTitleBar->rect();
+    QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+    ui.mainTabWidget->setGeometry(mainTabRect);
+
+    QMainWindow::resizeEvent(event);
 }
 
 bool MyMainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
