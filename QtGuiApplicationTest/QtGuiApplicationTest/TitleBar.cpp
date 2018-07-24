@@ -16,8 +16,7 @@ public:
     bool mouse_left_pressing = false;    // 鼠标左键按下状态记录
     bool mouse_left_doublePress = false; // 鼠标左键双击状态记录
     int borderSize;                      // 缩放边框检测
-    QPoint normalPos;                    // 最大化前的窗口位置，用于恢复窗口并计算坐标偏移量
-    QSize normalSize;                    // 最大化前的窗口大小，用于恢复窗口并计算坐标偏移量
+    QRect normalWinRect;                 // 最大化前的窗口矩形，用于恢复窗口并计算坐标偏移量
     QPoint move_start_point;             // 窗口移动时起始位置记录
     QMainWindow *w;                      // 获取主窗口指针，默认为QMainWindow
     QLabel *icon_label;                  // 窗口图标
@@ -46,14 +45,14 @@ TitleBar::TitleBar(QWidget *parent) : QToolBar(parent)
     m_private->icon_label->setFixedSize(m_private->w->iconSize());
     m_private->icon_label->setScaledContents(true);
     m_private->icon_label->setPixmap(m_private->w->windowIcon().
-                                     pixmap(m_private->icon_label->size()));
+        pixmap(m_private->icon_label->size()));
     m_private->title_label->setText(m_private->w->windowTitle());
     addWidget(m_private->icon_label);
     addWidget(m_private->title_label);
     //中部占位
     m_private->toolBar_seat = new QWidget();
     m_private->toolBar_seat->setSizePolicy(QSizePolicy::Expanding,
-                                           QSizePolicy::Expanding);//长宽自动扩展
+        QSizePolicy::Expanding);//长宽自动扩展
     addWidget(m_private->toolBar_seat);
     //右侧显示
     m_private->toolButton_mini = new QToolButton(this);
@@ -119,24 +118,21 @@ void TitleBar::mouseMoveEvent(QMouseEvent *event)
     auto w = window();//获取主窗口指针
     if (m_private->mouse_left_pressing)
     {
-        
         if (w->isMaximized())
         {
             QPoint curMousePos = event->globalPos();
             QPoint maxWindowPos = w->pos();
             QSize maxWinSize = w->size();
-
-            w->showNormal(); // 当为最大化时，还原为正常模式
-
             float xPercent = (curMousePos.x() - maxWindowPos.x()) * 1.0f / maxWinSize.width();
-
             QPoint newNormalPos;
-            newNormalPos.setX(m_private->normalPos.x() + m_private->normalSize.width() * xPercent);
-            newNormalPos.setY(m_private->normalPos.y() + curMousePos.y() - maxWindowPos.y());
-
+            newNormalPos.setX(m_private->normalWinRect.left() + m_private->normalWinRect.width() * xPercent);
+            newNormalPos.setY(m_private->normalWinRect.top() + curMousePos.y() - maxWindowPos.y());
             QPoint movePoint = curMousePos - newNormalPos;
             m_private->move_start_point = curMousePos;
-            w->move(m_private->normalPos.x() + movePoint.x(), m_private->normalPos.y() + movePoint.y());
+
+            w->showNormal(); // 当为最大化时，还原为正常模式
+            m_private->normalWinRect.moveTopLeft(movePoint);
+            w->setGeometry(m_private->normalWinRect);
         }
         else
         {
@@ -163,7 +159,6 @@ bool TitleBar::eventFilter(QObject *obj, QEvent *event)
         m_private->icon_label->setPixmap(m_private->w->windowIcon().pixmap(m_private->icon_label->size()));
         break;
     case QEvent::WindowStateChange:
-    case QEvent::Resize:
         UpdateMaximizeButton();
         break;
     default:
@@ -182,8 +177,7 @@ void TitleBar::SlotMaximizeButtonClicked()
     }
     else
     {
-        m_private->normalPos = pMainWindow->pos();
-        m_private->normalSize = pMainWindow->size();
+        m_private->normalWinRect = pMainWindow->rect();
         pMainWindow->showMaximized();
     }
 }
@@ -193,8 +187,7 @@ void TitleBar::UpdateMaximizeButton()
     QWidget *pMainWindow = this->window();
     if (pMainWindow->isTopLevel())
     {
-        bool maxFlag = pMainWindow->isMaximized();
-        if (maxFlag)
+        if (pMainWindow->isMaximized())
         {
             m_private->toolButton_max->setToolTip("Restore");
             m_private->toolButton_max->setIcon(style()->standardPixmap(QStyle::SP_TitleBarNormalButton));
