@@ -5,10 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtGuiApplicationTest", "QtGuiApplicationTest\QtGuiApplicationTest.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{0EA85DC5-B030-4C51-8E82-3EDE714BF8C7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{9BB6B1BB-D3F2-404B-9605-920BC2B77532}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtConsoleApplicationTest", "QtConsoleApplicationTest\QtConsoleApplicationTest.vcxproj", "{138CD575-5A61-4C86-894C-96BD34B10D2B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedCode", "SharedCode\SharedCode.vcxitems", "{45D41ACC-2C3C-43D2-BC10-02AA73FFC7C7}"
@@ -35,8 +31,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9BB6B1BB-D3F2-404B-9605-920BC2B77532} = {0EA85DC5-B030-4C51-8E82-3EDE714BF8C7}
 	EndGlobalSection
 EndGlobal
