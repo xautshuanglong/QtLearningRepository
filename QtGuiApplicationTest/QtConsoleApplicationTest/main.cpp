@@ -5,6 +5,8 @@
 
 #include <LogUtil.h>
 
+#include "TestManager.h"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -13,14 +15,10 @@ int main(int argc, char *argv[])
 #elif
     MGI::LogUtil::Init(MGI::LOG_LEVEL_INFO);
 #endif
-    LogUtil::Debug(CODE_LOCATION, "%s -> %d", "number", 123);
 
-    int count = 0;
-    while (count < 1000000)
-    {
-        LogUtil::Debug(CODE_LOCATION, "count = %d", count);
-        ++count;
-    }
+    LogUtil::Debug(CODE_LOCATION, "-------------- Start testing --------------");
+
+    TestManager::Instance()->Enter();
 
     return a.exec();
 }

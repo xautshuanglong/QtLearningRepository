@@ -9,6 +9,299 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtConsoleApplicationTest", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedCode", "SharedCode\SharedCode.vcxitems", "{45D41ACC-2C3C-43D2-BC10-02AA73FFC7C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{DBF29CD9-2AF6-4767-A7C8-641F267F7A63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{DE0080C4-741D-4736-B04F-2F525666CA53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dcmtk", "dcmtk", "{49211A75-FCB5-4ADF-A909-9F32B02D187D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "oflog", "oflog", "{FC25F714-AAF3-4EC9-BECD-F946B8DC5188}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\appender.h = libs\include\dcmtk\oflog\appender.h
+		libs\include\dcmtk\oflog\asyncap.h = libs\include\dcmtk\oflog\asyncap.h
+		libs\include\dcmtk\oflog\clfsap.h = libs\include\dcmtk\oflog\clfsap.h
+		libs\include\dcmtk\oflog\clogger.h = libs\include\dcmtk\oflog\clogger.h
+		libs\include\dcmtk\oflog\config.h = libs\include\dcmtk\oflog\config.h
+		libs\include\dcmtk\oflog\configrt.h = libs\include\dcmtk\oflog\configrt.h
+		libs\include\dcmtk\oflog\consap.h = libs\include\dcmtk\oflog\consap.h
+		libs\include\dcmtk\oflog\fileap.h = libs\include\dcmtk\oflog\fileap.h
+		libs\include\dcmtk\oflog\fstreams.h = libs\include\dcmtk\oflog\fstreams.h
+		libs\include\dcmtk\oflog\hierarchy.h = libs\include\dcmtk\oflog\hierarchy.h
+		libs\include\dcmtk\oflog\hierlock.h = libs\include\dcmtk\oflog\hierlock.h
+		libs\include\dcmtk\oflog\layout.h = libs\include\dcmtk\oflog\layout.h
+		libs\include\dcmtk\oflog\log4judp.h = libs\include\dcmtk\oflog\log4judp.h
+		libs\include\dcmtk\oflog\logger.h = libs\include\dcmtk\oflog\logger.h
+		libs\include\dcmtk\oflog\loglevel.h = libs\include\dcmtk\oflog\loglevel.h
+		libs\include\dcmtk\oflog\logmacro.h = libs\include\dcmtk\oflog\logmacro.h
+		libs\include\dcmtk\oflog\mdc.h = libs\include\dcmtk\oflog\mdc.h
+		libs\include\dcmtk\oflog\ndc.h = libs\include\dcmtk\oflog\ndc.h
+		libs\include\dcmtk\oflog\ntelogap.h = libs\include\dcmtk\oflog\ntelogap.h
+		libs\include\dcmtk\oflog\nullap.h = libs\include\dcmtk\oflog\nullap.h
+		libs\include\dcmtk\oflog\oflog.h = libs\include\dcmtk\oflog\oflog.h
+		libs\include\dcmtk\oflog\socketap.h = libs\include\dcmtk\oflog\socketap.h
+		libs\include\dcmtk\oflog\streams.h = libs\include\dcmtk\oflog\streams.h
+		libs\include\dcmtk\oflog\syslogap.h = libs\include\dcmtk\oflog\syslogap.h
+		libs\include\dcmtk\oflog\tchar.h = libs\include\dcmtk\oflog\tchar.h
+		libs\include\dcmtk\oflog\tracelog.h = libs\include\dcmtk\oflog\tracelog.h
+		libs\include\dcmtk\oflog\tstring.h = libs\include\dcmtk\oflog\tstring.h
+		libs\include\dcmtk\oflog\version.h = libs\include\dcmtk\oflog\version.h
+		libs\include\dcmtk\oflog\winconap.h = libs\include\dcmtk\oflog\winconap.h
+		libs\include\dcmtk\oflog\windebap.h = libs\include\dcmtk\oflog\windebap.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{956F424E-056D-4FC0-8AA8-687C95721872}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\config\arith.h = libs\include\dcmtk\config\arith.h
+		libs\include\dcmtk\config\osconfig.h = libs\include\dcmtk\config\osconfig.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "helpers", "helpers", "{42EEEF1B-B3EA-4F45-9AC5-91E4FCAA002C}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\helpers\apndimpl.h = libs\include\dcmtk\oflog\helpers\apndimpl.h
+		libs\include\dcmtk\oflog\helpers\fileinfo.h = libs\include\dcmtk\oflog\helpers\fileinfo.h
+		libs\include\dcmtk\oflog\helpers\lloguser.h = libs\include\dcmtk\oflog\helpers\lloguser.h
+		libs\include\dcmtk\oflog\helpers\lockfile.h = libs\include\dcmtk\oflog\helpers\lockfile.h
+		libs\include\dcmtk\oflog\helpers\loglog.h = libs\include\dcmtk\oflog\helpers\loglog.h
+		libs\include\dcmtk\oflog\helpers\pointer.h = libs\include\dcmtk\oflog\helpers\pointer.h
+		libs\include\dcmtk\oflog\helpers\property.h = libs\include\dcmtk\oflog\helpers\property.h
+		libs\include\dcmtk\oflog\helpers\queue.h = libs\include\dcmtk\oflog\helpers\queue.h
+		libs\include\dcmtk\oflog\helpers\sleep.h = libs\include\dcmtk\oflog\helpers\sleep.h
+		libs\include\dcmtk\oflog\helpers\snprintf.h = libs\include\dcmtk\oflog\helpers\snprintf.h
+		libs\include\dcmtk\oflog\helpers\sockbuff.h = libs\include\dcmtk\oflog\helpers\sockbuff.h
+		libs\include\dcmtk\oflog\helpers\socket.h = libs\include\dcmtk\oflog\helpers\socket.h
+		libs\include\dcmtk\oflog\helpers\strhelp.h = libs\include\dcmtk\oflog\helpers\strhelp.h
+		libs\include\dcmtk\oflog\helpers\threadcf.h = libs\include\dcmtk\oflog\helpers\threadcf.h
+		libs\include\dcmtk\oflog\helpers\timehelp.h = libs\include\dcmtk\oflog\helpers\timehelp.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "internal", "internal", "{8C8142D0-6F18-4B63-81A0-8E0D60EA41BA}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\internal\cygwin32.h = libs\include\dcmtk\oflog\internal\cygwin32.h
+		libs\include\dcmtk\oflog\internal\env.h = libs\include\dcmtk\oflog\internal\env.h
+		libs\include\dcmtk\oflog\internal\internal.h = libs\include\dcmtk\oflog\internal\internal.h
+		libs\include\dcmtk\oflog\internal\socket.h = libs\include\dcmtk\oflog\internal\socket.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "spi", "spi", "{997FD409-07DE-4C08-95FB-B8005BB374B0}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\spi\apndatch.h = libs\include\dcmtk\oflog\spi\apndatch.h
+		libs\include\dcmtk\oflog\spi\factory.h = libs\include\dcmtk\oflog\spi\factory.h
+		libs\include\dcmtk\oflog\spi\filter.h = libs\include\dcmtk\oflog\spi\filter.h
+		libs\include\dcmtk\oflog\spi\logevent.h = libs\include\dcmtk\oflog\spi\logevent.h
+		libs\include\dcmtk\oflog\spi\logfact.h = libs\include\dcmtk\oflog\spi\logfact.h
+		libs\include\dcmtk\oflog\spi\logimpl.h = libs\include\dcmtk\oflog\spi\logimpl.h
+		libs\include\dcmtk\oflog\spi\objreg.h = libs\include\dcmtk\oflog\spi\objreg.h
+		libs\include\dcmtk\oflog\spi\rootlog.h = libs\include\dcmtk\oflog\spi\rootlog.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "thread", "thread", "{1FE32D20-3DDC-4157-B08E-BD590195DD1A}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\thread\syncprim.h = libs\include\dcmtk\oflog\thread\syncprim.h
+		libs\include\dcmtk\oflog\thread\syncpub.h = libs\include\dcmtk\oflog\thread\syncpub.h
+		libs\include\dcmtk\oflog\thread\threads.h = libs\include\dcmtk\oflog\thread\threads.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{8B08AC77-2945-4F27-A83F-60DA739F4192}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\oflog\thread\impl\syncimpl.h = libs\include\dcmtk\oflog\thread\impl\syncimpl.h
+		libs\include\dcmtk\oflog\thread\impl\syncpmsm.h = libs\include\dcmtk\oflog\thread\impl\syncpmsm.h
+		libs\include\dcmtk\oflog\thread\impl\syncpthr.h = libs\include\dcmtk\oflog\thread\impl\syncpthr.h
+		libs\include\dcmtk\oflog\thread\impl\syncwin.h = libs\include\dcmtk\oflog\thread\impl\syncwin.h
+		libs\include\dcmtk\oflog\thread\impl\thredimp.h = libs\include\dcmtk\oflog\thread\impl\thredimp.h
+		libs\include\dcmtk\oflog\thread\impl\tls.h = libs\include\dcmtk\oflog\thread\impl\tls.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ofstd", "ofstd", "{56331C7D-649C-4D11-BED3-49CF80F4380D}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\ofstd\ofalgo.h = libs\include\dcmtk\ofstd\ofalgo.h
+		libs\include\dcmtk\ofstd\ofalign.h = libs\include\dcmtk\ofstd\ofalign.h
+		libs\include\dcmtk\ofstd\ofassert.h = libs\include\dcmtk\ofstd\ofassert.h
+		libs\include\dcmtk\ofstd\ofbmanip.h = libs\include\dcmtk\ofstd\ofbmanip.h
+		libs\include\dcmtk\ofstd\ofcast.h = libs\include\dcmtk\ofstd\ofcast.h
+		libs\include\dcmtk\ofstd\ofchrenc.h = libs\include\dcmtk\ofstd\ofchrenc.h
+		libs\include\dcmtk\ofstd\ofcmdln.h = libs\include\dcmtk\ofstd\ofcmdln.h
+		libs\include\dcmtk\ofstd\ofconapp.h = libs\include\dcmtk\ofstd\ofconapp.h
+		libs\include\dcmtk\ofstd\ofcond.h = libs\include\dcmtk\ofstd\ofcond.h
+		libs\include\dcmtk\ofstd\ofconfig.h = libs\include\dcmtk\ofstd\ofconfig.h
+		libs\include\dcmtk\ofstd\ofconsol.h = libs\include\dcmtk\ofstd\ofconsol.h
+		libs\include\dcmtk\ofstd\ofcrc32.h = libs\include\dcmtk\ofstd\ofcrc32.h
+		libs\include\dcmtk\ofstd\ofdate.h = libs\include\dcmtk\ofstd\ofdate.h
+		libs\include\dcmtk\ofstd\ofdatime.h = libs\include\dcmtk\ofstd\ofdatime.h
+		libs\include\dcmtk\ofstd\ofdefine.h = libs\include\dcmtk\ofstd\ofdefine.h
+		libs\include\dcmtk\ofstd\ofdiag.h = libs\include\dcmtk\ofstd\ofdiag.h
+		libs\include\dcmtk\ofstd\oferror.h = libs\include\dcmtk\ofstd\oferror.h
+		libs\include\dcmtk\ofstd\ofexbl.h = libs\include\dcmtk\ofstd\ofexbl.h
+		libs\include\dcmtk\ofstd\ofexit.h = libs\include\dcmtk\ofstd\ofexit.h
+		libs\include\dcmtk\ofstd\ofexport.h = libs\include\dcmtk\ofstd\ofexport.h
+		libs\include\dcmtk\ofstd\offile.h = libs\include\dcmtk\ofstd\offile.h
+		libs\include\dcmtk\ofstd\offilsys.h = libs\include\dcmtk\ofstd\offilsys.h
+		libs\include\dcmtk\ofstd\offname.h = libs\include\dcmtk\ofstd\offname.h
+		libs\include\dcmtk\ofstd\ofglobal.h = libs\include\dcmtk\ofstd\ofglobal.h
+		libs\include\dcmtk\ofstd\ofgrp.h = libs\include\dcmtk\ofstd\ofgrp.h
+		libs\include\dcmtk\ofstd\oflimits.h = libs\include\dcmtk\ofstd\oflimits.h
+		libs\include\dcmtk\ofstd\oflist.h = libs\include\dcmtk\ofstd\oflist.h
+		libs\include\dcmtk\ofstd\ofmap.h = libs\include\dcmtk\ofstd\ofmap.h
+		libs\include\dcmtk\ofstd\ofmath.h = libs\include\dcmtk\ofstd\ofmath.h
+		libs\include\dcmtk\ofstd\ofmem.h = libs\include\dcmtk\ofstd\ofmem.h
+		libs\include\dcmtk\ofstd\ofoption.h = libs\include\dcmtk\ofstd\ofoption.h
+		libs\include\dcmtk\ofstd\ofoset.h = libs\include\dcmtk\ofstd\ofoset.h
+		libs\include\dcmtk\ofstd\ofpwd.h = libs\include\dcmtk\ofstd\ofpwd.h
+		libs\include\dcmtk\ofstd\ofrand.h = libs\include\dcmtk\ofstd\ofrand.h
+		libs\include\dcmtk\ofstd\ofset.h = libs\include\dcmtk\ofstd\ofset.h
+		libs\include\dcmtk\ofstd\ofsetit.h = libs\include\dcmtk\ofstd\ofsetit.h
+		libs\include\dcmtk\ofstd\ofsockad.h = libs\include\dcmtk\ofstd\ofsockad.h
+		libs\include\dcmtk\ofstd\ofstack.h = libs\include\dcmtk\ofstd\ofstack.h
+		libs\include\dcmtk\ofstd\ofstd.h = libs\include\dcmtk\ofstd\ofstd.h
+		libs\include\dcmtk\ofstd\ofstdinc.h = libs\include\dcmtk\ofstd\ofstdinc.h
+		libs\include\dcmtk\ofstd\ofstream.h = libs\include\dcmtk\ofstd\ofstream.h
+		libs\include\dcmtk\ofstd\ofstring.h = libs\include\dcmtk\ofstd\ofstring.h
+		libs\include\dcmtk\ofstd\oftempf.h = libs\include\dcmtk\ofstd\oftempf.h
+		libs\include\dcmtk\ofstd\oftest.h = libs\include\dcmtk\ofstd\oftest.h
+		libs\include\dcmtk\ofstd\ofthread.h = libs\include\dcmtk\ofstd\ofthread.h
+		libs\include\dcmtk\ofstd\oftime.h = libs\include\dcmtk\ofstd\oftime.h
+		libs\include\dcmtk\ofstd\oftimer.h = libs\include\dcmtk\ofstd\oftimer.h
+		libs\include\dcmtk\ofstd\oftraits.h = libs\include\dcmtk\ofstd\oftraits.h
+		libs\include\dcmtk\ofstd\oftuple.h = libs\include\dcmtk\ofstd\oftuple.h
+		libs\include\dcmtk\ofstd\oftypes.h = libs\include\dcmtk\ofstd\oftypes.h
+		libs\include\dcmtk\ofstd\ofuoset.h = libs\include\dcmtk\ofstd\ofuoset.h
+		libs\include\dcmtk\ofstd\ofutil.h = libs\include\dcmtk\ofstd\ofutil.h
+		libs\include\dcmtk\ofstd\ofuuid.h = libs\include\dcmtk\ofstd\ofuuid.h
+		libs\include\dcmtk\ofstd\ofvector.h = libs\include\dcmtk\ofstd\ofvector.h
+		libs\include\dcmtk\ofstd\ofvriant.h = libs\include\dcmtk\ofstd\ofvriant.h
+		libs\include\dcmtk\ofstd\ofxml.h = libs\include\dcmtk\ofstd\ofxml.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "diag", "diag", "{E63D0E35-FC9C-43D0-92DA-6F1FCC923BE4}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\ofstd\diag\cnvrsn.def = libs\include\dcmtk\ofstd\diag\cnvrsn.def
+		libs\include\dcmtk\ofstd\diag\mmtag.def = libs\include\dcmtk\ofstd\diag\mmtag.def
+		libs\include\dcmtk\ofstd\diag\nsdfti.def = libs\include\dcmtk\ofstd\diag\nsdfti.def
+		libs\include\dcmtk\ofstd\diag\overflow.def = libs\include\dcmtk\ofstd\diag\overflow.def
+		libs\include\dcmtk\ofstd\diag\piof.def = libs\include\dcmtk\ofstd\diag\piof.def
+		libs\include\dcmtk\ofstd\diag\pop.def = libs\include\dcmtk\ofstd\diag\pop.def
+		libs\include\dcmtk\ofstd\diag\push.def = libs\include\dcmtk\ofstd\diag\push.def
+		libs\include\dcmtk\ofstd\diag\shadow.def = libs\include\dcmtk\ofstd\diag\shadow.def
+		libs\include\dcmtk\ofstd\diag\signcmp.def = libs\include\dcmtk\ofstd\diag\signcmp.def
+		libs\include\dcmtk\ofstd\diag\vsprfw.def = libs\include\dcmtk\ofstd\diag\vsprfw.def
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "variadic", "variadic", "{FD6D7B6E-F8B8-4093-8086-726E36EDCBEB}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\ofstd\variadic\helpers.h = libs\include\dcmtk\ofstd\variadic\helpers.h
+		libs\include\dcmtk\ofstd\variadic\tuple.h = libs\include\dcmtk\ofstd\variadic\tuple.h
+		libs\include\dcmtk\ofstd\variadic\tuplefrd.h = libs\include\dcmtk\ofstd\variadic\tuplefrd.h
+		libs\include\dcmtk\ofstd\variadic\tuplefwd.h = libs\include\dcmtk\ofstd\variadic\tuplefwd.h
+		libs\include\dcmtk\ofstd\variadic\variant.h = libs\include\dcmtk\ofstd\variadic\variant.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dcmdata", "dcmdata", "{346B8552-4A66-4BC4-BC7E-3C838B6DEA7F}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\dcmdata\cmdlnarg.h = libs\include\dcmtk\dcmdata\cmdlnarg.h
+		libs\include\dcmtk\dcmdata\dcbytstr.h = libs\include\dcmtk\dcmdata\dcbytstr.h
+		libs\include\dcmtk\dcmdata\dcchrstr.h = libs\include\dcmtk\dcmdata\dcchrstr.h
+		libs\include\dcmtk\dcmdata\dccodec.h = libs\include\dcmtk\dcmdata\dccodec.h
+		libs\include\dcmtk\dcmdata\dcdatset.h = libs\include\dcmtk\dcmdata\dcdatset.h
+		libs\include\dcmtk\dcmdata\dcdatutl.h = libs\include\dcmtk\dcmdata\dcdatutl.h
+		libs\include\dcmtk\dcmdata\dcddirif.h = libs\include\dcmtk\dcmdata\dcddirif.h
+		libs\include\dcmtk\dcmdata\dcdefine.h = libs\include\dcmtk\dcmdata\dcdefine.h
+		libs\include\dcmtk\dcmdata\dcdeftag.h = libs\include\dcmtk\dcmdata\dcdeftag.h
+		libs\include\dcmtk\dcmdata\dcdicdir.h = libs\include\dcmtk\dcmdata\dcdicdir.h
+		libs\include\dcmtk\dcmdata\dcdicent.h = libs\include\dcmtk\dcmdata\dcdicent.h
+		libs\include\dcmtk\dcmdata\dcdict.h = libs\include\dcmtk\dcmdata\dcdict.h
+		libs\include\dcmtk\dcmdata\dcdirrec.h = libs\include\dcmtk\dcmdata\dcdirrec.h
+		libs\include\dcmtk\dcmdata\dcelem.h = libs\include\dcmtk\dcmdata\dcelem.h
+		libs\include\dcmtk\dcmdata\dcerror.h = libs\include\dcmtk\dcmdata\dcerror.h
+		libs\include\dcmtk\dcmdata\dcfcache.h = libs\include\dcmtk\dcmdata\dcfcache.h
+		libs\include\dcmtk\dcmdata\dcfilefo.h = libs\include\dcmtk\dcmdata\dcfilefo.h
+		libs\include\dcmtk\dcmdata\dcfilter.h = libs\include\dcmtk\dcmdata\dcfilter.h
+		libs\include\dcmtk\dcmdata\dchashdi.h = libs\include\dcmtk\dcmdata\dchashdi.h
+		libs\include\dcmtk\dcmdata\dcistrma.h = libs\include\dcmtk\dcmdata\dcistrma.h
+		libs\include\dcmtk\dcmdata\dcistrmb.h = libs\include\dcmtk\dcmdata\dcistrmb.h
+		libs\include\dcmtk\dcmdata\dcistrmf.h = libs\include\dcmtk\dcmdata\dcistrmf.h
+		libs\include\dcmtk\dcmdata\dcistrmz.h = libs\include\dcmtk\dcmdata\dcistrmz.h
+		libs\include\dcmtk\dcmdata\dcitem.h = libs\include\dcmtk\dcmdata\dcitem.h
+		libs\include\dcmtk\dcmdata\dcjson.h = libs\include\dcmtk\dcmdata\dcjson.h
+		libs\include\dcmtk\dcmdata\dclist.h = libs\include\dcmtk\dcmdata\dclist.h
+		libs\include\dcmtk\dcmdata\dcmatch.h = libs\include\dcmtk\dcmdata\dcmatch.h
+		libs\include\dcmtk\dcmdata\dcmetinf.h = libs\include\dcmtk\dcmdata\dcmetinf.h
+		libs\include\dcmtk\dcmdata\dcobject.h = libs\include\dcmtk\dcmdata\dcobject.h
+		libs\include\dcmtk\dcmdata\dcofsetl.h = libs\include\dcmtk\dcmdata\dcofsetl.h
+		libs\include\dcmtk\dcmdata\dcostrma.h = libs\include\dcmtk\dcmdata\dcostrma.h
+		libs\include\dcmtk\dcmdata\dcostrmb.h = libs\include\dcmtk\dcmdata\dcostrmb.h
+		libs\include\dcmtk\dcmdata\dcostrmf.h = libs\include\dcmtk\dcmdata\dcostrmf.h
+		libs\include\dcmtk\dcmdata\dcostrmz.h = libs\include\dcmtk\dcmdata\dcostrmz.h
+		libs\include\dcmtk\dcmdata\dcovlay.h = libs\include\dcmtk\dcmdata\dcovlay.h
+		libs\include\dcmtk\dcmdata\dcpath.h = libs\include\dcmtk\dcmdata\dcpath.h
+		libs\include\dcmtk\dcmdata\dcpcache.h = libs\include\dcmtk\dcmdata\dcpcache.h
+		libs\include\dcmtk\dcmdata\dcpixel.h = libs\include\dcmtk\dcmdata\dcpixel.h
+		libs\include\dcmtk\dcmdata\dcpixseq.h = libs\include\dcmtk\dcmdata\dcpixseq.h
+		libs\include\dcmtk\dcmdata\dcpxitem.h = libs\include\dcmtk\dcmdata\dcpxitem.h
+		libs\include\dcmtk\dcmdata\dcrleccd.h = libs\include\dcmtk\dcmdata\dcrleccd.h
+		libs\include\dcmtk\dcmdata\dcrlecce.h = libs\include\dcmtk\dcmdata\dcrlecce.h
+		libs\include\dcmtk\dcmdata\dcrlecp.h = libs\include\dcmtk\dcmdata\dcrlecp.h
+		libs\include\dcmtk\dcmdata\dcrledec.h = libs\include\dcmtk\dcmdata\dcrledec.h
+		libs\include\dcmtk\dcmdata\dcrledrg.h = libs\include\dcmtk\dcmdata\dcrledrg.h
+		libs\include\dcmtk\dcmdata\dcrleenc.h = libs\include\dcmtk\dcmdata\dcrleenc.h
+		libs\include\dcmtk\dcmdata\dcrleerg.h = libs\include\dcmtk\dcmdata\dcrleerg.h
+		libs\include\dcmtk\dcmdata\dcrlerp.h = libs\include\dcmtk\dcmdata\dcrlerp.h
+		libs\include\dcmtk\dcmdata\dcsequen.h = libs\include\dcmtk\dcmdata\dcsequen.h
+		libs\include\dcmtk\dcmdata\dcspchrs.h = libs\include\dcmtk\dcmdata\dcspchrs.h
+		libs\include\dcmtk\dcmdata\dcstack.h = libs\include\dcmtk\dcmdata\dcstack.h
+		libs\include\dcmtk\dcmdata\dcswap.h = libs\include\dcmtk\dcmdata\dcswap.h
+		libs\include\dcmtk\dcmdata\dctag.h = libs\include\dcmtk\dcmdata\dctag.h
+		libs\include\dcmtk\dcmdata\dctagkey.h = libs\include\dcmtk\dcmdata\dctagkey.h
+		libs\include\dcmtk\dcmdata\dctk.h = libs\include\dcmtk\dcmdata\dctk.h
+		libs\include\dcmtk\dcmdata\dctypes.h = libs\include\dcmtk\dcmdata\dctypes.h
+		libs\include\dcmtk\dcmdata\dcuid.h = libs\include\dcmtk\dcmdata\dcuid.h
+		libs\include\dcmtk\dcmdata\dcvr.h = libs\include\dcmtk\dcmdata\dcvr.h
+		libs\include\dcmtk\dcmdata\dcvrae.h = libs\include\dcmtk\dcmdata\dcvrae.h
+		libs\include\dcmtk\dcmdata\dcvras.h = libs\include\dcmtk\dcmdata\dcvras.h
+		libs\include\dcmtk\dcmdata\dcvrat.h = libs\include\dcmtk\dcmdata\dcvrat.h
+		libs\include\dcmtk\dcmdata\dcvrcs.h = libs\include\dcmtk\dcmdata\dcvrcs.h
+		libs\include\dcmtk\dcmdata\dcvrda.h = libs\include\dcmtk\dcmdata\dcvrda.h
+		libs\include\dcmtk\dcmdata\dcvrds.h = libs\include\dcmtk\dcmdata\dcvrds.h
+		libs\include\dcmtk\dcmdata\dcvrdt.h = libs\include\dcmtk\dcmdata\dcvrdt.h
+		libs\include\dcmtk\dcmdata\dcvrfd.h = libs\include\dcmtk\dcmdata\dcvrfd.h
+		libs\include\dcmtk\dcmdata\dcvrfl.h = libs\include\dcmtk\dcmdata\dcvrfl.h
+		libs\include\dcmtk\dcmdata\dcvris.h = libs\include\dcmtk\dcmdata\dcvris.h
+		libs\include\dcmtk\dcmdata\dcvrlo.h = libs\include\dcmtk\dcmdata\dcvrlo.h
+		libs\include\dcmtk\dcmdata\dcvrlt.h = libs\include\dcmtk\dcmdata\dcvrlt.h
+		libs\include\dcmtk\dcmdata\dcvrobow.h = libs\include\dcmtk\dcmdata\dcvrobow.h
+		libs\include\dcmtk\dcmdata\dcvrod.h = libs\include\dcmtk\dcmdata\dcvrod.h
+		libs\include\dcmtk\dcmdata\dcvrof.h = libs\include\dcmtk\dcmdata\dcvrof.h
+		libs\include\dcmtk\dcmdata\dcvrol.h = libs\include\dcmtk\dcmdata\dcvrol.h
+		libs\include\dcmtk\dcmdata\dcvrpn.h = libs\include\dcmtk\dcmdata\dcvrpn.h
+		libs\include\dcmtk\dcmdata\dcvrpobw.h = libs\include\dcmtk\dcmdata\dcvrpobw.h
+		libs\include\dcmtk\dcmdata\dcvrsh.h = libs\include\dcmtk\dcmdata\dcvrsh.h
+		libs\include\dcmtk\dcmdata\dcvrsl.h = libs\include\dcmtk\dcmdata\dcvrsl.h
+		libs\include\dcmtk\dcmdata\dcvrss.h = libs\include\dcmtk\dcmdata\dcvrss.h
+		libs\include\dcmtk\dcmdata\dcvrst.h = libs\include\dcmtk\dcmdata\dcvrst.h
+		libs\include\dcmtk\dcmdata\dcvrtm.h = libs\include\dcmtk\dcmdata\dcvrtm.h
+		libs\include\dcmtk\dcmdata\dcvruc.h = libs\include\dcmtk\dcmdata\dcvruc.h
+		libs\include\dcmtk\dcmdata\dcvrui.h = libs\include\dcmtk\dcmdata\dcvrui.h
+		libs\include\dcmtk\dcmdata\dcvrul.h = libs\include\dcmtk\dcmdata\dcvrul.h
+		libs\include\dcmtk\dcmdata\dcvrulup.h = libs\include\dcmtk\dcmdata\dcvrulup.h
+		libs\include\dcmtk\dcmdata\dcvrur.h = libs\include\dcmtk\dcmdata\dcvrur.h
+		libs\include\dcmtk\dcmdata\dcvrus.h = libs\include\dcmtk\dcmdata\dcvrus.h
+		libs\include\dcmtk\dcmdata\dcvrut.h = libs\include\dcmtk\dcmdata\dcvrut.h
+		libs\include\dcmtk\dcmdata\dcwcache.h = libs\include\dcmtk\dcmdata\dcwcache.h
+		libs\include\dcmtk\dcmdata\dcxfer.h = libs\include\dcmtk\dcmdata\dcxfer.h
+		libs\include\dcmtk\dcmdata\vrscan.h = libs\include\dcmtk\dcmdata\vrscan.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libi2d", "libi2d", "{9CEFF4F4-1DD1-494F-ABF7-3D62515432D8}"
+	ProjectSection(SolutionItems) = preProject
+		libs\include\dcmtk\dcmdata\libi2d\i2d.h = libs\include\dcmtk\dcmdata\libi2d\i2d.h
+		libs\include\dcmtk\dcmdata\libi2d\i2dbmps.h = libs\include\dcmtk\dcmdata\libi2d\i2dbmps.h
+		libs\include\dcmtk\dcmdata\libi2d\i2define.h = libs\include\dcmtk\dcmdata\libi2d\i2define.h
+		libs\include\dcmtk\dcmdata\libi2d\i2dimgs.h = libs\include\dcmtk\dcmdata\libi2d\i2dimgs.h
+		libs\include\dcmtk\dcmdata\libi2d\i2djpgs.h = libs\include\dcmtk\dcmdata\libi2d\i2djpgs.h
+		libs\include\dcmtk\dcmdata\libi2d\i2doutpl.h = libs\include\dcmtk\dcmdata\libi2d\i2doutpl.h
+		libs\include\dcmtk\dcmdata\libi2d\i2dplnsc.h = libs\include\dcmtk\dcmdata\libi2d\i2dplnsc.h
+		libs\include\dcmtk\dcmdata\libi2d\i2dplsc.h = libs\include\dcmtk\dcmdata\libi2d\i2dplsc.h
+		libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h = libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
@@ -31,5 +324,21 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE0080C4-741D-4736-B04F-2F525666CA53} = {DBF29CD9-2AF6-4767-A7C8-641F267F7A63}
+		{49211A75-FCB5-4ADF-A909-9F32B02D187D} = {DE0080C4-741D-4736-B04F-2F525666CA53}
+		{FC25F714-AAF3-4EC9-BECD-F946B8DC5188} = {49211A75-FCB5-4ADF-A909-9F32B02D187D}
+		{956F424E-056D-4FC0-8AA8-687C95721872} = {FC25F714-AAF3-4EC9-BECD-F946B8DC5188}
+		{42EEEF1B-B3EA-4F45-9AC5-91E4FCAA002C} = {FC25F714-AAF3-4EC9-BECD-F946B8DC5188}
+		{8C8142D0-6F18-4B63-81A0-8E0D60EA41BA} = {FC25F714-AAF3-4EC9-BECD-F946B8DC5188}
+		{997FD409-07DE-4C08-95FB-B8005BB374B0} = {FC25F714-AAF3-4EC9-BECD-F946B8DC5188}
+		{1FE32D20-3DDC-4157-B08E-BD590195DD1A} = {FC25F714-AAF3-4EC9-BECD-F946B8DC5188}
+		{8B08AC77-2945-4F27-A83F-60DA739F4192} = {1FE32D20-3DDC-4157-B08E-BD590195DD1A}
+		{56331C7D-649C-4D11-BED3-49CF80F4380D} = {49211A75-FCB5-4ADF-A909-9F32B02D187D}
+		{E63D0E35-FC9C-43D0-92DA-6F1FCC923BE4} = {56331C7D-649C-4D11-BED3-49CF80F4380D}
+		{FD6D7B6E-F8B8-4093-8086-726E36EDCBEB} = {56331C7D-649C-4D11-BED3-49CF80F4380D}
+		{346B8552-4A66-4BC4-BC7E-3C838B6DEA7F} = {49211A75-FCB5-4ADF-A909-9F32B02D187D}
+		{9CEFF4F4-1DD1-494F-ABF7-3D62515432D8} = {346B8552-4A66-4BC4-BC7E-3C838B6DEA7F}
 	EndGlobalSection
 EndGlobal
