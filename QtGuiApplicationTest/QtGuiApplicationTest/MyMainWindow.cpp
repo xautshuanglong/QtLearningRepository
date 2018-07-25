@@ -12,6 +12,7 @@
 
 #include <LogUtil.h>
 #include "TitleBar.h"
+#include "FramelessHelper.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -21,6 +22,13 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     //setAttribute(Qt::WA_TranslucentBackground, true);
     mpTitleBar = new TitleBar(this);
+    mpFramelessHelper = new FramelessHelper(this);
+    mpFramelessHelper->activateOn(this);  //激活当前窗体
+    mpFramelessHelper->setTitleHeight(mpTitleBar->height());  //设置窗体的标题栏高度
+    mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
+    mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
+    mpFramelessHelper->setRubberBandOnMove(true);  //设置橡皮筋效果-可移动
+    mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
 
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
     if (mainTabStyle.open(QFile::ReadOnly))
@@ -37,7 +45,7 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
 
 MyMainWindow::~MyMainWindow()
 {
-    ;
+    mpFramelessHelper->removeFrom(this);
 }
 
 bool MyMainWindow::event(QEvent *event)
@@ -204,57 +212,4 @@ void MyMainWindow::resizeEvent(QResizeEvent *event)
     ui.mainTabWidget->setGeometry(mainTabRect);
 
     QMainWindow::resizeEvent(event);
-}
-
-bool MyMainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
-{
-#ifdef Q_OS_WIN
-    MSG *pMsg = static_cast<MSG*>(message);
-    switch (pMsg->message)
-    {
-    case WM_NCHITTEST:
-    {
-        int nX = GET_X_LPARAM(pMsg->lParam) - this->geometry().x();
-        int nY = GET_Y_LPARAM(pMsg->lParam) - this->geometry().y();
-
-        if (this->childAt(nX, nY) != NULL)
-            return QWidget::nativeEvent(eventType, message, result);
-
-        *result = HTCAPTION;
-
-        if ((nX > 0) && (nX < 5))
-            *result = HTLEFT;
-
-        if ((nX > this->width() - 5) && (nX < this->width()))
-            *result = HTRIGHT;
-
-        if ((nY > 0) && (nY < 5))
-            *result = HTTOP;
-
-        if ((nY > this->height() - 5) && (nY < this->height()))
-            *result = HTBOTTOM;
-
-        if ((nX > 0) && (nX < 5) && (nY > 0)
-            && (nY < 5))
-            *result = HTTOPLEFT;
-
-        if ((nX > this->width() - 5) && (nX < this->width())
-            && (nY > 0) && (nY < 5))
-            *result = HTTOPRIGHT;
-
-        if ((nX > 0) && (nX < 5)
-            && (nY > this->height() - 5) && (nY < this->height()))
-            *result = HTBOTTOMLEFT;
-
-        if ((nX > this->width() - 5) && (nX < this->width())
-            && (nY > this->height() - 5) && (nY < this->height()))
-            *result = HTBOTTOMRIGHT;
-        return true;
-    }
-    default:
-        break;
-    }
-#endif
-
-    return QWidget::nativeEvent(eventType, message, result);
 }

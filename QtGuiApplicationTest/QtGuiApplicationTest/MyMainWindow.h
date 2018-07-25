@@ -4,6 +4,7 @@
 #include "ui_QtGuiApplicationTest.h"
 
 class TitleBar;
+class FramelessHelper;
 
 class MyMainWindow : public QMainWindow
 {
@@ -16,6 +17,7 @@ public:
 private:
     Ui::QtGuiApplicationTestClass    ui;
     TitleBar                        *mpTitleBar;
+    FramelessHelper                 *mpFramelessHelper;
 
 public:
     virtual bool event(QEvent *event) override;
@@ -40,5 +42,4 @@ public:
     virtual void closeEvent(QCloseEvent *event) override;
 
     virtual void resizeEvent(QResizeEvent *event);
-    virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 };

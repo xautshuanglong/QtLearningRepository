@@ -51,6 +51,9 @@
     <ClCompile Include="TitleBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FramelessHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -70,6 +73,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TitleBar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FramelessHelper.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

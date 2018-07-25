@@ -123,6 +123,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FramelessHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
@@ -139,6 +140,7 @@
     <QtRcc Include="QtGuiApplicationTest.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="FramelessHelper.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
     <QtMoc Include="TitleBar.h" />
