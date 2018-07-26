@@ -14,10 +14,10 @@ class FramelessHelperPrivate
 {
 public:
     QHash<QWidget*, WidgetData*> m_widgetDataHash;
-    bool m_bWidgetMovable : true;
-    bool m_bWidgetResizable : true;
-    bool m_bRubberBandOnResize : true;
-    bool m_bRubberBandOnMove : true;
+    bool m_bWidgetMovable;
+    bool m_bWidgetResizable;
+    bool m_bRubberBandOnResize;
+    bool m_bRubberBandOnMove;
 };
 
 /*****FramelessHelper*****/

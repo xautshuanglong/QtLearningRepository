@@ -126,6 +126,8 @@
     <ClCompile Include="FramelessHelper.cpp" />
     <ClCompile Include="FramelessWindowHelper.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainTabPageFirst.cpp" />
+    <ClCompile Include="MainTabPageSetting.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
@@ -135,6 +137,8 @@
     <QtMoc Include="MyMainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="MainTabPageFirst.ui" />
+    <QtUic Include="MainTabPageSetting.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +147,10 @@
   <ItemGroup>
     <QtMoc Include="FramelessHelper.h" />
     <QtMoc Include="FramelessWindowHelper.h" />
+    <QtMoc Include="MainTabPageFirst.h" />
+    <QtMoc Include="MainTabPageSetting.h" />
     <ClInclude Include="MyApplication.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
     <QtMoc Include="TitleBar.h" />
   </ItemGroup>

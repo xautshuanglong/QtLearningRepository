@@ -24,7 +24,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>10</y>
       <width>600</width>
       <height>400</height>
      </rect>
@@ -36,18 +36,8 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>-1</number>
     </property>
-    <widget class="QWidget" name="firtPage">
-     <attribute name="title">
-      <string>Tab 1</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="settingPage">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-    </widget>
    </widget>
   </widget>
  </widget>

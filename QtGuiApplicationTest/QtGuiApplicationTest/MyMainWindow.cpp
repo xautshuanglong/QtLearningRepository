@@ -15,6 +15,9 @@
 #include "FramelessHelper.h"
 #include "FramelessWindowHelper.h"
 
+#include "MainTabPageFirst.h"
+#include "MainTabPageSetting.h"
+
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , mpFramelessHelper(Q_NULLPTR)
@@ -30,7 +33,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpFramelessHelper->setTitleHeight(mpTitleBar->height());  //设置窗体的标题栏高度
     mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
     mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
-    mpFramelessHelper->setRubberBandOnMove(true);  //设置橡皮筋效果-可移动
+    mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
     mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
 
     mpFramelessWindow = new FramelessWindowHelper(this);
@@ -46,6 +49,12 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     {
         QString error = mainTabStyle.errorString();
     }
+
+    mpPageFirst = new MainTabPageFirst(this);
+    ui.mainTabWidget->addTab(mpPageFirst, "First");
+
+    mpPageSetting = new MainTabPageSetting(this);
+    ui.mainTabWidget->addTab(mpPageSetting, "Setting");
 }
 
 MyMainWindow::~MyMainWindow()

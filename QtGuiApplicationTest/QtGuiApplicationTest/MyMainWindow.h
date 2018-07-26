@@ -6,6 +6,8 @@
 class TitleBar;
 class FramelessHelper;
 class FramelessWindowHelper;
+class MainTabPageFirst;
+class MainTabPageSetting;
 
 class MyMainWindow : public QMainWindow
 {
@@ -20,6 +22,8 @@ private:
     TitleBar                        *mpTitleBar;
     FramelessHelper                 *mpFramelessHelper;
     FramelessWindowHelper           *mpFramelessWindow;
+    MainTabPageFirst                *mpPageFirst;
+    MainTabPageSetting              *mpPageSetting;
 
 public:
     virtual bool event(QEvent *event) override;
