@@ -13,8 +13,11 @@
 #include <LogUtil.h>
 #include "TitleBar.h"
 #include "FramelessHelper.h"
+#include "FramelessWindowHelper.h"
 
-MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
+MyMainWindow::MyMainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , mpFramelessHelper(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -29,6 +32,8 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
     mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
     mpFramelessHelper->setRubberBandOnMove(true);  //设置橡皮筋效果-可移动
     mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
+
+    mpFramelessWindow = new FramelessWindowHelper(this);
 
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
     if (mainTabStyle.open(QFile::ReadOnly))
@@ -45,7 +50,10 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent)
 
 MyMainWindow::~MyMainWindow()
 {
-    mpFramelessHelper->removeFrom(this);
+    if (mpFramelessHelper != Q_NULLPTR)
+    {
+        mpFramelessHelper->removeFrom(this);
+    }
 }
 
 bool MyMainWindow::event(QEvent *event)
@@ -206,10 +214,10 @@ void MyMainWindow::closeEvent(QCloseEvent *event)
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)
 {
-    QRect winRect = this->rect();
-    QRect titleBarRect = mpTitleBar->rect();
-    QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
-    ui.mainTabWidget->setGeometry(mainTabRect);
+     QRect winRect = this->rect();
+     QRect titleBarRect = mpTitleBar->rect();
+     QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+     ui.mainTabWidget->setGeometry(mainTabRect);
 
     QMainWindow::resizeEvent(event);
 }

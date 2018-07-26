@@ -5,6 +5,7 @@
 
 class TitleBar;
 class FramelessHelper;
+class FramelessWindowHelper;
 
 class MyMainWindow : public QMainWindow
 {
@@ -18,6 +19,7 @@ private:
     Ui::QtGuiApplicationTestClass    ui;
     TitleBar                        *mpTitleBar;
     FramelessHelper                 *mpFramelessHelper;
+    FramelessWindowHelper           *mpFramelessWindow;
 
 public:
     virtual bool event(QEvent *event) override;

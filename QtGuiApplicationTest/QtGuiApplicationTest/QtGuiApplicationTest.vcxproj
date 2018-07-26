@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FramelessHelper.cpp" />
+    <ClCompile Include="FramelessWindowHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FramelessHelper.h" />
+    <QtMoc Include="FramelessWindowHelper.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
     <QtMoc Include="TitleBar.h" />
