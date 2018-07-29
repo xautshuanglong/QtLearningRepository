@@ -15,4 +15,6 @@ public:
     ~MainTabPageFirst();
 
 protected:
+    virtual bool event(QEvent *event) override;
+    virtual void showEvent(QShowEvent *event) override;
 };

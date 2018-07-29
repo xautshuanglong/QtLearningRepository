@@ -39,6 +39,19 @@
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="imgContent">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>110</y>
+     <width>711</width>
+     <height>471</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
