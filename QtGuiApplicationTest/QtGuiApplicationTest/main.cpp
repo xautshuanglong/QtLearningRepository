@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
 #ifdef _DEBUG
     LogUtil::Init(LOG_LEVEL_DEBUG);
-#elif
+#else
     LogUtil::Init(LOG_LEVEL_INFO);
 #endif
 

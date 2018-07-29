@@ -45,7 +45,7 @@ void DicomFileParserTest::ParseDicomFile()
             OFLOG_DEBUG(gLogger, "Load successfully: " << dcmFilename);
             DcmDataset *pDcmDataSet = dcmFileFormat.getDataset();
 
-            //pDcmDataSet->print(std::cout, DCMTypes::PF_shortenLongTagValues);
+            pDcmDataSet->print(std::cout, DCMTypes::PF_shortenLongTagValues);
 
             E_TransferSyntax xfer = pDcmDataSet->getOriginalXfer();
             OFLOG_DEBUG(gLogger, "E_TransferSyntax " << xfer);
