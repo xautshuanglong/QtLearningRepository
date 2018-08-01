@@ -24,9 +24,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
-      <width>600</width>
-      <height>400</height>
+      <y>34</y>
+      <width>800</width>
+      <height>566</height>
      </rect>
     </property>
     <property name="minimumSize">

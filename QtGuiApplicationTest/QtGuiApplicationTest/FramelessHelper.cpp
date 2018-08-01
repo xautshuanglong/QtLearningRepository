@@ -57,7 +57,6 @@ bool FramelessHelper::eventFilter(QObject *obj, QEvent *event)
         if (data)
         {
             data->handleWidgetEvent(event);
-            return true;
         }
     }
     }
