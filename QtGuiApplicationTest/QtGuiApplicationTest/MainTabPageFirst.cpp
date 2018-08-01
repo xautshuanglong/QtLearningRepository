@@ -144,10 +144,23 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
                         for (int j = 0; j < imgWidth; ++j)
                         {
                             pixelValue = pImgData16[i * imgWidth + j];
-                            rValue = pixelValue >> 11;
-                            gValue = pixelValue >> 5 & 0x3F;
-                            bValue = pixelValue & 0x1F;
-                            imgTest.setPixelColor(j, i, QColor(rValue, gValue, bValue, 255));
+                            //rValue = pixelValue >> 11;
+                            //gValue = pixelValue >> 5 & 0x3F;
+                            //bValue = pixelValue & 0x1F;
+                            //imgTest.setPixelColor(j, i, QColor(rValue, gValue, bValue, 255));
+                            if (pixelValue > 200)
+                            {
+                                pixelValue = 255;
+                            }
+                            else if (pixelValue < -600)
+                            {
+                                pixelValue = 0;
+                            }
+                            else
+                            {
+                                pixelValue = (pixelValue + 600) * 255.0f / 800;
+                            }
+                            imgTest.setPixelColor(j, i, QColor(pixelValue, pixelValue, pixelValue, 255));
                         }
                     }
                     ui.imgContent->setPixmap(QPixmap::fromImage(imgTest));
