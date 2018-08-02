@@ -1,40 +1,39 @@
 #include "FramelessWindowHelper.h"
 
 #include <QEvent>
+#include <QMouseEvent>
+#include <QHoverEvent>
 #include <QWidget>
 #include <QLabel>
+#include <QPoint>
+#include <QRect>
+#include <QStyle>
+#include <QToolBar>
 #include <QToolButton>
-
-class FramelessWindowHelperPrivate
-{
-public:
-    bool m_bWidgetMovable = true;
-    bool m_bWidgetResizable = true;
-    bool m_bRubberBandOnResize = true;
-    bool m_bRubberBandOnMove = true;
-
-    bool         m_bMouseLeftPressed = false;       // 鼠标左键按下状态记录
-    bool         m_bMouseLeftDoublePressed = false; // 鼠标左键双击状态记录
-    int          m_nBorderSize = 5;                 // 缩放边框检测
-    QRect        mRectNormalWin;                    // 最大化前的窗口矩形，用于恢复窗口并计算坐标偏移量
-    QPoint       mPointStart;                       // 窗口移动时起始位置记录
-    QWidget     *mpWidgetParent;                    // 获取主窗口指针，默认为QMainWindow
-    QLabel      *mpLableIcon;                       // 窗口图标
-    QLabel      *mpLabelTitle;                      // 窗口标题
-    QWidget     *mpWidgetToolBarSeat;               // 标题中部占位
-    QToolButton *mpToolButtonMini;                  // 最小化
-    QToolButton *mpToolButtonMax;                   // 最大化
-    QToolButton *mpToolButtonClose;                 // 关闭
-};
+#include <QMainWindow>
+#include <QRubberBand>
 
 FramelessWindowHelper::FramelessWindowHelper(QWidget* parent)
     : QObject(parent)
+    , mpMainWindow(Q_NULLPTR)
+    , mpRubberBand(Q_NULLPTR)
+    , mnBorderWidth(5)
 {
+    mpFramelessToolBar = new FramelessWindowToolBar(parent);
+    mpMainWindow = (QMainWindow *)parent->window();
+
+    mpRubberBand = new QRubberBand(QRubberBand::Rectangle);
+
     parent->installEventFilter(this);
 }
 
 FramelessWindowHelper::~FramelessWindowHelper()
 {
+    if (mpRubberBand != Q_NULLPTR)
+    {
+        delete mpRubberBand;
+        mpRubberBand = Q_NULLPTR;
+    }
 }
 
 bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
@@ -43,21 +42,21 @@ bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
     switch (event->type())
     {
     case QEvent::MouseMove:
-        return HandleEventMouseMove(obj, event);
+        return HandleEventMouseMove(obj, static_cast<QMouseEvent*>(event));
     case QEvent::HoverMove:
-        return HandleEventHoverMove(obj, event);
+        return HandleEventHoverMove(obj, static_cast<QHoverEvent*>(event));
     case QEvent::MouseButtonPress:
-        return HandleEventMouseButtonPress(obj, event);
+        return HandleEventMouseButtonPress(obj, static_cast<QMouseEvent*>(event));
     case QEvent::MouseButtonRelease:
-        return HandleEventMouseButtonRelease(obj, event);
+        return HandleEventMouseButtonRelease(obj, static_cast<QMouseEvent*>(event));
     case QEvent::Leave:
-        return HandleEventMouseLeave(obj, event);
+        return HandleEventMouseLeave(obj, static_cast<QMouseEvent*>(event));
     case QEvent::WindowTitleChange:
         return HandleEventWindowTitleChange(obj, event);
     case QEvent::WindowIconChange:
         return HandleEventWindowIconChange(obj, event);
     case QEvent::WindowStateChange:
-        return HandleEventWindowStateChange(obj, event);
+        return HandleEventWindowStateChange(obj, static_cast<QWindowStateChangeEvent*>(event));
     default:
         return QObject::eventFilter(obj, event);
     }
@@ -65,27 +64,79 @@ bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
     //return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 {
+    if (mbLeftBtnPressed)
+    {
+        if (mbWidgetResizable && mbOnEdge)
+        {
+            //resizeWidget(event->globalPos());
+        }
+        else if (mbWidgetMovable)
+        {
+        }
+    }
+    //else if (mbWidgetResizable)
+    //{
+    //    QPoint *pGlobalPos = new QPoint(event->globalPos());
+    //    UpdateCursorShape(pGlobalPos);
+    //    delete pGlobalPos;
+    //}
+
     return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventHoverMove(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventHoverMove(QObject *obj, QHoverEvent *event)
 {
+    if (mbWidgetResizable)
+    {
+        QPoint *pGlobalPos = new QPoint(mpMainWindow->mapToGlobal(event->pos()));
+        UpdateCursorShape(pGlobalPos);
+        delete pGlobalPos;
+    }
     return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventMouseButtonPress(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventMouseButtonPress(QObject *obj, QMouseEvent *event)
 {
+    if (event->button() == Qt::LeftButton)
+    {
+        mbLeftBtnPressed = true;
+        //m_bLeftButtonTitlePressed = event->pos().y() < m_moveMousePos.m_nTitleHeight;
+
+        QRect *pFrameRect = new QRect(mpMainWindow->frameGeometry());
+        QPoint *pGlobalPos = new QPoint(event->globalPos());
+        CheckCursorPosition(pGlobalPos, pFrameRect);
+
+        //m_ptDragPos = event->globalPos() - frameRect.topLeft();
+
+        if (mbOnEdge)
+        {
+            mpRubberBand->setGeometry(*pFrameRect);
+            mpRubberBand->show();
+        }
+
+        delete pFrameRect;
+        delete pGlobalPos;
+    }
     return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventMouseButtonRelease(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventMouseButtonRelease(QObject *obj, QMouseEvent *event)
 {
+    if (event->button() == Qt::LeftButton)
+    {
+        mbLeftBtnPressed = false;
+        if (mpRubberBand && mpRubberBand->isVisible())
+        {
+            mpRubberBand->hide();
+            mpMainWindow->setGeometry(mpRubberBand->geometry());
+        }
+    }
     return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventMouseLeave(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventMouseLeave(QObject *obj, QMouseEvent *event)
 {
     return QObject::eventFilter(obj, event);
 }
@@ -100,7 +151,253 @@ bool FramelessWindowHelper::HandleEventWindowIconChange(QObject *obj, QEvent *ev
     return QObject::eventFilter(obj, event);
 }
 
-bool FramelessWindowHelper::HandleEventWindowStateChange(QObject *obj, QEvent *event)
+bool FramelessWindowHelper::HandleEventWindowStateChange(QObject *obj, QWindowStateChangeEvent *event)
 {
     return QObject::eventFilter(obj, event);
+}
+
+void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* pFrameRect)
+{
+    if (pGlobalMousePos == Q_NULLPTR || pFrameRect == Q_NULLPTR) return;
+
+    int globalMouseX = pGlobalMousePos->x();
+    int globalMouseY = pGlobalMousePos->y();
+    int frameLeft = pFrameRect->left();
+    int frameRight = pFrameRect->right();
+    int frameTop = pFrameRect->top();
+    int frameBottom = pFrameRect->bottom();
+
+    mbOnEdgeLeft = globalMouseX > frameLeft && globalMouseX < frameLeft + mnBorderWidth;
+    mbOnEdgeRight = globalMouseX < frameRight && globalMouseX > frameRight - mnBorderWidth;
+    mbOnEdgeTop = globalMouseY > frameTop && globalMouseY < frameTop + mnBorderWidth;
+    mbOnEdgeBottom = globalMouseY < frameBottom && globalMouseY > frameBottom - mnBorderWidth;
+
+    mbOnCornerTopLeft = mbOnEdgeLeft && mbOnEdgeTop;
+    mbOnCornerTopRight = mbOnEdgeRight && mbOnEdgeTop;
+    mbOnCornerBottomLeft = mbOnEdgeLeft && mbOnEdgeBottom;
+    mbOnCornerBottomRight = mbOnEdgeRight && mbOnEdgeBottom;
+
+    mbOnEdge = mbOnEdgeLeft || mbOnEdgeRight || mbOnEdgeTop || mbOnEdgeBottom;
+}
+
+void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
+{
+    if (mpMainWindow == Q_NULLPTR || pGloablePos == Q_NULLPTR) return;
+
+    if (mpMainWindow->isFullScreen() || mpMainWindow->isMaximized())
+    {
+        if (mbCursorShapeChanged)
+        {
+            mpMainWindow->unsetCursor();
+        }
+    }
+
+    QRect *pMainWindowRect = new QRect(mpMainWindow->frameGeometry());
+    CheckCursorPosition(pGloablePos, pMainWindowRect);
+    delete pMainWindowRect;
+
+    if (mbOnCornerTopLeft || mbOnCornerBottomRight)
+    {
+        mpMainWindow->setCursor(Qt::SizeFDiagCursor);
+        mbCursorShapeChanged = true;
+    } 
+    else if (mbOnCornerBottomLeft || mbOnCornerTopRight)
+    {
+        mpMainWindow->setCursor(Qt::SizeBDiagCursor);
+        mbCursorShapeChanged = true;
+    }
+    else if (mbOnEdgeLeft || mbOnEdgeRight)
+    {
+        mpMainWindow->setCursor(Qt::SizeHorCursor);
+        mbCursorShapeChanged = true;
+    }
+    else if (mbOnEdgeTop || mbOnEdgeBottom)
+    {
+        mpMainWindow->setCursor(Qt::SizeVerCursor);
+        mbCursorShapeChanged = true;
+    }
+    else if (mbCursorShapeChanged)
+    {
+        mpMainWindow->unsetCursor();
+        mbCursorShapeChanged = false;
+    }
+}
+
+
+/*=========================== FramelessWindowToolBar ===========================*/
+FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */)
+    : QToolBar(parent)
+{
+    Q_ASSERT(parent != Q_NULLPTR);
+
+    mpPointMoveStart = new QPoint();
+    mpRectNormalWindow = new QRect();
+
+    mpMainWindow = (QMainWindow *)parent->window();
+    Qt::WindowFlags winFlags = mpMainWindow->windowFlags();
+    mpMainWindow->setWindowFlags(winFlags | Qt::FramelessWindowHint);
+    mpMainWindow->addToolBar(this);
+    mpMainWindow->installEventFilter(this);
+
+    mpLabelIcon = new QLabel(this);
+    mpLabelIcon->setFixedSize(mpMainWindow->iconSize());
+    mpLabelIcon->setScaledContents(true);
+    QPixmap winIconTest;
+    winIconTest.fill(Qt::red);
+    mpLabelIcon->setPixmap(winIconTest);
+    this->addWidget(mpLabelIcon);
+
+    mpLabelTitle = new QLabel(this);
+    mpLabelTitle->setText(mpMainWindow->windowTitle());
+    this->addWidget(mpLabelTitle);
+
+    mpToolBarSeat = new QWidget();
+    mpToolBarSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->addWidget(mpToolBarSeat);
+
+    mpToolBtnMax = new QToolButton(this);
+    mpToolBtnMin = new QToolButton(this);
+    mpToolBtnClose = new QToolButton(this);
+
+    mpToolBtnMax->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
+    mpToolBtnMin->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMinButton));
+    mpToolBtnClose->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarCloseButton));
+
+    mpToolBtnMax->setToolTip("Maximize");
+    mpToolBtnMin->setToolTip("Minimize");
+    mpToolBtnClose->setToolTip("Close");
+
+    this->addWidget(mpToolBtnMin);
+    this->addWidget(mpToolBtnMax);
+    this->addWidget(mpToolBtnClose);
+
+    this->connect(mpToolBtnMax, SIGNAL(clicked()), this, SLOT(SlotMaximizeButtonClicked()));
+    this->connect(mpToolBtnMin, SIGNAL(clicked()), mpMainWindow, SLOT(showMinimized()));
+    this->connect(mpToolBtnClose, SIGNAL(clicked()), mpMainWindow, SLOT(close()));
+
+    this->setMovable(false);
+    this->setContextMenuPolicy(Qt::NoContextMenu);
+}
+
+FramelessWindowToolBar::~FramelessWindowToolBar()
+{
+    ;
+}
+
+void FramelessWindowToolBar::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton == event->button())
+    {
+        SlotMaximizeButtonClicked();
+        mbLeftDoublePressed = true;
+    }
+    event->accept();
+    //QToolBar::mouseDoubleClickEvent(event);
+}
+
+void FramelessWindowToolBar::mousePressEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton==event->button() && !mbLeftDoublePressed)
+    {
+        mbLeftPressed = true;
+        *mpPointMoveStart = event->globalPos();
+    }
+    //QToolBar::mousePressEvent(event);
+}
+
+void FramelessWindowToolBar::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton == event->button())
+    {
+        mbLeftPressed = false;
+        mbLeftDoublePressed = false;
+    }
+    event->accept();
+    //QToolBar::mouseReleaseEvent(event);
+}
+
+void FramelessWindowToolBar::mouseMoveEvent(QMouseEvent *event)
+{
+     if (mbLeftPressed)
+     {
+         if (mpMainWindow->isMaximized())
+         {
+             QPoint curMousePos = event->globalPos();
+             QPoint maxWindowPos = mpMainWindow->pos();
+             QSize maxWinSize = mpMainWindow->size();
+             float xPercent = (curMousePos.x() - maxWindowPos.x()) * 1.0f / maxWinSize.width();
+             QPoint newNormalPos;
+             newNormalPos.setX(mpRectNormalWindow->left() + mpRectNormalWindow->width() * xPercent);
+             newNormalPos.setY(mpRectNormalWindow->top() + curMousePos.y() - maxWindowPos.y());
+             QPoint movePoint = curMousePos - newNormalPos;
+             *mpPointMoveStart = curMousePos;
+ 
+             mpMainWindow->showNormal(); // 当为最大化时，还原为正常模式
+             mpRectNormalWindow->moveTopLeft(movePoint);
+             mpMainWindow->setGeometry(*mpRectNormalWindow);
+         }
+         else
+         {
+             QPoint movePoint = event->globalPos() - *mpPointMoveStart;
+             QPoint widgetPos = mpMainWindow->pos();
+             *mpPointMoveStart = event->globalPos();
+             mpMainWindow->move(widgetPos.x() + movePoint.x(), widgetPos.y() + movePoint.y());
+         }
+     }
+     event->accept();
+    //QToolBar::mouseMoveEvent(event);
+}
+
+bool FramelessWindowToolBar::eventFilter(QObject *obj, QEvent *event)
+{
+    switch (event->type())
+    {
+    case QEvent::WindowTitleChange: //标题修改
+        mpLabelTitle->setText(mpMainWindow->windowTitle());
+        break;
+    case QEvent::WindowIconChange: //图标修改
+        mpLabelIcon->setFixedSize(mpMainWindow->iconSize());
+        mpLabelIcon->setScaledContents(true);
+        mpLabelIcon->setPixmap(mpMainWindow->windowIcon().pixmap(mpLabelIcon->size()));
+        break;
+    case QEvent::WindowStateChange:
+        UpdateMaximizeButton();
+        break;
+    default:
+        break;
+    }
+    return QToolBar::eventFilter(obj, event);
+}
+void FramelessWindowToolBar::UpdateMaximizeButton()
+{
+    if (mpMainWindow == Q_NULLPTR) return;
+
+    if (mpMainWindow->isTopLevel())
+    {
+        if (mpMainWindow->isMaximized())
+        {
+            mpToolBtnMax->setToolTip("Restore");
+            mpToolBtnMax->setIcon(style()->standardPixmap(QStyle::SP_TitleBarNormalButton));
+        }
+        else
+        {
+            mpToolBtnMax->setToolTip("Maximize");
+            mpToolBtnMax->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
+        }
+    }
+}
+
+void FramelessWindowToolBar::SlotMaximizeButtonClicked()
+{
+    if (mpMainWindow == Q_NULLPTR) return;
+
+    if (mpMainWindow->isMaximized())
+    {
+        mpMainWindow->showNormal();
+    }
+    else
+    {
+        *mpRectNormalWindow = mpMainWindow->rect();
+        mpMainWindow->showMaximized();
+    }
 }

@@ -54,13 +54,13 @@
     <ClCompile Include="FramelessHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FramelessWindowHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainTabPageFirst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainTabPageSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FramelessWindowHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

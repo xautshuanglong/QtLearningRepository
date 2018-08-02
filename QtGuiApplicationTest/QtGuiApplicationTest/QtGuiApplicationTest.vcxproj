@@ -124,7 +124,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FramelessHelper.cpp" />
-    <ClCompile Include="FramelessWindowHelper.cpp" />
+    <ClCompile Include="FramelessWindowHelper.cpp">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
     <ClCompile Include="MainTabPageSetting.cpp" />

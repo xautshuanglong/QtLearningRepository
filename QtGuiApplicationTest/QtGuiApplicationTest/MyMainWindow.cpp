@@ -27,16 +27,22 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     //setAttribute(Qt::WA_TranslucentBackground, true);
-    mpTitleBar = new TitleBar(this);
-    mpFramelessHelper = new FramelessHelper(this);
-    mpFramelessHelper->activateOn(this);  //激活当前窗体
-    mpFramelessHelper->setTitleHeight(mpTitleBar->height());  //设置窗体的标题栏高度
-    mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
-    mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
-    mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
-    mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
-
+     //mpFramelessHelper = new FramelessHelper(this);
+     //mpFramelessHelper->activateOn(this);  //激活当前窗体
+     //mpFramelessHelper->setTitleHeight(mpTitleBar->height());  //设置窗体的标题栏高度
+     //mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
+     //mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
+     //mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
+     //mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
     mpFramelessWindow = new FramelessWindowHelper(this);
+
+    //mpFramelessHelper = new FramelessHelper(this);
+    //mpFramelessHelper->activateOn(this);  //激活当前窗体
+    //mpFramelessHelper->setTitleHeight(34);  //设置窗体的标题栏高度
+    //mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
+    //mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
+    //mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
+    //mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
 
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
     if (mainTabStyle.open(QFile::ReadOnly))
@@ -223,9 +229,13 @@ void MyMainWindow::closeEvent(QCloseEvent *event)
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)
 {
+//      QRect winRect = this->rect();
+//      QRect titleBarRect = mpTitleBar->rect();
+//      QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+//      ui.mainTabWidget->setGeometry(mainTabRect);
+
      QRect winRect = this->rect();
-     QRect titleBarRect = mpTitleBar->rect();
-     QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+     QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - 40);
      ui.mainTabWidget->setGeometry(mainTabRect);
 
     QMainWindow::resizeEvent(event);
