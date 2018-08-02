@@ -88,6 +88,20 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
             imgWidth = mImgWidth;
             imgHeight = mImgHeight;
 
+            const char *pRescaleSlope = Q_NULLPTR;
+            const char *pRescaleIntercept = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_RescaleSlope, pRescaleSlope);
+            pDcmDataSet->findAndGetString(DCM_RescaleIntercept, pRescaleIntercept);
+            int rescaleSlope = atoi(pRescaleSlope);
+            int rescaleIntercept = atoi(pRescaleIntercept);
+
+            const char *pWindowCenter = Q_NULLPTR;
+            const char *pWindowWidth = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_WindowCenter, pWindowCenter);
+            pDcmDataSet->findAndGetString(DCM_WindowWidth, pWindowWidth);
+            int windowCenter = atoi(pWindowCenter);
+            int windowWidth = atoi(pWindowWidth);
+
             const char* transferSyntax = NULL;
             findRes = dcmFileFormat.getMetaInfo()->findAndGetString(DCM_TransferSyntaxUID, transferSyntax);
             if (findRes.good())
@@ -137,17 +151,26 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
                 {
                     int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
                     QImage imgTest(imgWidth, imgHeight, QImage::Format_RGB32);
-                    Uint16 pixelValue = 0;
+                    Sint16 pixelValue = 0;
                     int rValue = 0, gValue = 0, bValue = 0;
+                    const int msgLen = 512 * 10;
+                    char tempMsg[msgLen] = { 0 };
+                    char tempPixelValue[10] = { 0 };
                     for (int i = 0; i < imgHeight; ++i)
                     {
+                        ZeroMemory(tempMsg, msgLen);
                         for (int j = 0; j < imgWidth; ++j)
                         {
-                            pixelValue = pImgData16[i * imgWidth + j];
+                            // CT 值的计算公式为： Hu = pixel * slope + intercept
+                            pixelValue = pImgData16[i * imgWidth + j] *rescaleSlope + rescaleIntercept;
                             //rValue = pixelValue >> 11;
                             //gValue = pixelValue >> 5 & 0x3F;
                             //bValue = pixelValue & 0x1F;
                             //imgTest.setPixelColor(j, i, QColor(rValue, gValue, bValue, 255));
+
+                            sprintf_s(tempPixelValue, "\t%d", pixelValue);
+                            strcat_s(tempMsg, tempPixelValue);
+
                             if (pixelValue > 200)
                             {
                                 pixelValue = 255;
@@ -162,6 +185,7 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
                             }
                             imgTest.setPixelColor(j, i, QColor(pixelValue, pixelValue, pixelValue, 255));
                         }
+                        LogUtil::CollectData(CODE_LOCATION, LOG_COLLECTION_TYPE_0, tempMsg);
                     }
                     ui.imgContent->setPixmap(QPixmap::fromImage(imgTest));
                 }
