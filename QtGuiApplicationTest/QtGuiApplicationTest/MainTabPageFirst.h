@@ -17,4 +17,12 @@ public:
 protected:
     virtual bool event(QEvent *event) override;
     virtual void showEvent(QShowEvent *event) override;
+
+private:
+    void ShowDicomImage(QString &dcmFileName);
+    void BackupFunction();
+
+private slots:
+    void on_btnBrowserDcm_clicked();
+    void on_btnBrowserImg_clicked();
 };
