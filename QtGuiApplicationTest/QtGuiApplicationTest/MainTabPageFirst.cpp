@@ -18,6 +18,7 @@
 #include <dcmtk/dcmdata/dcpixseq.h>
 #include <dcmtk/dcmdata/dcpxitem.h>
 #include <dcmtk/dcmdata/libi2d/i2djpgs.h>
+#include <dcmtk/dcmdata/libi2d/i2dbmps.h>
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
@@ -60,101 +61,8 @@ void MainTabPageFirst::on_btnBrowserDcm_clicked()
 
 void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
-    QString curAppPath = QCoreApplication::applicationDirPath();
-    QString imgFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("Images (*.jpg)"));
-
-    if (!imgFileName.isEmpty())
-    {
-        QImage imgTest(imgFileName);
-
-        int width = imgTest.width();
-        int height = imgTest.height();
-        int depth = imgTest.depth();
-        int byteCount = imgTest.byteCount();
-        bool allGray = imgTest.allGray();
-        const uchar* imgBits = imgTest.constBits();
-        QImage::Format imgFormat = imgTest.format();
-
-        ui.imgContent->setPixmap(QPixmap::fromImage(imgTest.scaled(ui.imgContent->size(), Qt::KeepAspectRatio)));
-
-        int indexOfDot = imgFileName.lastIndexOf(".");
-        QString saveFilename = imgFileName.left(indexOfDot) + ".dcm";
-
-        OFCondition status;
-        DcmFileFormat *pFileFormat = new DcmFileFormat();
-        DcmDataset *pDataSet = pFileFormat->getDataset();
-
-        const int constWidth = 50;
-        const int constHeight = 50;
-        Uint8 testImgBuf[constWidth*constHeight] = { 0 };
-        for (int i = 0; i < constHeight; ++i)
-        {
-            for (int j = 0; j < constWidth; ++j)
-            {
-                if (i == j)
-                {
-                    testImgBuf[i*constWidth + j] = 0;
-                }
-                else
-                {
-                    testImgBuf[i*constWidth + j] = 255;
-                }
-            }
-        }
-
-        pDataSet->putAndInsertUint16(DCM_AccessionNumber, 0);
-        pDataSet->putAndInsertString(DCM_PatientName, "Testing", true);
-        pDataSet->putAndInsertString(DCM_PatientID, "110119");
-        pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
-        pDataSet->putAndInsertString(DCM_PatientSex, "M");
-
-        /*	添加Study信息	*/
-        pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
-        pDataSet->putAndInsertString(DCM_StudyTime, "182230");
-        char uid[100];
-        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
-        pDataSet->putAndInsertString(DCM_StudyID, uid);
-        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
-        pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
-
-
-        /*	添加Series信息	*/
-        pDataSet->putAndInsertString(DCM_SeriesDate, "20141221");
-        pDataSet->putAndInsertString(DCM_SeriesTime, "195411");
-        memset(uid, 0, sizeof(char) * 100);
-        dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
-        pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
-
-        /*	添加Image信息	*/
-        pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
-        pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
-        pDataSet->putAndInsertString(DCM_ContentTime, "200700");
-        pDataSet->putAndInsertString(DCM_InstanceNumber, "1");
-        pDataSet->putAndInsertString(DCM_SamplesPerPixel, "1");
-        pDataSet->putAndInsertString(DCM_PhotometricInterpretation, "MONOCHROME2");
-        pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
-        pDataSet->putAndInsertString(DCM_Modality, "US");
-        pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, 1);
-        pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
-        pDataSet->putAndInsertUint16(DCM_Rows, constHeight);
-        pDataSet->putAndInsertUint16(DCM_Columns, constWidth);
-        pDataSet->putAndInsertUint16(DCM_BitsAllocated, 8);
-        pDataSet->putAndInsertUint16(DCM_BitsStored, 8);
-        pDataSet->putAndInsertUint16(DCM_HighBit, 7);
-        pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)testImgBuf, constWidth*constHeight);
-
-        /* 配合 MicroDICOM */
-        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
-        //pDataSet->putAndInsertString(DCM_SOPClassUID)
-
-        status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit, EET_UndefinedLength, EGL_recalcGL, EPD_noChange, 0, 0, EWM_dataset);
-        if (status.bad())
-        {
-            LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
-        }
-
-        delete pFileFormat;
-    }
+    //SelfPaintImage8Bit();
+    ReadJpegAndCopyToDicom();
 }
 
 void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
@@ -316,13 +224,17 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
                 int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
                 QImage imgTest(imgWidth, imgHeight, QImage::Format_RGB32);
                 Uint8 pixelValue = 0;
-                int rValue = 0, gValue = 0, bValue = 0;
+                int rgbValue[3] = { 0 };
                 for (int i = 0; i < imgHeight; ++i)
                 {
                     for (int j = 0; j < imgWidth; ++j)
                     {
-                        pixelValue = pImgData8[i * imgWidth + j];
-                        imgTest.setPixelColor(j, i, QColor(pixelValue, pixelValue, pixelValue, 255));
+                        for (int k = 0; k < samplePerPixel; ++k)
+                        {
+                            rgbValue[k] = pImgData8[i * imgWidth * samplePerPixel + j * samplePerPixel + k];
+                        }
+                        //pixelValue = pImgData8[i * imgWidth + j];
+                        imgTest.setPixelColor(j, i, QColor(rgbValue[0], rgbValue[1], rgbValue[2], 255));
                     }
                 }
                 ui.imgContent->setGeometry(ui.imgContent->x(), ui.imgContent->y(), imgWidth, imgHeight);
@@ -356,6 +268,133 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
             }
             ui.imgContent->setPixmap(QPixmap::fromImage(imgTest));
         }
+    }
+}
+
+void MainTabPageFirst::ReadJpegAndCopyToDicom()
+{
+    QString curAppPath = QCoreApplication::applicationDirPath();
+    QString imgFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("Images (*.jpg *.bmp);;All files (*.*)"));
+
+    if (!imgFileName.isEmpty())
+    {
+        QImage imgTest(imgFileName);
+
+        int width = imgTest.width();
+        int height = imgTest.height();
+        int depth = imgTest.depth();
+        int byteCount = imgTest.byteCount();
+        bool allGray = imgTest.allGray();
+        const uchar* imgBits = imgTest.constBits();
+        QImage::Format imgFormat = imgTest.format();
+
+        ui.imgContent->setPixmap(QPixmap::fromImage(imgTest.scaled(ui.imgContent->size(), Qt::KeepAspectRatio)));
+
+        int indexOfDot = imgFileName.lastIndexOf(".");
+        QString saveFilename = imgFileName.left(indexOfDot) + ".dcm";
+
+        OFCondition status;
+        DcmFileFormat *pFileFormat = new DcmFileFormat();
+        DcmDataset *pDataSet = pFileFormat->getDataset();
+
+        OFString filename = OFString(imgFileName.toStdString().c_str());
+
+        I2DImgSource *pImgSource = Q_NULLPTR;
+        if (imgFileName.endsWith(".jpg", Qt::CaseInsensitive))
+        {
+            pImgSource = new I2DJpegSource();
+        }
+        else if (imgFileName.endsWith(".bmp", Qt::CaseInsensitive))
+        {
+            pImgSource = new I2DBmpSource();
+        }
+        if (pImgSource != Q_NULLPTR)
+        {
+            pImgSource->setImageFile(filename);
+            char* pixData = NULL;
+            Uint16 rows, cols, samplePerPixel, bitsAlloc, bitsStored, highBit, pixelRpr, planConf, pixAspectH, pixAspectV;
+            OFString photoMetrInt;
+            Uint32 length;
+            E_TransferSyntax ts = EXS_Unknown;
+            status = pImgSource->readPixelData(rows, cols, samplePerPixel, photoMetrInt, bitsAlloc, bitsStored, highBit, pixelRpr, planConf, pixAspectH, pixAspectV, pixData, length, ts);
+            if (status.bad())
+            {
+                LogUtil::Error(CODE_LOCATION, "read pixel failed: %s", status.text());
+            }
+
+            pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
+
+            /* 添加 Patient 信息 */
+            pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
+            pDataSet->putAndInsertString(DCM_PatientName, "Testing");
+            pDataSet->putAndInsertString(DCM_PatientID, "110119");
+            pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
+            pDataSet->putAndInsertString(DCM_PatientSex, "M");
+            pDataSet->putAndInsertString(DCM_PatientOrientation, "");
+            pDataSet->putAndInsertString(DCM_Laterality, "");
+            pDataSet->putAndInsertString(DCM_ImageComments, "");
+
+            /* 添加 Study 信息 */
+            pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
+            pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
+            pDataSet->putAndInsertString(DCM_StudyTime, "182230");
+            pDataSet->putAndInsertString(DCM_ContentTime, "182230");
+            char uid[100];
+            dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
+            pDataSet->putAndInsertString(DCM_StudyID, uid);
+            dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+            pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
+
+            /* 添加 Series 信息 */
+            pDataSet->putAndInsertString(DCM_SeriesDate, "20141221");
+            pDataSet->putAndInsertString(DCM_SeriesTime, "195411");
+            memset(uid, 0, sizeof(char) * 100);
+            dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
+            pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
+
+            /* 添加 厂商 信息 */
+            pDataSet->putAndInsertString(DCM_Manufacturer, "Nova Microsonics");
+            pDataSet->putAndInsertString(DCM_ReferringPhysicianName, "ReferringName");
+
+            /* 添加 Stage 信息 */
+            pDataSet->putAndInsertString(DCM_StageName, "StageTest");
+            pDataSet->putAndInsertString(DCM_StageNumber, "1");
+            pDataSet->putAndInsertString(DCM_NumberOfStages, "1");
+            pDataSet->putAndInsertString(DCM_ViewNumber, "1");
+            pDataSet->putAndInsertString(DCM_NumberOfViewsInStage, "1");
+
+            /* 添加 Image 信息 */
+            pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
+            pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
+            pDataSet->putAndInsertString(DCM_ContentTime, "200700");
+            pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
+            pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
+            pDataSet->putAndInsertString(DCM_PhotometricInterpretation, "MONOCHROME2");
+            pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, samplePerPixel);
+            //pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
+            pDataSet->putAndInsertString(DCM_Modality, "US");
+            pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
+            pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
+            pDataSet->putAndInsertUint16(DCM_Rows, rows);
+            pDataSet->putAndInsertUint16(DCM_Columns, cols);
+            pDataSet->putAndInsertUint16(DCM_BitsAllocated, bitsAlloc);
+            pDataSet->putAndInsertUint16(DCM_BitsStored, bitsStored);
+            pDataSet->putAndInsertUint16(DCM_HighBit, highBit);
+            pDataSet->putAndInsertOFStringArray(DCM_PhotometricInterpretation, photoMetrInt);
+            pDataSet->putAndInsertString(DCM_PixelAspectRatio, "1\\1");
+            pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
+            pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pixData, length);
+
+            status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), ts);
+            if (status.bad())
+            {
+                LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
+            }
+
+            delete pImgSource;
+        }
+
+        delete pFileFormat;
     }
 }
 
@@ -474,6 +513,127 @@ void MainTabPageFirst::BackupFunction()
         }
 
         delete bmpSource;
+        delete pFileFormat;
+    }
+}
+
+void MainTabPageFirst::SelfPaintImage8Bit()
+{
+    QString curAppPath = QCoreApplication::applicationDirPath();
+    QString imgFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("Images (*.jpg)"));
+
+    if (!imgFileName.isEmpty())
+    {
+        QImage imgTest(imgFileName);
+
+        int width = imgTest.width();
+        int height = imgTest.height();
+        int depth = imgTest.depth();
+        int byteCount = imgTest.byteCount();
+        bool allGray = imgTest.allGray();
+        const uchar* imgBits = imgTest.constBits();
+        QImage::Format imgFormat = imgTest.format();
+
+        ui.imgContent->setPixmap(QPixmap::fromImage(imgTest.scaled(ui.imgContent->size(), Qt::KeepAspectRatio)));
+
+        int indexOfDot = imgFileName.lastIndexOf(".");
+        QString saveFilename = imgFileName.left(indexOfDot) + ".dcm";
+
+        OFCondition status;
+        DcmFileFormat *pFileFormat = new DcmFileFormat();
+        DcmDataset *pDataSet = pFileFormat->getDataset();
+
+        const int constWidth = 50;
+        const int constHeight = 50;
+        Uint8 testImgBuf[constWidth*constHeight] = { 0 };
+        for (int i = 0; i < constHeight; ++i)
+        {
+            for (int j = 0; j < constWidth; ++j)
+            {
+                if (i == j)
+                {
+                    testImgBuf[i*constWidth + j] = 0;
+                }
+                else
+                {
+                    testImgBuf[i*constWidth + j] = 255;
+                }
+            }
+        }
+
+        pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
+
+        /* 添加 Patient 信息 */
+        pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
+        pDataSet->putAndInsertString(DCM_PatientName, "Testing");
+        pDataSet->putAndInsertString(DCM_PatientID, "110119");
+        pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
+        pDataSet->putAndInsertString(DCM_PatientSex, "M");
+        pDataSet->putAndInsertString(DCM_PatientOrientation, "");
+        pDataSet->putAndInsertString(DCM_Laterality, "");
+        pDataSet->putAndInsertString(DCM_ImageComments, "");
+
+        /* 添加 Study 信息 */
+        pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
+        pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
+        pDataSet->putAndInsertString(DCM_StudyTime, "182230");
+        pDataSet->putAndInsertString(DCM_ContentTime, "182230");
+        char uid[100];
+        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyID, uid);
+        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
+
+        /* 添加 Series 信息 */
+        pDataSet->putAndInsertString(DCM_SeriesDate, "20141221");
+        pDataSet->putAndInsertString(DCM_SeriesTime, "195411");
+        memset(uid, 0, sizeof(char) * 100);
+        dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
+
+        /* 添加 厂商 信息 */
+        pDataSet->putAndInsertString(DCM_Manufacturer, "Nova Microsonics");
+        pDataSet->putAndInsertString(DCM_ReferringPhysicianName, "ReferringName");
+
+        /* 添加 Stage 信息 */
+        pDataSet->putAndInsertString(DCM_StageName, "StageTest");
+        pDataSet->putAndInsertString(DCM_StageNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfStages, "1");
+        pDataSet->putAndInsertString(DCM_ViewNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfViewsInStage, "1");
+
+        /* 添加 Image 信息 */
+        pDataSet->putAndInsertString(DCM_ImageType, "");
+        pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
+        pDataSet->putAndInsertString(DCM_ContentTime, "200700");
+        pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
+        pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
+        pDataSet->putAndInsertString(DCM_SamplesPerPixel, "1");
+        pDataSet->putAndInsertString(DCM_PhotometricInterpretation, "MONOCHROME2");
+        //pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
+        pDataSet->putAndInsertString(DCM_Modality, "US");
+        pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, 1);
+        //pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
+        pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
+        pDataSet->putAndInsertUint16(DCM_Rows, constHeight);
+        pDataSet->putAndInsertUint16(DCM_Columns, constWidth);
+        pDataSet->putAndInsertUint16(DCM_BitsAllocated, 8);
+        pDataSet->putAndInsertUint16(DCM_BitsStored, 8);
+        pDataSet->putAndInsertUint16(DCM_HighBit, 7);
+        pDataSet->putAndInsertString(DCM_PixelAspectRatio, "1\\1");
+        pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
+        pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)testImgBuf, constWidth*constHeight);
+
+        /* 配合 MicroDICOM */
+        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
+        //pDataSet->putAndInsertString(DCM_SOPClassUID)
+
+        status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit, EET_UndefinedLength, EGL_recalcGL, EPD_noChange, 0, 0, EWM_dataset);
+        if (status.bad())
+        {
+            LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
+        }
+
         delete pFileFormat;
     }
 }

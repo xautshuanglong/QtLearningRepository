@@ -20,7 +20,9 @@ protected:
 
 private:
     void ShowDicomImage(QString &dcmFileName);
+    void ReadJpegAndCopyToDicom();
     void BackupFunction();
+    void SelfPaintImage8Bit();
 
 private slots:
     void on_btnBrowserDcm_clicked();
