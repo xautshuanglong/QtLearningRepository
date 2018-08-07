@@ -94,6 +94,7 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
             if (findRes.good())
             {
                 OFLOG_DEBUG(gLogger, "PatientName: " << patientName);
+                ui.imgTitleValue->setText(QString::fromLocal8Bit(patientName.c_str()));
             }
 
             unsigned short bitStored = 0;
@@ -464,10 +465,11 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         DcmDataset *pDataSet = pFileFormat->getDataset();
 
         pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
+        pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "GB18030");
 
         /* 添加 Patient 信息 */
         pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
-        pDataSet->putAndInsertString(DCM_PatientName, "Testing");
+        pDataSet->putAndInsertString(DCM_PatientName, "test测试中文");
         pDataSet->putAndInsertString(DCM_PatientID, "110119");
         pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
         pDataSet->putAndInsertString(DCM_PatientSex, "M");
