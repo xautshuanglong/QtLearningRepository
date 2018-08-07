@@ -61,8 +61,10 @@ void MainTabPageFirst::on_btnBrowserDcm_clicked()
 
 void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
-    //SelfPaintImage8Bit();
-    ReadJpegAndCopyToDicom();
+    //this->SelfPaintImage8Bit();
+    //this->ReadJpegAndCopyToDicom();
+    //this->ReadImageByQImage();
+    this->ReadImageByQImageMulti();
 }
 
 void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
@@ -224,19 +226,20 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
                 int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
                 QImage imgTest(imgWidth, imgHeight, QImage::Format_RGB32);
                 Uint8 pixelValue = 0;
-                int rgbValue[3] = { 0 };
+                int *pRgbValue = new int[samplePerPixel];
                 for (int i = 0; i < imgHeight; ++i)
                 {
                     for (int j = 0; j < imgWidth; ++j)
                     {
                         for (int k = 0; k < samplePerPixel; ++k)
                         {
-                            rgbValue[k] = pImgData8[i * imgWidth * samplePerPixel + j * samplePerPixel + k];
+                            pRgbValue[k] = pImgData8[i * imgWidth * samplePerPixel + j * samplePerPixel + k];
                         }
                         //pixelValue = pImgData8[i * imgWidth + j];
-                        imgTest.setPixelColor(j, i, QColor(rgbValue[0], rgbValue[1], rgbValue[2], 255));
+                        imgTest.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
                     }
                 }
+                delete []pRgbValue;
                 ui.imgContent->setGeometry(ui.imgContent->x(), ui.imgContent->y(), imgWidth, imgHeight);
                 ui.imgContent->setPixmap(QPixmap::fromImage(imgTest));
             }
@@ -267,6 +270,283 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
                 }
             }
             ui.imgContent->setPixmap(QPixmap::fromImage(imgTest));
+        }
+    }
+}
+
+void MainTabPageFirst::ReadImageByQImage()
+{
+    QString curAppPath = QCoreApplication::applicationDirPath();
+    QString imgFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("Images (*.jpg *.bmp);;All files (*.*)"));
+
+    if (!imgFileName.isEmpty())
+    {
+        QImage imgTest(imgFileName);
+
+        int width = imgTest.width();
+        int height = imgTest.height();
+        int oldSamplePerPixel = imgTest.depth() / 8;
+        int newSamplePerPixel = oldSamplePerPixel > 3 ? 3 : oldSamplePerPixel; // DICOM 最多 3 通道
+        int byteCount = imgTest.byteCount();
+        bool allGray = imgTest.allGray();
+        const uchar* imgBits = imgTest.constBits();
+        QImage::Format imgFormat = imgTest.format();
+
+        ui.imgContent->setPixmap(QPixmap::fromImage(imgTest.scaled(ui.imgContent->size(), Qt::KeepAspectRatio)));
+
+        int indexOfDot = imgFileName.lastIndexOf(".");
+        QString saveFilename = imgFileName.left(indexOfDot) + ".dcm";
+
+        OFCondition status;
+        DcmFileFormat *pFileFormat = new DcmFileFormat();
+        DcmDataset *pDataSet = pFileFormat->getDataset();
+
+        OFString filename = OFString(imgFileName.toStdString().c_str());
+
+        pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
+
+        /* 添加 Patient 信息 */
+        pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
+        pDataSet->putAndInsertString(DCM_PatientName, "Testing");
+        pDataSet->putAndInsertString(DCM_PatientID, "110119");
+        pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
+        pDataSet->putAndInsertString(DCM_PatientSex, "M");
+        pDataSet->putAndInsertString(DCM_PatientOrientation, "");
+        pDataSet->putAndInsertString(DCM_Laterality, "");
+        pDataSet->putAndInsertString(DCM_ImageComments, "");
+
+        /* 添加 Study 信息 */
+        pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
+        pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
+        pDataSet->putAndInsertString(DCM_StudyTime, "182230");
+        pDataSet->putAndInsertString(DCM_ContentTime, "182230");
+        char uid[100];
+        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyID, uid);
+        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
+
+        /* 添加 Series 信息 */
+        pDataSet->putAndInsertString(DCM_SeriesDate, "20141221");
+        pDataSet->putAndInsertString(DCM_SeriesTime, "195411");
+        memset(uid, 0, sizeof(char) * 100);
+        dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
+
+        /* 添加 厂商 信息 */
+        pDataSet->putAndInsertString(DCM_Manufacturer, "Nova Microsonics");
+        pDataSet->putAndInsertString(DCM_ReferringPhysicianName, "ReferringName");
+
+        /* 添加 Stage 信息 */
+        pDataSet->putAndInsertString(DCM_StageName, "StageTest");
+        pDataSet->putAndInsertString(DCM_StageNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfStages, "1");
+        pDataSet->putAndInsertString(DCM_ViewNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfViewsInStage, "1");
+
+        /* 添加 Image 信息 */
+        status = pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
+        status = pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
+        status = pDataSet->putAndInsertString(DCM_ContentTime, "200700");
+        status = pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
+        status = pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
+        status = pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, newSamplePerPixel);
+        //status = pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
+        status = pDataSet->putAndInsertString(DCM_Modality, "US");
+        status = pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
+        status = pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
+        status = pDataSet->putAndInsertUint16(DCM_Rows, height);
+        status = pDataSet->putAndInsertUint16(DCM_Columns, width);
+        status = pDataSet->putAndInsertUint16(DCM_BitsAllocated, 8);
+        status = pDataSet->putAndInsertUint16(DCM_BitsStored, 8);
+        status = pDataSet->putAndInsertUint16(DCM_HighBit, 7);
+        if (newSamplePerPixel>=3)
+        {
+            status = pDataSet->putAndInsertOFStringArray(DCM_PhotometricInterpretation, "RGB");
+        }
+        //status = pDataSet->putAndInsertString(DCM_PixelAspectRatio, "1\\1");
+        status = pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
+
+
+        // 自行组织 像素格式
+        int newPixelDataLen = width * height * newSamplePerPixel;
+        Uint8 *pImgPixelValues = new Uint8[newPixelDataLen];
+        int oldPixelCntPerLine = width * oldSamplePerPixel;
+        int newPixelCntPerLine = width * newSamplePerPixel;
+        int pixelIndex = 0;
+        QRgb tempPixelValue = 0;
+        for (int i=0; i<height; ++i)
+        {
+            for (int j=0; j<width; ++j)
+            {
+                tempPixelValue = imgTest.pixel(j, i);
+                pixelIndex = i*newPixelCntPerLine + j*newSamplePerPixel;
+                pImgPixelValues[pixelIndex + 0] = qRed(tempPixelValue);
+                pImgPixelValues[pixelIndex + 1] = qGreen(tempPixelValue);
+                pImgPixelValues[pixelIndex + 2] = qBlue(tempPixelValue);
+
+                //for (int k = 0; k < newSamplePerPixel; ++k)
+                //{
+                //    pImgPixelValues[i*newPixelCntPerLine + j*newSamplePerPixel + k] = imgBits[i*oldPixelCntPerLine + j*oldSamplePerPixel + newSamplePerPixel - k - 1];
+                //}
+            }
+        }
+        status = pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pImgPixelValues, newPixelDataLen);
+        delete []pImgPixelValues;
+
+        status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit);
+        if (status.bad())
+        {
+            LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
+        }
+    }
+}
+
+void MainTabPageFirst::ReadImageByQImageMulti()
+{
+    QString curAppPath = QCoreApplication::applicationDirPath();
+    //QString imgFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("Images (*.jpg *.bmp);;All files (*.*)"));
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), curAppPath,
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    const int imgCount = 4;
+
+    if (!dir.isEmpty())
+    {
+        int width = 0, height = 0;
+        int samplePerPixel = 1;
+        int byteCount = 0;
+        const uchar* imgBits = Q_NULLPTR;
+
+        Uint8 *pImgPixelValues[imgCount] = { Q_NULLPTR };
+        Uint8 *pAllImageData = Q_NULLPTR;
+        QRgb tempPixelValue = 0;
+        int byteCountPerLine = 0;
+        int pixelIndex = 0;
+
+        QString tempImgName;
+        QImage imgTest;
+        for (int imgID = 0; imgID < imgCount; ++imgID)
+        {
+            tempImgName = QString("%1/%2.bmp").arg(dir).arg(imgID+1);
+            imgTest.load(tempImgName);
+
+            width = imgTest.width();
+            height = imgTest.height();
+            samplePerPixel = imgTest.depth() / 8;
+            samplePerPixel = samplePerPixel > 3 ? 3 : samplePerPixel; // DICOM 最多 3 通道
+            byteCount += imgTest.byteCount();
+            imgBits = imgTest.constBits();
+
+            // 自行组织 像素格式
+            int newPixelDataLen = width * height * samplePerPixel;
+            pImgPixelValues[imgID] = new Uint8[newPixelDataLen];
+            byteCountPerLine = width * samplePerPixel;
+            pixelIndex = 0;
+            tempPixelValue = 0;
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < width; ++j)
+                {
+                    tempPixelValue = imgTest.pixel(j, i);
+                    pixelIndex = i*byteCountPerLine + j*samplePerPixel;
+                    pImgPixelValues[imgID][pixelIndex + 0] = qRed(tempPixelValue);
+                    pImgPixelValues[imgID][pixelIndex + 1] = qGreen(tempPixelValue);
+                    pImgPixelValues[imgID][pixelIndex + 2] = qBlue(tempPixelValue);
+                }
+            }
+        }
+
+        QString saveFilename = dir + "/" + "AllInOne.dcm";
+
+        OFCondition status;
+        DcmFileFormat *pFileFormat = new DcmFileFormat();
+        DcmDataset *pDataSet = pFileFormat->getDataset();
+
+        pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
+
+        /* 添加 Patient 信息 */
+        pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
+        pDataSet->putAndInsertString(DCM_PatientName, "Testing");
+        pDataSet->putAndInsertString(DCM_PatientID, "110119");
+        pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
+        pDataSet->putAndInsertString(DCM_PatientSex, "M");
+        pDataSet->putAndInsertString(DCM_PatientOrientation, "");
+        pDataSet->putAndInsertString(DCM_Laterality, "");
+        pDataSet->putAndInsertString(DCM_ImageComments, "");
+
+        /* 添加 Study 信息 */
+        pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
+        pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
+        pDataSet->putAndInsertString(DCM_StudyTime, "182230");
+        pDataSet->putAndInsertString(DCM_ContentTime, "182230");
+        char uid[100];
+        dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyID, uid);
+        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
+
+        /* 添加 Series 信息 */
+        pDataSet->putAndInsertString(DCM_SeriesDate, "20141221");
+        pDataSet->putAndInsertString(DCM_SeriesTime, "195411");
+        memset(uid, 0, sizeof(char) * 100);
+        dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
+
+        /* 添加 厂商 信息 */
+        pDataSet->putAndInsertString(DCM_Manufacturer, "Nova Microsonics");
+        pDataSet->putAndInsertString(DCM_ReferringPhysicianName, "ReferringName");
+
+        /* 添加 Stage 信息 */
+        pDataSet->putAndInsertString(DCM_StageName, "StageTest");
+        pDataSet->putAndInsertString(DCM_StageNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfStages, "1");
+        pDataSet->putAndInsertString(DCM_ViewNumber, "1");
+        pDataSet->putAndInsertString(DCM_NumberOfViewsInStage, "1");
+
+        /* 添加 Image 信息 */
+        status = pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
+        status = pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
+        status = pDataSet->putAndInsertString(DCM_ContentTime, "200700");
+        status = pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
+        status = pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
+        status = pDataSet->putAndInsertString(DCM_Modality, "US");
+        status = pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
+        status = pDataSet->putAndInsertString(DCM_NumberOfFrames, QString("%1").arg(imgCount).toStdString().c_str());
+        status = pDataSet->putAndInsertUint16(DCM_BitsAllocated, 8);
+        status = pDataSet->putAndInsertUint16(DCM_BitsStored, 8);
+        status = pDataSet->putAndInsertUint16(DCM_HighBit, 7);
+
+        status = pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, samplePerPixel);
+        status = pDataSet->putAndInsertUint16(DCM_Rows, height);
+        status = pDataSet->putAndInsertUint16(DCM_Columns, width);
+
+        if (samplePerPixel >= 3)
+        {
+            status = pDataSet->putAndInsertOFStringArray(DCM_PhotometricInterpretation, "RGB");
+        }
+        status = pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
+
+        int bytesPerImage = width * height * samplePerPixel;
+        pAllImageData = new Uint8[bytesPerImage*imgCount];
+        Uint8 *pTempImageData = pAllImageData;
+        for (int imgID=0; imgID<imgCount; ++imgID)
+        {
+            if (pImgPixelValues[imgID] != Q_NULLPTR)
+            {
+                memcpy_s(pTempImageData, bytesPerImage, pImgPixelValues[imgID], bytesPerImage);
+                pTempImageData += bytesPerImage;
+                delete[]pImgPixelValues[imgID];
+                pImgPixelValues[imgID] = Q_NULLPTR;
+            }
+        }
+        status = pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pAllImageData, bytesPerImage*imgCount);
+        delete[]pAllImageData;
+
+        status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit);
+        if (status.bad())
+        {
+            LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
         }
     }
 }
@@ -364,26 +644,25 @@ void MainTabPageFirst::ReadJpegAndCopyToDicom()
             pDataSet->putAndInsertString(DCM_NumberOfViewsInStage, "1");
 
             /* 添加 Image 信息 */
-            pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
-            pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
-            pDataSet->putAndInsertString(DCM_ContentTime, "200700");
-            pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
-            pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
-            pDataSet->putAndInsertString(DCM_PhotometricInterpretation, "MONOCHROME2");
-            pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, samplePerPixel);
-            //pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
-            pDataSet->putAndInsertString(DCM_Modality, "US");
-            pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
-            pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
-            pDataSet->putAndInsertUint16(DCM_Rows, rows);
-            pDataSet->putAndInsertUint16(DCM_Columns, cols);
-            pDataSet->putAndInsertUint16(DCM_BitsAllocated, bitsAlloc);
-            pDataSet->putAndInsertUint16(DCM_BitsStored, bitsStored);
-            pDataSet->putAndInsertUint16(DCM_HighBit, highBit);
-            pDataSet->putAndInsertOFStringArray(DCM_PhotometricInterpretation, photoMetrInt);
-            pDataSet->putAndInsertString(DCM_PixelAspectRatio, "1\\1");
-            pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
-            pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pixData, length);
+            status = pDataSet->putAndInsertString(DCM_ImageType, "ORIGINAL\\PRIMARY\\AXIAL");
+            status = pDataSet->putAndInsertString(DCM_ContentDate, "20141221");
+            status = pDataSet->putAndInsertString(DCM_ContentTime, "200700");
+            status = pDataSet->putAndInsertString(DCM_SeriesNumber, "0");
+            status = pDataSet->putAndInsertString(DCM_InstanceNumber, "0");
+            status = pDataSet->putAndInsertUint16(DCM_SamplesPerPixel, samplePerPixel);
+            //status = pDataSet->putAndInsertString(DCM_PixelSpacing, "0.3\\0.3");
+            status = pDataSet->putAndInsertString(DCM_Modality, "US");
+            status = pDataSet->putAndInsertUint16(DCM_PlanarConfiguration, 0);
+            status = pDataSet->putAndInsertString(DCM_NumberOfFrames, "1");
+            status = pDataSet->putAndInsertUint16(DCM_Rows, rows);
+            status = pDataSet->putAndInsertUint16(DCM_Columns, cols);
+            status = pDataSet->putAndInsertUint16(DCM_BitsAllocated, bitsAlloc);
+            status = pDataSet->putAndInsertUint16(DCM_BitsStored, bitsStored);
+            status = pDataSet->putAndInsertUint16(DCM_HighBit, highBit);
+            status = pDataSet->putAndInsertOFStringArray(DCM_PhotometricInterpretation, photoMetrInt);
+            //status = pDataSet->putAndInsertString(DCM_PixelAspectRatio, "1\\1");
+            status = pDataSet->putAndInsertUint16(DCM_PixelRepresentation, 0);
+            status = pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pixData, length);
 
             status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), ts);
             if (status.bad())

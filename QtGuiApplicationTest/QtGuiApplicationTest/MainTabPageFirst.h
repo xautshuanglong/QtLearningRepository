@@ -20,6 +20,8 @@ protected:
 
 private:
     void ShowDicomImage(QString &dcmFileName);
+    void ReadImageByQImage();
+    void ReadImageByQImageMulti();
     void ReadJpegAndCopyToDicom();
     void BackupFunction();
     void SelfPaintImage8Bit();
