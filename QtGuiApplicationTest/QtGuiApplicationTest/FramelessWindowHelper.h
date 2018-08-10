@@ -94,6 +94,7 @@ private:
     bool HandleEventWindowIconChange(QObject *obj, QEvent *event);
     bool HandleEventWindowStateChange(QObject *obj, QWindowStateChangeEvent *event);
 
+    void ResizeWindow(QPoint *pGlobalMousePos);
     void CheckCursorPosition(QPoint *pGlobalMousePos, QRect* pFrameRect);
     void UpdateCursorShape(QPoint *pGloablePos);
 };

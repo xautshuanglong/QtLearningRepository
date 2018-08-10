@@ -8,7 +8,6 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     ui.settingTxt->setText("setting ...");
 }
 
-
 MainTabPageSetting::~MainTabPageSetting()
 {
 }

@@ -24,16 +24,10 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 {
     ui.setupUi(this);
 
-    //Qt::WindowFlags oldFlags = windowFlags();
-    //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     //setAttribute(Qt::WA_TranslucentBackground, true);
-     //mpFramelessHelper = new FramelessHelper(this);
-     //mpFramelessHelper->activateOn(this);  //激活当前窗体
-     //mpFramelessHelper->setTitleHeight(mpTitleBar->height());  //设置窗体的标题栏高度
-     //mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
-     //mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
-     //mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
-     //mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
+    Qt::WindowFlags oldFlags = windowFlags();
+    setWindowFlags(oldFlags | Qt::FramelessWindowHint);
+
     mpFramelessWindow = new FramelessWindowHelper(this);
 
     //mpFramelessHelper = new FramelessHelper(this);

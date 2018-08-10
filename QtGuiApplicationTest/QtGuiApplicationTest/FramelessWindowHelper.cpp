@@ -13,6 +13,8 @@
 #include <QMainWindow>
 #include <QRubberBand>
 
+#include <LogUtil.h>
+
 FramelessWindowHelper::FramelessWindowHelper(QWidget* parent)
     : QObject(parent)
     , mpMainWindow(Q_NULLPTR)
@@ -66,11 +68,17 @@ bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
 
 bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 {
+    LogUtil::Debug(CODE_LOCATION, "mbLeftBtnPressed=%s mbWidgetResizable=%s mbOnEdge=%s",
+        mbLeftBtnPressed ? "true" : "false",
+        mbWidgetResizable ? "true" : "false",
+        mbOnEdge ? "true":"false");
     if (mbLeftBtnPressed)
     {
         if (mbWidgetResizable && mbOnEdge)
         {
-            //resizeWidget(event->globalPos());
+            QPoint *pGlobalMousePos = new QPoint(event->globalPos());
+            ResizeWindow(pGlobalMousePos);
+            delete pGlobalMousePos;
         }
         else if (mbWidgetMovable)
         {
@@ -88,8 +96,10 @@ bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QMouseEvent *even
 
 bool FramelessWindowHelper::HandleEventHoverMove(QObject *obj, QHoverEvent *event)
 {
-    if (mbWidgetResizable)
+    if (mbWidgetResizable && !mbLeftBtnPressed)
     {
+        // 已点击模式下（可能正在拖动）保持光标形态
+        // 未点击模式下重新判断鼠标位置并改变光标形态
         QPoint *pGlobalPos = new QPoint(mpMainWindow->mapToGlobal(event->pos()));
         UpdateCursorShape(pGlobalPos);
         delete pGlobalPos;
@@ -154,6 +164,98 @@ bool FramelessWindowHelper::HandleEventWindowIconChange(QObject *obj, QEvent *ev
 bool FramelessWindowHelper::HandleEventWindowStateChange(QObject *obj, QWindowStateChangeEvent *event)
 {
     return QObject::eventFilter(obj, event);
+}
+
+void FramelessWindowHelper::ResizeWindow(QPoint *pGlobalMousePos)
+{
+    QRect originalWinRect;
+    if (mbRubberBandOnResize)
+    {
+        originalWinRect = mpRubberBand->frameGeometry();
+    }
+    else
+    {
+        originalWinRect = mpMainWindow->frameGeometry();
+    }
+
+    int left = 0, top = 0, right = 0, bottom = 0;
+    originalWinRect.getCoords(&left, &top, &right, &bottom);
+
+    int minWidth = mpMainWindow->minimumWidth();
+    int minHeight = mpMainWindow->minimumHeight();
+
+    if (mbOnCornerTopLeft)
+    {
+        left = pGlobalMousePos->x();
+        top = pGlobalMousePos->y();
+    }
+    else if (mbOnCornerTopRight)
+    {
+        right = pGlobalMousePos->x();
+        top = pGlobalMousePos->y();
+    }
+    else if (mbOnCornerBottomLeft)
+    {
+        left = pGlobalMousePos->x();
+        bottom = pGlobalMousePos->y();
+    }
+    else if (mbOnCornerBottomRight)
+    {
+        right = pGlobalMousePos->x();
+        bottom = pGlobalMousePos->y();
+    }
+    else if (mbOnEdgeLeft)
+    {
+        left = pGlobalMousePos->x();
+    }
+    else if (mbOnEdgeRight)
+    {
+        right = pGlobalMousePos->x();
+    }
+    else if (mbOnEdgeTop)
+    {
+        top = pGlobalMousePos->y();
+    }
+    else if (mbOnEdgeBottom)
+    {
+        bottom = pGlobalMousePos->y();
+    }
+
+    QRect newRect(QPoint(left, top), QPoint(right, bottom));
+    if (newRect.isValid())
+    {
+        if (minWidth > newRect.width())
+        {
+            if (left != originalWinRect.left())
+            {
+                newRect.setLeft(originalWinRect.left());
+            } 
+            else
+            {
+                newRect.setRight(originalWinRect.right());
+            }
+        }
+        if (minHeight > newRect.height())
+        {
+            if (top != originalWinRect.top())
+            {
+                newRect.setTop(originalWinRect.top());
+            } 
+            else
+            {
+                newRect.setBottom(originalWinRect.bottom());
+            }
+        }
+
+        if (mbRubberBandOnResize)
+        {
+            mpRubberBand->setGeometry(newRect);
+        } 
+        else
+        {
+            mpMainWindow->setGeometry(newRect);
+        }
+    }
 }
 
 void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* pFrameRect)
