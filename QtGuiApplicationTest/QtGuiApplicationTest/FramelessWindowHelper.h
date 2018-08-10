@@ -54,12 +54,12 @@ class FramelessWindowHelper : public QObject
     Q_OBJECT
 
 private:
-    bool         mbLeftBtnPressed = true;
+    bool         mbLeftBtnPressed = false;
+    bool         mbCursorShapeChanged = false;
     bool         mbWidgetMovable = true;
     bool         mbWidgetResizable = true;
     bool         mbRubberBandOnResize = true;
     bool         mbRubberBandOnMove = true;
-    bool         mbCursorShapeChanged = false;
 
     bool         mbOnEdge = false;
     bool         mbOnEdgeLeft = false;

@@ -116,7 +116,8 @@ bool FramelessWindowHelper::HandleEventMouseButtonPress(QObject *obj, QMouseEven
 
         QRect *pFrameRect = new QRect(mpMainWindow->frameGeometry());
         QPoint *pGlobalPos = new QPoint(event->globalPos());
-        CheckCursorPosition(pGlobalPos, pFrameRect);
+        UpdateCursorShape(pGlobalPos);
+        LogUtil::Debug(CODE_LOCATION, "ButtonPress(%d, %d)", pGlobalPos->x(), pGlobalPos->y());
 
         //m_ptDragPos = event->globalPos() - frameRect.topLeft();
 
@@ -142,6 +143,9 @@ bool FramelessWindowHelper::HandleEventMouseButtonRelease(QObject *obj, QMouseEv
             mpRubberBand->hide();
             mpMainWindow->setGeometry(mpRubberBand->geometry());
         }
+        QPoint *pGlobalPos = new QPoint(event->globalPos());
+        UpdateCursorShape(pGlobalPos);
+        delete pGlobalPos;
     }
     return QObject::eventFilter(obj, event);
 }
@@ -269,10 +273,10 @@ void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* 
     int frameTop = pFrameRect->top();
     int frameBottom = pFrameRect->bottom();
 
-    mbOnEdgeLeft = globalMouseX > frameLeft && globalMouseX < frameLeft + mnBorderWidth;
-    mbOnEdgeRight = globalMouseX < frameRight && globalMouseX > frameRight - mnBorderWidth;
-    mbOnEdgeTop = globalMouseY > frameTop && globalMouseY < frameTop + mnBorderWidth;
-    mbOnEdgeBottom = globalMouseY < frameBottom && globalMouseY > frameBottom - mnBorderWidth;
+    mbOnEdgeLeft = globalMouseX >= frameLeft && globalMouseX <= frameLeft + mnBorderWidth;
+    mbOnEdgeRight = globalMouseX <= frameRight && globalMouseX >= frameRight - mnBorderWidth;
+    mbOnEdgeTop = globalMouseY >= frameTop && globalMouseY <= frameTop + mnBorderWidth;
+    mbOnEdgeBottom = globalMouseY <= frameBottom && globalMouseY >= frameBottom - mnBorderWidth;
 
     mbOnCornerTopLeft = mbOnEdgeLeft && mbOnEdgeTop;
     mbOnCornerTopRight = mbOnEdgeRight && mbOnEdgeTop;
@@ -280,6 +284,7 @@ void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* 
     mbOnCornerBottomRight = mbOnEdgeRight && mbOnEdgeBottom;
 
     mbOnEdge = mbOnEdgeLeft || mbOnEdgeRight || mbOnEdgeTop || mbOnEdgeBottom;
+    LogUtil::Debug(CODE_LOCATION, "mbOnEdge=%s", mbOnEdge ? "true" : "false");
 }
 
 void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
