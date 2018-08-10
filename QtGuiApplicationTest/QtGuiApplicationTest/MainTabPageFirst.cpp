@@ -2,6 +2,8 @@
 
 #include <QString>
 #include <QImage>
+#include <QTime>
+#include <QDateTime>
 #include <QFileDialog>
 
 #include <LogUtil.h>
@@ -316,12 +318,17 @@ void MainTabPageFirst::ReadImageByQImage()
         pDataSet->putAndInsertString(DCM_Laterality, "");
         pDataSet->putAndInsertString(DCM_ImageComments, "");
 
+        /* sop class uid */
+        char uid[100];
+        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_SOPInstanceUID, uid);
+        pDataSet->putAndInsertString(DCM_SOPClassUID, UID_UltrasoundImageStorage);
+
         /* 添加 Study 信息 */
         pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
         pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
         pDataSet->putAndInsertString(DCM_StudyTime, "182230");
         pDataSet->putAndInsertString(DCM_ContentTime, "182230");
-        char uid[100];
         dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
         pDataSet->putAndInsertString(DCM_StudyID, uid);
         dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
@@ -410,7 +417,7 @@ void MainTabPageFirst::ReadImageByQImageMulti()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), curAppPath,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    const int imgCount = 4;
+    const int imgCount = 100;
 
     if (!dir.isEmpty())
     {
@@ -467,6 +474,12 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
         pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "GB18030");
 
+        /* sop class uid */
+        char uid[100];
+        dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+        pDataSet->putAndInsertString(DCM_SOPInstanceUID, uid);
+        pDataSet->putAndInsertString(DCM_SOPClassUID, UID_UltrasoundMultiframeImageStorage);
+
         /* 添加 Patient 信息 */
         pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
         pDataSet->putAndInsertString(DCM_PatientName, "test测试中文");
@@ -477,12 +490,19 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         pDataSet->putAndInsertString(DCM_Laterality, "");
         pDataSet->putAndInsertString(DCM_ImageComments, "");
 
+        QTime curTime = QTime::currentTime();
+        QString curTimeString = curTime.toString("hhmmss.zzz");
+        QString curDateString = curTime.toString("yyyyMMdd");
+
+        QDateTime curDateTime = QDateTime::currentDateTime();
+        QString curTimeStringTest = curDateTime.toString("hhmmss.zzz");
+        QString curDateStringTest = curDateTime.toString("yyyyMMdd");
+
         /* 添加 Study 信息 */
-        pDataSet->putAndInsertString(DCM_StudyDate, "20180803");
-        pDataSet->putAndInsertString(DCM_ContentDate, "20180803");
-        pDataSet->putAndInsertString(DCM_StudyTime, "182230");
-        pDataSet->putAndInsertString(DCM_ContentTime, "182230");
-        char uid[100];
+        pDataSet->putAndInsertString(DCM_StudyDate, curDateStringTest.toStdString().c_str());
+        pDataSet->putAndInsertString(DCM_ContentDate, curDateStringTest.toStdString().c_str());
+        pDataSet->putAndInsertString(DCM_StudyTime, curTimeStringTest.toStdString().c_str());
+        pDataSet->putAndInsertString(DCM_ContentTime, curTimeStringTest.toStdString().c_str());
         dcmGenerateUniqueIdentifier(uid, SITE_STUDY_UID_ROOT);
         pDataSet->putAndInsertString(DCM_StudyID, uid);
         dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
