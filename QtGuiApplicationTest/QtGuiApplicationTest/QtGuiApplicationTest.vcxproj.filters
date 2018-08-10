@@ -115,5 +115,8 @@
     <None Include="Resources\qss\mainTabWidget.qss">
       <Filter>Resource Files\qss</Filter>
     </None>
+    <None Include="Resources\qss\black.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
   </ItemGroup>
 </Project>

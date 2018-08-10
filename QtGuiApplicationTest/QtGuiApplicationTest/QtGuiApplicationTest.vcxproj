@@ -164,6 +164,7 @@
     <QtMoc Include="TitleBar.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\qss\black.qss" />
     <None Include="Resources\qss\mainTabWidget.qss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
