@@ -4,6 +4,8 @@
 #include <QMouseEvent>
 #include <QImageReader>
 #include <QImageWriter>
+#include <QGridLayout>
+#include <QGroupBox>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -55,6 +57,9 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
+
+    QGroupBox box;
+    QGridLayout layout;
 }
 
 MyMainWindow::~MyMainWindow()

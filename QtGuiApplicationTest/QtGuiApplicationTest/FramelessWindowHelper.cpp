@@ -334,6 +334,7 @@ void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
 /*=========================== FramelessWindowToolBar ===========================*/
 FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */)
     : QToolBar(parent)
+    , mnBorderSize(5)
 {
     Q_ASSERT(parent != Q_NULLPTR);
 
@@ -358,7 +359,7 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
     mpLabelTitle->setText(mpMainWindow->windowTitle());
     this->addWidget(mpLabelTitle);
 
-    mpToolBarSeat = new QWidget();
+    mpToolBarSeat = new QWidget(this);
     mpToolBarSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->addWidget(mpToolBarSeat);
 
@@ -388,7 +389,8 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
 
 FramelessWindowToolBar::~FramelessWindowToolBar()
 {
-    ;
+    delete mpPointMoveStart;
+    delete mpRectNormalWindow;
 }
 
 void FramelessWindowToolBar::mouseDoubleClickEvent(QMouseEvent *event)
@@ -408,8 +410,12 @@ void FramelessWindowToolBar::mousePressEvent(QMouseEvent *event)
     {
         mbLeftPressed = true;
         *mpPointMoveStart = event->globalPos();
+
+        QPoint *pMousePos = new QPoint(event->pos());
+        mbCursorOnEdge = this->IsCursorOnEdge(pMousePos);
+        delete pMousePos;
     }
-    //QToolBar::mousePressEvent(event);
+    QToolBar::mousePressEvent(event);
 }
 
 void FramelessWindowToolBar::mouseReleaseEvent(QMouseEvent *event)
@@ -418,9 +424,10 @@ void FramelessWindowToolBar::mouseReleaseEvent(QMouseEvent *event)
     {
         mbLeftPressed = false;
         mbLeftDoublePressed = false;
+        mbCursorOnEdge = false;
     }
     event->accept();
-    //QToolBar::mouseReleaseEvent(event);
+    QToolBar::mouseReleaseEvent(event);
 }
 
 void FramelessWindowToolBar::mouseMoveEvent(QMouseEvent *event)
@@ -443,7 +450,7 @@ void FramelessWindowToolBar::mouseMoveEvent(QMouseEvent *event)
              mpRectNormalWindow->moveTopLeft(movePoint);
              mpMainWindow->setGeometry(*mpRectNormalWindow);
          }
-         else
+         else if (!mbCursorOnEdge)
          {
              QPoint movePoint = event->globalPos() - *mpPointMoveStart;
              QPoint widgetPos = mpMainWindow->pos();
@@ -452,7 +459,7 @@ void FramelessWindowToolBar::mouseMoveEvent(QMouseEvent *event)
          }
      }
      event->accept();
-    //QToolBar::mouseMoveEvent(event);
+    QToolBar::mouseMoveEvent(event);
 }
 
 bool FramelessWindowToolBar::eventFilter(QObject *obj, QEvent *event)
@@ -492,6 +499,28 @@ void FramelessWindowToolBar::UpdateMaximizeButton()
             mpToolBtnMax->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
         }
     }
+}
+
+bool FramelessWindowToolBar::IsCursorOnEdge(QPoint *pMousePos)
+{
+    bool retValue = false;
+    if (pMousePos == Q_NULLPTR) return retValue;
+
+    int globalMouseX = pMousePos->x();
+    int globalMouseY = pMousePos->y();
+    QRect frameRect = this->frameGeometry();
+    int frameLeft = frameRect.left();
+    int frameRight = frameRect.right();
+    int frameTop = frameRect.top();
+    int frameBottom = frameRect.bottom();
+
+    bool bOnEdgeLeft = globalMouseX >= frameLeft && globalMouseX <= frameLeft + mnBorderSize;
+    bool bOnEdgeRight = globalMouseX <= frameRight && globalMouseX >= frameRight - mnBorderSize;
+    bool bOnEdgeTop = globalMouseY >= frameTop && globalMouseY <= frameTop + mnBorderSize;
+    bool bOnEdgeBottom = globalMouseY <= frameBottom && globalMouseY >= frameBottom - mnBorderSize;
+    retValue = bOnEdgeLeft || bOnEdgeRight || bOnEdgeTop || bOnEdgeBottom;
+
+    return retValue;
 }
 
 void FramelessWindowToolBar::SlotMaximizeButtonClicked()

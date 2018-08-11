@@ -20,6 +20,7 @@ class FramelessWindowToolBar : public QToolBar
 private:
     bool         mbLeftPressed = false;
     bool         mbLeftDoublePressed = false;
+    bool         mbCursorOnEdge = false;
     int          mnBorderSize;
     QRect       *mpRectNormalWindow;
     QPoint      *mpPointMoveStart;
@@ -44,8 +45,9 @@ protected:
 
 private:
     void UpdateMaximizeButton();
+    bool IsCursorOnEdge(QPoint *pMousePos);
 
-    private slots:
+private slots:
     void SlotMaximizeButtonClicked();
 };
 
