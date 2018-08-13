@@ -3,8 +3,6 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtGuiApplicationTest.h"
 
-class TitleBar;
-class FramelessHelper;
 class FramelessWindowHelper;
 class MainTabPageFirst;
 class MainTabPageSetting;
@@ -19,8 +17,6 @@ public:
 
 private:
     Ui::QtGuiApplicationTestClass    ui;
-    TitleBar                        *mpTitleBar;
-    FramelessHelper                 *mpFramelessHelper;
     FramelessWindowHelper           *mpFramelessWindow;
     MainTabPageFirst                *mpPageFirst;
     MainTabPageSetting              *mpPageSetting;

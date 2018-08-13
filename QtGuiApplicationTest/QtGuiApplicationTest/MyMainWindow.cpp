@@ -13,32 +13,22 @@
 #endif
 
 #include <LogUtil.h>
-#include "TitleBar.h"
-#include "FramelessHelper.h"
-#include "FramelessWindowHelper.h"
 
+#include "FramelessWindowHelper.h"
 #include "MainTabPageFirst.h"
 #include "MainTabPageSetting.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , mpFramelessHelper(Q_NULLPTR)
+    , mpFramelessWindow(Q_NULLPTR)
 {
     ui.setupUi(this);
 
     //setAttribute(Qt::WA_TranslucentBackground, true);
-    Qt::WindowFlags oldFlags = windowFlags();
-    setWindowFlags(oldFlags | Qt::FramelessWindowHint);
+    //Qt::WindowFlags oldFlags = windowFlags();
+    //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
 
     mpFramelessWindow = new FramelessWindowHelper(this);
-
-    //mpFramelessHelper = new FramelessHelper(this);
-    //mpFramelessHelper->activateOn(this);  //激活当前窗体
-    //mpFramelessHelper->setTitleHeight(34);  //设置窗体的标题栏高度
-    //mpFramelessHelper->setWidgetMovable(true);  //设置窗体可移动
-    //mpFramelessHelper->setWidgetResizable(true);  //设置窗体可缩放
-    //mpFramelessHelper->setRubberBandOnMove(false);  //设置橡皮筋效果-可移动
-    //mpFramelessHelper->setRubberBandOnResize(true);  //设置橡皮筋效果-可缩放
 
     QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
     if (mainTabStyle.open(QFile::ReadOnly))
@@ -64,9 +54,10 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
 MyMainWindow::~MyMainWindow()
 {
-    if (mpFramelessHelper != Q_NULLPTR)
+    if (mpFramelessWindow != Q_NULLPTR)
     {
-        mpFramelessHelper->removeFrom(this);
+        delete mpFramelessWindow;
+        mpFramelessWindow = Q_NULLPTR;
     }
 }
 
