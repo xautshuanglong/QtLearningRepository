@@ -163,7 +163,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qss\black.qss" />
+    <None Include="Resources\qss\dark_orange.qss" />
     <None Include="Resources\qss\mainTabWidget.qss" />
+    <None Include="Resources\qss\white.qss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

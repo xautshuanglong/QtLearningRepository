@@ -2,5 +2,7 @@
     <qresource prefix="/QtGuiApplicationTest">
         <file>Resources/qss/mainTabWidget.qss</file>
         <file>Resources/qss/black.qss</file>
+        <file>Resources/qss/dark_orange.qss</file>
+        <file>Resources/qss/white.qss</file>
     </qresource>
 </RCC>

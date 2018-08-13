@@ -112,5 +112,11 @@
     <None Include="Resources\qss\black.qss">
       <Filter>Resource Files\qss</Filter>
     </None>
+    <None Include="Resources\qss\white.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
+    <None Include="Resources\qss\dark_orange.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
   </ItemGroup>
 </Project>
