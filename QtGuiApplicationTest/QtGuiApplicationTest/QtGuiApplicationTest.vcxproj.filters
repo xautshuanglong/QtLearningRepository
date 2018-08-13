@@ -48,9 +48,6 @@
     <ClCompile Include="MyApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TitleBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainTabPageFirst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="TitleBar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FramelessWindowHelper.h">

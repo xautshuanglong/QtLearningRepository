@@ -343,9 +343,7 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
     mpLabelIcon = new QLabel(this);
     mpLabelIcon->setFixedSize(mpMainWindow->iconSize());
     mpLabelIcon->setScaledContents(true);
-    QPixmap winIconTest;
-    winIconTest.fill(Qt::red);
-    mpLabelIcon->setPixmap(winIconTest);
+    mpLabelIcon->setPixmap(mpMainWindow->windowIcon().pixmap(mpLabelIcon->size()));
     this->addWidget(mpLabelIcon);
 
     mpLabelTitle = new QLabel(this);

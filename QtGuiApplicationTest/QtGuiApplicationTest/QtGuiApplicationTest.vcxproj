@@ -139,7 +139,6 @@
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
-    <ClCompile Include="TitleBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h" />
@@ -159,7 +158,6 @@
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
-    <QtMoc Include="TitleBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qss\black.qss" />
