@@ -27,7 +27,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //setAttribute(Qt::WA_TranslucentBackground, true);
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
-
+    QIcon winIcon("test.ico");
+    this->setWindowIcon(winIcon);
     mpFramelessWindow = new FramelessWindowHelper(this);
 
     mpPageFirst = new MainTabPageFirst(this);

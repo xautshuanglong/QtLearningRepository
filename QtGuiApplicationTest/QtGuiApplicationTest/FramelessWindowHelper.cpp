@@ -348,6 +348,7 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
 
     mpLabelTitle = new QLabel(this);
     mpLabelTitle->setText(mpMainWindow->windowTitle());
+    mpLabelTitle->setStyleSheet("padding-left:5px");
     this->addWidget(mpLabelTitle);
 
     mpToolBarSeat = new QWidget(this);
