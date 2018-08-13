@@ -2,6 +2,8 @@
 
 #include <QObject>
 #include <QToolBar>
+#include <QRect>
+#include <QPoint>
 
 class QRect;
 class QPoint;
@@ -96,7 +98,10 @@ private:
     bool HandleEventWindowIconChange(QObject *obj, QEvent *event);
     bool HandleEventWindowStateChange(QObject *obj, QWindowStateChangeEvent *event);
 
-    void ResizeWindow(QPoint *pGlobalMousePos);
-    void CheckCursorPosition(QPoint *pGlobalMousePos, QRect* pFrameRect);
-    void UpdateCursorShape(QPoint *pGloablePos);
+    void ResizeWindow(const QPoint& globalMousePos);
+    void CheckCursorPosition(const QPoint& globalMousePos, const QRect& frameRect);
+    void UpdateCursorShape(const QPoint& globalMousePos);
+
+public:
+    QRect GetTitleBarRect();
 };

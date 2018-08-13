@@ -22,8 +22,8 @@ FramelessWindowHelper::FramelessWindowHelper(QWidget* parent)
     , mnBorderWidth(5)
 {
     mpFramelessToolBar = new FramelessWindowToolBar(parent);
-    mpMainWindow = (QMainWindow *)parent->window();
 
+    mpMainWindow = (QMainWindow *)parent->window();
     mpRubberBand = new QRubberBand(QRubberBand::Rectangle);
 
     parent->installEventFilter(this);
@@ -69,16 +69,15 @@ bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
 bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 {
     LogUtil::Debug(CODE_LOCATION, "mbLeftBtnPressed=%s mbWidgetResizable=%s mbOnEdge=%s",
-        mbLeftBtnPressed ? "true" : "false",
-        mbWidgetResizable ? "true" : "false",
-        mbOnEdge ? "true":"false");
+                   mbLeftBtnPressed ? "true" : "false",
+                   mbWidgetResizable ? "true" : "false",
+                   mbOnEdge ? "true":"false");
     if (mbLeftBtnPressed)
     {
         if (mbWidgetResizable && mbOnEdge)
         {
-            QPoint *pGlobalMousePos = new QPoint(event->globalPos());
-            ResizeWindow(pGlobalMousePos);
-            delete pGlobalMousePos;
+            QPoint globalMousePos = event->globalPos();
+            ResizeWindow(globalMousePos);
         }
         else if (mbWidgetMovable)
         {
@@ -100,9 +99,8 @@ bool FramelessWindowHelper::HandleEventHoverMove(QObject *obj, QHoverEvent *even
     {
         // 已点击模式下（可能正在拖动）保持光标形态
         // 未点击模式下重新判断鼠标位置并改变光标形态
-        QPoint *pGlobalPos = new QPoint(mpMainWindow->mapToGlobal(event->pos()));
-        UpdateCursorShape(pGlobalPos);
-        delete pGlobalPos;
+        QPoint globalMousePos = mpMainWindow->mapToGlobal(event->pos());
+        UpdateCursorShape(globalMousePos);
     }
     return QObject::eventFilter(obj, event);
 }
@@ -112,23 +110,17 @@ bool FramelessWindowHelper::HandleEventMouseButtonPress(QObject *obj, QMouseEven
     if (event->button() == Qt::LeftButton)
     {
         mbLeftBtnPressed = true;
-        //m_bLeftButtonTitlePressed = event->pos().y() < m_moveMousePos.m_nTitleHeight;
 
-        QRect *pFrameRect = new QRect(mpMainWindow->frameGeometry());
-        QPoint *pGlobalPos = new QPoint(event->globalPos());
-        UpdateCursorShape(pGlobalPos);
-        LogUtil::Debug(CODE_LOCATION, "ButtonPress(%d, %d)", pGlobalPos->x(), pGlobalPos->y());
-
-        //m_ptDragPos = event->globalPos() - frameRect.topLeft();
+        QRect frameRect = mpMainWindow->frameGeometry();
+        QPoint globalMousePos = event->globalPos();
+        UpdateCursorShape(globalMousePos);
+        LogUtil::Debug(CODE_LOCATION, "ButtonPress(%d, %d)", globalMousePos.x(), globalMousePos.y());
 
         if (mbOnEdge)
         {
-            mpRubberBand->setGeometry(*pFrameRect);
+            mpRubberBand->setGeometry(frameRect);
             mpRubberBand->show();
         }
-
-        delete pFrameRect;
-        delete pGlobalPos;
     }
     return QObject::eventFilter(obj, event);
 }
@@ -143,9 +135,8 @@ bool FramelessWindowHelper::HandleEventMouseButtonRelease(QObject *obj, QMouseEv
             mpRubberBand->hide();
             mpMainWindow->setGeometry(mpRubberBand->geometry());
         }
-        QPoint *pGlobalPos = new QPoint(event->globalPos());
-        UpdateCursorShape(pGlobalPos);
-        delete pGlobalPos;
+        QPoint globalPos = event->globalPos();
+        UpdateCursorShape(globalPos);
     }
     return QObject::eventFilter(obj, event);
 }
@@ -170,7 +161,7 @@ bool FramelessWindowHelper::HandleEventWindowStateChange(QObject *obj, QWindowSt
     return QObject::eventFilter(obj, event);
 }
 
-void FramelessWindowHelper::ResizeWindow(QPoint *pGlobalMousePos)
+void FramelessWindowHelper::ResizeWindow(const QPoint& globalMousePos)
 {
     QRect originalWinRect;
     if (mbRubberBandOnResize)
@@ -190,39 +181,39 @@ void FramelessWindowHelper::ResizeWindow(QPoint *pGlobalMousePos)
 
     if (mbOnCornerTopLeft)
     {
-        left = pGlobalMousePos->x();
-        top = pGlobalMousePos->y();
+        left = globalMousePos.x();
+        top = globalMousePos.y();
     }
     else if (mbOnCornerTopRight)
     {
-        right = pGlobalMousePos->x();
-        top = pGlobalMousePos->y();
+        right = globalMousePos.x();
+        top = globalMousePos.y();
     }
     else if (mbOnCornerBottomLeft)
     {
-        left = pGlobalMousePos->x();
-        bottom = pGlobalMousePos->y();
+        left = globalMousePos.x();
+        bottom = globalMousePos.y();
     }
     else if (mbOnCornerBottomRight)
     {
-        right = pGlobalMousePos->x();
-        bottom = pGlobalMousePos->y();
+        right = globalMousePos.x();
+        bottom = globalMousePos.y();
     }
     else if (mbOnEdgeLeft)
     {
-        left = pGlobalMousePos->x();
+        left = globalMousePos.x();
     }
     else if (mbOnEdgeRight)
     {
-        right = pGlobalMousePos->x();
+        right = globalMousePos.x();
     }
     else if (mbOnEdgeTop)
     {
-        top = pGlobalMousePos->y();
+        top = globalMousePos.y();
     }
     else if (mbOnEdgeBottom)
     {
-        bottom = pGlobalMousePos->y();
+        bottom = globalMousePos.y();
     }
 
     QRect newRect(QPoint(left, top), QPoint(right, bottom));
@@ -262,16 +253,14 @@ void FramelessWindowHelper::ResizeWindow(QPoint *pGlobalMousePos)
     }
 }
 
-void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* pFrameRect)
+void FramelessWindowHelper::CheckCursorPosition(const QPoint& globalMousePos, const QRect& frameRect)
 {
-    if (pGlobalMousePos == Q_NULLPTR || pFrameRect == Q_NULLPTR) return;
-
-    int globalMouseX = pGlobalMousePos->x();
-    int globalMouseY = pGlobalMousePos->y();
-    int frameLeft = pFrameRect->left();
-    int frameRight = pFrameRect->right();
-    int frameTop = pFrameRect->top();
-    int frameBottom = pFrameRect->bottom();
+    int globalMouseX = globalMousePos.x();
+    int globalMouseY = globalMousePos.y();
+    int frameLeft = frameRect.left();
+    int frameRight = frameRect.right();
+    int frameTop = frameRect.top();
+    int frameBottom = frameRect.bottom();
 
     mbOnEdgeLeft = globalMouseX >= frameLeft && globalMouseX <= frameLeft + mnBorderWidth;
     mbOnEdgeRight = globalMouseX <= frameRight && globalMouseX >= frameRight - mnBorderWidth;
@@ -284,12 +273,12 @@ void FramelessWindowHelper::CheckCursorPosition(QPoint *pGlobalMousePos, QRect* 
     mbOnCornerBottomRight = mbOnEdgeRight && mbOnEdgeBottom;
 
     mbOnEdge = mbOnEdgeLeft || mbOnEdgeRight || mbOnEdgeTop || mbOnEdgeBottom;
-    LogUtil::Debug(CODE_LOCATION, "mbOnEdge=%s", mbOnEdge ? "true" : "false");
+    //LogUtil::Debug(CODE_LOCATION, "mbOnEdge=%s", mbOnEdge ? "true" : "false");
 }
 
-void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
+void FramelessWindowHelper::UpdateCursorShape(const QPoint& globalMousePos)
 {
-    if (mpMainWindow == Q_NULLPTR || pGloablePos == Q_NULLPTR) return;
+    if (mpMainWindow == Q_NULLPTR) return;
 
     if (mpMainWindow->isFullScreen() || mpMainWindow->isMaximized())
     {
@@ -299,9 +288,8 @@ void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
         }
     }
 
-    QRect *pMainWindowRect = new QRect(mpMainWindow->frameGeometry());
-    CheckCursorPosition(pGloablePos, pMainWindowRect);
-    delete pMainWindowRect;
+    QRect mainWindowRect = mpMainWindow->frameGeometry();
+    CheckCursorPosition(globalMousePos, mainWindowRect);
 
     if (mbOnCornerTopLeft || mbOnCornerBottomRight)
     {
@@ -328,6 +316,11 @@ void FramelessWindowHelper::UpdateCursorShape(QPoint *pGloablePos)
         mpMainWindow->unsetCursor();
         mbCursorShapeChanged = false;
     }
+}
+
+QRect FramelessWindowHelper::GetTitleBarRect()
+{
+    return mpFramelessToolBar->rect();
 }
 
 
@@ -482,6 +475,7 @@ bool FramelessWindowToolBar::eventFilter(QObject *obj, QEvent *event)
     }
     return QToolBar::eventFilter(obj, event);
 }
+
 void FramelessWindowToolBar::UpdateMaximizeButton()
 {
     if (mpMainWindow == Q_NULLPTR) return;

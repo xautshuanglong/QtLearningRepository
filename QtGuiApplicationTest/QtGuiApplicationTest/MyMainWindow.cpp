@@ -30,26 +30,11 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     mpFramelessWindow = new FramelessWindowHelper(this);
 
-    QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.qss");
-    if (mainTabStyle.open(QFile::ReadOnly))
-    {
-        QString styleSheet = QLatin1String(mainTabStyle.readAll());
-        ui.mainTabWidget->setStyleSheet(styleSheet);
-        mainTabStyle.close();
-    }
-    else
-    {
-        QString error = mainTabStyle.errorString();
-    }
-
     mpPageFirst = new MainTabPageFirst(this);
     ui.mainTabWidget->addTab(mpPageFirst, "First");
 
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
-
-    QGroupBox box;
-    QGridLayout layout;
 }
 
 MyMainWindow::~MyMainWindow()
@@ -219,14 +204,10 @@ void MyMainWindow::closeEvent(QCloseEvent *event)
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)
 {
-//      QRect winRect = this->rect();
-//      QRect titleBarRect = mpTitleBar->rect();
-//      QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
-//      ui.mainTabWidget->setGeometry(mainTabRect);
-
-     QRect winRect = this->rect();
-     QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - 40);
-     ui.mainTabWidget->setGeometry(mainTabRect);
+    QRect winRect = this->rect();
+    QRect titleBarRect = mpFramelessWindow->GetTitleBarRect();
+    QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+    ui.mainTabWidget->setGeometry(mainTabRect);
 
     QMainWindow::resizeEvent(event);
 }
