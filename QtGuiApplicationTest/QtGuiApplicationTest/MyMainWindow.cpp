@@ -32,9 +32,9 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     mpPageFirst = new MainTabPageFirst(this);
     ui.mainTabWidget->addTab(mpPageFirst, "First");
-
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
+    ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 }
 
 MyMainWindow::~MyMainWindow()

@@ -172,6 +172,26 @@ QTabBar::tab:selected {
         background: rgb(0, 160, 230);
 }
 
+QTabBar#mainTabWidget_TabBar::tab {
+        border: none;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        color: white;
+        background: rgb(255, 255, 255, 30);
+        height: 50px;
+        min-width: 70px;
+        margin-right: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+}
+QTabBar#mainTabWidget_TabBar::tab:hover {
+        background: rgb(0, 180, 250, 100);
+}
+QTabBar#mainTabWidget_TabBar::tab:selected {
+        color: white;
+        background: rgb(0, 160, 230);
+}
+
 QTabWidget#tabWidget::pane {
         border: 1px solid rgb(45, 45, 45);
         background: rgb(57, 58, 60);
