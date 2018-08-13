@@ -184,6 +184,9 @@ QTabBar::tab:selected {
         background: rgb(0, 78, 161);
 }
 
+QTabWidget#mainTabWidget::pane {
+        border-top: 3px solid rgb(0, 78, 161, 200);
+}
 QTabBar#mainTabWidget_TabBar::tab {
         border: none;
         border-top-left-radius: 0px;
@@ -197,11 +200,11 @@ QTabBar#mainTabWidget_TabBar::tab {
         padding-right: 5px;
 }
 QTabBar#mainTabWidget_TabBar::tab:hover {
-        background: rgb(0, 78, 161, 100);
+        background: rgb(0, 78, 161, 150);
 }
 QTabBar#mainTabWidget_TabBar::tab:selected {
         color: white;
-        background: rgb(0, 78, 161);
+        background: rgb(0, 78, 161, 200);
 }
 
 QTabWidget#tabWidget::pane {
