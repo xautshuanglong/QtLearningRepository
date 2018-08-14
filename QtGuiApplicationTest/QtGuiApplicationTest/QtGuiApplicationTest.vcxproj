@@ -123,6 +123,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DicomWindow.cpp" />
     <ClCompile Include="FramelessWindowHelper.cpp">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -144,6 +145,7 @@
     <QtMoc Include="MyMainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="DicomWindow.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
@@ -155,6 +157,7 @@
     <QtMoc Include="FramelessWindowHelper.h" />
     <QtMoc Include="MainTabPageFirst.h" />
     <QtMoc Include="MainTabPageSetting.h" />
+    <ClInclude Include="DicomWindow.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThreadWaitCondition.h" />

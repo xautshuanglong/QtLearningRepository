@@ -22,6 +22,8 @@
 #include <dcmtk/dcmdata/libi2d/i2djpgs.h>
 #include <dcmtk/dcmdata/libi2d/i2dbmps.h>
 
+#include "DicomWindow.h"
+
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
 MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
@@ -30,6 +32,9 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     ui.setupUi(this);
 
     ui.imgTitleValue->setText("image_filename_test");
+
+
+    pDcmWidget = new DicomWindow();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -63,6 +68,16 @@ void MainTabPageFirst::on_btnBrowserDcm_clicked()
 
 void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
+    if (pDcmWidget->isVisible())
+    {
+        pDcmWidget->hide();
+    }
+    else
+    {
+        pDcmWidget->show();
+    }
+    return;
+
     //this->SelfPaintImage8Bit();
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();

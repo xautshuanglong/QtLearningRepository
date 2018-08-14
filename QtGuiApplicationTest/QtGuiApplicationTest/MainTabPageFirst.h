@@ -3,12 +3,15 @@
 #include <QWidget>
 #include "ui_MainTabPageFirst.h"
 
+class DicomWindow;
+
 class MainTabPageFirst : public QWidget
 {
     Q_OBJECT
 
 private:
     Ui::MainTabPageFirst ui;
+    DicomWindow *pDcmWidget;
 
 public:
     MainTabPageFirst(QWidget *parent = Q_NULLPTR);
