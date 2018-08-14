@@ -6,6 +6,7 @@
 #include <QImageWriter>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QSplitter>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -17,6 +18,7 @@
 #include "FramelessWindowHelper.h"
 #include "MainTabPageFirst.h"
 #include "MainTabPageSetting.h"
+#include "MainTabPageDicom.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,11 +33,16 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     this->setWindowIcon(winIcon);
     mpFramelessWindow = new FramelessWindowHelper(this);
 
+    ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
+
     mpPageFirst = new MainTabPageFirst(this);
     ui.mainTabWidget->addTab(mpPageFirst, "First");
+
+    mpPageDicom = new MainTabPageDicom(this);
+    ui.mainTabWidget->addTab(mpPageDicom, "Dicom");
+
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
-    ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 }
 
 MyMainWindow::~MyMainWindow()

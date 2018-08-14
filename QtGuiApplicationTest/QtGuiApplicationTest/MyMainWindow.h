@@ -5,6 +5,7 @@
 
 class FramelessWindowHelper;
 class MainTabPageFirst;
+class MainTabPageDicom;
 class MainTabPageSetting;
 
 class MyMainWindow : public QMainWindow
@@ -19,6 +20,7 @@ private:
     Ui::QtGuiApplicationTestClass    ui;
     FramelessWindowHelper           *mpFramelessWindow;
     MainTabPageFirst                *mpPageFirst;
+    MainTabPageDicom                *mpPageDicom;
     MainTabPageSetting              *mpPageSetting;
 
 public:

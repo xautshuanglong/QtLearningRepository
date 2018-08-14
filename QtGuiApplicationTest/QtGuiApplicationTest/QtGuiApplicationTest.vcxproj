@@ -135,6 +135,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
     <ClCompile Include="MainTabPageSetting.cpp" />
     <ClCompile Include="MyApplication.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="DicomWindow.ui" />
+    <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
@@ -158,6 +160,7 @@
     <QtMoc Include="MainTabPageFirst.h" />
     <QtMoc Include="MainTabPageSetting.h" />
     <ClInclude Include="DicomWindow.h" />
+    <ClInclude Include="MainTabPageDicom.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThreadWaitCondition.h" />
