@@ -26,7 +26,7 @@ private slots:
     void on_action_save();
 
 private:
-    void ConvertDicomToQImage(QString &dcmFilename, QImage *pOutImage);
+    void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
 };
 
 #endif MAIN_TAB_PAGE_DICOM_H

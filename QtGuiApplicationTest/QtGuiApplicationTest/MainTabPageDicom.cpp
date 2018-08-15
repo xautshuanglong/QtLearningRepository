@@ -50,6 +50,24 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
 
     this->connect(pActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
     this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
+
+    QStringList header;
+    header << "Tag" << "Description" << "Value";
+    ui.tableDcmTag->setHorizontalHeaderLabels(header);
+    ui.tableDcmTag->verticalHeader()->setVisible(false);
+    ui.tableDcmTag->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui.tableDcmTag->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui.tableDcmTag->horizontalHeader()->setSectionsClickable(false);
+    ui.tableDcmTag->setFocusPolicy(Qt::NoFocus);
+    ui.tableDcmTag->setColumnCount(3);
+    ui.tableDcmTag->setRowCount(3);
+    ui.tableDcmTag->setItem(0, 0, new QTableWidgetItem("Jan"));
+    ui.tableDcmTag->setItem(1, 0, new QTableWidgetItem("Feb"));
+    ui.tableDcmTag->setItem(2, 0, new QTableWidgetItem("Mar"));
+    ui.tableDcmTag->setItem(0, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/open.png"), "Jan's month"));
+    ui.tableDcmTag->setItem(1, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/open.png"), "Feb's month"));
+    ui.tableDcmTag->setItem(2, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/save.png"), "Mar's month"));
+    ui.tableDcmTag->insertRow(3);
 }
 
 MainTabPageDicom::~MainTabPageDicom()
@@ -67,12 +85,14 @@ void MainTabPageDicom::on_action_open()
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
     if (!dcmFileName.isEmpty())
     {
-        QImage dcmImage(100, 100, QImage::Format_RGB32);
-        ConvertDicomToQImage(dcmFileName, &dcmImage);
-        int imgWidth = dcmImage.width();
-        int imgHeight = dcmImage.height();
-        ui.labelImage->setGeometry(0, 0, dcmImage.width(), dcmImage.height());
-        ui.labelImage->setPixmap(QPixmap::fromImage(dcmImage));
+        QImage *pDcmImage = Q_NULLPTR;
+        ConvertDicomToQImage(dcmFileName, &pDcmImage);
+        ui.labelImage->setGeometry(0, 0, pDcmImage->width(), pDcmImage->height());
+        ui.labelImage->setPixmap(QPixmap::fromImage(*pDcmImage));
+        if (pDcmImage != Q_NULLPTR)
+        {
+            delete pDcmImage;
+        }
     }
 }
 
@@ -81,10 +101,11 @@ void MainTabPageDicom::on_action_save()
     int i = 0;
 }
 
-void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutImage)
+void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutImage)
 {
     int imgWidth = 512;
     int imgHeight = 512;
+    QImage *pOutImage = Q_NULLPTR;
 
     OFFilename dcmFilename(inFilename.toStdString().c_str());
     //    OFFilename dcmFilename("e:\\temp\\dicomtesting\\srdoc10\\image12.dcm");
@@ -123,7 +144,6 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutIma
             LogUtil::Debug(CODE_LOCATION, "imageSize: %d x %d", mImgWidth, mImgHeight);
             imgWidth = mImgWidth;
             imgHeight = mImgHeight;
-            pOutImage->scaled(imgWidth, imgHeight);
 
             const char *pRescaleSlope = Q_NULLPTR;
             const char *pRescaleIntercept = Q_NULLPTR;
@@ -191,6 +211,7 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutIma
 
             if (pImgData16 != Q_NULLPTR)
             {
+                pOutImage = new QImage(imgWidth, imgHeight, QImage::Format_RGB32);
                 int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
                 Sint16 pixelValue = 0;
                 int rValue = 0, gValue = 0, bValue = 0;
@@ -230,6 +251,7 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutIma
             }
             else if (pImgData8 != Q_NULLPTR)
             {
+                pOutImage = new QImage(imgWidth, imgHeight, QImage::Format_RGB32);
                 int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
                 Uint8 pixelValue = 0;
                 int *pRgbValue = new int[samplePerPixel];
@@ -256,6 +278,7 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutIma
         {
             LogUtil::Error(CODE_LOCATION, "Load file failed: %s", dcmFilename.getCharPointer());
 
+            pOutImage = new QImage(imgWidth, imgHeight, QImage::Format_RGB32);
             int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
             for (int i = 0; i < imgHeight; ++i)
             {
@@ -273,4 +296,5 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage *pOutIma
             }
         }
     }
+    *ppOutImage = pOutImage;
 }
