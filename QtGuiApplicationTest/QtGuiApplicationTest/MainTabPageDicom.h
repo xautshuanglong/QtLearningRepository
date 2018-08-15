@@ -4,19 +4,29 @@
 #include "qwidget.h"
 #include "ui_MainTabPageDicom.h"
 
+class QSplitter;
+
 class MainTabPageDicom : public QWidget
 {
     Q_OBJECT
 
 private:
     Ui::MainTabPageDicom ui;
+    QSplitter           *mpMainSpliter;
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
     ~MainTabPageDicom();
 
- private slots:
-    void on_testPushButton_clicked();
+protected:
+    virtual void resizeEvent(QResizeEvent *event) override;
+
+private slots:
+    void on_action_open();
+    void on_action_save();
+
+private:
+    void ConvertDicomToQImage(QString &dcmFilename, QImage *pOutImage);
 };
 
 #endif MAIN_TAB_PAGE_DICOM_H

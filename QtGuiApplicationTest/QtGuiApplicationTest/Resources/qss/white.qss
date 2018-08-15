@@ -147,8 +147,15 @@ QGroupBox::title {
         left: 10px;
 }
 
-/**********标题栏**********/
+/**********工具栏**********/
 QToolBar {
+        border: none;
+        background: rgb(170, 200, 230);
+        padding: 5px;
+}
+
+/**********标题栏**********/
+QToolBar#winTitleBar {
         border: 1px solid rgb(0, 78, 161);
         border-bottom: none;
         background: rgb(187, 212, 238);
@@ -227,8 +234,18 @@ QTabBar#tabBar::tab:selected {
         background: rgb(232, 241, 252);
 }
 
+/**********分裂器**********/
+
+QSplitter {
+    width: 3px;
+}
+
+QSplitter::handle {
+    background: rgb(0, 78, 161);
+}
+
 /**********表头**********/
-QHeaderView{
+QHeaderView {
         border: none;
         border-bottom: 3px solid rgb(0, 78, 161);
         background: transparent;

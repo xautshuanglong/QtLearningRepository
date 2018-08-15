@@ -33,7 +33,6 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
 
     ui.imgTitleValue->setText("image_filename_test");
 
-
     pDcmWidget = new DicomWindow();
 }
 
@@ -68,16 +67,6 @@ void MainTabPageFirst::on_btnBrowserDcm_clicked()
 
 void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
-    if (pDcmWidget->isVisible())
-    {
-        pDcmWidget->hide();
-    }
-    else
-    {
-        pDcmWidget->show();
-    }
-    return;
-
     //this->SelfPaintImage8Bit();
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();

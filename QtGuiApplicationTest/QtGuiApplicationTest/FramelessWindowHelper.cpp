@@ -22,6 +22,7 @@ FramelessWindowHelper::FramelessWindowHelper(QWidget* parent)
     , mnBorderWidth(5)
 {
     mpFramelessToolBar = new FramelessWindowToolBar(parent);
+    mpFramelessToolBar->setObjectName("winTitleBar");
 
     mpMainWindow = (QMainWindow *)parent->window();
     mpRubberBand = new QRubberBand(QRubberBand::Rectangle);

@@ -5,4 +5,8 @@
         <file>Resources/qss/dark_orange.qss</file>
         <file>Resources/qss/white.qss</file>
     </qresource>
+    <qresource prefix="/AppImages">
+        <file>Resources/images/open.png</file>
+        <file>Resources/images/save.png</file>
+    </qresource>
 </RCC>
