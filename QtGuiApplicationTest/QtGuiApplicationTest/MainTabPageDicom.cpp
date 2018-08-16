@@ -120,8 +120,6 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
             LogUtil::Debug(CODE_LOCATION, "Load successfully: ", dcmFilename.getCharPointer());
             DcmDataset *pDcmDataSet = dcmFileFormat.getDataset();
 
-            pDcmDataSet->print(std::cout, DCMTypes::PF_shortenLongTagValues);
-
             E_TransferSyntax xfer = pDcmDataSet->getOriginalXfer();
             LogUtil::Debug(CODE_LOCATION, "E_TransferSyntax = %d", xfer);
 

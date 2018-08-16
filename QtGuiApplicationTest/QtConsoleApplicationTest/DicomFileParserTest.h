@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+class DcmObject;
+
 class DicomFileParserTest
 {
 public:
@@ -11,4 +15,5 @@ public:
 
 private:
     void ParseDicomFile();
+    void GetDcmElementStringValue(DcmObject *pInDcmObj, std::string& outString);
 };
