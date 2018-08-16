@@ -4,15 +4,25 @@
 #include "qwidget.h"
 #include "ui_MainTabPageDicom.h"
 
+#include <QList>
+
 class QSplitter;
+
+struct DcmElementInfo
+{
+    QString strDcmTagKey;         // DcmTagKey
+    QString strDcmTagName;        // Tag 的值表示与名称（描述）
+    QString strDcmElementValue;   // Tag 对应的元素的值（数字或字符串）
+};
 
 class MainTabPageDicom : public QWidget
 {
     Q_OBJECT
 
 private:
-    Ui::MainTabPageDicom ui;
-    QSplitter           *mpMainSpliter;
+    Ui::MainTabPageDicom    ui;
+    QSplitter              *mpMainSpliter;
+    QList<DcmElementInfo>   mListDcmElementInfo;
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
@@ -27,6 +37,7 @@ private slots:
 
 private:
     void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
+    void UpdateDcmTabTableContent();
 };
 
 #endif MAIN_TAB_PAGE_DICOM_H

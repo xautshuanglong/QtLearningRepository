@@ -52,22 +52,14 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
 
     QStringList header;
-    header << "Tag" << "Description" << "Value";
+    header << "DcmTagKey" << "DcmTagName" << "ElementValue";
+    ui.tableDcmTag->setColumnCount(3);
     ui.tableDcmTag->setHorizontalHeaderLabels(header);
     ui.tableDcmTag->verticalHeader()->setVisible(false);
     ui.tableDcmTag->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui.tableDcmTag->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.tableDcmTag->horizontalHeader()->setSectionsClickable(false);
     ui.tableDcmTag->setFocusPolicy(Qt::NoFocus);
-    ui.tableDcmTag->setColumnCount(3);
-    ui.tableDcmTag->setRowCount(3);
-    ui.tableDcmTag->setItem(0, 0, new QTableWidgetItem("Jan"));
-    ui.tableDcmTag->setItem(1, 0, new QTableWidgetItem("Feb"));
-    ui.tableDcmTag->setItem(2, 0, new QTableWidgetItem("Mar"));
-    ui.tableDcmTag->setItem(0, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/open.png"), "Jan's month"));
-    ui.tableDcmTag->setItem(1, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/open.png"), "Feb's month"));
-    ui.tableDcmTag->setItem(2, 1, new QTableWidgetItem(QIcon(":/AppImages/Resources/images/save.png"), "Mar's month"));
-    ui.tableDcmTag->insertRow(3);
 }
 
 MainTabPageDicom::~MainTabPageDicom()
@@ -86,9 +78,10 @@ void MainTabPageDicom::on_action_open()
     if (!dcmFileName.isEmpty())
     {
         QImage *pDcmImage = Q_NULLPTR;
-        ConvertDicomToQImage(dcmFileName, &pDcmImage);
+        this->ConvertDicomToQImage(dcmFileName, &pDcmImage);
         ui.labelImage->setGeometry(0, 0, pDcmImage->width(), pDcmImage->height());
         ui.labelImage->setPixmap(QPixmap::fromImage(*pDcmImage));
+        this->UpdateDcmTabTableContent();
         if (pDcmImage != Q_NULLPTR)
         {
             delete pDcmImage;
@@ -108,7 +101,7 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
     QImage *pOutImage = Q_NULLPTR;
 
     OFFilename dcmFilename(inFilename.toStdString().c_str());
-    //    OFFilename dcmFilename("e:\\temp\\dicomtesting\\srdoc10\\image12.dcm");
+    //OFFilename dcmFilename("e:\\temp\\dicomtesting\\srdoc10\\image12.dcm");
     if (OFStandard::fileExists(dcmFilename))
     {
         LogUtil::Debug(CODE_LOCATION, "Found file: %s", dcmFilename.getCharPointer());
@@ -156,6 +149,40 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
             pDcmDataSet->findAndGetString(DCM_WindowWidth, pWindowWidth);
             int windowCenter = pWindowCenter == Q_NULLPTR ? 0 : atoi(pWindowCenter);
             int windowWidth = pWindowWidth == Q_NULLPTR ? 0 : atoi(pWindowWidth);
+
+            // 遍历 DICOM 所有元素
+            DcmObject *pTempObj = pDcmDataSet->nextInContainer(nullptr);
+            DcmTag tempTag(0, 0);
+            DcmElement *pTempElement = Q_NULLPTR;
+            std::string tempString = "null";
+            char *pTempBuffer = Q_NULLPTR;
+            DcmElementInfo tempDcmEleInfo;
+            mListDcmElementInfo.clear();
+
+            while (pTempObj != Q_NULLPTR)
+            {
+                tempTag = pTempObj->getTag();
+                if (tempTag.getEVR() == EVR_AS || tempTag.getEVR() == EVR_CS || tempTag.getEVR() == EVR_DA)
+                {
+                    pTempElement = OFstatic_cast(DcmElement *, pTempObj);
+                    pTempElement->getString(pTempBuffer);
+                }
+
+                tempDcmEleInfo.strDcmTagKey = tempTag.toString().c_str();
+                tempDcmEleInfo.strDcmTagName = QString("[%1] %2").arg(tempTag.getVRName()).arg(tempTag.getTagName());
+                if (pTempBuffer != Q_NULLPTR)
+                {
+                    tempDcmEleInfo.strDcmElementValue = pTempBuffer;
+                    pTempBuffer = nullptr;
+                }
+                else
+                {
+                    tempDcmEleInfo.strDcmElementValue = "NULL";
+                }
+                mListDcmElementInfo.append(tempDcmEleInfo);
+
+                pTempObj = pDcmDataSet->nextInContainer(pTempObj);
+            }
 
             const char* transferSyntax = NULL;
             resCondition = dcmFileFormat.getMetaInfo()->findAndGetString(DCM_TransferSyntaxUID, transferSyntax);
@@ -295,4 +322,17 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
         }
     }
     *ppOutImage = pOutImage;
+}
+
+void MainTabPageDicom::UpdateDcmTabTableContent()
+{
+    ui.tableDcmTag->clearContents();
+    int listCount = mListDcmElementInfo.count();
+    for (int i = 0; i < listCount; ++i)
+    {
+        ui.tableDcmTag->insertRow(i);
+        ui.tableDcmTag->setItem(i, 0, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagKey));
+        ui.tableDcmTag->setItem(i, 1, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagName));
+        ui.tableDcmTag->setItem(i, 2, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmElementValue));
+    }
 }
