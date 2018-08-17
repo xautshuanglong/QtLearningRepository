@@ -157,10 +157,10 @@ void MyMainWindow::wheelEvent(QWheelEvent *event)
 {
     QEvent::Type eventType = event->type();
     QPoint mousePos = event->pos();
-    LogUtil::Info(CODE_LOCATION, "MousePos(%d,%d)"
-                  " Type=%d",
-                  mousePos.x(), mousePos.y(),
-                  eventType);
+    //LogUtil::Debug(CODE_LOCATION, "MousePos(%d,%d)"
+    //              " Type=%d",
+    //              mousePos.x(), mousePos.y(),
+    //              eventType);
 }
 
 void MyMainWindow::keyPressEvent(QKeyEvent *event)

@@ -69,10 +69,6 @@ bool FramelessWindowHelper::eventFilter(QObject *obj, QEvent *event)
 
 bool FramelessWindowHelper::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 {
-    LogUtil::Debug(CODE_LOCATION, "mbLeftBtnPressed=%s mbWidgetResizable=%s mbOnEdge=%s",
-                   mbLeftBtnPressed ? "true" : "false",
-                   mbWidgetResizable ? "true" : "false",
-                   mbOnEdge ? "true":"false");
     if (mbLeftBtnPressed)
     {
         if (mbWidgetResizable && mbOnEdge)
@@ -115,7 +111,6 @@ bool FramelessWindowHelper::HandleEventMouseButtonPress(QObject *obj, QMouseEven
         QRect frameRect = mpMainWindow->frameGeometry();
         QPoint globalMousePos = event->globalPos();
         UpdateCursorShape(globalMousePos);
-        LogUtil::Debug(CODE_LOCATION, "ButtonPress(%d, %d)", globalMousePos.x(), globalMousePos.y());
 
         if (mbOnEdge)
         {
@@ -274,7 +269,6 @@ void FramelessWindowHelper::CheckCursorPosition(const QPoint& globalMousePos, co
     mbOnCornerBottomRight = mbOnEdgeRight && mbOnEdgeBottom;
 
     mbOnEdge = mbOnEdgeLeft || mbOnEdgeRight || mbOnEdgeTop || mbOnEdgeBottom;
-    //LogUtil::Debug(CODE_LOCATION, "mbOnEdge=%s", mbOnEdge ? "true" : "false");
 }
 
 void FramelessWindowHelper::UpdateCursorShape(const QPoint& globalMousePos)

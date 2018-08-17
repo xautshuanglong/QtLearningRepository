@@ -79,11 +79,11 @@ void MainTabPageDicom::on_action_open()
     {
         QImage *pDcmImage = Q_NULLPTR;
         this->ConvertDicomToQImage(dcmFileName, &pDcmImage);
-        ui.labelImage->setGeometry(0, 0, pDcmImage->width(), pDcmImage->height());
-        ui.labelImage->setPixmap(QPixmap::fromImage(*pDcmImage));
         this->UpdateDcmTabTableContent();
         if (pDcmImage != Q_NULLPTR)
         {
+            ui.labelImage->setGeometry(0, 0, pDcmImage->width(), pDcmImage->height());
+            ui.labelImage->setPixmap(QPixmap::fromImage(*pDcmImage));
             delete pDcmImage;
         }
     }
@@ -155,30 +155,15 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
             DcmTag tempTag(0, 0);
             DcmElement *pTempElement = Q_NULLPTR;
             std::string tempString = "null";
-            char *pTempBuffer = Q_NULLPTR;
             DcmElementInfo tempDcmEleInfo;
             mListDcmElementInfo.clear();
 
             while (pTempObj != Q_NULLPTR)
             {
                 tempTag = pTempObj->getTag();
-                if (tempTag.getEVR() == EVR_AS || tempTag.getEVR() == EVR_CS || tempTag.getEVR() == EVR_DA)
-                {
-                    pTempElement = OFstatic_cast(DcmElement *, pTempObj);
-                    pTempElement->getString(pTempBuffer);
-                }
-
                 tempDcmEleInfo.strDcmTagKey = tempTag.toString().c_str();
                 tempDcmEleInfo.strDcmTagName = QString("[%1] %2").arg(tempTag.getVRName()).arg(tempTag.getTagName());
-                if (pTempBuffer != Q_NULLPTR)
-                {
-                    tempDcmEleInfo.strDcmElementValue = pTempBuffer;
-                    pTempBuffer = nullptr;
-                }
-                else
-                {
-                    tempDcmEleInfo.strDcmElementValue = "NULL";
-                }
+                this->GetDicomElementValue(tempDcmEleInfo.strDcmElementValue, pTempObj);
                 mListDcmElementInfo.append(tempDcmEleInfo);
 
                 pTempObj = pDcmDataSet->nextInContainer(pTempObj);
@@ -322,6 +307,96 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
         }
     }
     *ppOutImage = pOutImage;
+}
+
+void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj)
+{
+    char *pTempString = Q_NULLPTR;
+    Float32 tempFloat32;
+    Float64 tempFloat64;
+    Sint16 tempSint16;
+    Sint32 tempSint32;
+    Uint16 tempUint16;
+    Uint32 tempUint32;
+    DcmTag tempTag = pInDcmObj->getTag();
+    DcmElement *pTempElement = OFstatic_cast(DcmElement *, pInDcmObj);
+    OFCondition res = EC_Normal;
+    outStrValue = "unknown";
+    switch (tempTag.getEVR())
+    {
+    case EVR_AE: /// application entity title
+    case EVR_AS: /// age string
+    case EVR_AT: /// attribute tag
+    case EVR_CS: /// code string
+    case EVR_DA: /// date string
+    case EVR_DS: /// decimal string
+    case EVR_DT: /// date time string
+    case EVR_IS: /// integer string
+    case EVR_LO: /// long string
+    case EVR_LT: /// long text
+    case EVR_OB: /// other byte
+    case EVR_PN: /// person name
+    case EVR_SH: /// short string
+    case EVR_ST: /// short text
+    case EVR_TM: /// time string
+    case EVR_UC: /// unlimited characters
+    case EVR_UT: /// unlimited text
+    case EVR_UI: /// unique identifier
+        res = pTempElement->getString(pTempString);
+        res.good() ? outStrValue = pTempString : LogUtil::Debug(CODE_LOCATION, "getString error: %s", res.text());
+        break;
+    case EVR_FL: /// float single-precision
+    case EVR_OF: /// other float
+        res = pTempElement->getFloat32(tempFloat32);
+        res.good() ? outStrValue = QString("%1").arg(tempFloat32) : LogUtil::Debug(CODE_LOCATION, "getFloat32 error: %s", res.text());
+        break;
+    case EVR_FD: /// float double-precision
+    case EVR_OD: /// other double
+        res = pTempElement->getFloat64(tempFloat64);
+        res.good() ? outStrValue = QString("%1").arg(tempFloat64) : LogUtil::Debug(CODE_LOCATION, "getFloat64 error: %s", res.text());
+        break;
+    case EVR_SS: /// signed short
+        res = pTempElement->getSint16(tempSint16);
+        res.good() ? outStrValue = QString("%1").arg(tempSint16) : LogUtil::Debug(CODE_LOCATION, "getSint16 error: %s", res.text());
+        break;
+    case EVR_OL: /// other long
+    case EVR_SL: /// signed long
+        res = pTempElement->getSint32(tempSint32);
+        res.good() ? outStrValue = QString("%1").arg(tempFloat32) : LogUtil::Debug(CODE_LOCATION, "getSint32 error: %s", res.text());
+        break;
+    case EVR_US: /// unsigned short
+        res = pTempElement->getUint16(tempUint16);
+        res.good() ? outStrValue = QString("%1").arg(tempUint16) : LogUtil::Debug(CODE_LOCATION, "getUint16 error: %s", res.text());
+        break;
+    case EVR_UL: /// unsigned long
+        res = pTempElement->getUint32(tempUint32);
+        res.good() ? outStrValue = QString("%1").arg(tempUint32) : LogUtil::Debug(CODE_LOCATION, "getUint32 error: %s", res.text());
+        break;
+    case EVR_OW: /// other word
+    case EVR_SQ: /// sequence of items
+    case EVR_UR: /// universal resource identifier or universal resource locator (URI/URL)
+    case EVR_ox: /// OB or OW depending on context
+    case EVR_xs: /// SS or US depending on context
+    case EVR_lt: /// US, SS or OW depending on context, used for LUT Data (thus the name)
+    case EVR_na: /// na="not applicable", for data which has no VR
+    case EVR_up: /// up="unsigned pointer", used internally for DICOMDIR support
+    case EVR_item: /// used internally for items
+    case EVR_metainfo: /// used internally for meta info datasets
+    case EVR_dataset: /// used internally for datasets
+    case EVR_fileFormat: /// used internally for DICOM files
+    case EVR_dicomDir: /// used internally for DICOMDIR objects
+    case EVR_dirRecord: /// used internally for DICOMDIR records
+    case EVR_pixelSQ: /// used internally for pixel sequences in a compressed image
+    case EVR_pixelItem: /// used internally for pixel items in a compressed image
+    case EVR_UNKNOWN: /// used internally for elements with unknown VR (encoded with 4-byte length field in explicit VR)
+    case EVR_UN: /// unknown value representation
+    case EVR_PixelData: /// used internally for uncompressed pixel data
+    case EVR_OverlayData: /// used internally for overlay data
+    case EVR_UNKNOWN2B: /// used internally for elements with unknown VR with 2-byte length field in explicit VR
+        break;
+    default:
+        break;
+    }
 }
 
 void MainTabPageDicom::UpdateDcmTabTableContent()

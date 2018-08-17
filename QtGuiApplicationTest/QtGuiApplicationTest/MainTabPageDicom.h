@@ -7,6 +7,7 @@
 #include <QList>
 
 class QSplitter;
+class DcmObject;
 
 struct DcmElementInfo
 {
@@ -37,6 +38,7 @@ private slots:
 
 private:
     void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
+    void GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj);
     void UpdateDcmTabTableContent();
 };
 
