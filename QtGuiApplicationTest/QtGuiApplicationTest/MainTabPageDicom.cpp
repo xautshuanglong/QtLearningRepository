@@ -26,6 +26,11 @@
 MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
     , mpMainSpliter(Q_NULLPTR)
+    , mpImageData(Q_NULLPTR)
+    , mRescaleSlope(1)
+    , mRescaleIntercept(0)
+    , mWindowCenter(128)
+    , mWindowWidth(256)
 {
     ui.setupUi(this);
 
@@ -64,6 +69,7 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
 
 MainTabPageDicom::~MainTabPageDicom()
 {
+    ClearDataBuffer(&mpImageData);
 }
 
 void MainTabPageDicom::resizeEvent(QResizeEvent *event)
@@ -77,14 +83,13 @@ void MainTabPageDicom::on_action_open()
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
     if (!dcmFileName.isEmpty())
     {
-        QImage *pDcmImage = Q_NULLPTR;
-        this->ConvertDicomToQImage(dcmFileName, &pDcmImage);
+        this->LoadDicomFile(dcmFileName);
+        this->GetDicomElementImage(mDcmImage);
         this->UpdateDcmTabTableContent();
-        if (pDcmImage != Q_NULLPTR)
+        if (!mDcmImage.isNull())
         {
-            ui.labelImage->setGeometry(0, 0, pDcmImage->width(), pDcmImage->height());
-            ui.labelImage->setPixmap(QPixmap::fromImage(*pDcmImage));
-            delete pDcmImage;
+            ui.labelImage->setGeometry(0, 0, mDcmImage.width(), mDcmImage.height());
+            ui.labelImage->setPixmap(QPixmap::fromImage(mDcmImage));
         }
     }
 }
@@ -92,6 +97,187 @@ void MainTabPageDicom::on_action_open()
 void MainTabPageDicom::on_action_save()
 {
     int i = 0;
+}
+
+void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
+{
+    OFFilename dcmFilename(inDcmFilename.toStdString().c_str());
+    //OFFilename dcmFilename("e:\\temp\\dicomtesting\\srdoc10\\image12.dcm");
+    if (OFStandard::fileExists(dcmFilename))
+    {
+        OFCondition resCondition = EC_Normal;
+        DcmFileFormat dcmFileFormat;
+        resCondition = dcmFileFormat.loadFile(dcmFilename);
+        if (resCondition.good())
+        {
+            DcmDataset *pDcmDataSet = dcmFileFormat.getDataset();
+            E_TransferSyntax xfer = pDcmDataSet->getOriginalXfer();
+            pDcmDataSet->findAndGetUint16(DCM_BitsStored, mBitStored); //获取像素的位数 bit
+            pDcmDataSet->findAndGetUint16(DCM_SamplesPerPixel, mSamplePerPixel);
+            pDcmDataSet->findAndGetUint16(DCM_Columns, mImageWidth);
+            pDcmDataSet->findAndGetUint16(DCM_Rows, mImageHeight);
+
+            const char *pRescaleSlope = Q_NULLPTR;
+            const char *pRescaleIntercept = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_RescaleSlope, pRescaleSlope);
+            pDcmDataSet->findAndGetString(DCM_RescaleIntercept, pRescaleIntercept);
+            mRescaleSlope = pRescaleSlope == Q_NULLPTR ? 1 : atoi(pRescaleSlope);
+            mRescaleIntercept = pRescaleIntercept == Q_NULLPTR ? 0 : atoi(pRescaleIntercept);
+
+            const char *pWindowCenter = Q_NULLPTR;
+            const char *pWindowWidth = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_WindowCenter, pWindowCenter);
+            pDcmDataSet->findAndGetString(DCM_WindowWidth, pWindowWidth);
+            mWindowCenter = pWindowCenter == Q_NULLPTR ? 128 : atoi(pWindowCenter);
+            mWindowWidth = pWindowWidth == Q_NULLPTR ? 256 : atoi(pWindowWidth);
+
+            // 遍历 DICOM 所有元素
+            DcmObject *pTempObj = pDcmDataSet->nextInContainer(nullptr);
+            DcmTag tempTag(0, 0);
+            DcmElement *pTempElement = Q_NULLPTR;
+            std::string tempString = "null";
+            DcmElementInfo tempDcmEleInfo;
+            mListDcmElementInfo.clear();
+
+            while (pTempObj != Q_NULLPTR)
+            {
+                tempTag = pTempObj->getTag();
+                tempDcmEleInfo.strDcmTagKey = tempTag.toString().c_str();
+                tempDcmEleInfo.strDcmTagName = QString("[%1] %2").arg(tempTag.getVRName()).arg(tempTag.getTagName());
+                this->GetDicomElementValue(tempDcmEleInfo.strDcmElementValue, pTempObj);
+                mListDcmElementInfo.append(tempDcmEleInfo);
+
+                pTempObj = pDcmDataSet->nextInContainer(pTempObj);
+            }
+
+            const char* transferSyntax = NULL;
+            resCondition = dcmFileFormat.getMetaInfo()->findAndGetString(DCM_TransferSyntaxUID, transferSyntax);
+            if (resCondition.good())
+            {
+                LogUtil::Debug(CODE_LOCATION, "TransferSyntaxUID: %s", transferSyntax);
+                if (OFString(transferSyntax) == OFString(UID_JPEGProcess14SV1TransferSyntax)
+                    || OFString(transferSyntax) == OFString(UID_JPEGProcess2_4TransferSyntax)
+                    || OFString(transferSyntax) == OFString(UID_JPEGProcess14TransferSyntax)
+                    || OFString(transferSyntax) == OFString(UID_JPEGProcess1TransferSyntax))
+                {
+                    DJDecoderRegistration::registerCodecs();
+                    pDcmDataSet->chooseRepresentation(EXS_LittleEndianExplicit, NULL); //对压缩的图像像素进行解压
+                    DJDecoderRegistration::cleanup();
+                }
+                else if (OFString(transferSyntax) == OFString(UID_RLELosslessTransferSyntax))
+                {
+                    DcmRLEDecoderRegistration::registerCodecs();
+                    pDcmDataSet->chooseRepresentation(EXS_LittleEndianExplicit, NULL);
+                    DcmRLEDecoderRegistration::cleanup();
+                }
+                else
+                {
+                    pDcmDataSet->chooseRepresentation(xfer, NULL);
+                }
+            }
+            else
+            {
+                LogUtil::Debug(CODE_LOCATION, "Find DCM_TransferSyntaxUID error: %s", resCondition.text());
+                pDcmDataSet->chooseRepresentation(EXS_Unknown, NULL);
+            }
+            DcmElement* tempElement = NULL;
+            OFCondition result = pDcmDataSet->findAndGetElement(DCM_PixelData, tempElement);
+            if (result.good() || tempElement != NULL)
+            {
+                Uint32 pixDataLen = tempElement->getLengthField();
+                ClearDataBuffer(&mpImageData);
+                try
+                {
+                    mpImageData = new unsigned char[pixDataLen];
+                }
+                catch (std::bad_alloc* e)
+                {
+                    LogUtil::Error(CODE_LOCATION, "allocate memory failed: %s", e->what());
+                }
+                if (8 == mBitStored)
+                {
+                    Uint8 *pTempImgData = Q_NULLPTR;
+                    result = tempElement->getUint8Array(pTempImgData);
+                    if (result.good())
+                    {
+                        memcpy(mpImageData, pTempImgData, pixDataLen);
+                    }
+                }
+                else if (16 == mBitStored)
+                {
+                    Uint16 *pTempImgData = Q_NULLPTR;
+                    result = tempElement->getUint16Array(pTempImgData);
+                    if (result.good())
+                    {
+                        memcpy(mpImageData, pTempImgData, pixDataLen);
+                    }
+                }
+                else if (32 == mBitStored)
+                {
+                    Uint32 *pTempImgData = Q_NULLPTR;
+                    result = tempElement->getUint32Array(pTempImgData);
+                    if (result.good())
+                    {
+                        memcpy(mpImageData, pTempImgData, pixDataLen);
+                    }
+                }
+            }
+            if (result.bad())
+            {
+                LogUtil::Error(CODE_LOCATION, "Load file failed: %s", dcmFilename.getCharPointer());
+            }
+        }
+        else 
+        {
+            LogUtil::Error(CODE_LOCATION, "Load file failed: %s", dcmFilename.getCharPointer());
+        }
+    }
+}
+
+void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
+{
+    int pixValueMin = mWindowCenter - mWindowWidth / 2;
+    int pixValueMax = mWindowCenter + mWindowWidth / 2;
+    bool pixWindowHandleFlag = (mWindowCenter != 128 || mWindowWidth != 256); // 是否需要处理像素值窗口（非默认值）
+    if (mBitStored == 8)
+    {
+        outImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
+        int *pRgbValue = new int[mSamplePerPixel];
+        for (int i = 0; i < mImageHeight; ++i)
+        {
+            for (int j = 0; j < mImageWidth; ++j)
+            {
+                for (int k = 0; k < mSamplePerPixel; ++k)
+                {
+                    pRgbValue[k] = mpImageData[i * mImageWidth * mSamplePerPixel + j * mSamplePerPixel + k] * mRescaleSlope + mRescaleIntercept;
+                    if (pixWindowHandleFlag)
+                    {
+                        if (pRgbValue[k] <= pixValueMin)
+                        {
+                            pRgbValue[k] = 0;
+                        }
+                        else if (pRgbValue[k] >= pixValueMax)
+                        {
+                            pRgbValue[k] = 255;
+                        }
+                        else
+                        {
+                            pRgbValue[k] = (int)((pRgbValue[k] - pixValueMin) * 255.0f / mWindowWidth);
+                        }
+                    }
+                }
+                outImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
+            }
+        }
+        delete[]pRgbValue;
+    }
+    else if (mBitStored == 16)
+    {
+        ;
+    }
+    else if (mBitStored == 32)
+    {
+    }
 }
 
 void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutImage)
@@ -409,5 +595,14 @@ void MainTabPageDicom::UpdateDcmTabTableContent()
         ui.tableDcmTag->setItem(i, 0, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagKey));
         ui.tableDcmTag->setItem(i, 1, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagName));
         ui.tableDcmTag->setItem(i, 2, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmElementValue));
+    }
+}
+
+void MainTabPageDicom::ClearDataBuffer(unsigned char **pDataBuffer)
+{
+    if (pDataBuffer != Q_NULLPTR && *pDataBuffer != Q_NULLPTR)
+    {
+        delete[] * pDataBuffer;
+        *pDataBuffer = Q_NULLPTR;
     }
 }

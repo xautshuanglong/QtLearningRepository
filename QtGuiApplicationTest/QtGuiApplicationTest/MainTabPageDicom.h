@@ -22,8 +22,15 @@ class MainTabPageDicom : public QWidget
 
 private:
     Ui::MainTabPageDicom    ui;
-    QSplitter              *mpMainSpliter;
     QList<DcmElementInfo>   mListDcmElementInfo;
+    QSplitter              *mpMainSpliter;
+    unsigned char          *mpImageData;              // ÏñËØÊý¾Ý
+    unsigned short          mBitStored;                // ´æ´¢Î»Êý
+    unsigned short          mSamplePerPixel;           // ÏñËØ²ÉÑù
+    unsigned short          mImageWidth, mImageHeight; // Í¼Ïñ³ß´ç
+    int                     mRescaleSlope, mRescaleIntercept; // Ð±ÂÊ ½Ø¾à
+    int                     mWindowCenter, mWindowWidth;
+    QImage                  mDcmImage;
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
@@ -37,9 +44,12 @@ private slots:
     void on_action_save();
 
 private:
+    void LoadDicomFile(const QString& inDcmFilename);
+    void GetDicomElementImage(QImage& outImage);
     void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
     void GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj);
     void UpdateDcmTabTableContent();
+    void ClearDataBuffer(unsigned char **pDataBuffer);
 };
 
 #endif MAIN_TAB_PAGE_DICOM_H
