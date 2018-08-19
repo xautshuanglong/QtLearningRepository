@@ -403,11 +403,19 @@ void MainTabPageDicom::UpdateDcmTabTableContent()
 {
     ui.tableDcmTag->clearContents();
     int listCount = mListDcmElementInfo.count();
+    int rowCount = ui.tableDcmTag->rowCount();
     for (int i = 0; i < listCount; ++i)
     {
-        ui.tableDcmTag->insertRow(i);
+        if (i >= rowCount)
+        {
+            ui.tableDcmTag->insertRow(i);
+        }
         ui.tableDcmTag->setItem(i, 0, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagKey));
         ui.tableDcmTag->setItem(i, 1, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmTagName));
         ui.tableDcmTag->setItem(i, 2, new QTableWidgetItem(mListDcmElementInfo.at(i).strDcmElementValue));
+    }
+    for (int i = rowCount;i >= listCount; --i)
+    {
+        ui.tableDcmTag->removeRow(i);
     }
 }
