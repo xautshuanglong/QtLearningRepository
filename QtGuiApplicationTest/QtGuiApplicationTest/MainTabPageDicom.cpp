@@ -7,6 +7,7 @@
 #include <QImage>
 
 // DICOM  dcmtk
+#include <dcmtk/ofstd/ofcast.h>
 #include <dcmtk/ofstd/offile.h>
 #include <dcmtk/oflog/oflog.h>
 #include <dcmtk/dcmjpeg/djdecode.h>
@@ -75,6 +76,7 @@ MainTabPageDicom::~MainTabPageDicom()
 void MainTabPageDicom::resizeEvent(QResizeEvent *event)
 {
     mpMainSpliter->setGeometry(this->frameGeometry());
+    this->ShowDicomImage();
 }
 
 void MainTabPageDicom::on_action_open()
@@ -86,11 +88,7 @@ void MainTabPageDicom::on_action_open()
         this->LoadDicomFile(dcmFileName);
         this->GetDicomElementImage(mDcmImage);
         this->UpdateDcmTabTableContent();
-        if (!mDcmImage.isNull())
-        {
-            ui.labelImage->setGeometry(0, 0, mDcmImage.width(), mDcmImage.height());
-            ui.labelImage->setPixmap(QPixmap::fromImage(mDcmImage));
-        }
+        this->ShowDicomImage();
     }
 }
 
@@ -112,7 +110,8 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
         {
             DcmDataset *pDcmDataSet = dcmFileFormat.getDataset();
             E_TransferSyntax xfer = pDcmDataSet->getOriginalXfer();
-            pDcmDataSet->findAndGetUint16(DCM_BitsStored, mBitStored); //获取像素的位数 bit
+            pDcmDataSet->findAndGetUint16(DCM_BitsAllocated, mBitAllocated); //获取像素申请的位数 bit
+            pDcmDataSet->findAndGetUint16(DCM_BitsStored, mBitStored); //获取像素存储的位数 bit
             pDcmDataSet->findAndGetUint16(DCM_SamplesPerPixel, mSamplePerPixel);
             pDcmDataSet->findAndGetUint16(DCM_Columns, mImageWidth);
             pDcmDataSet->findAndGetUint16(DCM_Rows, mImageHeight);
@@ -130,6 +129,10 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
             pDcmDataSet->findAndGetString(DCM_WindowWidth, pWindowWidth);
             mWindowCenter = pWindowCenter == Q_NULLPTR ? 128 : atoi(pWindowCenter);
             mWindowWidth = pWindowWidth == Q_NULLPTR ? 256 : atoi(pWindowWidth);
+
+            const char *pPhotometricInterpretation = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_PhotometricInterpretation, pPhotometricInterpretation);
+            mDcmPhotometricInterpretation = pPhotometricInterpretation == Q_NULLPTR ? "" : pPhotometricInterpretation;
 
             // 遍历 DICOM 所有元素
             DcmObject *pTempObj = pDcmDataSet->nextInContainer(nullptr);
@@ -186,6 +189,7 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
             {
                 Uint32 pixDataLen = tempElement->getLengthField();
                 ClearDataBuffer(&mpImageData);
+                void *pDcmImageData = Q_NULLPTR;
                 try
                 {
                     mpImageData = new unsigned char[pixDataLen];
@@ -194,32 +198,21 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
                 {
                     LogUtil::Error(CODE_LOCATION, "allocate memory failed: %s", e->what());
                 }
-                if (8 == mBitStored)
+                if (8 == mBitAllocated)
                 {
-                    Uint8 *pTempImgData = Q_NULLPTR;
-                    result = tempElement->getUint8Array(pTempImgData);
-                    if (result.good())
-                    {
-                        memcpy(mpImageData, pTempImgData, pixDataLen);
-                    }
+                    result = tempElement->getUint8Array((Uint8 *&)pDcmImageData);
                 }
-                else if (16 == mBitStored)
+                else if (16 == mBitAllocated)
                 {
-                    Uint16 *pTempImgData = Q_NULLPTR;
-                    result = tempElement->getUint16Array(pTempImgData);
-                    if (result.good())
-                    {
-                        memcpy(mpImageData, pTempImgData, pixDataLen);
-                    }
+                    result = tempElement->getUint16Array((Uint16 *&)pDcmImageData);
                 }
-                else if (32 == mBitStored)
+                else if (32 == mBitAllocated)
                 {
-                    Uint32 *pTempImgData = Q_NULLPTR;
-                    result = tempElement->getUint32Array(pTempImgData);
-                    if (result.good())
-                    {
-                        memcpy(mpImageData, pTempImgData, pixDataLen);
-                    }
+                    result = tempElement->getUint32Array((Uint32 *&)pDcmImageData);
+                }
+                if (mpImageData != Q_NULLPTR && pDcmImageData != Q_NULLPTR)
+                {
+                    memcpy(mpImageData, pDcmImageData, pixDataLen);
                 }
             }
             if (result.bad())
@@ -236,48 +229,79 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
 
 void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
 {
+    if (mpImageData == Q_NULLPTR) return;
+
+    QImage tempImage;
     int pixValueMin = mWindowCenter - mWindowWidth / 2;
     int pixValueMax = mWindowCenter + mWindowWidth / 2;
+
     bool pixWindowHandleFlag = (mWindowCenter != 128 || mWindowWidth != 256); // 是否需要处理像素值窗口（非默认值）
-    if (mBitStored == 8)
+    if (mBitAllocated == 8)
     {
-        outImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
+        tempImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
         int *pRgbValue = new int[mSamplePerPixel];
+        int unitPerLine = mImageWidth * mSamplePerPixel;
+        Uint8 *pTempImageData = (Uint8*)mpImageData;
         for (int i = 0; i < mImageHeight; ++i)
         {
             for (int j = 0; j < mImageWidth; ++j)
             {
                 for (int k = 0; k < mSamplePerPixel; ++k)
                 {
-                    pRgbValue[k] = mpImageData[i * mImageWidth * mSamplePerPixel + j * mSamplePerPixel + k] * mRescaleSlope + mRescaleIntercept;
-                    if (pixWindowHandleFlag)
-                    {
-                        if (pRgbValue[k] <= pixValueMin)
-                        {
-                            pRgbValue[k] = 0;
-                        }
-                        else if (pRgbValue[k] >= pixValueMax)
-                        {
-                            pRgbValue[k] = 255;
-                        }
-                        else
-                        {
-                            pRgbValue[k] = (int)((pRgbValue[k] - pixValueMin) * 255.0f / mWindowWidth);
-                        }
-                    }
+                    pRgbValue[k] = pTempImageData[i * unitPerLine + j * mSamplePerPixel + k];
                 }
-                outImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
+                if (mSamplePerPixel == 3)
+                {
+                    tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
+                }
+                else
+                {
+                    tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[0], pRgbValue[0], 255));
+                }
             }
         }
         delete[]pRgbValue;
     }
-    else if (mBitStored == 16)
+    else if (mBitAllocated == 16)
     {
-        ;
+        tempImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
+        int *pRgbValue = new int[mSamplePerPixel];
+        int unitPerLine = mImageWidth * mSamplePerPixel;
+        Sint16 *pTempImageData = (Sint16 *)mpImageData;
+        for (int i = 0; i < mImageHeight; ++i)
+        {
+            for (int j = 0; j < mImageWidth; ++j)
+            {
+                for (int k = 0; k < mSamplePerPixel; ++k)
+                {
+                    pRgbValue[k] = pTempImageData[i * unitPerLine + j * mSamplePerPixel + k] * mRescaleSlope + mRescaleIntercept;
+                    if (pixWindowHandleFlag)
+                    {
+                        this->GetPixelValueFromPhotometric(pRgbValue[k], pixValueMin, pixValueMax, mWindowWidth);
+                    }
+                    if (mDcmPhotometricInterpretation.compare("MONOCHROME1", Qt::CaseInsensitive) == 0)
+                    {
+                        pRgbValue[k] = 255 - pRgbValue[k];
+                    }
+                }
+                if (mSamplePerPixel == 3)
+                {
+                    tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
+                    LogUtil::Debug(CODE_LOCATION, "pixel rgb(%d, %d, %d)", pRgbValue[0], pRgbValue[1], pRgbValue[2]);
+                }
+                else
+                {
+                    tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[0], pRgbValue[0], 255));
+                    LogUtil::Debug(CODE_LOCATION, "pixel rgb(%d, %d, %d)", pRgbValue[0], pRgbValue[0], pRgbValue[0]);
+                }
+            }
+        }
+        delete[]pRgbValue;
     }
-    else if (mBitStored == 32)
+    else if (mBitAllocated == 32)
     {
     }
+    outImage = tempImage;
 }
 
 void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutImage)
@@ -495,6 +519,22 @@ void MainTabPageDicom::ConvertDicomToQImage(QString &inFilename, QImage **ppOutI
     *ppOutImage = pOutImage;
 }
 
+void MainTabPageDicom::GetPixelValueFromPhotometric(int& pixelValue, int pixelValueMin, int pixelValueMax, int windowWidth)
+{
+    if (pixelValue <= pixelValueMin)
+    {
+        pixelValue = 0;
+    }
+    else if (pixelValue >= pixelValueMax)
+    {
+        pixelValue = 255;
+    }
+    else
+    {
+        pixelValue = (int)((pixelValue - pixelValueMin) * 255.0f / mWindowWidth);
+    }
+}
+
 void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj)
 {
     char *pTempString = Q_NULLPTR;
@@ -583,6 +623,16 @@ void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pIn
     default:
         break;
     }
+}
+
+void MainTabPageDicom::ShowDicomImage()
+{
+    if (mDcmImage.isNull()) return;
+
+    ui.labelImage->setGeometry(0, 0, ui.leftWidget->width(), ui.leftWidget->height());
+    ui.labelImage->setPixmap(QPixmap::fromImage(mDcmImage)
+                             .scaled(ui.labelImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+    );
 }
 
 void MainTabPageDicom::UpdateDcmTabTableContent()

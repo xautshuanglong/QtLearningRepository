@@ -24,13 +24,15 @@ private:
     Ui::MainTabPageDicom    ui;
     QList<DcmElementInfo>   mListDcmElementInfo;
     QSplitter              *mpMainSpliter;
-    unsigned char          *mpImageData;              // 像素数据
+    unsigned char          *mpImageData;               // 像素数据
+    unsigned short          mBitAllocated;             // 申请位数
     unsigned short          mBitStored;                // 存储位数
     unsigned short          mSamplePerPixel;           // 像素采样
     unsigned short          mImageWidth, mImageHeight; // 图像尺寸
     int                     mRescaleSlope, mRescaleIntercept; // 斜率 截距
     int                     mWindowCenter, mWindowWidth;
     QImage                  mDcmImage;
+    QString                 mDcmPhotometricInterpretation; // 广度表示 RGB/MONOCHROME1/MONOCHROME2
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
@@ -47,7 +49,9 @@ private:
     void LoadDicomFile(const QString& inDcmFilename);
     void GetDicomElementImage(QImage& outImage);
     void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
+    void GetPixelValueFromPhotometric(int& pixelValue, int pixelValueMin, int pixelValueMax, int windowWidth);
     void GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj);
+    void ShowDicomImage();
     void UpdateDcmTabTableContent();
     void ClearDataBuffer(unsigned char **pDataBuffer);
 };
