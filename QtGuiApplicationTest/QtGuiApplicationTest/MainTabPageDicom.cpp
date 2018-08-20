@@ -42,16 +42,16 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     //ui.labelImage->setStyleSheet("background: rgb(12,23,56);");
     //ui.tableDcmTag->setStyleSheet("background:red;");
 
-    QAction *pActionOpen = new QAction(QIcon(":/AppImages/Resources/images/open.png"), "Open");
-    QAction *pActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Save");
-    QAction *pActionPrevious = new QAction(QIcon(":/AppImages/Resources/images/frame_previous.png"), "Previous");
-    QAction *pActionNext = new QAction(QIcon(":/AppImages/Resources/images/frame_next.png"), "Next");
+    mpActionOpen = new QAction(QIcon(":/AppImages/Resources/images/open.png"), "Open");
+    mpActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Save");
+    mpActionPrevious = new QAction(QIcon(":/AppImages/Resources/images/frame_previous.png"), "Previous");
+    mpActionNext = new QAction(QIcon(":/AppImages/Resources/images/frame_next.png"), "Next");
 
     QToolBar *pDcmToolBar = new QToolBar();
-    pDcmToolBar->addAction(pActionOpen);
-    pDcmToolBar->addAction(pActionSave);
-    pDcmToolBar->addAction(pActionPrevious);
-    pDcmToolBar->addAction(pActionNext);
+    pDcmToolBar->addAction(mpActionOpen);
+    pDcmToolBar->addAction(mpActionSave);
+    pDcmToolBar->addAction(mpActionPrevious);
+    pDcmToolBar->addAction(mpActionNext);
     ui.toolbarHLayout->insertWidget(0, pDcmToolBar);
 
     mpMainSpliter = new QSplitter(Qt::Horizontal, this);
@@ -61,10 +61,10 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     mpMainSpliter->setStretchFactor(0, 8);
     mpMainSpliter->setStretchFactor(0, 1);
 
-    this->connect(pActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
-    this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
-    this->connect(pActionPrevious, SIGNAL(triggered()), SLOT(on_action_previous()));
-    this->connect(pActionNext, SIGNAL(triggered()), SLOT(on_action_next()));
+    this->connect(mpActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
+    this->connect(mpActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
+    this->connect(mpActionPrevious, SIGNAL(triggered()), SLOT(on_action_previous()));
+    this->connect(mpActionNext, SIGNAL(triggered()), SLOT(on_action_next()));
 
     QStringList header;
     header << "DcmTagKey" << "DcmTagName" << "ElementValue";
@@ -75,6 +75,8 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     ui.tableDcmTag->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.tableDcmTag->horizontalHeader()->setSectionsClickable(false);
     ui.tableDcmTag->setFocusPolicy(Qt::NoFocus);
+
+    this->UpdateActionButtonState();
 }
 
 MainTabPageDicom::~MainTabPageDicom()
@@ -95,9 +97,10 @@ void MainTabPageDicom::on_action_open()
     if (!dcmFileName.isEmpty())
     {
         this->LoadDicomFile(dcmFileName);
-        this->GetDicomElementImage(mDcmImage, 0, mDcmFrameIndex);
+        this->GetDicomElementImage(mDcmImage, 0, mDcmFrameCount);
         this->UpdateDcmTabTableContent();
         this->ShowDicomImage();
+        this->UpdateActionButtonState();
     }
 }
 
@@ -108,12 +111,24 @@ void MainTabPageDicom::on_action_save()
 
 void MainTabPageDicom::on_action_previous()
 {
-    int i = 0;
+    if (mDcmFrameIndex > 0)
+    {
+        --mDcmFrameIndex;
+        this->UpdateActionButtonState();
+        this->GetDicomElementImage(mDcmImage, mDcmFrameIndex, mDcmFrameCount);
+        this->ShowDicomImage();
+    }
 }
 
 void MainTabPageDicom::on_action_next()
 {
-    int i = 0;
+    if (mDcmFrameIndex < mDcmFrameCount - 1)
+    {
+        ++mDcmFrameIndex;
+        this->UpdateActionButtonState();
+        this->GetDicomElementImage(mDcmImage, mDcmFrameIndex, mDcmFrameCount);
+        this->ShowDicomImage();
+    }
 }
 
 void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
@@ -135,23 +150,29 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
             pDcmDataSet->findAndGetUint16(DCM_Columns, mImageWidth);
             pDcmDataSet->findAndGetUint16(DCM_Rows, mImageHeight);
 
-            const char *pRescaleSlope = Q_NULLPTR;
-            const char *pRescaleIntercept = Q_NULLPTR;
-            pDcmDataSet->findAndGetString(DCM_RescaleSlope, pRescaleSlope);
-            pDcmDataSet->findAndGetString(DCM_RescaleIntercept, pRescaleIntercept);
-            mRescaleSlope = pRescaleSlope == Q_NULLPTR ? 1 : atoi(pRescaleSlope);
-            mRescaleIntercept = pRescaleIntercept == Q_NULLPTR ? 0 : atoi(pRescaleIntercept);
+            const char *pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_RescaleSlope, pTempString);
+            mRescaleSlope = pTempString == Q_NULLPTR ? 1 : std::atoi(pTempString);
 
-            const char *pWindowCenter = Q_NULLPTR;
-            const char *pWindowWidth = Q_NULLPTR;
-            pDcmDataSet->findAndGetString(DCM_WindowCenter, pWindowCenter);
-            pDcmDataSet->findAndGetString(DCM_WindowWidth, pWindowWidth);
-            mWindowCenter = pWindowCenter == Q_NULLPTR ? 128 : atoi(pWindowCenter);
-            mWindowWidth = pWindowWidth == Q_NULLPTR ? 256 : atoi(pWindowWidth);
+            pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_RescaleIntercept, pTempString);
+            mRescaleIntercept = pTempString == Q_NULLPTR ? 0 : std::atoi(pTempString);
 
-            const char *pPhotometricInterpretation = Q_NULLPTR;
-            pDcmDataSet->findAndGetString(DCM_PhotometricInterpretation, pPhotometricInterpretation);
-            mDcmPhotometricInterpretation = pPhotometricInterpretation == Q_NULLPTR ? "" : pPhotometricInterpretation;
+            pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_WindowCenter, pTempString);
+            mWindowCenter = pTempString == Q_NULLPTR ? 128 : std::atoi(pTempString);
+
+            pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_WindowWidth, pTempString);
+            mWindowWidth = pTempString == Q_NULLPTR ? 256 : std::atoi(pTempString);
+
+            pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_NumberOfFrames, pTempString);
+            mDcmFrameCount = pTempString == Q_NULLPTR ? 1 : std::atoi(pTempString);
+
+            pTempString = Q_NULLPTR;
+            pDcmDataSet->findAndGetString(DCM_PhotometricInterpretation, pTempString);
+            mDcmPhotometricInterpretation = pTempString == Q_NULLPTR ? "" : pTempString;
 
             // 遍历 DICOM 所有元素
             DcmObject *pTempObj = pDcmDataSet->nextInContainer(nullptr);
@@ -672,6 +693,20 @@ void MainTabPageDicom::UpdateDcmTabTableContent()
     for (int i = rowCount;i >= listCount; --i)
     {
         ui.tableDcmTag->removeRow(i);
+    }
+}
+
+void MainTabPageDicom::UpdateActionButtonState()
+{
+    if (mDcmFrameCount <= 1)
+    {
+        mpActionPrevious->setEnabled(false);
+        mpActionNext->setEnabled(false);
+    }
+    else
+    {
+        mpActionPrevious->setEnabled(mDcmFrameIndex > 0);
+        mpActionNext->setEnabled(mDcmFrameIndex < mDcmFrameCount - 1);
     }
 }
 

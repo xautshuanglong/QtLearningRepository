@@ -35,6 +35,10 @@ private:
     int                     mDcmFrameIndex, mDcmFrameCount; // 多帧 DCM 文件的当前显示帧和总帧数
     QImage                  mDcmImage;
     QString                 mDcmPhotometricInterpretation;  // 光度度表示 RGB/MONOCHROME1/MONOCHROME2
+    QAction                *mpActionOpen;     // 打开
+    QAction                *mpActionSave;     // 保存
+    QAction                *mpActionPrevious; // 上一帧
+    QAction                *mpActionNext;     // 下一帧
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
@@ -57,6 +61,7 @@ private:
     void GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj);
     void ShowDicomImage();
     void UpdateDcmTabTableContent();
+    void UpdateActionButtonState();
     void ClearDataBuffer(unsigned char **pDataBuffer);
 };
 
