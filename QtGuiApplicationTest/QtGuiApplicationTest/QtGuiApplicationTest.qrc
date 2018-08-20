@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/QtGuiApplicationTest">
-        <file>Resources/qss/mainTabWidget.css</file>
+        <file>Resources/qss/mainTabWidget.qss</file>
+        <file>Resources/qss/black.qss</file>
+        <file>Resources/qss/dark_orange.qss</file>
+        <file>Resources/qss/white.qss</file>
+    </qresource>
+    <qresource prefix="/AppImages">
+        <file>Resources/images/open.png</file>
+        <file>Resources/images/save.png</file>
     </qresource>
 </RCC>

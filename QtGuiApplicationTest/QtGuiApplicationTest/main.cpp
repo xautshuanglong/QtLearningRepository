@@ -12,13 +12,11 @@ int main(int argc, char *argv[])
 
 #ifdef _DEBUG
     LogUtil::Init(LOG_LEVEL_DEBUG);
-#elif
+#else
     LogUtil::Init(LOG_LEVEL_INFO);
 #endif
 
     MyMainWindow mainWindow;
-    //Qt::WindowFlags oldFlags = mainWindow.windowFlags();
-    //mainWindow.setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mainWindow.show();
 
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");

@@ -4,38 +4,60 @@
 #include <QMouseEvent>
 #include <QImageReader>
 #include <QImageWriter>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QSplitter>
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <windowsx.h>
+#endif
 
 #include <LogUtil.h>
-#include "TitleBar.h"
+
+#include "FramelessWindowHelper.h"
+#include "MainTabPageFirst.h"
+#include "MainTabPageSetting.h"
+#include "MainTabPageDicom.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , mpFramelessWindow(Q_NULLPTR)
 {
     ui.setupUi(this);
-    TitleBar *pTitleBar = new TitleBar(this);
 
-    QFile mainTabStyle(":/QtGuiApplicationTest/Resources/qss/mainTabWidget.css");
-    if (mainTabStyle.open(QFile::ReadOnly))
-    {
-        QString styleSheet = QLatin1String(mainTabStyle.readAll());
-        ui.mainTabWidget->setStyleSheet(styleSheet);
-        mainTabStyle.close();
-    }
-    else
-    {
-        QString error = mainTabStyle.errorString();
-    }
+    //setAttribute(Qt::WA_TranslucentBackground, true);
+    //Qt::WindowFlags oldFlags = windowFlags();
+    //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
+    QIcon winIcon("test.ico");
+    this->setWindowIcon(winIcon);
+    mpFramelessWindow = new FramelessWindowHelper(this);
+
+    ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
+
+    mpPageFirst = new MainTabPageFirst(this);
+    ui.mainTabWidget->addTab(mpPageFirst, "First");
+
+    mpPageDicom = new MainTabPageDicom(this);
+    ui.mainTabWidget->addTab(mpPageDicom, "Dicom");
+
+    mpPageSetting = new MainTabPageSetting(this);
+    ui.mainTabWidget->addTab(mpPageSetting, "Setting");
 }
 
 MyMainWindow::~MyMainWindow()
 {
-    ;
+    if (mpFramelessWindow != Q_NULLPTR)
+    {
+        delete mpFramelessWindow;
+        mpFramelessWindow = Q_NULLPTR;
+    }
 }
 
 bool MyMainWindow::event(QEvent *event)
 {
     //LogUtil::Info(CODE_LOCATION, "Type=%d", event->type());
-    return __super::event(event);
+    return QMainWindow::event(event);
 }
 
 void MyMainWindow::mousePressEvent(QMouseEvent *event)
@@ -127,7 +149,7 @@ void MyMainWindow::mouseMoveEvent(QMouseEvent *event)
     //              windowPos.x(), windowPos.y(),
     //              screenPos.x(), screenPos.y(),
     //              flags, eventType);
-    LogUtil::CollectData(CODE_LOCATION, LOG_COLLECTION_TYPE_0, "MousePos %d %d", mousePos.x(), mousePos.y());
+    //LogUtil::CollectData(CODE_LOCATION, LOG_COLLECTION_TYPE_0, "MousePos %d %d", mousePos.x(), mousePos.y());
 }
 
 
@@ -135,60 +157,65 @@ void MyMainWindow::wheelEvent(QWheelEvent *event)
 {
     QEvent::Type eventType = event->type();
     QPoint mousePos = event->pos();
-    LogUtil::Info(CODE_LOCATION, "MousePos(%d,%d)"
-                  " Type=%d",
-                  mousePos.x(), mousePos.y(),
-                  eventType);
+    //LogUtil::Debug(CODE_LOCATION, "MousePos(%d,%d)"
+    //              " Type=%d",
+    //              mousePos.x(), mousePos.y(),
+    //              eventType);
 }
 
 void MyMainWindow::keyPressEvent(QKeyEvent *event)
 {
-    __super::keyPressEvent(event);
+    QMainWindow::keyPressEvent(event);
 }
 
 void MyMainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    __super::keyReleaseEvent(event);
+    QMainWindow::keyReleaseEvent(event);
 }
 
 
 void MyMainWindow::focusInEvent(QFocusEvent *event)
 {
-    __super::focusInEvent(event);
+    QMainWindow::focusInEvent(event);
 }
 
 void MyMainWindow::focusOutEvent(QFocusEvent *event)
 {
-    __super::focusOutEvent(event);
+    QMainWindow::focusOutEvent(event);
 }
 
 void MyMainWindow::enterEvent(QEvent *event)
 {
-    __super::enterEvent(event);
+    QMainWindow::enterEvent(event);
 }
 
 void MyMainWindow::leaveEvent(QEvent *event)
 {
-    __super::leaveEvent(event);
+    QMainWindow::leaveEvent(event);
 }
 
 void MyMainWindow::paintEvent(QPaintEvent *event)
 {
-    __super::paintEvent(event);
+    QMainWindow::paintEvent(event);
 }
 
 void MyMainWindow::moveEvent(QMoveEvent *event)
 {
-    __super::moveEvent(event);
-}
-
-void MyMainWindow::resizeEvent(QResizeEvent *event)
-{
-    __super::resizeEvent(event);
+    QMainWindow::moveEvent(event);
 }
 
 void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
-    __super::closeEvent(event);
+    QMainWindow::closeEvent(event);
+}
+
+void MyMainWindow::resizeEvent(QResizeEvent *event)
+{
+    QRect winRect = this->rect();
+    QRect titleBarRect = mpFramelessWindow->GetTitleBarRect();
+    QRect mainTabRect(5, 0, winRect.width() - 10, winRect.height() - titleBarRect.height() - 5);
+    ui.mainTabWidget->setGeometry(mainTabRect);
+
+    QMainWindow::resizeEvent(event);
 }

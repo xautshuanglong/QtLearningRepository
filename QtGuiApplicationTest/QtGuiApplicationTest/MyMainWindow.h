@@ -3,6 +3,11 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtGuiApplicationTest.h"
 
+class FramelessWindowHelper;
+class MainTabPageFirst;
+class MainTabPageDicom;
+class MainTabPageSetting;
+
 class MyMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -12,7 +17,11 @@ public:
     ~MyMainWindow();
 
 private:
-    Ui::QtGuiApplicationTestClass ui;
+    Ui::QtGuiApplicationTestClass    ui;
+    FramelessWindowHelper           *mpFramelessWindow;
+    MainTabPageFirst                *mpPageFirst;
+    MainTabPageDicom                *mpPageDicom;
+    MainTabPageSetting              *mpPageSetting;
 
 public:
     virtual bool event(QEvent *event) override;
@@ -34,6 +43,7 @@ public:
 
     virtual void paintEvent(QPaintEvent *event) override;
     virtual void moveEvent(QMoveEvent *event) override;
-    virtual void resizeEvent(QResizeEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
+
+    virtual void resizeEvent(QResizeEvent *event) override;
 };

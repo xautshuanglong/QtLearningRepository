@@ -48,12 +48,36 @@
     <ClCompile Include="MyApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TitleBar.cpp">
+    <ClCompile Include="MainTabPageFirst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTabPageSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FramelessWindowHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DicomWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTabPageDicom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MainTabPageFirst.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MainTabPageSetting.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DicomWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MainTabPageDicom.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -64,17 +88,27 @@
     <ClInclude Include="MyApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\qss\mainTabWidget.css">
-      <Filter>Resource Files\qss</Filter>
-    </None>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DicomWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TitleBar.h">
+    <QtMoc Include="FramelessWindowHelper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MainTabPageFirst.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MainTabPageSetting.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MainTabPageDicom.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -82,5 +116,19 @@
     <QtRcc Include="QtGuiApplicationTest.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qss\mainTabWidget.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
+    <None Include="Resources\qss\black.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
+    <None Include="Resources\qss\white.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
+    <None Include="Resources\qss\dark_orange.qss">
+      <Filter>Resource Files\qss</Filter>
+    </None>
   </ItemGroup>
 </Project>

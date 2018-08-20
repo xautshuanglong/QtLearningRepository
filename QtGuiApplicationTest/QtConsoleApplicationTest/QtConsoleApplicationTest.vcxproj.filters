@@ -24,10 +24,27 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="ThirdPartTest">
+      <UniqueIdentifier>{5cf7f23d-4e75-489b-b6e3-2f43285f1ee8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DicomFileParserTest.cpp">
+      <Filter>ThirdPartTest</Filter>
+    </ClCompile>
+    <ClCompile Include="TestManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DicomFileParserTest.h">
+      <Filter>ThirdPartTest</Filter>
+    </ClInclude>
+    <ClInclude Include="TestManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
