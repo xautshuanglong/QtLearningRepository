@@ -32,8 +32,9 @@ private:
     //unsigned short          mDcmImageWidth, mDcmImageHeight; // DCM图像原始尺寸(通常比较大)
     int                     mRescaleSlope, mRescaleIntercept; // 斜率 截距
     int                     mWindowCenter, mWindowWidth;
+    int                     mDcmFrameIndex, mDcmFrameCount; // 多帧 DCM 文件的当前显示帧和总帧数
     QImage                  mDcmImage;
-    QString                 mDcmPhotometricInterpretation; // 广度表示 RGB/MONOCHROME1/MONOCHROME2
+    QString                 mDcmPhotometricInterpretation;  // 光度度表示 RGB/MONOCHROME1/MONOCHROME2
 
 public:
     explicit MainTabPageDicom(QWidget *parent = Q_NULLPTR);
@@ -50,7 +51,7 @@ private slots:
 
 private:
     void LoadDicomFile(const QString& inDcmFilename);
-    void GetDicomElementImage(QImage& outImage);
+    void GetDicomElementImage(QImage& outImage, int frameIndex = 0, int frameCount = 1);
     void ConvertDicomToQImage(QString &dcmFilename, QImage **ppOutImage);
     void GetPixelValueFromPhotometric(int& pixelValue, int pixelValueMin, int pixelValueMax, int windowWidth);
     void GetDicomElementValue(QString &outStrValue, DcmObject *pInDcmObj);

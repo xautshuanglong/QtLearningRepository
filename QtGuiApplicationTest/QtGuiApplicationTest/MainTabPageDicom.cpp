@@ -5,6 +5,7 @@
 #include <QToolBar>
 #include <QFileDialog>
 #include <QImage>
+#include <QTime>
 
 // DICOM  dcmtk
 #include <dcmtk/ofstd/ofcast.h>
@@ -30,8 +31,10 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     , mpImageData(Q_NULLPTR)
     , mRescaleSlope(1)
     , mRescaleIntercept(0)
-    , mWindowCenter(128)
-    , mWindowWidth(256)
+    , mWindowCenter(127)
+    , mWindowWidth(255)
+    , mDcmFrameIndex(0)
+    , mDcmFrameCount(1)
 {
     ui.setupUi(this);
 
@@ -92,7 +95,7 @@ void MainTabPageDicom::on_action_open()
     if (!dcmFileName.isEmpty())
     {
         this->LoadDicomFile(dcmFileName);
-        this->GetDicomElementImage(mDcmImage);
+        this->GetDicomElementImage(mDcmImage, 0, mDcmFrameIndex);
         this->UpdateDcmTabTableContent();
         this->ShowDicomImage();
     }
@@ -243,22 +246,22 @@ void MainTabPageDicom::LoadDicomFile(const QString& inDcmFilename)
     }
 }
 
-void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
+void MainTabPageDicom::GetDicomElementImage(QImage& outImage, int frameIndex /* = 0 */, int frameCount /* = 1 */)
 {
-    if (mpImageData == Q_NULLPTR) return;
+    if (mpImageData == Q_NULLPTR || frameIndex >= frameCount) return;
 
     QImage tempImage;
     int pixValueMin = mWindowCenter - mWindowWidth / 2;
     int pixValueMax = mWindowCenter + mWindowWidth / 2;
 
-    bool pixWindowHandleFlag = (mWindowCenter != 128 || mWindowWidth != 256); // 是否需要处理像素值窗口（非默认值）
+    bool pixWindowHandleFlag = (mWindowCenter != 127 || mWindowWidth != 255); // 是否需要处理像素值窗口（非默认值）
     bool inverseFlag = mDcmPhotometricInterpretation.compare("MONOCHROME1", Qt::CaseInsensitive) == 0;
     if (mBitAllocated == 8)
     {
         tempImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
         int *pRgbValue = new int[mSamplePerPixel];
         int unitPerLine = mImageWidth * mSamplePerPixel;
-        Uint8 *pTempImageData = (Uint8*)mpImageData;
+        Uint8 *pTempImageData = (Uint8*)mpImageData + unitPerLine * mImageHeight * frameIndex;
         for (int i = 0; i < mImageHeight; ++i)
         {
             for (int j = 0; j < mImageWidth; ++j)
@@ -284,7 +287,8 @@ void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
         tempImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
         int *pRgbValue = new int[mSamplePerPixel];
         int unitPerLine = mImageWidth * mSamplePerPixel;
-        Sint16 *pTempImageData = (Sint16 *)mpImageData;
+        Sint16 *pTempImageData = (Sint16 *)mpImageData + unitPerLine * mImageHeight * frameIndex;
+
         for (int i = 0; i < mImageHeight; ++i)
         {
             for (int j = 0; j < mImageWidth; ++j)
@@ -304,12 +308,10 @@ void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
                 if (mSamplePerPixel == 3)
                 {
                     tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[1], pRgbValue[2], 255));
-                    LogUtil::Debug(CODE_LOCATION, "pixel rgb(%d, %d, %d)", pRgbValue[0], pRgbValue[1], pRgbValue[2]);
                 }
                 else
                 {
                     tempImage.setPixelColor(j, i, QColor(pRgbValue[0], pRgbValue[0], pRgbValue[0], 255));
-                    LogUtil::Debug(CODE_LOCATION, "pixel rgb(%d, %d, %d)", pRgbValue[0], pRgbValue[0], pRgbValue[0]);
                 }
             }
         }
