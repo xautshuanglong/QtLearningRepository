@@ -163,6 +163,7 @@ $RECYCLE.BIN/
 !**/libs/*/x[86][64]/
 !**/libs/*/x[86][64]/[Dd]ebug/
 !**/libs/*/x[86][64]/[Rr]elease
+**/libs/dcmtk/**
 
 # QT generated files
 **/GeneratedFiles/**
