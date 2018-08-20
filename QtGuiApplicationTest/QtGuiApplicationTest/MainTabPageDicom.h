@@ -28,7 +28,8 @@ private:
     unsigned short          mBitAllocated;             // 申请位数
     unsigned short          mBitStored;                // 存储位数
     unsigned short          mSamplePerPixel;           // 像素采样
-    unsigned short          mImageWidth, mImageHeight; // 图像尺寸
+    unsigned short          mImageWidth, mImageHeight; // 图像尺寸(根据情况缩放)
+    //unsigned short          mDcmImageWidth, mDcmImageHeight; // DCM图像原始尺寸(通常比较大)
     int                     mRescaleSlope, mRescaleIntercept; // 斜率 截距
     int                     mWindowCenter, mWindowWidth;
     QImage                  mDcmImage;
@@ -44,6 +45,8 @@ protected:
 private slots:
     void on_action_open();
     void on_action_save();
+    void on_action_previous();
+    void on_action_next();
 
 private:
     void LoadDicomFile(const QString& inDcmFilename);

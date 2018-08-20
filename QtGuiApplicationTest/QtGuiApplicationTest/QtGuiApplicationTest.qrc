@@ -8,5 +8,7 @@
     <qresource prefix="/AppImages">
         <file>Resources/images/open.png</file>
         <file>Resources/images/save.png</file>
+        <file>Resources/images/frame_next.png</file>
+        <file>Resources/images/frame_previous.png</file>
     </qresource>
 </RCC>

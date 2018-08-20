@@ -40,11 +40,15 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     //ui.tableDcmTag->setStyleSheet("background:red;");
 
     QAction *pActionOpen = new QAction(QIcon(":/AppImages/Resources/images/open.png"), "Open");
-    QAction *pActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Open");
+    QAction *pActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Save");
+    QAction *pActionPrevious = new QAction(QIcon(":/AppImages/Resources/images/frame_previous.png"), "Previous");
+    QAction *pActionNext = new QAction(QIcon(":/AppImages/Resources/images/frame_next.png"), "Next");
 
     QToolBar *pDcmToolBar = new QToolBar();
     pDcmToolBar->addAction(pActionOpen);
     pDcmToolBar->addAction(pActionSave);
+    pDcmToolBar->addAction(pActionPrevious);
+    pDcmToolBar->addAction(pActionNext);
     ui.toolbarHLayout->insertWidget(0, pDcmToolBar);
 
     mpMainSpliter = new QSplitter(Qt::Horizontal, this);
@@ -56,6 +60,8 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
 
     this->connect(pActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
     this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
+    this->connect(pActionPrevious, SIGNAL(triggered()), SLOT(on_action_previous()));
+    this->connect(pActionNext, SIGNAL(triggered()), SLOT(on_action_next()));
 
     QStringList header;
     header << "DcmTagKey" << "DcmTagName" << "ElementValue";
@@ -93,6 +99,16 @@ void MainTabPageDicom::on_action_open()
 }
 
 void MainTabPageDicom::on_action_save()
+{
+    int i = 0;
+}
+
+void MainTabPageDicom::on_action_previous()
+{
+    int i = 0;
+}
+
+void MainTabPageDicom::on_action_next()
 {
     int i = 0;
 }
@@ -236,6 +252,7 @@ void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
     int pixValueMax = mWindowCenter + mWindowWidth / 2;
 
     bool pixWindowHandleFlag = (mWindowCenter != 128 || mWindowWidth != 256); // 是否需要处理像素值窗口（非默认值）
+    bool inverseFlag = mDcmPhotometricInterpretation.compare("MONOCHROME1", Qt::CaseInsensitive) == 0;
     if (mBitAllocated == 8)
     {
         tempImage = QImage(mImageWidth, mImageHeight, QImage::Format_RGB32);
@@ -279,7 +296,7 @@ void MainTabPageDicom::GetDicomElementImage(QImage& outImage)
                     {
                         this->GetPixelValueFromPhotometric(pRgbValue[k], pixValueMin, pixValueMax, mWindowWidth);
                     }
-                    if (mDcmPhotometricInterpretation.compare("MONOCHROME1", Qt::CaseInsensitive) == 0)
+                    if (inverseFlag)
                     {
                         pRgbValue[k] = 255 - pRgbValue[k];
                     }
