@@ -106,7 +106,12 @@ void MainTabPageDicom::on_action_open()
 
 void MainTabPageDicom::on_action_save()
 {
-    int i = 0;
+    QString curAppPath = QCoreApplication::applicationDirPath();
+    QString saveFilename = QFileDialog::getSaveFileName(this, tr("Save File"), curAppPath, tr("Images (*.png *.jpg)"));
+    if (!saveFilename.isEmpty())
+    {
+        mDcmImage.save(saveFilename);
+    }
 }
 
 void MainTabPageDicom::on_action_previous()
