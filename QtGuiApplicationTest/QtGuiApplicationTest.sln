@@ -302,6 +302,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libi2d", "libi2d", "{9CEFF4
 		libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h = libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CognexDataManSDK", "CognexDataManSDK\CognexDataManSDK.vcxproj", "{5492B3C6-9E0C-4304-86DE-1D650E22C214}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
@@ -310,17 +312,31 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.ActiveCfg = Debug|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.Build.0 = Debug|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.ActiveCfg = Debug|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Debug|x64.ActiveCfg = Debug|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Debug|x64.Build.0 = Debug|x64
+		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Debug|x86.ActiveCfg = Debug|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x64.ActiveCfg = Release|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x64.Build.0 = Release|x64
+		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x86.ActiveCfg = Release|x64
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x64.ActiveCfg = Debug|x64
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x64.Build.0 = Debug|x64
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x86.ActiveCfg = Debug|Win32
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x86.Build.0 = Debug|Win32
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x64.ActiveCfg = Release|x64
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x64.Build.0 = Release|x64
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x86.ActiveCfg = Release|Win32
+		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

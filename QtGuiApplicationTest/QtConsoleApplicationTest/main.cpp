@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     LogUtil::Debug(CODE_LOCATION, "-------------- Start testing --------------");
 
     TestManager::Instance()->Enter();
+    TestManager::Instance()->Exit();
 
     return a.exec();
 }

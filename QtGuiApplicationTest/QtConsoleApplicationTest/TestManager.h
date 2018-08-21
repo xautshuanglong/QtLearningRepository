@@ -1,11 +1,13 @@
 #pragma once
 
 class DicomFileParserTest;
+class CognexDataManSDKTest;
 
 class TestManager
 {
 private:
-    DicomFileParserTest *mpDicomFileParserTest;
+    DicomFileParserTest    *mpDicomFileParserTest;
+    CognexDataManSDKTest   *mpCognexDataManSDKTest;
 
 public:
     ~TestManager();
