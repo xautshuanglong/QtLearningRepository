@@ -107,6 +107,11 @@
     <ClInclude Include="DicomFileParserTest.h" />
     <ClInclude Include="TestManager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CognexDataManSDK\CognexDataManSDK.vcxproj">
+      <Project>{5492b3c6-9e0c-4304-86de-1d650e22c214}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
