@@ -1,6 +1,6 @@
 #include "CognexDataManSDKTest.h"
 
-#include <CognexDataManSDK.h>
+#include <DataManManager.h>
 
 CognexDataManSDKTest::CognexDataManSDKTest()
 {
@@ -22,6 +22,6 @@ void CognexDataManSDKTest::TestExit()
 
 void CognexDataManSDKTest::PrintCLR()
 {
-    CognexDataManSDK::TestAPI testAPI;
-    testAPI.PrintTest();
+    CognexDataManSDK::DataManManager test;
+    test.Discover();
 }

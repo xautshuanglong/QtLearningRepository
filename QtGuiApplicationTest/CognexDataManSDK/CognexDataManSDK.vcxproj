@@ -128,18 +128,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="Cognex.DataMan.SDK.Discovery.PC">
+      <HintPath>..\libs\DataManSDK\Cognex.DataMan.SDK.Discovery.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.SDK.PC">
+      <HintPath>..\libs\DataManSDK\Cognex.DataMan.SDK.PC.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CognexDataManSDK.h" />
+    <ClInclude Include="DataManManager.h" />
+    <ClInclude Include="DataManSdkDefines.h" />
+    <ClInclude Include="IDeviceConectionCallback.h" />
+    <ClInclude Include="IDataManCallback.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="DataManSdkWrap.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="CognexDataManSDK.cpp" />
+    <ClCompile Include="DataManManager.cpp" />
+    <ClCompile Include="DataManSdkWrap.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
