@@ -4,8 +4,8 @@
 using namespace System;
 using namespace System::Collections::Generic;
 
-#using "..\\libs\DataManSDK\\Cognex.DataMan.SDK.PC.dll"
-#using "..\\libs\DataManSDK\\Cognex.DataMan.SDK.Discovery.PC.dll"
+#using "..\\libs\\DataManSDK\\Cognex.DataMan.SDK.PC.dll"
+#using "..\\libs\\DataManSDK\\Cognex.DataMan.SDK.Discovery.PC.dll"
 using namespace Cognex::DataMan::SDK;
 using namespace Cognex::DataMan::SDK::Discovery;
 

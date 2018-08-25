@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "DataManSdkWrap.h"
 
+//#import "..\\x64\\Debug\\CSharpComTest.tlb"
+//using namespace CSharpComTest;
+
 namespace CognexDataManSDK
 {
     DataManSdkWrap::DataManSdkWrap()
@@ -14,6 +17,11 @@ namespace CognexDataManSDK
     {
         mSerSystemDiscover->Discover();
         Console::WriteLine("After calling SerSystemDiscovererWrap::Discover()");
+
+        //CoInitialize(NULL);
+        //ManagedClassTest managedClass;
+        //managedClass.ManagedMethodTest();
+        //CoUninitialize();
     }
 
     void DataManSdkWrap::OnSerSystemDiscovered(SerSystemDiscoverer::SystemInfo ^systemInfo)

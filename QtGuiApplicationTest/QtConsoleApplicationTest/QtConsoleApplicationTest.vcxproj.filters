@@ -27,6 +27,9 @@
     <Filter Include="ThirdPartTest">
       <UniqueIdentifier>{5cf7f23d-4e75-489b-b6e3-2f43285f1ee8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ComTest">
+      <UniqueIdentifier>{577cc509-3665-454e-9a2a-e7816c9e890d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +44,9 @@
     <ClCompile Include="CognexDataManSDKTest.cpp">
       <Filter>ThirdPartTest</Filter>
     </ClCompile>
+    <ClCompile Include="ImportComTest.cpp">
+      <Filter>ComTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomFileParserTest.h">
@@ -51,6 +57,9 @@
     </ClInclude>
     <ClInclude Include="CognexDataManSDKTest.h">
       <Filter>ThirdPartTest</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportComTest.h">
+      <Filter>ComTest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

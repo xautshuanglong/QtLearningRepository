@@ -99,12 +99,14 @@
   <ItemGroup>
     <ClCompile Include="CognexDataManSDKTest.cpp" />
     <ClCompile Include="DicomFileParserTest.cpp" />
+    <ClCompile Include="ImportComTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CognexDataManSDKTest.h" />
     <ClInclude Include="DicomFileParserTest.h" />
+    <ClInclude Include="ImportComTest.h" />
     <ClInclude Include="TestManager.h" />
   </ItemGroup>
   <ItemGroup>

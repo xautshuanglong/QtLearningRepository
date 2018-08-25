@@ -304,6 +304,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libi2d", "libi2d", "{9CEFF4
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CognexDataManSDK", "CognexDataManSDK\CognexDataManSDK.vcxproj", "{5492B3C6-9E0C-4304-86DE-1D650E22C214}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpComTest", "CSharpComTest\CSharpComTest.csproj", "{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
@@ -337,6 +339,14 @@ Global
 		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x64.Build.0 = Release|x64
 		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x86.ActiveCfg = Release|Win32
 		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x86.Build.0 = Release|Win32
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Debug|x64.ActiveCfg = Debug|x64
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Debug|x64.Build.0 = Debug|x64
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Debug|x86.ActiveCfg = Debug|x86
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Debug|x86.Build.0 = Debug|x86
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x64.ActiveCfg = Release|x64
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x64.Build.0 = Release|x64
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x86.ActiveCfg = Release|x86
+		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
