@@ -24,8 +24,8 @@ TestManager* TestManager::Instance()
 void TestManager::Enter()
 {
     //mpDicomFileParserTest->TestEnter();
-    //mpCognexDataManSDKTest->TestEnter();
-    mpImportComTest->TestEnter();
+    mpCognexDataManSDKTest->TestEnter();
+    //mpImportComTest->TestEnter();
 }
 
 void TestManager::Exit()

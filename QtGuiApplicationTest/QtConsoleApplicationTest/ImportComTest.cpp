@@ -3,8 +3,8 @@
 #include <combaseapi.h>
 #include <iostream>
 
-//#import "..\\x64\\Debug\\CSharpComTest.tlb"
-#import "..\\x64\\Debug\\CSharpComTest.dll"
+#import "..\\x64\\Debug\\CSharpComTest.tlb"
+//#import "..\\x64\\Debug\\CSharpComTest.dll"
 using namespace CSharpComTest;
 
 ImportComTest::ImportComTest()
