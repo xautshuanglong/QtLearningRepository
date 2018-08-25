@@ -17,6 +17,7 @@ namespace CSharpComTest
         int Minus(int a, int b);
         [DispId(3)]
         int Multiple(int a, int b);
+        [DispId(4)]
         float Devide(float a, float b);
     }
 

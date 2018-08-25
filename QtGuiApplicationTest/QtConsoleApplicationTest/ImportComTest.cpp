@@ -3,7 +3,8 @@
 #include <combaseapi.h>
 #include <iostream>
 
-#import "..\\x64\\Debug\\CSharpComTest.tlb"
+//#import "..\\x64\\Debug\\CSharpComTest.tlb"
+#import "..\\x64\\Debug\\CSharpComTest.dll"
 using namespace CSharpComTest;
 
 ImportComTest::ImportComTest()
@@ -30,7 +31,16 @@ void ImportComTest::ComMethodTest()
 
     IComInterfacePtr comTest;
     //comTest.CreateInstance(__uuidof(ComClassTest));       // 通过 COM 类的 GUID 创建实例
-    comTest.CreateInstance("CSharpComTest.ComClassTest"); // 通过 ProgId (C#中指定) 创建实例
+    //comTest.CreateInstance("CSharpComTest.ComClassTest"); // 通过 ProgId (C#中指定) 创建实例
+
+    //CLSID clsid;
+    //CLSIDFromProgID(OLESTR("CSharpComTest.ComClassTest"), &clsid);
+    //comTest.CreateInstance(clsid);
+
+    CLSID clsid;
+    CLSIDFromProgID(OLESTR("CSharpComTest.ComClassTest"), &clsid);
+    comTest.CreateInstance(clsid);
+
     int sum = comTest->Add(1, 3);
     int diff = comTest->Minus(3, 5);
     int multiple = comTest->Multiple(3, 4);
