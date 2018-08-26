@@ -5,10 +5,20 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+//
+// regasm ComInteropExample.DLL /tlb: ComInteropExample.tlb (常用，绝对路径更好)
+//
+// Use VS tool to register the assembly as:
+//    regasm ComPlusExample.DLL
+// Create a Type Library using the tool:
+//    tlbexp ComPlusExample.DLL
+// Register it in COM+ as:
+//    regsvcs ComPlusExample.DLL
+
 namespace CSharpComTest
 {
-    [ComVisible(true)]
     [Guid("B6AD3E87-5415-495E-BCB7-E5C31FDD8F1E")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     public interface IComInterface
     {
         [DispId(1)]
@@ -20,9 +30,9 @@ namespace CSharpComTest
         [DispId(4)]
         float Devide(float a, float b);
     }
-
-    [ComVisible(true)]
+    
     [Guid("72E5AA0A-1CF3-46BA-8D56-50C56AE0F338")]
+    [ClassInterface(ClassInterfaceType.None)]
     [ProgId("CSharpComTest.ComClassTest")]
     public class ComClassTest : IComInterface
     {

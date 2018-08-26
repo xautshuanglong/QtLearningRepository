@@ -21,6 +21,7 @@ namespace CognexDataManSDK
     DataManManager::~DataManManager()
     {
         delete gpDataManSdkWrap;
+        gpDataManSdkWrap = nullptr;
     }
 
     void DataManManager::Discover()

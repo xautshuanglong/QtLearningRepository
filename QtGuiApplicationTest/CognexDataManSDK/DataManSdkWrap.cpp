@@ -206,6 +206,7 @@ namespace CognexDataManSDK
         }
         catch (Exception ^e)
         {
+            Console::WriteLine("ErrorMsg: " + e->Message + e->StackTrace);
         }
 
         return "";
