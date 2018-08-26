@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QImage>
 #include <QTime>
+#include <QTextCodec>
 
 // DICOM  dcmtk
 #include <dcmtk/ofstd/ofcast.h>
@@ -106,6 +107,14 @@ void MainTabPageDicom::on_action_open()
 
 void MainTabPageDicom::on_action_save()
 {
+    QTextCodec *pCodec = QTextCodec::codecForName("GBK");
+    QString localName = pCodec->name();
+    QString testStr = pCodec->toUnicode("test中文");
+    QTextCodec *pUtf8 = QTextCodec::codecForName("UTF-8");
+    QString utf8 = pUtf8->fromUnicode(testStr);
+    ui.labelImage->setText(pUtf8->toUnicode("test中文"));
+    return;
+
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString saveFilename = QFileDialog::getSaveFileName(this, tr("Save File"), curAppPath, tr("Images (*.png *.jpg)"));
     if (!saveFilename.isEmpty())
@@ -614,7 +623,7 @@ void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pIn
     case EVR_UT: /// unlimited text
     case EVR_UI: /// unique identifier
         res = pTempElement->getString(pTempString);
-        res.good() ? outStrValue = pTempString : LogUtil::Debug(CODE_LOCATION, "getString error: %s", res.text());
+        res.good() ? outStrValue = QString::fromLocal8Bit(pTempString) : LogUtil::Debug(CODE_LOCATION, "getString error: %s", res.text());
         break;
     case EVR_FL: /// float single-precision
     case EVR_OF: /// other float
@@ -672,7 +681,11 @@ void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pIn
 
 void MainTabPageDicom::ShowDicomImage()
 {
-    if (mDcmImage.isNull()) return;
+    if (mDcmImage.isNull())
+    {
+        ui.labelImage->clear();
+        return;
+    }
 
     ui.labelImage->setGeometry(0, 0, ui.leftWidget->width(), ui.leftWidget->height());
     ui.labelImage->setPixmap(QPixmap::fromImage(mDcmImage)
