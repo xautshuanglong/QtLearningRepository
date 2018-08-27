@@ -23,7 +23,7 @@ namespace CognexDataManSDK
         virtual void OnDeviceConnected();     // 连接已建立
         virtual void OnDeviceDisconnected();  // 连接已断开
         /* IDataManCallback */
-        virtual void OnSimpleResultCompleted(int id, unsigned char* pData, int dataLen); // 简单文本数据
+        virtual void OnSimpleResultCompleted(int id, const char* pData, int dataLen); // 简单文本数据
         virtual void OnComplexResultCompleted(); // 包括 文本、图片、视频（连续图片）
     };
 }

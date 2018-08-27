@@ -62,9 +62,9 @@ namespace CognexDataManSDK
     }
 
     /* IDataManCallback */
-    void DataManManager::OnSimpleResultCompleted(int id, unsigned char* pData, int dataLen)
+    void DataManManager::OnSimpleResultCompleted(int id, const char* pData, int dataLen)
     {
-        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
+        std::cout << "QR Code: " << pData << std::endl;
     }
 
     void DataManManager::OnComplexResultCompleted()

@@ -2,6 +2,7 @@
 #include "DataManSdkWrap.h"
 
 #include <vcclr.h>
+#include <cstdlib>
 
 namespace CognexDataManSDK
 {
@@ -174,7 +175,7 @@ namespace CognexDataManSDK
 
         ResultTypes collected_results = ResultTypes::None;
         SimpleResult^ tempResult = nullptr;
-        String^ resultString("");
+        String^ resultStr("");
         int resCount = result->SimpleResults->Count;
         for (int i = 0; i < resCount; ++i)
         {
@@ -188,19 +189,50 @@ namespace CognexDataManSDK
             case ResultTypes::ImageGraphics:
                 break;
             case ResultTypes::ReadXml:
-                resultString = this->GetReadStringFromResultXml(tempResult->GetDataAsString());
+                resultStr = this->GetReadStringFromResultXml(tempResult->GetDataAsString());
                 break;
             case ResultTypes::ReadString:
-                resultString = tempResult->GetDataAsString();
+                resultStr = tempResult->GetDataAsString();
                 break;
             }
         }
 
-        String ^resultStr = String::Format("Partial result dropped: {0}, id={1}, TEXT:{2}",
+        String ^tempStr = String::Format("Partial result dropped: {0}, id={1}, TEXT:{2}",
                                            tempResult->Id->Type.ToString(),
                                            tempResult->Id->Id,
-                                           resultString);
-        Console::WriteLine(resultStr);
+                                           resultStr);
+        Console::WriteLine(tempStr);
+        if (mpEventListener != nullptr)
+        {
+            char* pTest = nullptr;
+            int resultLen = resultStr->Length;
+            pin_ptr<const wchar_t> resultBytes = ::PtrToStringChars(resultStr);
+            pTest = new char[resultLen + 1];
+            pTest[resultLen] = '\0';
+            std::wcstombs(pTest, resultBytes, resultLen);
+            mpEventListener->OnSimpleResultCompleted(tempResult->Id->Id, pTest, resultStr->Length);
+            delete pTest;
+        }
+
+        //static int count = 0;
+        //try
+        //{
+        //    if ((count & 1) == 0)
+        //    {
+        //        Console::WriteLine("Command: SET LIGHT.INTERNAL-ENABLE ON");
+        //        mDataManSystem->SendCommand("SET LIGHT.INTERNAL-ENABLE ON");
+        //    }
+        //    else
+        //    {
+        //        Console::WriteLine("Command: SET LIGHT.INTERNAL-ENABLE OFF");
+        //        mDataManSystem->SendCommand("SET LIGHT.INTERNAL-ENABLE OFF");
+        //    }
+        //}
+        //catch (Exception^ e)
+        //{
+        //    Console::WriteLine("Error: " + e->Message + " at " + e->StackTrace);
+        //}
+        //++count;
     }
 
     void DataManSdkWrap::OnSimpleResultDropped(Object ^sender, SimpleResult ^result)

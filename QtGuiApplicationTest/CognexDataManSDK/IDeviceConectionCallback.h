@@ -1,9 +1,11 @@
 #pragma once
 
+#include "DataManSdkDefines.h"
+
 /***************************\
 *    设备连接状态回调函数
 \***************************/
-class IDeviceConnectionCallback
+class COGNEX_EXPORT IDeviceConnectionCallback
 {
 public:
     IDeviceConnectionCallback() {};
