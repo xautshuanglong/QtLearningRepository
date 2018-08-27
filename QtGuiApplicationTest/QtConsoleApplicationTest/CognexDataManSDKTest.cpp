@@ -3,6 +3,7 @@
 #include <DataManManager.h>
 
 CognexDataManSDKTest::CognexDataManSDKTest()
+    : mpDataManManager(nullptr)
 {
 }
 
@@ -12,16 +13,20 @@ CognexDataManSDKTest::~CognexDataManSDKTest()
 
 void CognexDataManSDKTest::TestEnter()
 {
-    this->PrintCLR();
+    this->DataManManagerTest();
 }
 
 void CognexDataManSDKTest::TestExit()
 {
-    ;
+    if (mpDataManManager != nullptr)
+    {
+        delete mpDataManManager;
+        mpDataManManager = nullptr;
+    }
 }
 
-void CognexDataManSDKTest::PrintCLR()
+void CognexDataManSDKTest::DataManManagerTest()
 {
-    CognexDataManSDK::DataManManager test;
-    test.Discover();
+    mpDataManManager = new CognexDataManSDK::DataManManager();
+    mpDataManManager->Discover();
 }

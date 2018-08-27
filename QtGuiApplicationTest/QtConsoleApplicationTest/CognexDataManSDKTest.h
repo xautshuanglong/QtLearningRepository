@@ -1,4 +1,10 @@
 #pragma once
+
+namespace CognexDataManSDK
+{
+    class DataManManager;
+}
+
 class CognexDataManSDKTest
 {
 public:
@@ -9,6 +15,8 @@ public:
     void TestExit();
 
 private:
-    void PrintCLR();
-};
+    void DataManManagerTest();
 
+private:
+    CognexDataManSDK::DataManManager  *mpDataManManager;
+};

@@ -16,6 +16,7 @@ namespace CognexDataManSDK
     DataManManager::DataManManager()
     {
         gpDataManSdkWrap = gcnew DataManSdkWrap();
+        gpDataManSdkWrap->SetEventListener(this);
     }
 
     DataManManager::~DataManManager()
@@ -37,5 +38,37 @@ namespace CognexDataManSDK
     void DataManManager::Disconnect()
     {
         ;
+    }
+
+    void DataManManager::AddEventListener(IDataManCallback *pEventListener)
+    {
+        ;
+    }
+
+    /* IDeviceConnectionCallback */
+    void DataManManager::OnDeviceDiscoverd()
+    {
+        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
+    }
+
+    void DataManManager::OnDeviceConnected()
+    {
+        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
+    }
+
+    void DataManManager::OnDeviceDisconnected()
+    {
+        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
+    }
+
+    /* IDataManCallback */
+    void DataManManager::OnSimpleResultCompleted(int id, unsigned char* pData, int dataLen)
+    {
+        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
+    }
+
+    void DataManManager::OnComplexResultCompleted()
+    {
+        std::cout << "EnterFunction: " << __FUNCSIG__ << std::endl;
     }
 }

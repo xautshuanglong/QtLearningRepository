@@ -1,6 +1,8 @@
 #ifndef DATAMAN_SDK_WRAP_H
 #define DATAMAN_SDK_WRAP_H
 
+#include "IDataManCallback.h"
+
 using namespace System;
 using namespace System::Xml;
 using namespace System::Threading;
@@ -20,6 +22,9 @@ namespace CognexDataManSDK
     public:
         DataManSdkWrap();
         void Discover();
+        void Connect(String^ portName, int baudRate);
+        void Disconnect();
+        void SetEventListener(IDataManCallback *pEventListener);
 
     private:
         void CleanupConnection();
@@ -43,6 +48,7 @@ namespace CognexDataManSDK
         ISystemConnector^                        mSystemConnector;
         ResultCollector^                         mResultCollector;
         Object^                                  mResultInfoSyncLock;
+        IDataManCallback*                        mpEventListener;
     };
 }
 

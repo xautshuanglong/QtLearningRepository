@@ -7,8 +7,9 @@ class IDeviceConnectionCallback
 {
 public:
     IDeviceConnectionCallback() {};
-    virtual ~IDeviceConnectionCallback() = 0;
+    virtual ~IDeviceConnectionCallback() {};
 
-    virtual void Connected() = 0;     // 连接已建立
-    virtual void Disconnected() = 0;  // 连接已断开
+    virtual void OnDeviceDiscoverd() = 0;     // 发现设备
+    virtual void OnDeviceConnected() = 0;     // 连接已建立
+    virtual void OnDeviceDisconnected() = 0;  // 连接已断开
 };

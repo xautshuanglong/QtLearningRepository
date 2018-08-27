@@ -11,6 +11,7 @@ namespace CognexDataManSDK
         , mSerSystemDiscover(nullptr)
         , mSystemConnector(nullptr)
         , mResultCollector(nullptr)
+        , mpEventListener(nullptr)
     {
         mListSystemInfo = gcnew List<SerSystemDiscoverer::SystemInfo ^>();
         mSerSystemDiscover = gcnew SerSystemDiscoverer();
@@ -26,6 +27,59 @@ namespace CognexDataManSDK
         //ManagedClassTest managedClass;
         //managedClass.ManagedMethodTest();
         //CoUninitialize();
+    }
+
+    void DataManSdkWrap::Connect(String^ portName, int baudRate)
+    {
+        try
+        {
+            mSystemConnector = gcnew SerSystemConnector(portName, baudRate);
+            mDataManSystem = gcnew DataManSystem(mSystemConnector);
+
+            mDataManSystem->DefaultTimeout = 5000;
+
+            // Subscribe to events that are signalled when the system is connected / disconnected.
+            mDataManSystem->SystemConnected += gcnew SystemConnectedHandler(this, &DataManSdkWrap::OnSystemConnected);
+            mDataManSystem->SystemDisconnected += gcnew SystemDisconnectedHandler(this, &DataManSdkWrap::OnSystemDisconnected);
+            mDataManSystem->SystemWentOnline += gcnew SystemWentOnlineHandler(this, &DataManSdkWrap::OnSystemWentOnline);
+            mDataManSystem->SystemWentOffline += gcnew SystemWentOfflineHandler(this, &DataManSdkWrap::OnSystemWentOffline);
+            mDataManSystem->KeepAliveResponseMissed += gcnew KeepAliveResponseMissedHandler(this, &DataManSdkWrap::OnKeepAliveResponseMissed);
+            mDataManSystem->BinaryDataTransferProgress += gcnew BinaryDataTransferProgressHandler(this, &DataManSdkWrap::OnBinaryDataTransferProgress);
+            mDataManSystem->OffProtocolByteReceived += gcnew OffProtocolByteReceivedHandler(this, &DataManSdkWrap::OffProtocolByteReceived);
+            mDataManSystem->AutomaticResponseArrived += gcnew AutomaticResponseArrivedHandler(this, &DataManSdkWrap::AutomaticResponseArrived);
+
+            // Subscribe to events that are signalled when the device sends auto-responses.
+            ResultTypes requestedResultTypes = ResultTypes::ReadXml | ResultTypes::Image | ResultTypes::ImageGraphics;
+            mResultCollector = gcnew ResultCollector(mDataManSystem, requestedResultTypes);
+            mResultCollector->ComplexResultCompleted += gcnew ComplexResultCompletedEventHandler(this, &DataManSdkWrap::OnComplexResultCompleted);
+            mResultCollector->SimpleResultDropped += gcnew SimpleResultDroppedEventHandler(this, &DataManSdkWrap::OnSimpleResultDropped);
+
+            mDataManSystem->SetKeepAliveOptions(true, 3000, 1000);
+            //mDataManSystem->SetKeepAliveOptions(false, 3000, 1000);
+            mDataManSystem->SetResultTypes(requestedResultTypes);
+            mDataManSystem->Connect();
+        }
+        catch (Exception ^ex)
+        {
+            Console::WriteLine("Failed to connect: " + ex->ToString());
+            CleanupConnection();
+        }
+    }
+
+    void DataManSdkWrap::Disconnect()
+    {
+        if (mDataManSystem == nullptr || mDataManSystem->State != ConnectionState::Connected)
+        {
+            return;
+        }
+
+        mDataManSystem->Disconnect();
+        CleanupConnection();
+    }
+
+    void DataManSdkWrap::SetEventListener(IDataManCallback *pEventListener)
+    {
+        mpEventListener = pEventListener;
     }
 
     void DataManSdkWrap::CleanupConnection()
@@ -49,51 +103,32 @@ namespace CognexDataManSDK
     void DataManSdkWrap::OnSystemDiscovered(SerSystemDiscoverer::SystemInfo ^systemInfo)
     {
         mListSystemInfo->Add(systemInfo);
-        Console::WriteLine("EnterFunction: DataManSdkWrap::OnSystemDiscovered() " + systemInfo->Name + "-->" + systemInfo->PortName);
+        Console::WriteLine("EnterFunction: DataManSdkWrap::OnSystemDiscovered() "
+                           + systemInfo->Name + " "
+                           + systemInfo->PortName + " "
+                           + systemInfo->Baudrate + " "
+                           + systemInfo->DeviceTypeId + " "
+                           + systemInfo->SerialNumber + " "
+                           + systemInfo->Type);
 
         if (systemInfo->Name->Contains("DM8050"))
         {
             Console::WriteLine("Bingo: " + systemInfo->Name + "-->" + systemInfo->PortName);
-
-            try
-            {
-                mSystemConnector = gcnew SerSystemConnector(systemInfo->PortName, systemInfo->Baudrate);
-                mDataManSystem = gcnew DataManSystem(mSystemConnector);
-
-                mDataManSystem->DefaultTimeout = 5000;
-
-                // Subscribe to events that are signalled when the system is connected / disconnected.
-                mDataManSystem->SystemConnected += gcnew SystemConnectedHandler(this, &DataManSdkWrap::OnSystemConnected);
-                mDataManSystem->SystemDisconnected += gcnew SystemDisconnectedHandler(this, &DataManSdkWrap::OnSystemDisconnected);
-                mDataManSystem->SystemWentOnline += gcnew SystemWentOnlineHandler(this, &DataManSdkWrap::OnSystemWentOnline);
-                mDataManSystem->SystemWentOffline += gcnew SystemWentOfflineHandler(this, &DataManSdkWrap::OnSystemWentOffline);
-                mDataManSystem->KeepAliveResponseMissed += gcnew KeepAliveResponseMissedHandler(this, &DataManSdkWrap::OnKeepAliveResponseMissed);
-                mDataManSystem->BinaryDataTransferProgress += gcnew BinaryDataTransferProgressHandler(this, &DataManSdkWrap::OnBinaryDataTransferProgress);
-                mDataManSystem->OffProtocolByteReceived += gcnew OffProtocolByteReceivedHandler(this, &DataManSdkWrap::OffProtocolByteReceived);
-                mDataManSystem->AutomaticResponseArrived += gcnew AutomaticResponseArrivedHandler(this, &DataManSdkWrap::AutomaticResponseArrived);
-
-                // Subscribe to events that are signalled when the device sends auto-responses.
-                ResultTypes requestedResultTypes = ResultTypes::ReadXml | ResultTypes::Image | ResultTypes::ImageGraphics;
-                mResultCollector = gcnew ResultCollector(mDataManSystem, requestedResultTypes);
-                mResultCollector->ComplexResultCompleted += gcnew ComplexResultCompletedEventHandler(this, &DataManSdkWrap::OnComplexResultCompleted);
-                mResultCollector->SimpleResultDropped += gcnew SimpleResultDroppedEventHandler(this, &DataManSdkWrap::OnSimpleResultDropped);
-
-                mDataManSystem->SetKeepAliveOptions(true, 3000, 1000);
-                //mDataManSystem->SetKeepAliveOptions(false, 3000, 1000);
-                mDataManSystem->SetResultTypes(requestedResultTypes);
-                mDataManSystem->Connect();
-            }
-            catch (Exception ^ex)
-            {
-                Console::WriteLine("Failed to connect: " + ex->ToString());
-                CleanupConnection();
-            }
+            Connect(systemInfo->PortName, systemInfo->Baudrate);
+        }
+        if (mpEventListener != nullptr)
+        {
+            mpEventListener->OnDeviceDiscoverd();
         }
     }
 
     void DataManSdkWrap::OnSystemConnected(Object ^sender, EventArgs ^args)
     {
         Console::WriteLine("EnterFunction: " + "DataManSdkWrap::OnSystemConnected()");
+        if (mpEventListener != nullptr)
+        {
+            mpEventListener->OnDeviceConnected();
+        }
     }
 
     void DataManSdkWrap::OnSystemDisconnected(Object ^sender, EventArgs ^args)
@@ -190,15 +225,15 @@ namespace CognexDataManSDK
                 XmlAttribute^ encoding = full_string_node->Attributes["encoding"];
                 if (encoding != nullptr && encoding->Value == "base64")
                 {
-                    //if (!string.IsNullOrEmpty(full_string_node.InnerText))
-                    //{
-                    //    byte[] code = Convert.FromBase64String(full_string_node.InnerText);
-                    //    return _system.Encoding.GetString(code, 0, code.Length);
-                    //}
-                    //else
-                    //{
-                    //    return "";
-                    //}
+                    if (!String::IsNullOrEmpty(full_string_node->InnerText))
+                    {
+                        array<Byte>^ resultBytes = Convert::FromBase64String(full_string_node->InnerText);
+                        return mDataManSystem->Encoding->GetString(resultBytes, 0, resultBytes->Length);
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
 
                 return full_string_node->InnerText;
