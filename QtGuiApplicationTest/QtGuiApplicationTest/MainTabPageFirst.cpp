@@ -7,6 +7,8 @@
 #include <QFileDialog>
 
 #include <LogUtil.h>
+#include <BackgroundWorkerTest.h>
+#include <TaskBase.h>
 
 #include <dcmtk/ofstd/offile.h>
 #include <dcmtk/oflog/oflog.h>
@@ -34,6 +36,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     ui.imgTitleValue->setText("image_filename_test");
 
     pDcmWidget = new DicomWindow();
+
+    mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -60,6 +64,9 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
 {
+    mpBackgroundWorker->Stop();
+    return;
+
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
     ShowDicomImage(dcmFileName);
@@ -70,7 +77,8 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->SelfPaintImage8Bit();
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();
-    this->ReadImageByQImageMulti();
+    //this->ReadImageByQImageMulti();
+    this->BackgroundWorkerTest();
 }
 
 void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
@@ -941,4 +949,18 @@ void MainTabPageFirst::SelfPaintImage8Bit()
 
         delete pFileFormat;
     }
+}
+
+void MainTabPageFirst::BackgroundWorkerTest()
+{
+    std::shared_ptr<SL::Core::TaskBase> p = std::shared_ptr<SL::Core::TaskBase>(new SL::Core::TaskBase());
+    mpBackgroundWorker->AddTask(p);
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->Start();
 }

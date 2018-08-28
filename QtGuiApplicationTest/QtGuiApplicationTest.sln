@@ -306,11 +306,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CognexDataManSDK", "CognexD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpComTest", "CSharpComTest\CSharpComTest.csproj", "{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtLibarayCoreTest", "QtLibarayCoreTest\QtLibarayCoreTest.vcxproj", "{DBE3666B-5BAB-4D98-84E6-AF03523B008C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
 		SharedCode\SharedCode.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
 		SharedCode\SharedCode.vcxitems*{b12702ad-abfb-343a-a199-8e24837244a3}*SharedItemsImports = 4
+		SharedCode\SharedCode.vcxitems*{dbe3666b-5bab-4d98-84e6-af03523b008c}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -347,6 +350,12 @@ Global
 		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x64.Build.0 = Release|x64
 		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x86.ActiveCfg = Release|x86
 		{E2F8FF1D-D03B-494D-87D3-38E7B6B2722D}.Release|x86.Build.0 = Release|x86
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x64.ActiveCfg = Debug|x64
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x64.Build.0 = Debug|x64
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x86.ActiveCfg = Debug|x64
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Release|x64.ActiveCfg = Release|x64
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Release|x64.Build.0 = Release|x64
+		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

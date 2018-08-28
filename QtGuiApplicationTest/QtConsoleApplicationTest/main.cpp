@@ -1,10 +1,8 @@
 #include <QCoreApplication>
-
 #include <QDebug>
 #include <QThread>
 
 #include <LogUtil.h>
-
 #include "TestManager.h"
 
 int main(int argc, char *argv[])
