@@ -5,6 +5,8 @@
 //#include <BackgroundWorkerTest.h>
 
 class DicomWindow;
+class MyBackgroundWorker;
+class MyWorkerThreadPool;
 
 namespace SL
 {
@@ -19,8 +21,9 @@ class MainTabPageFirst : public QWidget
     Q_OBJECT
 
 private:
-    Ui::MainTabPageFirst ui;
-    DicomWindow *pDcmWidget;
+    Ui::MainTabPageFirst            ui;
+    DicomWindow                    *pDcmWidget;
+    MyWorkerThreadPool             *mpMyWorkerThreadPool;
     SL::Core::BackgroundWorkerTest *mpBackgroundWorker;
 
 public:
@@ -39,6 +42,8 @@ private:
     void BackupFunction();
     void SelfPaintImage8Bit();
     void BackgroundWorkerTest();
+    void QThreadPoolTest();
+    void MyThradPoolTest();
 
 private slots:
     void on_btnBrowserDcm_clicked();

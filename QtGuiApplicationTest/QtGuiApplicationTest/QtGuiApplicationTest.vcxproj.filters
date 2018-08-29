@@ -63,6 +63,18 @@
     <ClCompile Include="MainTabPageDicom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyBackgroundWorker.cpp">
+      <Filter>QThreadTest</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWorkerThreadPool.cpp">
+      <Filter>QThreadTest</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkerTaskBase.cpp">
+      <Filter>QThreadTest</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWorkerThread.cpp">
+      <Filter>QThreadTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -94,6 +106,15 @@
     <ClInclude Include="DicomWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyBackgroundWorker.h">
+      <Filter>QThreadTest</Filter>
+    </ClInclude>
+    <ClInclude Include="MyWorkerThreadPool.h">
+      <Filter>QThreadTest</Filter>
+    </ClInclude>
+    <ClInclude Include="IWorkerTask.h">
+      <Filter>QThreadTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -110,6 +131,12 @@
     </QtMoc>
     <QtMoc Include="MainTabPageDicom.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MyWorkerThread.h">
+      <Filter>QThreadTest</Filter>
+    </QtMoc>
+    <QtMoc Include="WorkerTaskBase.h">
+      <Filter>QThreadTest</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,10 @@
 #include <QTime>
 #include <QDateTime>
 #include <QFileDialog>
+#include <QThread>
+#include <QThreadPool>
 
-#include <LogUtil.h>
-#include <BackgroundWorkerTest.h>
-#include <TaskBase.h>
-
+/* DCMTK 3.6.3 Headers */
 #include <dcmtk/ofstd/offile.h>
 #include <dcmtk/oflog/oflog.h>
 #include <dcmtk/dcmjpeg/djdecode.h>
@@ -24,12 +23,20 @@
 #include <dcmtk/dcmdata/libi2d/i2djpgs.h>
 #include <dcmtk/dcmdata/libi2d/i2dbmps.h>
 
+#include <LogUtil.h>
+#include <BackgroundWorkerTest.h>
+#include <TaskBase.h>
+
 #include "DicomWindow.h"
+#include "MyBackgroundWorker.h"
+#include "MyWorkerThreadPool.h"
+#include "WorkerTaskBase.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
 MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
+    , mpBackgroundWorker(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -38,10 +45,16 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pDcmWidget = new DicomWindow();
 
     mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
+    mpMyWorkerThreadPool = new MyWorkerThreadPool();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
 {
+    if (mpBackgroundWorker != Q_NULLPTR)
+    {
+        delete mpBackgroundWorker;
+        mpBackgroundWorker = Q_NULLPTR;
+    }
 }
 
 bool MainTabPageFirst::event(QEvent *event)
@@ -64,7 +77,7 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
 {
-    mpBackgroundWorker->Stop();
+    mpMyWorkerThreadPool->Stop();
     return;
 
     QString curAppPath = QCoreApplication::applicationDirPath();
@@ -78,7 +91,9 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
-    this->BackgroundWorkerTest();
+    //this->BackgroundWorkerTest();
+    //this->QThreadPoolTest();
+    this->MyThradPoolTest();
 }
 
 void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
@@ -963,4 +978,40 @@ void MainTabPageFirst::BackgroundWorkerTest()
     mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
     mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
     mpBackgroundWorker->Start();
+}
+
+void MainTabPageFirst::QThreadPoolTest()
+{
+    MyBackgroundWorker *pTestWorker = new MyBackgroundWorker();
+    pTestWorker->setAutoDelete(true);
+
+    QThreadPool::globalInstance()->start(pTestWorker);
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+
+    int numOfCpuCore = QThread::idealThreadCount();
+    int maxThreadCount = QThreadPool::globalInstance()->maxThreadCount();
+    int activeThreadCount = QThreadPool::globalInstance()->activeThreadCount();
+
+    LogUtil::Debug(CODE_LOCATION, "CpuNum:%d MaxThread:%d ActiveThread:%d",
+                   numOfCpuCore, maxThreadCount, activeThreadCount);
+}
+
+void MainTabPageFirst::MyThradPoolTest()
+{
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
+    mpMyWorkerThreadPool->Start();
 }
