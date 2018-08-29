@@ -8,6 +8,7 @@
 namespace SL::Core
 {
     TaskBase::TaskBase()
+        : mnCount(0)
     {
     }
 
@@ -17,11 +18,10 @@ namespace SL::Core
 
     void TaskBase::DoWork()
     {
-        static int count = 0;
-        while (count < 4000)
+        while (mnCount < 300)
         {
-            ++count;
-            LogUtil::Debug(CODE_LOCATION, "tid: %d  count=%d", std::this_thread::get_id(), count);
+            ++mnCount;
+            LogUtil::Debug(CODE_LOCATION, "this: 0x%08X  count=%d", this, mnCount);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }

@@ -78,7 +78,7 @@ namespace SL::Core
             mTaskListMutex.unlock();
             if (sleepFlag || pTempTask==nullptr)
             {
-                LogUtil::Debug(CODE_LOCATION, "tid: %d is waiting", std::this_thread::get_id());
+                LogUtil::Debug(CODE_LOCATION, "Wait for task adding <--------", std::this_thread::get_id());
                 std::unique_lock<std::mutex> lock(mConditionMutex);
                 mConditionWorking.wait(lock);
             }
@@ -87,7 +87,7 @@ namespace SL::Core
                 pTempTask->DoWork();
             }
 
-            LogUtil::Debug(CODE_LOCATION, "tid: %d is running", std::this_thread::get_id());
+            //LogUtil::Debug(CODE_LOCATION, "tid: %d is running", std::this_thread::get_id());
         }
         std::unique_lock<std::mutex> conditionLock(mConditionMutex);
 

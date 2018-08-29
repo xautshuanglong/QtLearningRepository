@@ -16,6 +16,9 @@ namespace SL
 
             /* ITaskInterface */
             virtual void DoWork() override;
+
+        private:
+            int          mnCount;
         };
     }
 }
