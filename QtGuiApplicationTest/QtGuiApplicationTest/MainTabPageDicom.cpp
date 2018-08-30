@@ -59,8 +59,8 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     mpMainSpliter->setGeometry(this->frameGeometry());
     mpMainSpliter->addWidget(ui.leftWidget);
     mpMainSpliter->addWidget(ui.tableDcmTag);
-    mpMainSpliter->setStretchFactor(0, 8);
-    mpMainSpliter->setStretchFactor(0, 1);
+    mpMainSpliter->setStretchFactor(0, 75);
+    mpMainSpliter->setStretchFactor(1, 25);
 
     this->connect(mpActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
     this->connect(mpActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
@@ -107,14 +107,6 @@ void MainTabPageDicom::on_action_open()
 
 void MainTabPageDicom::on_action_save()
 {
-    QTextCodec *pCodec = QTextCodec::codecForName("GBK");
-    QString localName = pCodec->name();
-    QString testStr = pCodec->toUnicode("test中文");
-    QTextCodec *pUtf8 = QTextCodec::codecForName("UTF-8");
-    QString utf8 = pUtf8->fromUnicode(testStr);
-    ui.labelImage->setText(pUtf8->toUnicode("test中文"));
-    return;
-
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString saveFilename = QFileDialog::getSaveFileName(this, tr("Save File"), curAppPath, tr("Images (*.png *.jpg)"));
     if (!saveFilename.isEmpty())
