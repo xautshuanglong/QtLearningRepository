@@ -77,9 +77,6 @@ void MainTabPageFirst::showEvent(QShowEvent *event)
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
 {
-    mpMyWorkerThreadPool->Stop();
-    return;
-
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
     ShowDicomImage(dcmFileName);
@@ -89,11 +86,11 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
     //this->SelfPaintImage8Bit();
     //this->ReadJpegAndCopyToDicom();
-    //this->ReadImageByQImage();
+    this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
     //this->BackgroundWorkerTest();
     //this->QThreadPoolTest();
-    this->MyThradPoolTest();
+    //this->MyThradPoolTest();
 }
 
 void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
