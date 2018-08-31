@@ -46,6 +46,18 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
 
     mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
     mpMyWorkerThreadPool = new MyWorkerThreadPool();
+
+    QButtonGroup *pGroupA = new QButtonGroup(this);
+    QButtonGroup *pGroupB = new QButtonGroup(this);
+
+    pGroupA->setExclusive(true);
+    pGroupA->addButton(ui.aGroupObj1);
+    pGroupA->addButton(ui.aGroupObj2);
+
+    pGroupB->setExclusive(true);
+    pGroupB->addButton(ui.bGroupObj1);
+    pGroupB->addButton(ui.bGroupObj2);
+    pGroupB->addButton(ui.bGroupObj3);
 }
 
 MainTabPageFirst::~MainTabPageFirst()

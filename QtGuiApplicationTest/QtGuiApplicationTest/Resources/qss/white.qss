@@ -563,22 +563,25 @@ QRadioButton::indicator {
         height: 20px;
 }
 QRadioButton::indicator:unchecked {
-        image: url(:/White/radioButton);
+        image: url(:/AppImages/Resources/images/white/radio_button_off.png);
+}
+QRadioButton::indicator:unchecked:disabled {
+        image: url(:/AppImages/Resources/images/white/radio_button_disable.png);
 }
 QRadioButton::indicator:unchecked:hover {
-        image: url(:/White/radioButtonHover);
+        image: url(:/AppImages/Resources/images/white/radio_button_off.png);
 }
 QRadioButton::indicator:unchecked:pressed {
-        image: url(:/White/radioButtonPressed);
+        image: url(:/AppImages/Resources/images/white/radio_button_off.png);
 }
 QRadioButton::indicator:checked {
-        image: url(:/White/radioButtonChecked);
+        image: url(:/AppImages/Resources/images/white/radio_button_on.png);
 }
 QRadioButton::indicator:checked:hover {
-        image: url(:/White/radioButtonCheckedHover);
+        image: url(:/AppImages/Resources/images/white/radio_button_on.png);
 }
 QRadioButton::indicator:checked:pressed {
-        image: url(:/White/radioButtonCheckedPressed);
+        image: url(:/AppImages/Resources/images/white/radio_button_on.png);
 }
 
 /********** ‰»ÎøÚ**********/
