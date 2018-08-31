@@ -82,16 +82,18 @@ bool MyWorkerThreadPool::IsRunning()
 
 void MyWorkerThreadPool::WaitForTask()
 {
-    mMutexWork.lock();
+    QMutexLocker lock(&mMutexWork);
     mConditionWork.wait(&mMutexWork);
 }
 
 void MyWorkerThreadPool::NotifyOneWorker()
 {
+    QMutexLocker lock(&mMutexWork);
     mConditionWork.wakeOne();
 }
 
 void MyWorkerThreadPool::NotifyAllWorker()
 {
+    QMutexLocker lock(&mMutexWork);
     mConditionWork.wakeAll();
 }

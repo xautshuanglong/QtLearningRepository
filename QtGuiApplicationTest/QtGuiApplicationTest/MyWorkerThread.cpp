@@ -29,7 +29,9 @@ void MyWorkerThread::run()
         }
         else
         {
+            LogUtil::Debug(CODE_LOCATION, "Before thread wait condition ...");
             mpThreadPool->WaitForTask();
+            LogUtil::Debug(CODE_LOCATION, "After thread wait condition ...");
         }
     }
     LogUtil::Debug(CODE_LOCATION, "Thread will exit ...");

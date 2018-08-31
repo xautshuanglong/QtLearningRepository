@@ -18,7 +18,7 @@ namespace SL::Core
 
     void TaskBase::DoWork()
     {
-        while (mnCount < 300)
+        while (mnCount < 100)
         {
             ++mnCount;
             LogUtil::Debug(CODE_LOCATION, "this: 0x%08X  count=%d", this, mnCount);
