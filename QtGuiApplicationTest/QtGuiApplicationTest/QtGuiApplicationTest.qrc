@@ -10,5 +10,7 @@
         <file>Resources/images/save.png</file>
         <file>Resources/images/frame_next.png</file>
         <file>Resources/images/frame_previous.png</file>
+        <file>Resources/images/radio_button_off.png</file>
+        <file>Resources/images/radio_button_on.png</file>
     </qresource>
 </RCC>
