@@ -205,11 +205,13 @@ namespace CognexDataManSDK
         if (mpEventListener != nullptr)
         {
             char* pTest = nullptr;
-            int resultLen = resultStr->Length;
+            size_t converted = 0;
+            size_t resultLen = resultStr->Length;
             pin_ptr<const wchar_t> resultBytes = ::PtrToStringChars(resultStr);
             pTest = new char[resultLen + 1];
             pTest[resultLen] = '\0';
-            std::wcstombs(pTest, resultBytes, resultLen);
+            //std::wcstombs(pTest, resultBytes, resultLen);
+            ::wcstombs_s(&converted, pTest, resultLen+1, resultBytes, resultLen);
             mpEventListener->OnSimpleResultCompleted(tempResult->Id->Id, pTest, resultStr->Length);
             delete pTest;
         }
