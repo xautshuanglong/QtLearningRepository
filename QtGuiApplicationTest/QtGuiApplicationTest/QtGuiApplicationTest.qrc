@@ -13,5 +13,17 @@
         <file>Resources/images/white/radio_button_off.png</file>
         <file>Resources/images/white/radio_button_on.png</file>
         <file>Resources/images/white/radio_button_disable.png</file>
+        <file>Resources/images/white/arrow_down.png</file>
+        <file>Resources/images/white/arrow_left.png</file>
+        <file>Resources/images/white/arrow_right.png</file>
+        <file>Resources/images/white/arrow_up.png</file>
+        <file>Resources/images/dark/arrow_down.png</file>
+        <file>Resources/images/dark/arrow_left.png</file>
+        <file>Resources/images/dark/arrow_right.png</file>
+        <file>Resources/images/dark/arrow_up.png</file>
+        <file>Resources/images/orange/arrow_down.png</file>
+        <file>Resources/images/orange/arrow_left.png</file>
+        <file>Resources/images/orange/arrow_right.png</file>
+        <file>Resources/images/orange/arrow_up.png</file>
     </qresource>
 </RCC>
