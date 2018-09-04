@@ -46,6 +46,7 @@ public:
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
+    virtual void contextMenuEvent(QContextMenuEvent *event) override;
 
 private slots:
     void on_action_open();

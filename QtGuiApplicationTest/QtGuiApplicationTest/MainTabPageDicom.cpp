@@ -7,6 +7,8 @@
 #include <QImage>
 #include <QTime>
 #include <QTextCodec>
+#include <QMenu>
+#include <QContextMenuEvent>
 
 // DICOM  dcmtk
 #include <dcmtk/ofstd/ofcast.h>
@@ -89,6 +91,24 @@ void MainTabPageDicom::resizeEvent(QResizeEvent *event)
 {
     mpMainSpliter->setGeometry(this->frameGeometry());
     this->ShowDicomImage();
+}
+
+void MainTabPageDicom::contextMenuEvent(QContextMenuEvent *event)
+{
+    QPoint globalPoint = this->mapToGlobal(event->pos());
+
+    QMenu *pMenu = new QMenu();
+    QPoint imgPos = ui.labelImage->mapFromGlobal(this->mapToGlobal(event->pos()));
+    QPoint tagPos = ui.tableDcmTag->mapFromGlobal(this->mapToGlobal(event->pos()));
+    if (ui.labelImage->rect().contains(imgPos))
+    {
+        pMenu->addAction(ui.actionSave);
+    }
+    else if (ui.tableDcmTag->rect().contains(tagPos))
+    {
+        pMenu->addAction(ui.actionOpen);
+    }
+    pMenu->exec(globalPoint);
 }
 
 void MainTabPageDicom::on_action_open()
