@@ -363,13 +363,13 @@ QScrollBar::handle:horizontal:hover {
         background: rgb(113,186,245);
 }
 QScrollBar::sub-line:horizontal {
-        width: 15px;
+        width: 18px;
         background: transparent;
         image: url(:/AppImages/Resources/images/white/arrow_left.png);
         subcontrol-position: left;
 }
 QScrollBar::add-line:horizontal {
-        width: 15px;
+        width: 18px;
         background: transparent;
         image: url(:/AppImages/Resources/images/white/arrow_right.png);
         subcontrol-position: right;
