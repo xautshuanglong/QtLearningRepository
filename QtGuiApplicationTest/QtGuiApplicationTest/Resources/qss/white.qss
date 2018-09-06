@@ -393,7 +393,7 @@ QScrollBar:vertical {
 }
 QScrollBar::handle:vertical {
         width: 10px;
-        min-height: 20px;
+        min-height: 18px;
         background: rgb(165, 195, 225);
         margin-top: 18px;
         margin-bottom: 18px;
@@ -405,13 +405,13 @@ QScrollBar::handle:vertical:hover {
         background: rgb(113,186,245);
 }
 QScrollBar::sub-line:vertical {
-        height: 20px;
+        height: 18px;
         background: transparent;
         image: url(:/AppImages/Resources/images/white/arrow_up.png);
         subcontrol-position: top;
 }
 QScrollBar::add-line:vertical {
-        height: 20px;
+        height: 18px;
         background: transparent;
         image: url(:/AppImages/Resources/images/white/arrow_down.png);
         subcontrol-position: bottom;
