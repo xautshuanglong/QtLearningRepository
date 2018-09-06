@@ -30,6 +30,9 @@
     <Filter Include="ComTest">
       <UniqueIdentifier>{577cc509-3665-454e-9a2a-e7816c9e890d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OpenSSL">
+      <UniqueIdentifier>{6b7d4c98-728a-46f4-8b8d-2ea0462fe663}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,9 @@
     <ClCompile Include="ImportComTest.cpp">
       <Filter>ComTest</Filter>
     </ClCompile>
+    <ClCompile Include="OpensslTest.cpp">
+      <Filter>OpenSSL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomFileParserTest.h">
@@ -60,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="ImportComTest.h">
       <Filter>ComTest</Filter>
+    </ClInclude>
+    <ClInclude Include="OpensslTest.h">
+      <Filter>OpenSSL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
