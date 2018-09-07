@@ -68,7 +68,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <Define>WIN32;WIN64;QT_DLL;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;%(PreprocessorDefinitions)</Define>
@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="CognexDataManSDKTest.cpp" />
     <ClCompile Include="DicomFileParserTest.cpp" />
+    <ClCompile Include="DicomNetworkTest.cpp" />
     <ClCompile Include="ImportComTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpensslTest.cpp" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <ClInclude Include="CognexDataManSDKTest.h" />
     <ClInclude Include="DicomFileParserTest.h" />
+    <ClInclude Include="DicomNetworkTest.h" />
     <ClInclude Include="ImportComTest.h" />
     <ClInclude Include="OpensslTest.h" />
     <ClInclude Include="TestManager.h" />
