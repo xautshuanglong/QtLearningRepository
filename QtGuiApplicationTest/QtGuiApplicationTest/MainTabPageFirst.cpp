@@ -12,6 +12,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QTextDocument>
+#include <QScreen>
 
 /* DCMTK 3.6.3 Headers */
 #include <dcmtk/ofstd/offile.h>
@@ -112,13 +113,29 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
-    QPrinter  printer;
-    printer.setPageSize(QPrinter::A4);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+    //QScreen *primaryScreen = QApplication::primaryScreen();
+    //QSizeF physicsSizeF = primaryScreen->physicalSize();
+    //QSize screenSize = primaryScreen->size();
 
-    int height = printer.height();
-    int width = printer.width();
+    //qreal logicalDotsPerInch = primaryScreen->logicalDotsPerInch();
+    //qreal logicalDotsPerInchX = primaryScreen->logicalDotsPerInchX();
+    //qreal logicalDotsPerInchY = primaryScreen->logicalDotsPerInchY();
+
+    //qreal physicalDotsPerInch = primaryScreen->physicalDotsPerInch();
+    //qreal physicalDotsPerInchX = primaryScreen->physicalDotsPerInchX();
+    //qreal physicalDotsPerInchY = primaryScreen->physicalDotsPerInchY();
+
+    //int x = 0;
+
+    //return;
+
+    QPrinter  printer;
+    //printer.setPageSize(QPrinter::A4);
+    //printer.setOutputFormat(QPrinter::PdfFormat);
+    //printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+
+    //int height = printer.height();
+    //int width = printer.width();
 
     QString htmlString =
         "<h1>title1</h1>"
@@ -144,28 +161,36 @@ void MainTabPageFirst::on_btnPrint_clicked()
         "<tr>"
         "<td><font size=5> TEST ABC </font></td>"
         "</tr>"
+        "</table>"
+        "<table width=595 height=450 border=1 cellspacing=0 cellpadding=10 background=\"file:///E:/Temp/pm.png\">"
+        "<tr>"
+        "<td><font size=5> TEST ABC </font></td>"
+        "</tr>"
         "</table>";
 
-    QTextDocument textDocument;
-    textDocument.setHtml(htmlString);
-    textDocument.print(&printer);
-    return;
+    //QTextDocument textDocument;
+    //textDocument.setHtml(htmlString);
+    //textDocument.print(&printer);
+    //return;
 
-    QPainter painter;
-    painter.begin(&printer);
-    painter.drawText(0, 0, QStringLiteral("Print ≤‚ ‘"));
-    painter.setPen(QColor(255, 0, 0));
-    painter.drawLine(0, 50, width, 50);
-    painter.end();
+    //QPainter painter;
+    //painter.begin(&printer);
+    //painter.drawText(0, 0, QStringLiteral("Print ≤‚ ‘"));
+    //painter.setPen(QColor(255, 0, 0));
+    //painter.drawLine(0, 50, width, 50);
+    //painter.end();
 
-    return;
+    //return;
 
     QPrintDialog printDialog(&printer, this);
     if (printDialog.exec())
     {
-        //QTextDocument textDocument;
-        //textDocument.setHtml("<p1>title1<p1><p2>title2<p2>");
-        //textDocument.print(&printer);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+
+        QTextDocument textDocument;
+        textDocument.setHtml(htmlString);
+        textDocument.print(&printer);
     }
 }
 
