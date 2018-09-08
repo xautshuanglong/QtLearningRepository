@@ -48,4 +48,5 @@ private:
 private slots:
     void on_btnBrowserDcm_clicked();
     void on_btnBrowserImg_clicked();
+    void on_btnPrint_clicked();
 };

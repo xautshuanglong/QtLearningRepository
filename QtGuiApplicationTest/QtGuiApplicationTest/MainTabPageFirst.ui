@@ -161,6 +161,19 @@
     <string>bGroupObj3</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnPrint">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>270</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>打印</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
