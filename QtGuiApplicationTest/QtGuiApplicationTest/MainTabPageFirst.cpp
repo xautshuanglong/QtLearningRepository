@@ -129,7 +129,7 @@ void MainTabPageFirst::on_btnPrint_clicked()
 
     //return;
 
-    QPrinter  printer;
+    QPrinter  printer(QPrinter::ScreenResolution);
     //printer.setPageSize(QPrinter::A4);
     //printer.setOutputFormat(QPrinter::PdfFormat);
     //printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
@@ -251,7 +251,8 @@ void MainTabPageFirst::on_btnPrint_clicked()
         //pdfMargins.bottom = 10;
         //printer.setMargins(pdfMargins); // 默认单位 毫米 QPageLayout::Millimeter
 
-        QMarginsF pdfMarginsF(10.0, 10.0, 10.0, 10.0);
+        //QMarginsF pdfMarginsF(10.0, 10.0, 10.0, 10.0);
+        QMarginsF pdfMarginsF(0.0, 0.0, 0.0, 0.0);
         printer.setPageSize(QPrinter::A4);
         printer.setOutputFormat(QPrinter::PdfFormat);
         //printer.setPageMargins(2.65, 2.65, 2.65, 2.65, QPrinter::Unit::Millimeter);
