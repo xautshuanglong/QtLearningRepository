@@ -244,27 +244,26 @@ void MainTabPageFirst::on_btnPrint_clicked()
     QPrintDialog printDialog(&printer, this);
     if (printDialog.exec())
     {
-        QPagedPaintDevice::Margins pdfMargins;
-        pdfMargins.left = 0;
-        pdfMargins.right = 0;
-        pdfMargins.top = 0;
-        pdfMargins.bottom = 0;
+        //QPagedPaintDevice::Margins pdfMargins;
+        //pdfMargins.left = 10;
+        //pdfMargins.right = 10;
+        //pdfMargins.top = 10;
+        //pdfMargins.bottom = 10;
+        //printer.setMargins(pdfMargins); // 默认单位 毫米 QPageLayout::Millimeter
 
+        QMarginsF pdfMarginsF(10.0, 10.0, 10.0, 10.0);
         printer.setPageSize(QPrinter::A4);
         printer.setOutputFormat(QPrinter::PdfFormat);
-        printer.setMargins(pdfMargins);
+        //printer.setPageMargins(2.65, 2.65, 2.65, 2.65, QPrinter::Unit::Millimeter);
+        printer.setPageMargins(pdfMarginsF, QPageLayout::Point);
         printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
-        //QPagedPaintDevice::Margins printerMargin;
-        //printerMargin.left = 10;
-        //printerMargin.top = 10;
-        //printerMargin.right = 10;
-        //printerMargin.bottom = 10;
-        //printer.setMargins(printerMargin);
+
         QString testString = QStringLiteral("Print 测试");
-        QPainter painter;
+        QPainter painter(&printer);
         QFontMetrics fontMetrics = painter.fontMetrics();
         int textWidth = fontMetrics.width(testString);
         int textHeight = fontMetrics.height();
+        QRect painterViewPort = painter.viewport();
 
         painter.begin(&printer);
 
