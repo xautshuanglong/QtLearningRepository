@@ -113,17 +113,17 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
-    //QScreen *primaryScreen = QApplication::primaryScreen();
-    //QSizeF physicsSizeF = primaryScreen->physicalSize();
-    //QSize screenSize = primaryScreen->size();
+    QScreen *primaryScreen = QApplication::primaryScreen();
+    QSizeF physicsSizeF = primaryScreen->physicalSize();
+    QSize screenSize = primaryScreen->size();
 
-    //qreal logicalDotsPerInch = primaryScreen->logicalDotsPerInch();
-    //qreal logicalDotsPerInchX = primaryScreen->logicalDotsPerInchX();
-    //qreal logicalDotsPerInchY = primaryScreen->logicalDotsPerInchY();
+    qreal logicalDotsPerInch = primaryScreen->logicalDotsPerInch();
+    qreal logicalDotsPerInchX = primaryScreen->logicalDotsPerInchX();
+    qreal logicalDotsPerInchY = primaryScreen->logicalDotsPerInchY();
 
-    //qreal physicalDotsPerInch = primaryScreen->physicalDotsPerInch();
-    //qreal physicalDotsPerInchX = primaryScreen->physicalDotsPerInchX();
-    //qreal physicalDotsPerInchY = primaryScreen->physicalDotsPerInchY();
+    qreal physicalDotsPerInch = primaryScreen->physicalDotsPerInch();
+    qreal physicalDotsPerInchX = primaryScreen->physicalDotsPerInchX();
+    qreal physicalDotsPerInchY = primaryScreen->physicalDotsPerInchY();
 
     //int x = 0;
 
@@ -133,9 +133,11 @@ void MainTabPageFirst::on_btnPrint_clicked()
     //printer.setPageSize(QPrinter::A4);
     //printer.setOutputFormat(QPrinter::PdfFormat);
     //printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+    QRect pageRect = printer.pageRect();
+    QPagedPaintDevice::PageSize pageSize = printer.pageSize();
 
-    //int height = printer.height();
-    //int width = printer.width();
+    int printerHeight = printer.height();
+    int printerWidth = printer.width();
 
     QString htmlString =
         "<h1>title1</h1>"
@@ -171,26 +173,135 @@ void MainTabPageFirst::on_btnPrint_clicked()
     //QTextDocument textDocument;
     //textDocument.setHtml(htmlString);
     //textDocument.print(&printer);
+
+    //bool newPageRes = printer.newPage();
+    //QTextDocument docNewPage;
+    //docNewPage.setHtml("ABC");
+    //docNewPage.print(&printer);
+
     //return;
 
-    //QPainter painter;
-    //painter.begin(&printer);
-    //painter.drawText(0, 0, QStringLiteral("Print 测试"));
-    //painter.setPen(QColor(255, 0, 0));
-    //painter.drawLine(0, 50, width, 50);
-    //painter.end();
+    //QPrinter printer_html;
+    //printer_html.setPageSize(QPrinter::A4);
+    //printer_html.setOutputFormat(QPrinter::PdfFormat);
+    //printer_html.setOutputFileName("E:\\Temp\\test_html.pdf");
+
+    //QPainter painterTest(&printer_html);
+    //QRect viewRect = painterTest.viewport();
+
+
+    //QStringList title;
+    //title.push_back(QStringLiteral("名称"));
+    //title.push_back(QStringLiteral("类型"));
+    //title.push_back(QStringLiteral("大小"));
+    //title.push_back(QStringLiteral("修改日期"));
+
+    //QString curDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+    //QString html;
+    //html += "<h2 align=\"center\">" + QStringLiteral("HTML导出PDF示例") + "</h2>";
+    //html += "<h4 align=\"center\">" + curDateTime + "</h4>";
+    //html += "<table width=\"500\" border=\"1\" align=\"center\" style=\"border-collapse:collapse;\" bordercolor=\"gray\">";
+    //html += "<tr style=\"background-color:gray\">";
+    //for (int i = 0; i < title.count(); ++i)
+    //{
+    //    html += QString("<th>%1</th>").arg(title.at(i));
+    //}
+    //html += "</tr>";
+    //for (int i = 0; i < 120; ++i)
+    //{
+    //    html += "<tr>";
+    //    QString name = QStringLiteral("新建文件夹");
+    //    QString type = QStringLiteral("文件夹");
+    //    QString size = QStringLiteral("");
+    //    if (i % 2)
+    //    {
+    //        name = QStringLiteral("文本文档");
+    //        type = QStringLiteral("文件");
+    //        size = QStringLiteral("1KB");
+    //    }
+    //    html += QString("<td>%1</td>").arg(name);
+    //    html += QString("<td>%1</td>").arg(type);
+    //    html += QString("<td>%1</td>").arg(size);
+    //    html += QString("<td>%1</td>").arg(curDateTime);
+    //    html += "</tr>";
+
+    //    if (i>0 && i%10==0)
+    //    {
+    //        bool newPageFlag = printer_html.newPage();
+    //        int i = 0;
+    //    }
+    //}
+    //html += "</table>";
+
+    //QTextDocument text_document;
+    //text_document.setHtml(html);
+    //text_document.print(&printer_html);
+    //bool newPageFlag = printer_html.newPage();
+    //text_document.print(&printer_html);
 
     //return;
 
     QPrintDialog printDialog(&printer, this);
     if (printDialog.exec())
     {
-        printer.setOutputFormat(QPrinter::PdfFormat);
-        printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+        QPagedPaintDevice::Margins pdfMargins;
+        pdfMargins.left = 0;
+        pdfMargins.right = 0;
+        pdfMargins.top = 0;
+        pdfMargins.bottom = 0;
 
-        QTextDocument textDocument;
-        textDocument.setHtml(htmlString);
-        textDocument.print(&printer);
+        printer.setPageSize(QPrinter::A4);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setMargins(pdfMargins);
+        printer.setOutputFileName("E:\\Temp\\PrintTest.pdf");
+        //QPagedPaintDevice::Margins printerMargin;
+        //printerMargin.left = 10;
+        //printerMargin.top = 10;
+        //printerMargin.right = 10;
+        //printerMargin.bottom = 10;
+        //printer.setMargins(printerMargin);
+        QString testString = QStringLiteral("Print 测试");
+        QPainter painter;
+        QFontMetrics fontMetrics = painter.fontMetrics();
+        int textWidth = fontMetrics.width(testString);
+        int textHeight = fontMetrics.height();
+
+        painter.begin(&printer);
+
+        painter.drawText(0, textHeight, testString);
+
+        painter.setPen(QColor(0, 255, 0));
+        painter.drawLine(0, 0, textWidth, 0);
+        painter.drawLine(textWidth, 0, textWidth, textHeight);
+        painter.drawLine(0, textHeight, textWidth, textHeight);
+        painter.drawLine(0, 0, 0, textHeight);
+
+        painter.setPen(QColor(0, 255, 255));
+        painter.drawLine(0, 0, printerWidth, 0);
+        painter.drawLine(printerWidth, 0, printerWidth, printerHeight);
+        painter.drawLine(printerWidth, printerHeight-1, 0, printerHeight-1);
+        painter.drawLine(0, printerHeight, 0, 0);
+        painter.drawLine(0, printerHeight/2, printerWidth, printerHeight / 2);
+
+        if (printer.newPage())
+        {
+            painter.setPen(QColor(0, 0, 0));
+            painter.drawText(0, textHeight, testString);
+
+            painter.setPen(QColor(0, 255, 0));
+            painter.drawLine(0, 0, textWidth, 0);
+            painter.drawLine(textWidth, 0, textWidth, textHeight);
+            painter.drawLine(0, textHeight, textWidth, textHeight);
+            painter.drawLine(0, 0, 0, textHeight);
+
+            painter.setPen(QColor(0, 255, 255));
+            painter.drawLine(0, 0, printerWidth, 0);
+            painter.drawLine(printerWidth, 0, printerWidth, printerHeight);
+            painter.drawLine(printerWidth, printerHeight, 0, printerHeight);
+            painter.drawLine(0, printerHeight, 0, 0);
+        }
+
+        painter.end();
     }
 }
 
@@ -379,7 +490,6 @@ void MainTabPageFirst::ShowDicomImage(QString &dcmFileName)
         else
         {
             OFLOG_ERROR(gLogger, "Load file failed: " << dcmFilename);
-
 
             int minSize = imgWidth < imgHeight ? imgWidth : imgHeight;
             QImage imgTest(imgWidth, imgHeight, QImage::Format_RGB16);
