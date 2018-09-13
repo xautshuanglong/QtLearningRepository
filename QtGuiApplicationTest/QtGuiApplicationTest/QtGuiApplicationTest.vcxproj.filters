@@ -78,8 +78,8 @@
     <ClCompile Include="FramelessWindowHelper.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="FramelessWidgetHelper.cpp">
-      <Filter>Core</Filter>
+    <ClCompile Include="MiscellaneousTesting.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +96,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MainTabPageDicom.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousTesting.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -121,6 +124,9 @@
     <ClInclude Include="IWorkerTask.h">
       <Filter>QThreadTest</Filter>
     </ClInclude>
+    <ClInclude Include="MiscellaneousTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -142,9 +148,6 @@
       <Filter>QThreadTest</Filter>
     </QtMoc>
     <QtMoc Include="FramelessWindowHelper.h">
-      <Filter>Core</Filter>
-    </QtMoc>
-    <QtMoc Include="FramelessWidgetHelper.h">
       <Filter>Core</Filter>
     </QtMoc>
   </ItemGroup>

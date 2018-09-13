@@ -124,7 +124,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DicomWindow.cpp" />
-    <ClCompile Include="FramelessWidgetHelper.cpp" />
     <ClCompile Include="FramelessWindowHelper.cpp">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -139,6 +138,7 @@
     <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
     <ClCompile Include="MainTabPageSetting.cpp" />
+    <ClCompile Include="MiscellaneousTesting.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyBackgroundWorker.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
@@ -155,6 +155,7 @@
     <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
+    <QtUic Include="MiscellaneousTesting.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -183,13 +184,8 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </QtMoc>
-    <QtMoc Include="FramelessWidgetHelper.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
-    </QtMoc>
     <ClInclude Include="IWorkerTask.h" />
+    <ClInclude Include="MiscellaneousTesting.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="MyBackgroundWorker.h" />
     <ClInclude Include="MyWorkerThreadPool.h" />

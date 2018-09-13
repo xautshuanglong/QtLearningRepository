@@ -8,4 +8,3 @@ public:
     MyApplication(int &argc, char **argv, int appFlag = ApplicationFlags);
     ~MyApplication();
 };
-

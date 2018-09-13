@@ -5,6 +5,7 @@
 //#include <BackgroundWorkerTest.h>
 
 class DicomWindow;
+class MiscellaneousTesting;
 class MyBackgroundWorker;
 class MyWorkerThreadPool;
 
@@ -23,6 +24,7 @@ class MainTabPageFirst : public QWidget
 private:
     Ui::MainTabPageFirst            ui;
     DicomWindow                    *pDcmWidget;
+    MiscellaneousTesting           *mpMiscellaneousTest;
     MyWorkerThreadPool             *mpMyWorkerThreadPool;
     SL::Core::BackgroundWorkerTest *mpBackgroundWorker;
 

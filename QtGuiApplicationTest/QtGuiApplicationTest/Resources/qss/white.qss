@@ -124,10 +124,8 @@ QMenu::icon {
 /**********×´Ì¬À¸**********/
 QStatusBar {
         background: rgb(187, 212, 238);
-        border: 1px solid rgb(111, 156, 207);
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
+        border: 1px solid rgb(0, 78, 161);
+        border-top: none;
 }
 QStatusBar::item {
     border: none;

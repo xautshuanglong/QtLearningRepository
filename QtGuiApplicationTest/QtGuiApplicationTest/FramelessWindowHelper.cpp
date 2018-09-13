@@ -350,8 +350,8 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
     mpToolBarSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->addWidget(mpToolBarSeat);
 
-    mpToolBtnMax = new QToolButton(this);
     mpToolBtnMin = new QToolButton(this);
+    mpToolBtnMax = new QToolButton(this);
     mpToolBtnClose = new QToolButton(this);
 
     mpToolBtnMax->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
@@ -372,6 +372,7 @@ FramelessWindowToolBar::FramelessWindowToolBar(QWidget *parent /* = Q_NULLPTR */
 
     this->setMovable(false);
     this->setContextMenuPolicy(Qt::NoContextMenu);
+    parent->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 FramelessWindowToolBar::~FramelessWindowToolBar()

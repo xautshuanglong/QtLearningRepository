@@ -37,12 +37,14 @@
 #include "MyBackgroundWorker.h"
 #include "MyWorkerThreadPool.h"
 #include "WorkerTaskBase.h"
+#include "MiscellaneousTesting.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
 MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
     , mpBackgroundWorker(Q_NULLPTR)
+    , mpMiscellaneousTest(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -72,6 +74,10 @@ MainTabPageFirst::~MainTabPageFirst()
     {
         delete mpBackgroundWorker;
         mpBackgroundWorker = Q_NULLPTR;
+    }
+    if (mpMiscellaneousTest != Q_NULLPTR)
+    {
+        delete mpMiscellaneousTest;
     }
 }
 
@@ -113,6 +119,15 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
+    if (mpMiscellaneousTest == Q_NULLPTR)
+    {
+        mpMiscellaneousTest = new MiscellaneousTesting();
+        //mpMiscellaneousTest->setAttribute(Qt::WA_ShowModal, true);
+    }
+    mpMiscellaneousTest->show();
+
+    return;
+
     QScreen *primaryScreen = QApplication::primaryScreen();
     QSizeF physicsSizeF = primaryScreen->physicalSize();
     QSize screenSize = primaryScreen->size();
