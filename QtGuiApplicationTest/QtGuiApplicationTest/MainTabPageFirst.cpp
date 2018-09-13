@@ -125,7 +125,8 @@ void MainTabPageFirst::on_btnPrint_clicked()
     qreal physicalDotsPerInchX = primaryScreen->physicalDotsPerInchX();
     qreal physicalDotsPerInchY = primaryScreen->physicalDotsPerInchY();
 
-    //int x = 0;
+    int a4Width = 210 / 25.4 * logicalDotsPerInchX + 0.05;
+    int a4Height = 297 / 25.4 * logicalDotsPerInchY + 0.05;
 
     //return;
 
