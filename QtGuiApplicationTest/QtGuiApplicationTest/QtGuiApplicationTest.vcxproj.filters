@@ -34,6 +34,9 @@
     <Filter Include="Resource Files\qss">
       <UniqueIdentifier>{91515bb5-061e-4ed4-bd8c-5ec4c5673f20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{03110429-f8f5-4a0b-8bf2-d2ea95e7a53a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,9 +57,6 @@
     <ClCompile Include="MainTabPageSetting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FramelessWindowHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DicomWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -74,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="MyWorkerThread.cpp">
       <Filter>QThreadTest</Filter>
+    </ClCompile>
+    <ClCompile Include="FramelessWindowHelper.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="FramelessWidgetHelper.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +126,6 @@
     <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="FramelessWindowHelper.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="MainTabPageFirst.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -137,6 +140,12 @@
     </QtMoc>
     <QtMoc Include="WorkerTaskBase.h">
       <Filter>QThreadTest</Filter>
+    </QtMoc>
+    <QtMoc Include="FramelessWindowHelper.h">
+      <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="FramelessWidgetHelper.h">
+      <Filter>Core</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
