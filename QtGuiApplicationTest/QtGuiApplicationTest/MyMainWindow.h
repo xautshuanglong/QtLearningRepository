@@ -7,6 +7,7 @@ class FramelessWindowHelper;
 class MainTabPageFirst;
 class MainTabPageDicom;
 class MainTabPageSetting;
+class QSystemTrayIcon;
 
 class MyMainWindow : public QMainWindow
 {
@@ -22,6 +23,7 @@ private:
     MainTabPageFirst                *mpPageFirst;
     MainTabPageDicom                *mpPageDicom;
     MainTabPageSetting              *mpPageSetting;
+    QSystemTrayIcon                 *mpSystemTray;
 
 public:
     virtual bool event(QEvent *event) override;

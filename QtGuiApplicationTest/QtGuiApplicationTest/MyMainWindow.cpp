@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QSplitter>
+#include <QSystemTrayIcon>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -43,6 +44,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
+
+    mpSystemTray = new QSystemTrayIcon(this);
 }
 
 MyMainWindow::~MyMainWindow()
