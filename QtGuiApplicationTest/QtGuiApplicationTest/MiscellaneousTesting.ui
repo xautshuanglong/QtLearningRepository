@@ -13,24 +13,22 @@
   <property name="windowTitle">
    <string>Miscellaneous method testing</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menutest">
-    <property name="title">
-     <string>test</string>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLineEdit" name="lineEditPosition">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>CentralWidget (0, 0)</string>
     </property>
    </widget>
-   <addaction name="menutest"/>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
