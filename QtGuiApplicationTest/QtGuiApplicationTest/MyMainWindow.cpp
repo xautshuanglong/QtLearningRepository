@@ -7,6 +7,8 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QSplitter>
+#include <QMenu>
+#include <QAction>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -42,11 +44,21 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
 
+    // ÍÐÅÌÓÒ¼ü²Ëµ¥À¸
+    mpSystemTrayMenu = new QMenu(this);
+    mpTrayActionShow = new QAction(QStringLiteral("ÏÔÊ¾"));
+    mpTrayActionExit = new QAction(QStringLiteral("ÍË³ö"));
+    mpSystemTrayMenu->addAction(mpTrayActionShow);
+    mpSystemTrayMenu->addAction(mpTrayActionExit);
+    this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
+    this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(on_trayActionExit_triggered(bool)));
+    // ÏµÍ³ÍÐÅÌ
     mpSystemTray = new QSystemTrayIcon(this);
     mpSystemTray->setIcon(QIcon(":/AppImages/Resources/images/app.ico"));
-    bool test = this->connect(mpSystemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
+    mpSystemTray->setContextMenu(mpSystemTrayMenu);
     mpSystemTray->setToolTip("TrayIcon Testing");
     mpSystemTray->show();
+    bool test = this->connect(mpSystemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 MyMainWindow::~MyMainWindow()
@@ -224,6 +236,18 @@ void MyMainWindow::resizeEvent(QResizeEvent *event)
     QMainWindow::resizeEvent(event);
 }
 
+void MyMainWindow::ShowAndActivateWindow()
+{
+    if (!this->isVisible())
+    {
+        this->show();
+    }
+    if (!this->isActiveWindow())
+    {
+        this->activateWindow();
+    }
+}
+
 void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
@@ -235,7 +259,8 @@ void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason 
         LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason Context");
         break;
     case QSystemTrayIcon::DoubleClick:
-        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason DoubleClick");
+        //LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason DoubleClick");
+        this->ShowAndActivateWindow();
         break;
     case QSystemTrayIcon::Trigger:
         LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason Trigger");
@@ -246,4 +271,14 @@ void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason 
     default:
         break;
     }
+}
+
+void MyMainWindow::on_trayActionShow_triggered(bool checked)
+{
+    this->ShowAndActivateWindow();
+}
+
+void MyMainWindow::on_trayActionExit_triggered(bool checked)
+{
+    this->close();
 }

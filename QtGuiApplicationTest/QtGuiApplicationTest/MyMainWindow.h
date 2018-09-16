@@ -8,7 +8,8 @@ class FramelessWindowHelper;
 class MainTabPageFirst;
 class MainTabPageDicom;
 class MainTabPageSetting;
-class QSystemTrayIcon;
+class QMenu;
+class QAction;
 
 class MyMainWindow : public QMainWindow
 {
@@ -25,6 +26,9 @@ private:
     MainTabPageDicom                *mpPageDicom;
     MainTabPageSetting              *mpPageSetting;
     QSystemTrayIcon                 *mpSystemTray;
+    QMenu                           *mpSystemTrayMenu;
+    QAction                         *mpTrayActionShow;
+    QAction                         *mpTrayActionExit;
 
 protected:
     virtual bool event(QEvent *event) override;
@@ -50,6 +54,11 @@ protected:
 
     virtual void resizeEvent(QResizeEvent *event) override;
 
+private:
+    void ShowAndActivateWindow();
+
 private slots:
-    void  on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void on_trayActionShow_triggered(bool checked);
+    void on_trayActionExit_triggered(bool checked);
 };

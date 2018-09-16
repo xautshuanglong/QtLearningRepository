@@ -119,6 +119,9 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
+    this->hide();
+    return;
+
     if (mpMiscellaneousTest == Q_NULLPTR)
     {
         mpMiscellaneousTest = new MiscellaneousTesting();
