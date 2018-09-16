@@ -203,6 +203,12 @@
       <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\images\app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QtGuiApplicationTest.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

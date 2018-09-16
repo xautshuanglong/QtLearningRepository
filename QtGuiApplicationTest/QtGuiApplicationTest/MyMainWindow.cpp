@@ -7,7 +7,6 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QSplitter>
-#include <QSystemTrayIcon>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -30,8 +29,6 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //setAttribute(Qt::WA_TranslucentBackground, true);
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
-    QIcon winIcon("test.ico");
-    this->setWindowIcon(winIcon);
     mpFramelessWindow = new FramelessWindowHelper(this);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
@@ -46,6 +43,10 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
 
     mpSystemTray = new QSystemTrayIcon(this);
+    mpSystemTray->setIcon(QIcon(":/AppImages/Resources/images/app.ico"));
+    bool test = this->connect(mpSystemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
+    mpSystemTray->setToolTip("TrayIcon Testing");
+    mpSystemTray->show();
 }
 
 MyMainWindow::~MyMainWindow()
@@ -221,4 +222,28 @@ void MyMainWindow::resizeEvent(QResizeEvent *event)
     ui.mainTabWidget->setGeometry(mainTabRect);
 
     QMainWindow::resizeEvent(event);
+}
+
+void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason)
+    {
+    case QSystemTrayIcon::Unknown:
+        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason Unknown");
+        break;
+    case QSystemTrayIcon::Context:
+        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason Context");
+        break;
+    case QSystemTrayIcon::DoubleClick:
+        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason DoubleClick");
+        break;
+    case QSystemTrayIcon::Trigger:
+        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason Trigger");
+        break;
+    case QSystemTrayIcon::MiddleClick:
+        LogUtil::Debug(CODE_LOCATION, "QSystemTrayIcon::ActivationReason MiddleClick");
+        break;
+    default:
+        break;
+    }
 }

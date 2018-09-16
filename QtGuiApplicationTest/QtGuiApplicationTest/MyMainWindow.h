@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QSystemTrayIcon>
 #include "ui_QtGuiApplicationTest.h"
 
 class FramelessWindowHelper;
@@ -25,7 +26,7 @@ private:
     MainTabPageSetting              *mpPageSetting;
     QSystemTrayIcon                 *mpSystemTray;
 
-public:
+protected:
     virtual bool event(QEvent *event) override;
 
     virtual void mousePressEvent(QMouseEvent *event) override;
@@ -48,4 +49,7 @@ public:
     virtual void closeEvent(QCloseEvent *event) override;
 
     virtual void resizeEvent(QResizeEvent *event) override;
+
+private slots:
+    void  on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 };

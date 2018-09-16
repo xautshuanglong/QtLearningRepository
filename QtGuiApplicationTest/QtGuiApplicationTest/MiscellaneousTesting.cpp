@@ -9,8 +9,6 @@ MiscellaneousTesting::MiscellaneousTesting(QWidget *parent /* = Q_NULLPTR */)
     , ui(new Ui::MiscellaneousTesting())
 {
     ui->setupUi(this);
-    QIcon winIcon("test.ico");
-    this->setWindowIcon(winIcon);
     mpFramelessHelper = new FramelessWindowHelper(this);
 }
 

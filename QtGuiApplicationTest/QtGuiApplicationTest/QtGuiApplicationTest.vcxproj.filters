@@ -170,4 +170,10 @@
       <Filter>Resource Files\qss</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\images\app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QtGuiApplicationTest.rc" />
+  </ItemGroup>
 </Project>

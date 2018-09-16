@@ -1,6 +1,7 @@
 #include "MyApplication.h"
 
 #include <QFile>
+#include <QIcon>
 
 MyApplication::MyApplication(int &argc, char **argv, int appFlag /* = ApplicationFlags */)
     : QApplication(argc, argv, appFlag)
@@ -18,6 +19,9 @@ MyApplication::MyApplication(int &argc, char **argv, int appFlag /* = Applicatio
     {
         QString error = mainTabStyle.errorString();
     }
+
+    QIcon winIcon(":/AppImages/Resources/images/app.ico");
+    this->setWindowIcon(winIcon);
 }
 
 MyApplication::~MyApplication()
