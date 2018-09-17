@@ -58,7 +58,9 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpSystemTray->setContextMenu(mpSystemTrayMenu);
     mpSystemTray->setToolTip("TrayIcon Testing");
     mpSystemTray->show();
-    bool test = this->connect(mpSystemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
+    bool test = this->connect(mpSystemTray,
+                              SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                              SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 MyMainWindow::~MyMainWindow()

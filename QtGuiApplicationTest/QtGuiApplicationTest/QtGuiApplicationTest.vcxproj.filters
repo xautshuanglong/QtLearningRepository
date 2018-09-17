@@ -37,6 +37,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{03110429-f8f5-4a0b-8bf2-d2ea95e7a53a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{0ba42e86-dccf-42be-aab0-82168d0e2455}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -171,9 +174,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\images\app.ico" />
+    <ResourceCompile Include="QtGuiApplicationTest.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="QtGuiApplicationTest.rc" />
+    <Image Include="Resources\images\app.ico">
+      <Filter>Resource Files\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>
