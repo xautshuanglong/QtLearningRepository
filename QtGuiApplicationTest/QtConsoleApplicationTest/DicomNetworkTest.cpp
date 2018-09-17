@@ -80,6 +80,8 @@ void DicomNetworkTest::EchoSCU()
     LogUtil::Debug(CODE_LOCATION, "----------------- EchoSCU -----------------");
     LogUtil::Info(CODE_LOCATION, "----------------- %s -----------------", rcsid);
 
+    DCM_dcmnetLogger.setLogLevel(OFLogger::DEBUG_LOG_LEVEL);
+
     DcmTLSOptions         tlsOptions(NET_REQUESTOR);
     T_ASC_Network        *pNetwork = nullptr;
     T_ASC_Parameters     *pAscParams = nullptr;
@@ -129,7 +131,7 @@ void DicomNetworkTest::EchoSCU()
     }
 
     ASC_dumpParameters(errorString, pAscParams, ASC_ASSOC_RQ);
-    LogUtil::Debug(CODE_LOCATION, "Association Parameters below:\n%s", errorString.c_str());
+    LogUtil::Debug(CODE_LOCATION, "Request Parameters below:\n%s", errorString.c_str());
 
     cond = ASC_requestAssociation(pNetwork, pAscParams, &pAssociation);
     if (cond.bad())
@@ -149,7 +151,10 @@ void DicomNetworkTest::EchoSCU()
         }
     }
     int nAcceptedCount = ASC_countAcceptedPresentationContexts(pAscParams);
-    LogUtil::Debug(CODE_LOCATION, "%d parameters are accepted ...");
+    LogUtil::Debug(CODE_LOCATION, "%d parameters are accepted ...", nAcceptedCount);
+
+    ASC_dumpParameters(errorString, pAscParams, ASC_ASSOC_AC);
+    LogUtil::Debug(CODE_LOCATION, "Association Parameters Negotiated below:\n%s", errorString.c_str());
 
     cond = EC_Normal;
     int numRepeat = 1;

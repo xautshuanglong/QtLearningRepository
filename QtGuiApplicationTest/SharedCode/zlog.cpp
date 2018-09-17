@@ -1017,7 +1017,7 @@ namespace zlog
 
             if (_loggerInfoArr[pLogData->_loggerId]._isDisplayOnConsole && ZLOG_SYNC_WRITE_TO_FILE)
             {
-                showColorText(pLogData->_content, pLogData->_filterLogLevel);
+                showColorText(pLogData->_content, pLogData->_filterLogLevel, false);
             }
 
             if (ZLOG_SYNC_DISPLAY_ON_CONSOLE && ZLOG_SYNC_WRITE_TO_FILE)
@@ -1693,7 +1693,7 @@ namespace zlog
 
                     if (curLoggerInfo._isDisplayOnConsole)
                     {
-                        showColorText(pLogData->_content, pLogData->_filterLogLevel);
+                        showColorText(pLogData->_content, pLogData->_filterLogLevel, false);
                     }
                     if (ZLOG_SYNC_DISPLAY_ON_CONSOLE)
                     {
