@@ -12,6 +12,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QTextDocument>
+#include <QTextCodec>
 #include <QScreen>
 
 /* DCMTK 3.6.3 Headers */
@@ -119,7 +120,12 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
-    this->hide();
+    QString test1 = QString::fromLocal8Bit("test中文");
+    QString test2 = QStringLiteral("test中文");
+
+    std::string stdString1 = test1.toStdString();
+    std::string stdString2 = test2.toStdString();
+
     return;
 
     if (mpMiscellaneousTest == Q_NULLPTR)
@@ -656,7 +662,13 @@ void MainTabPageFirst::ReadImageByQImage()
         status = pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pImgPixelValues, newPixelDataLen);
         delete []pImgPixelValues;
 
-        status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit);
+        QTextCodec *pGB2312 = QTextCodec::codecForName("System");
+        OFFilename newSaveFilename = pGB2312->fromUnicode(saveFilename.toUtf8()).data();
+
+        //status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit);
+        status = pFileFormat->saveFile(newSaveFilename, EXS_LittleEndianImplicit);
+        pDataSet->clear();
+        delete pFileFormat;
         if (status.bad())
         {
             LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
@@ -726,7 +738,8 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         DcmDataset *pDataSet = pFileFormat->getDataset();
 
         pDataSet->putAndInsertString(DCM_ProtocolName, "Page - Full");
-        pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "GB18030");
+        //pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "utf-8");
+        pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "ISO-IR 138");
 
         /* sop class uid */
         char uid[100];
@@ -735,14 +748,23 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         pDataSet->putAndInsertString(DCM_SOPClassUID, UID_UltrasoundMultiframeImageStorage);
 
         /* 添加 Patient 信息 */
+        QString test = "test中文";
+        QString test1 = QStringLiteral("test中文");
+
+        //QString utf8 = test.toUtf8();
+        //QString utf81 = test1.toUtf8();
+        //QString utf_8 = QString::fromUtf8(test1.toUtf8());
+
+        char testUtf8[] = { 't','e','s','t', 0xE4, 0xB8, 0xAD, 0xE6, 0x96, 0x87, '\0' };
         pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
-        pDataSet->putAndInsertString(DCM_PatientName, "test测试中文");
+        //pDataSet->putAndInsertString(DCM_PatientName, "test中文");
+        pDataSet->putAndInsertString(DCM_PatientName, testUtf8);
         pDataSet->putAndInsertString(DCM_PatientID, "110119");
         pDataSet->putAndInsertString(DCM_PatientBirthDate, "20180803");
         pDataSet->putAndInsertString(DCM_PatientSex, "M");
-        pDataSet->putAndInsertString(DCM_PatientOrientation, "");
+        pDataSet->putAndInsertString(DCM_PatientOrientation, test1.toStdString().c_str());
         pDataSet->putAndInsertString(DCM_Laterality, "");
-        pDataSet->putAndInsertString(DCM_ImageComments, "");
+        pDataSet->putAndInsertString(DCM_ImageComments, "test中文");
 
         QTime curTime = QTime::currentTime();
         QString curTimeString = curTime.toString("hhmmss.zzz");
@@ -820,6 +842,8 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         delete[]pAllImageData;
 
         status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), EXS_LittleEndianImplicit);
+        pDataSet->clear();
+        delete pFileFormat;
         if (status.bad())
         {
             LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
@@ -941,6 +965,7 @@ void MainTabPageFirst::ReadJpegAndCopyToDicom()
             status = pDataSet->putAndInsertUint8Array(DCM_PixelData, (Uint8*)pixData, length);
 
             status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), ts);
+            pDataSet->clear();
             if (status.bad())
             {
                 LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
@@ -1062,6 +1087,7 @@ void MainTabPageFirst::BackupFunction()
         pDataSet->insert(pDcmPixelSeq, OFFalse, OFFalse);
 
         status = pFileFormat->saveFile(saveFilename.toStdString().c_str(), ts);
+        pDataSet->clear();
         if (status.bad())
         {
             LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
@@ -1189,6 +1215,7 @@ void MainTabPageFirst::SelfPaintImage8Bit()
             LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
         }
 
+        pDataSet->clear();
         delete pFileFormat;
     }
 }
