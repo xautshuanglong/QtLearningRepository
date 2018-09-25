@@ -6,6 +6,7 @@
 
 class DicomWindow;
 class MiscellaneousTesting;
+class WinReportTesting;
 class MyBackgroundWorker;
 class MyWorkerThreadPool;
 
@@ -25,8 +26,10 @@ private:
     Ui::MainTabPageFirst            ui;
     DicomWindow                    *pDcmWidget;
     MiscellaneousTesting           *mpMiscellaneousTest;
+    WinReportTesting               *mpWinReportTest;
     MyWorkerThreadPool             *mpMyWorkerThreadPool;
     SL::Core::BackgroundWorkerTest *mpBackgroundWorker;
+
 
 public:
     MainTabPageFirst(QWidget *parent = Q_NULLPTR);
@@ -46,6 +49,7 @@ private:
     void BackgroundWorkerTest();
     void QThreadPoolTest();
     void MyThradPoolTest();
+    void QTextDocumentTest();
 
 private slots:
     void on_btnBrowserDcm_clicked();

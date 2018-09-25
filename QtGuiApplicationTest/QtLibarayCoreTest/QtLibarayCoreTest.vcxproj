@@ -98,10 +98,12 @@
   <ItemGroup>
     <ClCompile Include="BackgroundWorkerTest.cpp" />
     <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="MemUtil.cpp" />
     <ClCompile Include="TaskBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundWorkerTest.h" />
+    <ClInclude Include="MemUtil.h" />
     <ClInclude Include="TaskBase.h" />
     <ClInclude Include="ITaskInterface.h" />
     <ClInclude Include="qtlibaraycoretest_global.h" />

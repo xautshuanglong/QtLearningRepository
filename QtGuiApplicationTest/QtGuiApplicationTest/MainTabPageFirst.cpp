@@ -39,6 +39,7 @@
 #include "MyWorkerThreadPool.h"
 #include "WorkerTaskBase.h"
 #include "MiscellaneousTesting.h"
+#include "WinReportTesting.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
@@ -46,6 +47,7 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
     , mpBackgroundWorker(Q_NULLPTR)
     , mpMiscellaneousTest(Q_NULLPTR)
+    , mpWinReportTest(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -79,6 +81,10 @@ MainTabPageFirst::~MainTabPageFirst()
     if (mpMiscellaneousTest != Q_NULLPTR)
     {
         delete mpMiscellaneousTest;
+    }
+    if (mpWinReportTest != Q_NULLPTR)
+    {
+        delete mpWinReportTest;
     }
 }
 
@@ -120,21 +126,23 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
 void MainTabPageFirst::on_btnPrint_clicked()
 {
-    QString test1 = QString::fromLocal8Bit("test中文");
-    QString test2 = QStringLiteral("test中文");
+    //QString test1 = QString::fromLocal8Bit("test中文");
+    //QString test2 = QStringLiteral("test中文");
 
-    std::string stdString1 = test1.toStdString();
-    std::string stdString2 = test2.toStdString();
+    //std::string stdString1 = test1.toStdString();
+    //std::string stdString2 = test2.toStdString();
 
+    //return;
+
+    if (mpWinReportTest == Q_NULLPTR)
+    {
+        mpWinReportTest = new WinReportTesting();
+        //mpWinReportTest->setAttribute(Qt::WA_ShowModal, true);
+    }
+    mpWinReportTest->show();
     return;
 
-    if (mpMiscellaneousTest == Q_NULLPTR)
-    {
-        mpMiscellaneousTest = new MiscellaneousTesting();
-        //mpMiscellaneousTest->setAttribute(Qt::WA_ShowModal, true);
-    }
-    mpMiscellaneousTest->show();
-
+    this->QTextDocumentTest();
     return;
 
     QScreen *primaryScreen = QApplication::primaryScreen();
@@ -755,7 +763,7 @@ void MainTabPageFirst::ReadImageByQImageMulti()
         //QString utf81 = test1.toUtf8();
         //QString utf_8 = QString::fromUtf8(test1.toUtf8());
 
-        char testUtf8[] = { 't','e','s','t', 0xE4, 0xB8, 0xAD, 0xE6, 0x96, 0x87, '\0' };
+        char testUtf8[] = { 't','e','s','t', (char)0xE4, (char)0xB8, (char)0xAD, (char)0xE6, (char)0x96, (char)0x87, '\0' };
         pDataSet->putAndInsertString(DCM_AccessionNumber, "MGI001");
         //pDataSet->putAndInsertString(DCM_PatientName, "test中文");
         pDataSet->putAndInsertString(DCM_PatientName, testUtf8);
@@ -1268,4 +1276,10 @@ void MainTabPageFirst::MyThradPoolTest()
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->Start();
+}
+
+void MainTabPageFirst::QTextDocumentTest()
+{
+    QTextDocument qDoc;
+    QTextFrame *pDocFrame = qDoc.rootFrame();
 }

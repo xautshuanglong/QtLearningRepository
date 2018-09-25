@@ -62,6 +62,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +146,7 @@
     <ClCompile Include="MyWorkerThread.cpp" />
     <ClCompile Include="MyWorkerThreadPool.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
+    <ClCompile Include="WinReportTesting.cpp" />
     <ClCompile Include="WorkerTaskBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,11 +159,13 @@
     <QtUic Include="MainTabPageSetting.ui" />
     <QtUic Include="MiscellaneousTesting.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
+    <QtUic Include="WinReportTesting.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtGuiApplicationTest.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WinReportTesting.h" />
     <QtMoc Include="MyWorkerThread.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>

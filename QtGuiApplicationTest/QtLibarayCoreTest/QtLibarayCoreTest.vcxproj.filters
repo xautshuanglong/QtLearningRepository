@@ -24,30 +24,42 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{3466a313-66ab-46f0-9244-54be4c1d7979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{c21784c5-7df5-484d-9043-d896e953df35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtlibaraycoretest_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundWorkerTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ITaskInterface.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MemUtil.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="TaskBase.h">
-      <Filter>Header Files</Filter>
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ITaskInterface.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundWorkerTest.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BackgroundWorkerTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DllMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskBase.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundWorkerTest.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
