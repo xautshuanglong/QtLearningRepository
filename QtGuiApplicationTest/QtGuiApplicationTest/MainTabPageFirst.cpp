@@ -11,7 +11,6 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
-#include <QTextDocument>
 #include <QTextCodec>
 #include <QScreen>
 
@@ -140,9 +139,6 @@ void MainTabPageFirst::on_btnPrint_clicked()
         //mpWinReportTest->setAttribute(Qt::WA_ShowModal, true);
     }
     mpWinReportTest->show();
-    return;
-
-    this->QTextDocumentTest();
     return;
 
     QScreen *primaryScreen = QApplication::primaryScreen();
@@ -1276,10 +1272,4 @@ void MainTabPageFirst::MyThradPoolTest()
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->Start();
-}
-
-void MainTabPageFirst::QTextDocumentTest()
-{
-    QTextDocument qDoc;
-    QTextFrame *pDocFrame = qDoc.rootFrame();
 }

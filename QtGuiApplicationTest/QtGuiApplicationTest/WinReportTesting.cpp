@@ -1,9 +1,11 @@
 #include "WinReportTesting.h"
-
 #include "ui_WinReportTesting.h"
-#include "FramelessWindowHelper.h"
+
+#include <QFile>
+#include <QTextDocument>
 
 #include <MemUtil.h>
+#include "FramelessWindowHelper.h"
 
 using namespace SL::Util;
 
@@ -14,12 +16,20 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 {
     ui->setupUi(this);
     mpFramelessHelper = new FramelessWindowHelper(this);
-
-    int *pA = 0;
-    MemUtil::AquirePointer(&pA);
 }
 
 WinReportTesting::~WinReportTesting()
 {
     MemUtil::RelesePointer(&mpFramelessHelper);
+}
+
+void WinReportTesting::QTextDocumentTest()
+{
+    QTextDocument qDoc;
+    QTextFrame *pDocFrame = qDoc.rootFrame();
+}
+
+void WinReportTesting::on_btnPrintTest_clicked()
+{
+    this->QTextDocumentTest();
 }

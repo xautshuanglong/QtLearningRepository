@@ -21,7 +21,6 @@ namespace SL
 class MainTabPageFirst : public QWidget
 {
     Q_OBJECT
-
 private:
     Ui::MainTabPageFirst            ui;
     DicomWindow                    *pDcmWidget;
@@ -29,7 +28,6 @@ private:
     WinReportTesting               *mpWinReportTest;
     MyWorkerThreadPool             *mpMyWorkerThreadPool;
     SL::Core::BackgroundWorkerTest *mpBackgroundWorker;
-
 
 public:
     MainTabPageFirst(QWidget *parent = Q_NULLPTR);
@@ -49,7 +47,6 @@ private:
     void BackgroundWorkerTest();
     void QThreadPoolTest();
     void MyThradPoolTest();
-    void QTextDocumentTest();
 
 private slots:
     void on_btnBrowserDcm_clicked();

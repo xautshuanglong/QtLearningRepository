@@ -11,6 +11,7 @@ namespace Ui
 
 class MiscellaneousTesting : public QMainWindow
 {
+    Q_OBJECT
 private:
     Ui::MiscellaneousTesting   *ui;
     FramelessWindowHelper      *mpFramelessHelper;

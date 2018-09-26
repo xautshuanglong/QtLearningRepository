@@ -133,12 +133,6 @@
     <ClInclude Include="IWorkerTask.h">
       <Filter>QThreadTest</Filter>
     </ClInclude>
-    <ClInclude Include="MiscellaneousTesting.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinReportTesting.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -161,6 +155,12 @@
     </QtMoc>
     <QtMoc Include="FramelessWindowHelper.h">
       <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousTesting.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WinReportTesting.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

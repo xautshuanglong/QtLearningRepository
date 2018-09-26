@@ -11,6 +11,7 @@ namespace Ui
 
 class WinReportTesting : public QMainWindow
 {
+    Q_OBJECT
 private:
     Ui::WinReportTesting   *ui;
     FramelessWindowHelper  *mpFramelessHelper;
@@ -18,4 +19,10 @@ private:
 public:
     explicit WinReportTesting(QWidget *parent = Q_NULLPTR);
     ~WinReportTesting();
+
+private:
+    void QTextDocumentTest();
+
+private slots:
+    void on_btnPrintTest_clicked();
 };
