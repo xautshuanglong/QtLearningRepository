@@ -22,7 +22,9 @@ public:
 
 private:
     void QTextDocumentTest();
+    void QTextEditDocumentTest();
 
 private slots:
     void on_btnPrintTest_clicked();
+    void on_btnFormatTest_clicked();
 };

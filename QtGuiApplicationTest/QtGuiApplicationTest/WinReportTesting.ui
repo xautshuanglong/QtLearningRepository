@@ -100,19 +100,29 @@
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(100,200,100);</string>
+           <string notr="true">/*background-color: rgb(100,200,100);*/</string>
           </property>
           <widget class="QLabel" name="lbRegionLeft">
            <property name="geometry">
             <rect>
-             <x>9</x>
-             <y>9</y>
-             <width>72</width>
+             <x>10</x>
+             <y>10</y>
+             <width>131</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>lbRegionLeft</string>
+            <string>文本测试窗口</string>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="teReport">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>371</width>
+             <height>391</height>
+            </rect>
            </property>
           </widget>
          </widget>
@@ -138,7 +148,7 @@
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(200,200,100);</string>
+           <string notr="true">/*background-color: rgb(200,200,100);*/</string>
           </property>
           <widget class="QLabel" name="lbRegionRight">
            <property name="geometry">
@@ -195,8 +205,8 @@ QWidget
         <widget class="QPushButton" name="btnPrintTest">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>30</y>
+           <x>10</x>
+           <y>10</y>
            <width>75</width>
            <height>23</height>
           </rect>
@@ -206,6 +216,25 @@ QWidget
          </property>
          <property name="text">
           <string>PrintTest</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnFormatTest">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>FormatTest</string>
          </property>
          <property name="flat">
           <bool>false</bool>
