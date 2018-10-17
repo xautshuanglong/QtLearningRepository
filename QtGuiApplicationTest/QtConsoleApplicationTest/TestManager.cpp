@@ -5,6 +5,7 @@
 #include "CognexDataManSDKTest.h"
 #include "ImportComTest.h"
 #include "OpensslTest.h"
+#include "ProtocolBufferTest.h"
 
 TestManager::TestManager()
 {
@@ -13,6 +14,7 @@ TestManager::TestManager()
     mpCognexDataManSDKTest = new CognexDataManSDKTest();
     mpImportComTest = new ImportComTest();
     mpOpensslTest = new OpensslTest();
+    mpProtoBufTest = new ProtocolBufferTest();
 }
 
 TestManager::~TestManager()
@@ -22,6 +24,7 @@ TestManager::~TestManager()
     delete mpCognexDataManSDKTest;
     delete mpImportComTest;
     delete mpOpensslTest;
+    delete mpProtoBufTest;
 }
 
 TestManager* TestManager::Instance()
@@ -33,10 +36,11 @@ TestManager* TestManager::Instance()
 void TestManager::Enter()
 {
     //mpDicomFileParserTest->TestEnter();
-    mpDicomNetworkTest->TestEnter();
+    //mpDicomNetworkTest->TestEnter();
     //mpCognexDataManSDKTest->TestEnter();
     //mpImportComTest->TestEnter();
     //mpOpensslTest->TestEnter();
+    mpProtoBufTest->TestEnter();
 }
 
 void TestManager::Exit()
@@ -46,4 +50,5 @@ void TestManager::Exit()
     mpCognexDataManSDKTest->TestExit();
     mpImportComTest->TestExit();
     mpOpensslTest->TestExit();
+    mpProtoBufTest->TestExit();
 }

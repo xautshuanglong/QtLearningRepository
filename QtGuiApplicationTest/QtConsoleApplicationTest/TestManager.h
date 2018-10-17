@@ -5,6 +5,7 @@ class DicomNetworkTest;
 class CognexDataManSDKTest;
 class ImportComTest;
 class OpensslTest;
+class ProtocolBufferTest;
 
 class TestManager
 {
@@ -14,6 +15,7 @@ private:
     CognexDataManSDKTest   *mpCognexDataManSDKTest;
     ImportComTest          *mpImportComTest;
     OpensslTest            *mpOpensslTest;
+    ProtocolBufferTest     *mpProtoBufTest;
 
 public:
     ~TestManager();

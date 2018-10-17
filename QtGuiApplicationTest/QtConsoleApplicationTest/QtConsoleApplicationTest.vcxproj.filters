@@ -56,6 +56,9 @@
     <ClCompile Include="DicomNetworkTest.cpp">
       <Filter>ThirdPartTest</Filter>
     </ClCompile>
+    <ClCompile Include="ProtocolBufferTest.cpp">
+      <Filter>ThirdPartTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomFileParserTest.h">
@@ -74,6 +77,9 @@
       <Filter>OpenSSL</Filter>
     </ClInclude>
     <ClInclude Include="DicomNetworkTest.h">
+      <Filter>ThirdPartTest</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtocolBufferTest.h">
       <Filter>ThirdPartTest</Filter>
     </ClInclude>
   </ItemGroup>
