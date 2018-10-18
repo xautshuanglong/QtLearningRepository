@@ -66,9 +66,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;Qt5Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Networkd.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <Define>WIN32;WIN64;QT_DLL;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
@@ -89,9 +89,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;Qt5Gui.lib;Qt5Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Network.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;Qt5Gui.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <Define>WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
@@ -101,6 +101,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddressBook.pb.cc" />
     <ClCompile Include="CognexDataManSDKTest.cpp" />
     <ClCompile Include="DicomFileParserTest.cpp" />
     <ClCompile Include="DicomNetworkTest.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="TestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddressBook.pb.h" />
     <ClInclude Include="CognexDataManSDKTest.h" />
     <ClInclude Include="DicomFileParserTest.h" />
     <ClInclude Include="DicomNetworkTest.h" />

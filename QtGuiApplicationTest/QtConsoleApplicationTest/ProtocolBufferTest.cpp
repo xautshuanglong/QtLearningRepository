@@ -4,7 +4,11 @@
 #include <QHostInfo>
 #include <QThread>
 
+// Protocol Buffer
+#include "AddressBook.pb.h"
 #include <LogUtil.h>
+
+using namespace com::genomics::protobuf;
 
 ProtocolBufferTest::ProtocolBufferTest()
 {
@@ -43,21 +47,47 @@ void ProtocolBufferTest::SendMessageTest()
     bool connectFlag = mpSocketClient->waitForConnected(5000);
     LogUtil::Debug(CODE_LOCATION, "connectToHost %s !", connectFlag ? "successfully" : "failed");
 
+    Person_PhoneNumber phoneNumber;
+    phoneNumber.set_number("18792441258");
+    phoneNumber.set_type(Person_PhoneType_MOBILE);
+
+    Person_PhoneNumber homeNumber;
+    homeNumber.set_number("0558-4327497");
+    homeNumber.set_type(Person_PhoneType_HOME);
+
+    Person person;
+    person.set_name("Shuanglong");
+    person.set_id(666);
+    person.set_email("xjshuanglong@126.com");
+    Person_PhoneNumber *pPhoneAdd = person.add_phones();
+    pPhoneAdd->CopyFrom(phoneNumber);
+    pPhoneAdd = person.add_phones();
+    pPhoneAdd->CopyFrom(homeNumber);
+    google::protobuf::Timestamp curTimestamp;
+    curTimestamp.set_seconds(::time(NULL));
+    curTimestamp.set_nanos(0);
+    person.set_allocated_last_updated(&curTimestamp);
+
+    LogUtil::Debug(CODE_LOCATION, "Timestamp.seconds: %ll", curTimestamp.seconds());
+
+    char *pTempMsgBuffer = new char[person.ByteSize()];
+    person.SerializeToArray(pTempMsgBuffer, person.ByteSize());
+
     if (connectFlag)
     {
         //mpSocketClient->setSocketOption(QAbstractSocket::SocketOption::LowDelayOption, 1);
-        char tempMsg[100] = { 0 };
         int count = 0;
         while (count < 10)
         {
-            sprintf(tempMsg, "%s%d", "Hello-", count);
-            mpSocketClient->write(tempMsg);
+            mpSocketClient->write(pTempMsgBuffer, person.ByteSize());
             mpSocketClient->waitForBytesWritten();
             //mpSocketClient->flush();
             LogUtil::Debug(CODE_LOCATION, "after write %d !", count);
             QThread::msleep(500);
             ++count;
         }
-        mpSocketClient->close();
+        //mpSocketClient->close();
     }
+
+    delete[]pTempMsgBuffer;
 }
