@@ -63,12 +63,12 @@ void ProtocolBufferTest::SendMessageTest()
     pPhoneAdd->CopyFrom(phoneNumber);
     pPhoneAdd = person.add_phones();
     pPhoneAdd->CopyFrom(homeNumber);
-    google::protobuf::Timestamp curTimestamp;
-    curTimestamp.set_seconds(::time(NULL));
-    curTimestamp.set_nanos(0);
-    person.set_allocated_last_updated(&curTimestamp);
+	google::protobuf::Timestamp* pCurTimestamp = new google::protobuf::Timestamp();
+	pCurTimestamp->set_seconds(::time(NULL));
+	pCurTimestamp->set_nanos(0);
+    person.set_allocated_last_updated(pCurTimestamp); // 内部自动释放 Timestamp
 
-    LogUtil::Debug(CODE_LOCATION, "Timestamp.seconds: %ll", curTimestamp.seconds());
+    LogUtil::Debug(CODE_LOCATION, "Timestamp.seconds: %ll", pCurTimestamp->seconds());
 
     char *pTempMsgBuffer = new char[person.ByteSize()];
     person.SerializeToArray(pTempMsgBuffer, person.ByteSize());
