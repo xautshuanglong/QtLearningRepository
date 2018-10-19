@@ -63,15 +63,18 @@ void ProtocolBufferTest::SendMessageTest()
     pPhoneAdd->CopyFrom(phoneNumber);
     pPhoneAdd = person.add_phones();
     pPhoneAdd->CopyFrom(homeNumber);
-	google::protobuf::Timestamp* pCurTimestamp = new google::protobuf::Timestamp();
-	pCurTimestamp->set_seconds(::time(NULL));
-	pCurTimestamp->set_nanos(0);
+    google::protobuf::Timestamp* pCurTimestamp = new google::protobuf::Timestamp();
+    pCurTimestamp->set_seconds(::time(NULL));
+    pCurTimestamp->set_nanos(0);
     person.set_allocated_last_updated(pCurTimestamp); // 内部自动释放 Timestamp
 
-    LogUtil::Debug(CODE_LOCATION, "Timestamp.seconds: %ll", pCurTimestamp->seconds());
+    LogUtil::Debug(CODE_LOCATION, "Timestamp.seconds: %lld", pCurTimestamp->seconds());
 
-    char *pTempMsgBuffer = new char[person.ByteSize()];
-    person.SerializeToArray(pTempMsgBuffer, person.ByteSize());
+    int msgBodyLen = person.ByteSize();
+    int msgLen = msgBodyLen + 4;
+    char *pTempMsgBuffer = new char[msgLen];
+    memcpy(pTempMsgBuffer, &msgLen, 4);
+    person.SerializeToArray(pTempMsgBuffer +4, msgBodyLen);
 
     if (connectFlag)
     {
@@ -79,7 +82,7 @@ void ProtocolBufferTest::SendMessageTest()
         int count = 0;
         while (count < 10)
         {
-            mpSocketClient->write(pTempMsgBuffer, person.ByteSize());
+            mpSocketClient->write(pTempMsgBuffer, msgLen);
             mpSocketClient->waitForBytesWritten();
             //mpSocketClient->flush();
             LogUtil::Debug(CODE_LOCATION, "after write %d !", count);
