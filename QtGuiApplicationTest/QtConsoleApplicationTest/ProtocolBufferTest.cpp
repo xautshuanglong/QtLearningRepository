@@ -12,13 +12,17 @@ using namespace com::genomics::protobuf;
 
 ProtocolBufferTest::ProtocolBufferTest()
 {
-    mpSocketClient = new QTcpSocket();
+    mpSocketClient1 = new QTcpSocket();
+	mpSocketClient2 = new QTcpSocket();
 }
 
 ProtocolBufferTest::~ProtocolBufferTest()
 {
-    delete mpSocketClient;
-    mpSocketClient = nullptr;
+    delete mpSocketClient1;
+    mpSocketClient1 = nullptr;
+
+	delete mpSocketClient2;
+	mpSocketClient2 = nullptr;
 }
 
 void ProtocolBufferTest::TestEnter()
@@ -28,9 +32,25 @@ void ProtocolBufferTest::TestEnter()
 
 void ProtocolBufferTest::TestExit()
 {
-    mpSocketClient->disconnectFromHost();
-    mpSocketClient->waitForDisconnected();
-    LogUtil::Debug(CODE_LOCATION, "mpSocketClient has disconnected ...");
+    mpSocketClient1->disconnectFromHost();
+    mpSocketClient1->waitForDisconnected();
+    LogUtil::Debug(CODE_LOCATION, "mpSocketClient1 has disconnected ...");
+
+	mpSocketClient2->disconnectFromHost();
+	mpSocketClient2->waitForDisconnected();
+	LogUtil::Debug(CODE_LOCATION, "mpSocketClient2 has disconnected ...");
+}
+
+bool ProtocolBufferTest::IsLittleEndian()
+{
+	bool retValue = true;
+	int endianTest = 0x12345678;
+	char *pTest = (char*)&endianTest;
+	if (*pTest == 0x12)
+	{
+		retValue = false;
+	}
+	return retValue;
 }
 
 void ProtocolBufferTest::SendMessageTest()
@@ -42,10 +62,16 @@ void ProtocolBufferTest::SendMessageTest()
 
     QString serverIP = "localhost";
     int serverPort = 8000;
-    mpSocketClient->connectToHost(serverIP, serverPort);
-    LogUtil::Debug(CODE_LOCATION, "connectToHost %s %d", serverIP.toStdString().c_str(), serverPort);
-    bool connectFlag = mpSocketClient->waitForConnected(5000);
-    LogUtil::Debug(CODE_LOCATION, "connectToHost %s !", connectFlag ? "successfully" : "failed");
+
+    mpSocketClient1->connectToHost(serverIP, serverPort);
+    LogUtil::Debug(CODE_LOCATION, "mpSocketClient1 connectToHost %s %d", serverIP.toStdString().c_str(), serverPort);
+    bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
+    LogUtil::Debug(CODE_LOCATION, "mpSocketClient1 connectToHost %s !", connectFlag1 ? "successfully" : "failed");
+
+	mpSocketClient2->connectToHost(serverIP, serverPort);
+	LogUtil::Debug(CODE_LOCATION, "mpSocketClient2 connectToHost %s %d", serverIP.toStdString().c_str(), serverPort);
+	bool connectFlag2 = mpSocketClient2->waitForConnected(5000);
+	LogUtil::Debug(CODE_LOCATION, "mpSocketClient2 connectToHost %s !", connectFlag2 ? "successfully" : "failed");
 
     Person_PhoneNumber phoneNumber;
     phoneNumber.set_number("18792441258");
@@ -76,14 +102,20 @@ void ProtocolBufferTest::SendMessageTest()
     memcpy(pTempMsgBuffer, &msgLen, 4);
     person.SerializeToArray(pTempMsgBuffer +4, msgBodyLen);
 
-    if (connectFlag)
+    if (connectFlag1)
     {
         //mpSocketClient->setSocketOption(QAbstractSocket::SocketOption::LowDelayOption, 1);
         int count = 0;
-        while (count < 10)
+        while (count < 1)
         {
-            mpSocketClient->write(pTempMsgBuffer, msgLen);
-            mpSocketClient->waitForBytesWritten();
+            mpSocketClient1->write(pTempMsgBuffer, msgLen);
+            mpSocketClient1->waitForBytesWritten();
+
+			if (connectFlag2)
+			{
+				mpSocketClient2->write("SocketClient2 test");
+				mpSocketClient2->waitForBytesWritten();
+			}
             //mpSocketClient->flush();
             LogUtil::Debug(CODE_LOCATION, "after write %d !", count);
             QThread::msleep(500);

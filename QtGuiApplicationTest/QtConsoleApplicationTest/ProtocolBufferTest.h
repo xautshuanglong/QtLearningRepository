@@ -5,7 +5,8 @@ class QTcpSocket;
 class ProtocolBufferTest
 {
 private:
-    QTcpSocket       *mpSocketClient;
+	QTcpSocket       *mpSocketClient1;
+	QTcpSocket       *mpSocketClient2;
 
 public:
     ProtocolBufferTest();
@@ -15,5 +16,6 @@ public:
     void TestExit();
 
 private:
+	bool IsLittleEndian();
     void SendMessageTest();
 };
