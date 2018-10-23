@@ -121,7 +121,7 @@ void ProtocolBufferTest::SendMessageTest()
             QThread::msleep(500);
             ++count;
         }
-        //mpSocketClient->close();
+        mpSocketClient1->close();
     }
 
     delete[]pTempMsgBuffer;
