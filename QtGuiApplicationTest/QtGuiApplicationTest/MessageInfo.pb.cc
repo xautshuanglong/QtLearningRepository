@@ -238,6 +238,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, cmd_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, xmlfilename_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, xslfilename_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, outfilename_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -270,9 +274,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 14, -1, sizeof(::com::genomics::protobuf::MessagePush)},
   { 19, -1, sizeof(::com::genomics::protobuf::MessagePull)},
   { 24, -1, sizeof(::com::genomics::protobuf::MessageCommand)},
-  { 29, -1, sizeof(::com::genomics::protobuf::MessageHeader)},
-  { 37, -1, sizeof(::com::genomics::protobuf::MessageBody)},
-  { 47, -1, sizeof(::com::genomics::protobuf::MessageInfo)},
+  { 33, -1, sizeof(::com::genomics::protobuf::MessageHeader)},
+  { 41, -1, sizeof(::com::genomics::protobuf::MessageBody)},
+  { 51, -1, sizeof(::com::genomics::protobuf::MessageInfo)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -311,30 +315,32 @@ void AddDescriptorsImpl() {
       "uf\"8\n\016MessageRequest\022\021\n\trequestID\030\001 \001(\r\022"
       "\023\n\013description\030\002 \001(\t\"9\n\017MessageResponse\022"
       "\021\n\trequestID\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\""
-      "\r\n\013MessagePush\"\r\n\013MessagePull\"\020\n\016Message"
-      "Command\"`\n\rMessageHeader\022\017\n\007version\030\001 \001("
-      "\r\022\r\n\005msgID\030\002 \001(\r\022/\n\007msgType\030\003 \001(\0162\036.com."
-      "genomics.protobuf.MsgType\"\252\002\n\013MessageBod"
-      "y\0229\n\nmsgRequest\030\001 \001(\0132%.com.genomics.pro"
-      "tobuf.MessageRequest\022;\n\013msgResponse\030\002 \001("
-      "\0132&.com.genomics.protobuf.MessageRespons"
-      "e\0223\n\007msgPush\030\003 \001(\0132\".com.genomics.protob"
-      "uf.MessagePush\0223\n\007msgPull\030\004 \001(\0132\".com.ge"
-      "nomics.protobuf.MessagePull\0229\n\nmsgComman"
-      "d\030\005 \001(\0132%.com.genomics.protobuf.MessageC"
-      "ommand\"{\n\013MessageInfo\0227\n\tmsgHeader\030\001 \001(\013"
-      "2$.com.genomics.protobuf.MessageHeader\0223"
-      "\n\007msgBody\030\002 \001(\0132\".com.genomics.protobuf."
-      "MessageBody*{\n\007MsgType\022\021\n\rMsgTypeUnknow\020"
-      "\000\022\022\n\016MsgTypeRequest\020d\022\023\n\017MsgTypeResponse"
-      "\020e\022\017\n\013MsgTypePush\020f\022\017\n\013MsgTypePull\020g\022\022\n\016"
-      "MsgTypeCommand\020h*J\n\013RequestType\022\021\n\rReqTy"
-      "peUnknow\020\000\022\023\n\016ReqTypePdfFile\020\310\001\022\023\n\016ReqTy"
-      "pePdfPage\020\311\001B)\n\025com.genomics.protobufB\020M"
-      "essageInfoProtob\006proto3"
+      "\r\n\013MessagePush\"\r\n\013MessagePull\"\\\n\016Message"
+      "Command\022\013\n\003cmd\030\001 \001(\t\022\023\n\013xmlFilename\030\002 \001("
+      "\t\022\023\n\013xslFilename\030\003 \001(\t\022\023\n\013outFilename\030\004 "
+      "\001(\t\"`\n\rMessageHeader\022\017\n\007version\030\001 \001(\r\022\r\n"
+      "\005msgID\030\002 \001(\r\022/\n\007msgType\030\003 \001(\0162\036.com.geno"
+      "mics.protobuf.MsgType\"\252\002\n\013MessageBody\0229\n"
+      "\nmsgRequest\030\001 \001(\0132%.com.genomics.protobu"
+      "f.MessageRequest\022;\n\013msgResponse\030\002 \001(\0132&."
+      "com.genomics.protobuf.MessageResponse\0223\n"
+      "\007msgPush\030\003 \001(\0132\".com.genomics.protobuf.M"
+      "essagePush\0223\n\007msgPull\030\004 \001(\0132\".com.genomi"
+      "cs.protobuf.MessagePull\0229\n\nmsgCommand\030\005 "
+      "\001(\0132%.com.genomics.protobuf.MessageComma"
+      "nd\"{\n\013MessageInfo\0227\n\tmsgHeader\030\001 \001(\0132$.c"
+      "om.genomics.protobuf.MessageHeader\0223\n\007ms"
+      "gBody\030\002 \001(\0132\".com.genomics.protobuf.Mess"
+      "ageBody*{\n\007MsgType\022\021\n\rMsgTypeUnknow\020\000\022\022\n"
+      "\016MsgTypeRequest\020d\022\023\n\017MsgTypeResponse\020e\022\017"
+      "\n\013MsgTypePush\020f\022\017\n\013MsgTypePull\020g\022\022\n\016MsgT"
+      "ypeCommand\020h*J\n\013RequestType\022\021\n\rReqTypeUn"
+      "know\020\000\022\023\n\016ReqTypePdfFile\020\310\001\022\023\n\016ReqTypePd"
+      "fPage\020\311\001B)\n\025com.genomics.protobufB\020Messa"
+      "geInfoProtob\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 983);
+      descriptor, 1059);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessageInfo.proto", &protobuf_RegisterTypes);
 }
@@ -1312,6 +1318,10 @@ void MessagePull::InternalSwap(MessagePull* other) {
 void MessageCommand::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int MessageCommand::kCmdFieldNumber;
+const int MessageCommand::kXmlFilenameFieldNumber;
+const int MessageCommand::kXslFilenameFieldNumber;
+const int MessageCommand::kOutFilenameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 MessageCommand::MessageCommand()
@@ -1325,10 +1335,30 @@ MessageCommand::MessageCommand(const MessageCommand& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  cmd_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.cmd().size() > 0) {
+    cmd_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.cmd_);
+  }
+  xmlfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.xmlfilename().size() > 0) {
+    xmlfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xmlfilename_);
+  }
+  xslfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.xslfilename().size() > 0) {
+    xslfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xslfilename_);
+  }
+  outfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.outfilename().size() > 0) {
+    outfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.outfilename_);
+  }
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageCommand)
 }
 
 void MessageCommand::SharedCtor() {
+  cmd_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xmlfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xslfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  outfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 MessageCommand::~MessageCommand() {
@@ -1337,6 +1367,10 @@ MessageCommand::~MessageCommand() {
 }
 
 void MessageCommand::SharedDtor() {
+  cmd_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xmlfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xslfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  outfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void MessageCommand::SetCachedSize(int size) const {
@@ -1359,6 +1393,10 @@ void MessageCommand::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xmlfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  xslfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  outfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -1371,12 +1409,81 @@ bool MessageCommand::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string cmd = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_cmd()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->cmd().data(), static_cast<int>(this->cmd().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "com.genomics.protobuf.MessageCommand.cmd"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string xmlFilename = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_xmlfilename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "com.genomics.protobuf.MessageCommand.xmlFilename"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string xslFilename = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_xslfilename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "com.genomics.protobuf.MessageCommand.xslFilename"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string outFilename = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_outfilename()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->outfilename().data(), static_cast<int>(this->outfilename().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "com.genomics.protobuf.MessageCommand.outFilename"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageCommand)
@@ -1393,6 +1500,46 @@ void MessageCommand::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // string cmd = 1;
+  if (this->cmd().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->cmd().data(), static_cast<int>(this->cmd().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.cmd");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->cmd(), output);
+  }
+
+  // string xmlFilename = 2;
+  if (this->xmlfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.xmlFilename");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->xmlfilename(), output);
+  }
+
+  // string xslFilename = 3;
+  if (this->xslfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.xslFilename");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->xslfilename(), output);
+  }
+
+  // string outFilename = 4;
+  if (this->outfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->outfilename().data(), static_cast<int>(this->outfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.outFilename");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->outfilename(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1406,6 +1553,50 @@ void MessageCommand::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageCommand)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // string cmd = 1;
+  if (this->cmd().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->cmd().data(), static_cast<int>(this->cmd().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.cmd");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->cmd(), target);
+  }
+
+  // string xmlFilename = 2;
+  if (this->xmlfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.xmlFilename");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->xmlfilename(), target);
+  }
+
+  // string xslFilename = 3;
+  if (this->xslfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.xslFilename");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->xslfilename(), target);
+  }
+
+  // string outFilename = 4;
+  if (this->outfilename().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->outfilename().data(), static_cast<int>(this->outfilename().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "com.genomics.protobuf.MessageCommand.outFilename");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->outfilename(), target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -1424,6 +1615,34 @@ size_t MessageCommand::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // string cmd = 1;
+  if (this->cmd().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->cmd());
+  }
+
+  // string xmlFilename = 2;
+  if (this->xmlfilename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->xmlfilename());
+  }
+
+  // string xslFilename = 3;
+  if (this->xslfilename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->xslfilename());
+  }
+
+  // string outFilename = 4;
+  if (this->outfilename().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->outfilename());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -1451,6 +1670,22 @@ void MessageCommand::MergeFrom(const MessageCommand& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.cmd().size() > 0) {
+
+    cmd_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.cmd_);
+  }
+  if (from.xmlfilename().size() > 0) {
+
+    xmlfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xmlfilename_);
+  }
+  if (from.xslfilename().size() > 0) {
+
+    xslfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xslfilename_);
+  }
+  if (from.outfilename().size() > 0) {
+
+    outfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.outfilename_);
+  }
 }
 
 void MessageCommand::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1477,6 +1712,14 @@ void MessageCommand::Swap(MessageCommand* other) {
 }
 void MessageCommand::InternalSwap(MessageCommand* other) {
   using std::swap;
+  cmd_.Swap(&other->cmd_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  xmlfilename_.Swap(&other->xmlfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  xslfilename_.Swap(&other->xslfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  outfilename_.Swap(&other->outfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

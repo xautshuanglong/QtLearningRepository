@@ -656,10 +656,70 @@ class MessageCommand : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
+  // string cmd = 1;
+  void clear_cmd();
+  static const int kCmdFieldNumber = 1;
+  const ::std::string& cmd() const;
+  void set_cmd(const ::std::string& value);
+  #if LANG_CXX11
+  void set_cmd(::std::string&& value);
+  #endif
+  void set_cmd(const char* value);
+  void set_cmd(const char* value, size_t size);
+  ::std::string* mutable_cmd();
+  ::std::string* release_cmd();
+  void set_allocated_cmd(::std::string* cmd);
+
+  // string xmlFilename = 2;
+  void clear_xmlfilename();
+  static const int kXmlFilenameFieldNumber = 2;
+  const ::std::string& xmlfilename() const;
+  void set_xmlfilename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_xmlfilename(::std::string&& value);
+  #endif
+  void set_xmlfilename(const char* value);
+  void set_xmlfilename(const char* value, size_t size);
+  ::std::string* mutable_xmlfilename();
+  ::std::string* release_xmlfilename();
+  void set_allocated_xmlfilename(::std::string* xmlfilename);
+
+  // string xslFilename = 3;
+  void clear_xslfilename();
+  static const int kXslFilenameFieldNumber = 3;
+  const ::std::string& xslfilename() const;
+  void set_xslfilename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_xslfilename(::std::string&& value);
+  #endif
+  void set_xslfilename(const char* value);
+  void set_xslfilename(const char* value, size_t size);
+  ::std::string* mutable_xslfilename();
+  ::std::string* release_xslfilename();
+  void set_allocated_xslfilename(::std::string* xslfilename);
+
+  // string outFilename = 4;
+  void clear_outfilename();
+  static const int kOutFilenameFieldNumber = 4;
+  const ::std::string& outfilename() const;
+  void set_outfilename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_outfilename(::std::string&& value);
+  #endif
+  void set_outfilename(const char* value);
+  void set_outfilename(const char* value, size_t size);
+  ::std::string* mutable_outfilename();
+  ::std::string* release_outfilename();
+  void set_allocated_outfilename(::std::string* outfilename);
+
   // @@protoc_insertion_point(class_scope:com.genomics.protobuf.MessageCommand)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr cmd_;
+  ::google::protobuf::internal::ArenaStringPtr xmlfilename_;
+  ::google::protobuf::internal::ArenaStringPtr xslfilename_;
+  ::google::protobuf::internal::ArenaStringPtr outfilename_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_MessageInfo_2eproto::TableStruct;
 };
@@ -1223,6 +1283,218 @@ inline void MessageResponse::set_allocated_description(::std::string* descriptio
 // -------------------------------------------------------------------
 
 // MessageCommand
+
+// string cmd = 1;
+inline void MessageCommand::clear_cmd() {
+  cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MessageCommand::cmd() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageCommand.cmd)
+  return cmd_.GetNoArena();
+}
+inline void MessageCommand::set_cmd(const ::std::string& value) {
+  
+  cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageCommand.cmd)
+}
+#if LANG_CXX11
+inline void MessageCommand::set_cmd(::std::string&& value) {
+  
+  cmd_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:com.genomics.protobuf.MessageCommand.cmd)
+}
+#endif
+inline void MessageCommand::set_cmd(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:com.genomics.protobuf.MessageCommand.cmd)
+}
+inline void MessageCommand::set_cmd(const char* value, size_t size) {
+  
+  cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:com.genomics.protobuf.MessageCommand.cmd)
+}
+inline ::std::string* MessageCommand::mutable_cmd() {
+  
+  // @@protoc_insertion_point(field_mutable:com.genomics.protobuf.MessageCommand.cmd)
+  return cmd_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MessageCommand::release_cmd() {
+  // @@protoc_insertion_point(field_release:com.genomics.protobuf.MessageCommand.cmd)
+  
+  return cmd_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MessageCommand::set_allocated_cmd(::std::string* cmd) {
+  if (cmd != NULL) {
+    
+  } else {
+    
+  }
+  cmd_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), cmd);
+  // @@protoc_insertion_point(field_set_allocated:com.genomics.protobuf.MessageCommand.cmd)
+}
+
+// string xmlFilename = 2;
+inline void MessageCommand::clear_xmlfilename() {
+  xmlfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MessageCommand::xmlfilename() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageCommand.xmlFilename)
+  return xmlfilename_.GetNoArena();
+}
+inline void MessageCommand::set_xmlfilename(const ::std::string& value) {
+  
+  xmlfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageCommand.xmlFilename)
+}
+#if LANG_CXX11
+inline void MessageCommand::set_xmlfilename(::std::string&& value) {
+  
+  xmlfilename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:com.genomics.protobuf.MessageCommand.xmlFilename)
+}
+#endif
+inline void MessageCommand::set_xmlfilename(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  xmlfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:com.genomics.protobuf.MessageCommand.xmlFilename)
+}
+inline void MessageCommand::set_xmlfilename(const char* value, size_t size) {
+  
+  xmlfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:com.genomics.protobuf.MessageCommand.xmlFilename)
+}
+inline ::std::string* MessageCommand::mutable_xmlfilename() {
+  
+  // @@protoc_insertion_point(field_mutable:com.genomics.protobuf.MessageCommand.xmlFilename)
+  return xmlfilename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MessageCommand::release_xmlfilename() {
+  // @@protoc_insertion_point(field_release:com.genomics.protobuf.MessageCommand.xmlFilename)
+  
+  return xmlfilename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MessageCommand::set_allocated_xmlfilename(::std::string* xmlfilename) {
+  if (xmlfilename != NULL) {
+    
+  } else {
+    
+  }
+  xmlfilename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), xmlfilename);
+  // @@protoc_insertion_point(field_set_allocated:com.genomics.protobuf.MessageCommand.xmlFilename)
+}
+
+// string xslFilename = 3;
+inline void MessageCommand::clear_xslfilename() {
+  xslfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MessageCommand::xslfilename() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageCommand.xslFilename)
+  return xslfilename_.GetNoArena();
+}
+inline void MessageCommand::set_xslfilename(const ::std::string& value) {
+  
+  xslfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageCommand.xslFilename)
+}
+#if LANG_CXX11
+inline void MessageCommand::set_xslfilename(::std::string&& value) {
+  
+  xslfilename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:com.genomics.protobuf.MessageCommand.xslFilename)
+}
+#endif
+inline void MessageCommand::set_xslfilename(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  xslfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:com.genomics.protobuf.MessageCommand.xslFilename)
+}
+inline void MessageCommand::set_xslfilename(const char* value, size_t size) {
+  
+  xslfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:com.genomics.protobuf.MessageCommand.xslFilename)
+}
+inline ::std::string* MessageCommand::mutable_xslfilename() {
+  
+  // @@protoc_insertion_point(field_mutable:com.genomics.protobuf.MessageCommand.xslFilename)
+  return xslfilename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MessageCommand::release_xslfilename() {
+  // @@protoc_insertion_point(field_release:com.genomics.protobuf.MessageCommand.xslFilename)
+  
+  return xslfilename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MessageCommand::set_allocated_xslfilename(::std::string* xslfilename) {
+  if (xslfilename != NULL) {
+    
+  } else {
+    
+  }
+  xslfilename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), xslfilename);
+  // @@protoc_insertion_point(field_set_allocated:com.genomics.protobuf.MessageCommand.xslFilename)
+}
+
+// string outFilename = 4;
+inline void MessageCommand::clear_outfilename() {
+  outfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MessageCommand::outfilename() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageCommand.outFilename)
+  return outfilename_.GetNoArena();
+}
+inline void MessageCommand::set_outfilename(const ::std::string& value) {
+  
+  outfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageCommand.outFilename)
+}
+#if LANG_CXX11
+inline void MessageCommand::set_outfilename(::std::string&& value) {
+  
+  outfilename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:com.genomics.protobuf.MessageCommand.outFilename)
+}
+#endif
+inline void MessageCommand::set_outfilename(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  outfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:com.genomics.protobuf.MessageCommand.outFilename)
+}
+inline void MessageCommand::set_outfilename(const char* value, size_t size) {
+  
+  outfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:com.genomics.protobuf.MessageCommand.outFilename)
+}
+inline ::std::string* MessageCommand::mutable_outfilename() {
+  
+  // @@protoc_insertion_point(field_mutable:com.genomics.protobuf.MessageCommand.outFilename)
+  return outfilename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MessageCommand::release_outfilename() {
+  // @@protoc_insertion_point(field_release:com.genomics.protobuf.MessageCommand.outFilename)
+  
+  return outfilename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MessageCommand::set_allocated_outfilename(::std::string* outfilename) {
+  if (outfilename != NULL) {
+    
+  } else {
+    
+  }
+  outfilename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), outfilename);
+  // @@protoc_insertion_point(field_set_allocated:com.genomics.protobuf.MessageCommand.outFilename)
+}
 
 // -------------------------------------------------------------------
 

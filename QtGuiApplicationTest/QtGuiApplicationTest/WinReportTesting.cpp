@@ -188,6 +188,12 @@ void WinReportTesting::on_btnSavePDF_clicked()
     pMsgHeader->set_version(1);
     pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
     MessageCommand *pMsgCommand = new MessageCommand();
+    pMsgCommand->set_cmd("SAVE");
+    pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
+    pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
+    // E:/Temp/FopTest/FoUserAgentTest.pdf
+    // E:/Temp/FopTest/MGI_ReportTest.fo
     MessageBody *pMsgBody = new MessageBody();
     pMsgBody->set_allocated_msgcommand(pMsgCommand);
     MessageInfo msgInfo;
