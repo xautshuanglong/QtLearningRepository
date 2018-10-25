@@ -62,9 +62,6 @@
     <ClCompile Include="AddressBook.pb.cc">
       <Filter>ThirdPartTest</Filter>
     </ClCompile>
-    <ClCompile Include="MessageInfo.pb.cc">
-      <Filter>ThirdPartTest</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomFileParserTest.h">
@@ -89,9 +86,6 @@
       <Filter>ThirdPartTest</Filter>
     </ClInclude>
     <ClInclude Include="AddressBook.pb.h">
-      <Filter>ThirdPartTest</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageInfo.pb.h">
       <Filter>ThirdPartTest</Filter>
     </ClInclude>
   </ItemGroup>

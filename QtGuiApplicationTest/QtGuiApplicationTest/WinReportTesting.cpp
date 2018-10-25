@@ -6,11 +6,17 @@
 #include <QTextFrame>
 #include <QTextTable>
 #include <QPrinter>
+#include <QTcpSocket>
+#include <QThread>
+
+// Protocol Buffer
+#include "MessageInfo.pb.h"
 
 #include <MemUtil.h>
 #include "FramelessWindowHelper.h"
 
 using namespace SL::Util;
+using namespace com::genomics::protobuf;
 
 WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     : QMainWindow(parent)
@@ -19,6 +25,8 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 {
     ui->setupUi(this);
     mpFramelessHelper = new FramelessWindowHelper(this);
+    mpSocketClient1 = new QTcpSocket();
+    mpSocketClient2 = new QTcpSocket();
 
     ui->teReport->setReadOnly(true);
 }
@@ -26,6 +34,16 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 WinReportTesting::~WinReportTesting()
 {
     MemUtil::RelesePointer(&mpFramelessHelper);
+    if (mpSocketClient1->isOpen())
+    {
+        mpSocketClient1->close();
+    }
+    delete mpSocketClient1;
+    if (mpSocketClient2->isOpen())
+    {
+        mpSocketClient2->close();
+    }
+    delete mpSocketClient2;
 }
 
 void WinReportTesting::QTextDocumentTest()
@@ -152,4 +170,42 @@ void WinReportTesting::on_btnFormatTest_clicked()
     printer.setPageMargins(pdfMarginsF, QPageLayout::Point);
     printer.setOutputFileName("E:\\Temp\\ReportComposeTest.pdf");
     pEditDoc->print(&printer);
+}
+
+void WinReportTesting::on_btnSavePDF_clicked()
+{
+    QString serverIP = "localhost";
+    int serverPort = 8000;
+
+    mpSocketClient1->connectToHost(serverIP, serverPort);
+    bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
+
+    mpSocketClient2->connectToHost(serverIP, serverPort);
+    bool connectFlag2 = mpSocketClient2->waitForConnected(5000);
+
+    MessageHeader *pMsgHeader = new MessageHeader();
+    pMsgHeader->set_msgid(123);
+    pMsgHeader->set_version(1);
+    pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
+    MessageCommand *pMsgCommand = new MessageCommand();
+    MessageBody *pMsgBody = new MessageBody();
+    pMsgBody->set_allocated_msgcommand(pMsgCommand);
+    MessageInfo msgInfo;
+    msgInfo.set_allocated_msgheader(pMsgHeader);
+    msgInfo.set_allocated_msgbody(pMsgBody);
+
+    int msgBodyLen = msgInfo.ByteSize();
+    int msgLen = msgBodyLen + 4;
+    char *pTempMsgBuffer = new char[msgLen];
+    memcpy(pTempMsgBuffer, &msgLen, 4);
+    msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
+
+    if (connectFlag1)
+    {
+        mpSocketClient1->write(pTempMsgBuffer, msgLen);
+        mpSocketClient1->waitForBytesWritten();
+        mpSocketClient1->close();
+    }
+
+    delete[]pTempMsgBuffer;
 }

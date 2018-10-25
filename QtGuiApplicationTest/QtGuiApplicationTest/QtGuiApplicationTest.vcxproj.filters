@@ -40,6 +40,9 @@
     <Filter Include="Resource Files\images">
       <UniqueIdentifier>{0ba42e86-dccf-42be-aab0-82168d0e2455}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProtoBuf">
+      <UniqueIdentifier>{ae3b4cdc-e888-45fc-b35b-c4fdbcde0d85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,6 +90,9 @@
     <ClCompile Include="WinReportTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MessageInfo.pb.cc">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -132,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="IWorkerTask.h">
       <Filter>QThreadTest</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageInfo.pb.h">
+      <Filter>ProtoBuf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

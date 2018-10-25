@@ -107,7 +107,6 @@
     <ClCompile Include="DicomNetworkTest.cpp" />
     <ClCompile Include="ImportComTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MessageInfo.pb.cc" />
     <ClCompile Include="OpensslTest.cpp" />
     <ClCompile Include="ProtocolBufferTest.cpp" />
     <ClCompile Include="TestManager.cpp" />
@@ -118,7 +117,6 @@
     <ClInclude Include="DicomFileParserTest.h" />
     <ClInclude Include="DicomNetworkTest.h" />
     <ClInclude Include="ImportComTest.h" />
-    <ClInclude Include="MessageInfo.pb.h" />
     <ClInclude Include="OpensslTest.h" />
     <ClInclude Include="ProtocolBufferTest.h" />
     <ClInclude Include="TestManager.h" />

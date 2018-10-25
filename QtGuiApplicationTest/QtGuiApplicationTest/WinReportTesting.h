@@ -3,6 +3,7 @@
 #include <QMainWindow>
 
 class FramelessWindowHelper;
+class QTcpSocket;
 
 namespace Ui
 {
@@ -15,6 +16,8 @@ class WinReportTesting : public QMainWindow
 private:
     Ui::WinReportTesting   *ui;
     FramelessWindowHelper  *mpFramelessHelper;
+    QTcpSocket             *mpSocketClient1;
+    QTcpSocket             *mpSocketClient2;
 
 public:
     explicit WinReportTesting(QWidget *parent = Q_NULLPTR);
@@ -27,4 +30,5 @@ private:
 private slots:
     void on_btnPrintTest_clicked();
     void on_btnFormatTest_clicked();
+    void on_btnSavePDF_clicked();
 };

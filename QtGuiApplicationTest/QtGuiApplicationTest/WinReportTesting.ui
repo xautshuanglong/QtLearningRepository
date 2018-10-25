@@ -240,6 +240,19 @@ QWidget
           <bool>false</bool>
          </property>
         </widget>
+        <widget class="QPushButton" name="btnSavePDF">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>SavePDF</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
