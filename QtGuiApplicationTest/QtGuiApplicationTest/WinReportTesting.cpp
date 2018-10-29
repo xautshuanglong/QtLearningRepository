@@ -14,6 +14,7 @@
 
 #include <MemUtil.h>
 #include "FramelessWindowHelper.h"
+#include "XmlReportGenerator.h"
 
 using namespace SL::Util;
 using namespace com::genomics::protobuf;
@@ -174,6 +175,11 @@ void WinReportTesting::on_btnFormatTest_clicked()
 
 void WinReportTesting::on_btnSavePDF_clicked()
 {
+    QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
+    XmlReportGenerator xmlReport;
+    xmlReport.SaveReportAsXml(outXmlFilename);
+    return;
+
     QString serverIP = "localhost";
     int serverPort = 8000;
 

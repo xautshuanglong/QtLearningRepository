@@ -1,16 +1,91 @@
 #pragma once
 
+#include <QString>
+#include <QStringList>
+#include <QPair>
+
+class QDomDocument;
+class QDomElement;
+template <class Key, class T> class QMap;
+
+/************************************************************************/
+/* 功能描述： 将 UI 诊断报告内容序列化到 xml，以便 fop 对其进行排版。       */
+/*     报告大致分为三个部分：头部（Header）、正文(Body)、尾部(Footer):     */
+/*     头部（Header）: logo、主标题、副标题                               */
+/*     正文(Body)                                                       */
+/*     尾部(Footer): 打印时间、签名                                      */
+/************************************************************************/
+
 class XmlReportGenerator
 {
 public:
     XmlReportGenerator();
     ~XmlReportGenerator();
 
-    void CreateReport();
-    void SaveReportAsXml();
+    void SaveReportAsXml(const QString& xmlFilename);
+
+    void SetTagValue(const QString& tag, const QString& value);
+    QString GetTagValue(const QString& tag);
+
+    void SetTagKeyValue(const QString& tag, const QPair<QString, QString>& value);
+    QPair<QString, QString> GetTagKeyValue(const QString& tag);
 
 private:
-    void CreateReportHeader();
-    void CreateReportBody();
-    void CreateReportFooter();
+    void InitDefaultValues();
+    void CreateReport(QDomDocument *pXmlDoc);
+    void CreateReportHeader(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+    void CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+    void CreateReportFooter(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+
+public:
+    static const QString TAG_ROOT;                               // 跟标签
+    static const QString TAG_HEADER;                             // 报告头部
+    static const QString TAG_HEADER_HospitalLogo;                // 医院标志图片路径
+    static const QString TAG_HEADER_MainTitle;                   // 报告主标题
+    static const QString TAG_HEADER_SubTitle;                    // 报告副标题
+    static const QString TAG_BODY;                               // 报告正文
+    static const QString TAG_BODY_PatientInfo;                   // 病人信息
+    static const QString TAG_BODY_PatientInfo_Title;             // 病人信息-板块标题
+    static const QString TAG_BODY_PatientInfo_Name;              // 病人信息-姓名
+    static const QString TAG_BODY_PatientInfo_PatientNumber;     // 病人信息-门诊号
+    static const QString TAG_BODY_PatientInfo_Method;            // 病人信息-检查方法
+    static const QString TAG_BODY_PatientInfo_Date;              // 病人信息-检查日期
+    static const QString TAG_BODY_PatientInfo_Sex;               // 病人信息-性别
+    static const QString TAG_BODY_PatientInfo_Nation;            // 病人信息-民族
+    static const QString TAG_BODY_PatientInfo_IDCard;            // 病人信息-身份证号
+    static const QString TAG_BODY_PatientInfo_PhoneNumber;       // 病人信息-联系电话
+    static const QString TAG_BODY_PatientInfo_Stature;           // 病人信息-身高
+    static const QString TAG_BODY_PatientInfo_Weight;            // 病人信息-体重
+    static const QString TAG_BODY_PatientInfo_InpatientArea;     // 病人信息-病区
+    static const QString TAG_BODY_PatientInfo_Mainpulator;       // 病人信息-操作者
+    static const QString TAG_BODY_PatientInfo_Age;               // 病人信息-年龄
+    static const QString TAG_BODY_PatientInfo_Physician;         // 病人信息-记录医师
+    static const QString TAG_BODY_PatientInfo_Consultant;        // 病人信息-会诊医生
+    static const QString TAG_BODY_PatientInfo_ExamDescription;   // 病人信息-检查描述
+    static const QString TAG_BODY_PatientInfo_Comment;           // 病人信息-备注
+    static const QString TAG_BODY_PatientInfo_Keyword;           // 病人信息-关键字
+    static const QString TAG_BODY_PatientInfo_Value;             // 病人信息-值
+    static const QString TAG_BODY_UltrasoundImages;              // 超声图像
+    static const QString TAG_BODY_UltrasoundImages_Title;        // 超声图像-板块标题
+    static const QString TAG_BODY_UltrasoundImages_CountPerLine; // 超声图像-每行图像数
+    static const QString TAG_BODY_UltrasoundImages_USImage;      // 超声图像-图像路径
+    static const QString TAG_BODY_ExaminationFindings;           // 检查所见
+    static const QString TAG_BODY_ExaminationFindings_Title;     // 检查所见-板块标题
+    static const QString TAG_BODY_ExaminationFindings_Content;   // 检查所见-内容
+    static const QString TAG_BODY_ExaminationConclusion;         // 诊断结果
+    static const QString TAG_BODY_ExaminationConclusion_Title;   // 诊断结果-板块标题
+    static const QString TAG_BODY_ExaminationConclusion_Content; // 诊断结果-内容
+    static const QString TAG_FOOTER;                             // 报告尾部
+    static const QString TAG_FOOTER_PrintTime;                   // 报告打印时间
+    static const QString TAG_FOOTER_PrintTime_Keyword;           // 打印时间-关键字
+    static const QString TAG_FOOTER_PrintTime_Value;             // 打印时间-值
+    static const QString TAG_FOOTER_DoctorSignature;             // 医生签名文件路径
+    static const QString TAG_FOOTER_DoctorSignature_Keyword;     // 医生签名-关键字
+    static const QString TAG_FOOTER_DoctorSignature_Value;       // 医生签名-值
+
+private:
+    //QDomDocument *mpReportDoc;
+    QMap<QString, QString>                   *mpMapTagValue;
+    QMap<QString, QPair<QString, QString>>   *mpMapTagKeyValue;
+    QStringList                               mListPatientInfoKeyValue;
 };
