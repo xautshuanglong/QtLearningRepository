@@ -72,7 +72,7 @@ XmlReportGenerator::TagKeyValue XmlReportGenerator::gMapTagKeyValue[] =
     { TAG_BODY_PatientInfo_Stature,           "Stature",               QStringLiteral("身高："), QStringLiteral("175cm") },
     { TAG_BODY_PatientInfo_Weight,            "Weight",                QStringLiteral("体重："), QStringLiteral("70kg") },
     { TAG_BODY_PatientInfo_InpatientArea,     "InpatientArea",         QStringLiteral("病区："), QStringLiteral("A30") },
-    { TAG_BODY_PatientInfo_Mainpulator,       "Mainpulator",           QStringLiteral("操作者："), QStringLiteral("张飞") },
+    { TAG_BODY_PatientInfo_Mainpulator,       "Manipulator",           QStringLiteral("操作者："), QStringLiteral("张飞") },
     { TAG_BODY_PatientInfo_Age,               "Age",                   QStringLiteral("年龄："), QStringLiteral("28") },
     { TAG_BODY_PatientInfo_Physician,         "Physician",             QStringLiteral("记录医师："), QStringLiteral("王二") },
     { TAG_BODY_PatientInfo_Consultant,        "Consultant",            QStringLiteral("会诊医生："), QStringLiteral("麻子") },
@@ -185,15 +185,15 @@ void XmlReportGenerator::CreateReportHeader(QDomDocument *pXmlDoc, QDomElement *
 
     // 医院 logo
     QDomElement hospitalLogo = pXmlDoc->createElement(gMapTagKeyValue[TAG_HEADER_HospitalLogo].tagString);
-    hospitalLogo.setAttribute("src", this->GetTagValue(gMapTagKeyValue[TAG_HEADER_HospitalLogo].tagValue));
+    hospitalLogo.setAttribute("src", gMapTagKeyValue[TAG_HEADER_HospitalLogo].tagValue);
     header.appendChild(hospitalLogo);
     // 主标题
     QDomElement mainTtle = pXmlDoc->createElement(gMapTagKeyValue[TAG_HEADER_MainTitle].tagString);
-    mainTtle.appendChild(pXmlDoc->createTextNode(this->GetTagValue(gMapTagKeyValue[TAG_HEADER_MainTitle].tagValue)));
+    mainTtle.appendChild(pXmlDoc->createTextNode(gMapTagKeyValue[TAG_HEADER_MainTitle].tagValue));
     header.appendChild(mainTtle);
     // 副标题
     QDomElement subTitle = pXmlDoc->createElement(gMapTagKeyValue[TAG_HEADER_SubTitle].tagString);
-    subTitle.appendChild(pXmlDoc->createTextNode(this->GetTagValue(gMapTagKeyValue[TAG_HEADER_SubTitle].tagValue)));
+    subTitle.appendChild(pXmlDoc->createTextNode(gMapTagKeyValue[TAG_HEADER_SubTitle].tagValue));
     header.appendChild(subTitle);
 }
 
@@ -206,7 +206,7 @@ void XmlReportGenerator::CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pR
     QDomElement patientInfo = pXmlDoc->createElement(gMapTagKeyValue[TAG_BODY_PatientInfo].tagString);
     body.appendChild(patientInfo);
     QDomElement patientInfoTitle = pXmlDoc->createElement(gMapTagKeyValue[TAG_BODY_PatientInfo_Title].tagString);
-    patientInfoTitle.appendChild(pXmlDoc->createTextNode(this->GetTagValue(gMapTagKeyValue[TAG_BODY_PatientInfo_Title].tagValue)));
+    patientInfoTitle.appendChild(pXmlDoc->createTextNode(gMapTagKeyValue[TAG_BODY_PatientInfo_Title].tagValue));
     patientInfo.appendChild(patientInfoTitle);
 
     QDomElement tempElement;
@@ -217,7 +217,7 @@ void XmlReportGenerator::CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pR
     {
         tempKeyword = pXmlDoc->createElement(gMapTagKeyValue[TAG_BODY_PatientInfo_Keyword].tagString);
         tempKeyword.appendChild(pXmlDoc->createTextNode(gMapTagKeyValue[i].tagKeyword));
-        tempValue = pXmlDoc->createElement(gMapTagKeyValue[TAG_BODY_PatientInfo_Keyword].tagString);
+        tempValue = pXmlDoc->createElement(gMapTagKeyValue[TAG_BODY_PatientInfo_Value].tagString);
         tempValue.appendChild(pXmlDoc->createTextNode(gMapTagKeyValue[i].tagValue));
         tempElement = pXmlDoc->createElement(gMapTagKeyValue[i].tagString);
         tempElement.appendChild(tempKeyword);
