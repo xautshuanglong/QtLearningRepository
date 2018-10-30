@@ -51,7 +51,7 @@
 //const QString XmlReportGenerator::TAG_FOOTER_DoctorSignature_Keyword     = "Keyword";               // 医生签名-关键字
 //const QString XmlReportGenerator::TAG_FOOTER_DoctorSignature_Value       = "Value";                 // 医生签名-值
 
-XmlReportGenerator::TagKeyValue XmlReportGenerator::gMapTagKeyValue[] =
+const XmlReportGenerator::TagKeyValue XmlReportGenerator::gMapTagKeyValue[] =
 {
     { TAG_ROOT,                               "MGIUS_Report",          QStringLiteral(""), QStringLiteral("") },
     { TAG_HEADER,                             "Header",                QStringLiteral(""), QStringLiteral("") },
