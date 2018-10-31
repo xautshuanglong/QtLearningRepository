@@ -19,26 +19,6 @@ template <class Key, class T> class QMap;
 class XmlReportGenerator
 {
 public:
-    XmlReportGenerator();
-    ~XmlReportGenerator();
-
-    void SaveReportAsXml(const QString& xmlFilename);
-
-    void SetTagValue(const QString& tag, const QString& value);
-    QString GetTagValue(const QString& tag);
-
-    void SetTagKeyValue(const QString& tag, const QPair<QString, QString>& value);
-    QPair<QString, QString> GetTagKeyValue(const QString& tag);
-
-private:
-    static void SetDefaultValues();
-    void InitDefaultValues();
-    void CreateReport(QDomDocument *pXmlDoc);
-    void CreateReportHeader(QDomDocument *pXmlDoc, QDomElement *pRootElement);
-    void CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pRootElement);
-    void CreateReportFooter(QDomDocument *pXmlDoc, QDomElement *pRootElement);
-
-public:
     enum ReportXmlTag
     {
         TAG_ROOT,                               // 跟标签
@@ -83,6 +63,7 @@ public:
         TAG_FOOTER_Keyword,                     // 打印时间-关键字
         TAG_FOOTER_Value,                       // 打印时间-值
         TAG_FOOTER_DoctorSignature,             // 医生签名文件路径
+        TAG_MAX
     };
     typedef struct tagTagKeyValue
     {
@@ -92,9 +73,32 @@ public:
         QString       tagValue;
     }TagKeyValue;
 
+    XmlReportGenerator();
+    ~XmlReportGenerator();
+
+    void SaveReportAsXml(const QString& xmlFilename);
+
+    void SetTagString(const ReportXmlTag tag, const QString& tagString);
+    QString GetTagString(const ReportXmlTag tag);
+
+    void SetTagKeyword(const ReportXmlTag tag, const QString& tagKeyword);
+    QString GetTagKeyword(const ReportXmlTag tag);
+
+    void SetTagValue(const ReportXmlTag tag, const QString& tagValue);
+    QString GetTagValue(const ReportXmlTag tag);
+
+    void SetTag(const ReportXmlTag tag, const TagKeyValue& tagKeyValue);
+    void GetTag(const ReportXmlTag tag, TagKeyValue& outTagKeyValue);
+
+    void ResetTagKeyValue();
+
+private:
+    void CreateReport(QDomDocument *pXmlDoc);
+    void CreateReportHeader(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+    void CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+    void CreateReportFooter(QDomDocument *pXmlDoc, QDomElement *pRootElement);
+
 private:
     static const TagKeyValue gMapTagKeyValue[0];
-    QMap<QString, QString>                   *mpMapTagValue;
-    QMap<QString, QPair<QString, QString>>   *mpMapTagKeyValue;
-    QStringList                               mListPatientInfoKeyValue;
+    TagKeyValue                               mMapTagKeyValue[TAG_MAX];
 };

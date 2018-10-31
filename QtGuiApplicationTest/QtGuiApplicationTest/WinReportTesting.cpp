@@ -177,6 +177,11 @@ void WinReportTesting::on_btnSavePDF_clicked()
 {
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
+    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Name, QStringLiteral("Ãû×Ö"));
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
+    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Age, QStringLiteral("ËêÊý"));
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
     xmlReport.SaveReportAsXml(outXmlFilename);
     return;
 

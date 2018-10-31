@@ -119,9 +119,101 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>50</y>
+             <y>30</y>
              <width>371</width>
-             <height>391</height>
+             <height>241</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="textEdit">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>390</y>
+             <width>311</width>
+             <height>101</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="leUsImgPath">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>510</y>
+             <width>301</width>
+             <height>20</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="lbExamDescription">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>440</y>
+             <width>54</width>
+             <height>12</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>检查描述：</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="lbUsImages">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>510</y>
+             <width>54</width>
+             <height>12</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>超声图片：</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="lbName">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>350</y>
+             <width>54</width>
+             <height>12</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>姓名：</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="leName">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>350</y>
+             <width>91</width>
+             <height>20</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="lbAge">
+           <property name="geometry">
+            <rect>
+             <x>220</x>
+             <y>350</y>
+             <width>54</width>
+             <height>12</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>年龄：</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="leAge">
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>350</y>
+             <width>91</width>
+             <height>20</height>
             </rect>
            </property>
           </widget>
