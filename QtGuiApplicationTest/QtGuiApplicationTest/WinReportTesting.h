@@ -31,4 +31,5 @@ private slots:
     void on_btnPrintTest_clicked();
     void on_btnFormatTest_clicked();
     void on_btnSavePDF_clicked();
+    void on_btnPreviewPDF_clicked();
 };

@@ -297,7 +297,7 @@ QWidget
         <widget class="QPushButton" name="btnPrintTest">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>0</x>
            <y>10</y>
            <width>75</width>
            <height>23</height>
@@ -316,7 +316,7 @@ QWidget
         <widget class="QPushButton" name="btnFormatTest">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>80</x>
            <y>10</y>
            <width>75</width>
            <height>23</height>
@@ -335,7 +335,7 @@ QWidget
         <widget class="QPushButton" name="btnSavePDF">
          <property name="geometry">
           <rect>
-           <x>200</x>
+           <x>160</x>
            <y>10</y>
            <width>75</width>
            <height>23</height>
@@ -343,6 +343,19 @@ QWidget
          </property>
          <property name="text">
           <string>SavePDF</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnPreviewPDF">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>PreviewPDF</string>
          </property>
         </widget>
        </widget>

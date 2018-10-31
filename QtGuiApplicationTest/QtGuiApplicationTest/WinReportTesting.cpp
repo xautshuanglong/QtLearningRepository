@@ -183,7 +183,6 @@ void WinReportTesting::on_btnSavePDF_clicked()
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
     xmlReport.SaveReportAsXml(outXmlFilename);
-    return;
 
     QString serverIP = "localhost";
     int serverPort = 8000;
@@ -205,6 +204,48 @@ void WinReportTesting::on_btnSavePDF_clicked()
     pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
     // E:/Temp/FopTest/FoUserAgentTest.pdf
     // E:/Temp/FopTest/MGI_ReportTest.fo
+    MessageBody *pMsgBody = new MessageBody();
+    pMsgBody->set_allocated_msgcommand(pMsgCommand);
+    MessageInfo msgInfo;
+    msgInfo.set_allocated_msgheader(pMsgHeader);
+    msgInfo.set_allocated_msgbody(pMsgBody);
+
+    int msgBodyLen = msgInfo.ByteSize();
+    int msgLen = msgBodyLen + 4;
+    char *pTempMsgBuffer = new char[msgLen];
+    memcpy(pTempMsgBuffer, &msgLen, 4);
+    msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
+
+    if (connectFlag1)
+    {
+        mpSocketClient1->write(pTempMsgBuffer, msgLen);
+        mpSocketClient1->waitForBytesWritten();
+        mpSocketClient1->close();
+    }
+
+    delete[]pTempMsgBuffer;
+}
+
+void WinReportTesting::on_btnPreviewPDF_clicked()
+{
+    QString serverIP = "localhost";
+    int serverPort = 8000;
+
+    mpSocketClient1->connectToHost(serverIP, serverPort);
+    bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
+
+    mpSocketClient2->connectToHost(serverIP, serverPort);
+    bool connectFlag2 = mpSocketClient2->waitForConnected(5000);
+
+    MessageHeader *pMsgHeader = new MessageHeader();
+    pMsgHeader->set_msgid(124);
+    pMsgHeader->set_version(1);
+    pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
+    MessageCommand *pMsgCommand = new MessageCommand();
+    pMsgCommand->set_cmd("AWT");
+    pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
+    pMsgCommand->set_outfilename("");
     MessageBody *pMsgBody = new MessageBody();
     pMsgBody->set_allocated_msgcommand(pMsgCommand);
     MessageInfo msgInfo;
