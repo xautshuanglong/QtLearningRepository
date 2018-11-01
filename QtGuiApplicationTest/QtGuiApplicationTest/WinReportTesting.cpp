@@ -177,9 +177,9 @@ void WinReportTesting::on_btnSavePDF_clicked()
 {
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
-    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Name, QStringLiteral("名字"));
+    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Name, QStringLiteral("名字："));
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
-    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Age, QStringLiteral("岁数"));
+    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Age, QStringLiteral("岁数："));
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
     xmlReport.SaveReportAsXml(outXmlFilename);
@@ -190,16 +190,14 @@ void WinReportTesting::on_btnSavePDF_clicked()
     mpSocketClient1->connectToHost(serverIP, serverPort);
     bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
 
-    mpSocketClient2->connectToHost(serverIP, serverPort);
-    bool connectFlag2 = mpSocketClient2->waitForConnected(5000);
-
     MessageHeader *pMsgHeader = new MessageHeader();
     pMsgHeader->set_msgid(123);
     pMsgHeader->set_version(1);
     pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
     MessageCommand *pMsgCommand = new MessageCommand();
     pMsgCommand->set_cmd("SAVE");
-    pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    pMsgCommand->set_xmlfilename(outXmlFilename.toStdString().c_str());
     pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
     pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
     // E:/Temp/FopTest/FoUserAgentTest.pdf
@@ -216,10 +214,15 @@ void WinReportTesting::on_btnSavePDF_clicked()
     memcpy(pTempMsgBuffer, &msgLen, 4);
     msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
 
+    int count = 100;
     if (connectFlag1)
     {
-        mpSocketClient1->write(pTempMsgBuffer, msgLen);
-        mpSocketClient1->waitForBytesWritten();
+        while (count > 0)
+        {
+            mpSocketClient1->write(pTempMsgBuffer, msgLen);
+            mpSocketClient1->waitForBytesWritten();
+            --count;
+        }
         mpSocketClient1->close();
     }
 
@@ -228,14 +231,18 @@ void WinReportTesting::on_btnSavePDF_clicked()
 
 void WinReportTesting::on_btnPreviewPDF_clicked()
 {
+    QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
+    XmlReportGenerator xmlReport;
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
+    xmlReport.SaveReportAsXml(outXmlFilename);
+
     QString serverIP = "localhost";
     int serverPort = 8000;
 
     mpSocketClient1->connectToHost(serverIP, serverPort);
     bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
-
-    mpSocketClient2->connectToHost(serverIP, serverPort);
-    bool connectFlag2 = mpSocketClient2->waitForConnected(5000);
 
     MessageHeader *pMsgHeader = new MessageHeader();
     pMsgHeader->set_msgid(124);
@@ -243,7 +250,8 @@ void WinReportTesting::on_btnPreviewPDF_clicked()
     pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
     MessageCommand *pMsgCommand = new MessageCommand();
     pMsgCommand->set_cmd("AWT");
-    pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+    pMsgCommand->set_xmlfilename(outXmlFilename.toStdString().c_str());
     pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
     pMsgCommand->set_outfilename("");
     MessageBody *pMsgBody = new MessageBody();
