@@ -190,43 +190,42 @@ void WinReportTesting::on_btnSavePDF_clicked()
     mpSocketClient1->connectToHost(serverIP, serverPort);
     bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
 
-    MessageHeader *pMsgHeader = new MessageHeader();
-    pMsgHeader->set_msgid(123);
-    pMsgHeader->set_version(1);
-    pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
-    MessageCommand *pMsgCommand = new MessageCommand();
-    pMsgCommand->set_cmd("SAVE");
-    //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
-    pMsgCommand->set_xmlfilename(outXmlFilename.toStdString().c_str());
-    pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
-    pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
-    // E:/Temp/FopTest/FoUserAgentTest.pdf
-    // E:/Temp/FopTest/MGI_ReportTest.fo
-    MessageBody *pMsgBody = new MessageBody();
-    pMsgBody->set_allocated_msgcommand(pMsgCommand);
-    MessageInfo msgInfo;
-    msgInfo.set_allocated_msgheader(pMsgHeader);
-    msgInfo.set_allocated_msgbody(pMsgBody);
-
-    int msgBodyLen = msgInfo.ByteSize();
-    int msgLen = msgBodyLen + 4;
-    char *pTempMsgBuffer = new char[msgLen];
-    memcpy(pTempMsgBuffer, &msgLen, 4);
-    msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
-
-    int count = 100;
+    int msgBodyLen = 0;
+    int msgLen = 0;
+    char *pTempMsgBuffer = nullptr;
+    int count = 10;
     if (connectFlag1)
     {
         while (count > 0)
         {
+            MessageHeader *pMsgHeader = new MessageHeader();
+            pMsgHeader->set_msgid(count);
+            pMsgHeader->set_version(1);
+            pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
+            MessageCommand *pMsgCommand = new MessageCommand();
+            pMsgCommand->set_cmd("SAVE");
+            //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
+            pMsgCommand->set_xmlfilename(outXmlFilename.toStdString().c_str());
+            pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
+            pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
+            MessageBody *pMsgBody = new MessageBody();
+            pMsgBody->set_allocated_msgcommand(pMsgCommand);
+            MessageInfo msgInfo;
+            msgInfo.set_allocated_msgheader(pMsgHeader);
+            msgInfo.set_allocated_msgbody(pMsgBody);
+            msgBodyLen = msgInfo.ByteSize();
+            msgLen = msgBodyLen + 4;
+            pTempMsgBuffer = new char[msgLen];
+            memcpy(pTempMsgBuffer, &msgLen, 4);
+            msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
+
             mpSocketClient1->write(pTempMsgBuffer, msgLen);
             mpSocketClient1->waitForBytesWritten();
+            delete[]pTempMsgBuffer;
             --count;
         }
-        mpSocketClient1->close();
+        //mpSocketClient1->close();
     }
-
-    delete[]pTempMsgBuffer;
 }
 
 void WinReportTesting::on_btnPreviewPDF_clicked()
