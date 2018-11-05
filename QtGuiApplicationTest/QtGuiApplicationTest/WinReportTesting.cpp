@@ -91,7 +91,7 @@ void WinReportTesting::QTextEditDocumentTest()
 void WinReportTesting::on_btnPrintTest_clicked()
 {
     //this->QTextDocumentTest();
-    this->QTextEditDocumentTest();
+    //this->QTextEditDocumentTest();
 }
 
 void WinReportTesting::on_btnFormatTest_clicked()

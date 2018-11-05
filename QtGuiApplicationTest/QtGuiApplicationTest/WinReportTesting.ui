@@ -255,6 +255,22 @@
             <string>lbRegionRight</string>
            </property>
           </widget>
+          <widget class="QLabel" name="lbImgPdfView">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>371</width>
+             <height>501</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>PDF Image Preview</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
