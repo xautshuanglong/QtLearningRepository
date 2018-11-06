@@ -80,7 +80,7 @@ typedef unsigned __int64 uint64_t;
 #define fz_longjmp(BUF,VAL) siglongjmp(BUF, VAL)
 #define fz_jmp_buf sigjmp_buf
 #else
-#define fz_setjmp(BUF) setjmp(BUF)
+#define fz_setjmp(BUF) setjmp((_JBTYPE*)BUF)
 #define fz_longjmp(BUF,VAL) longjmp(BUF,VAL)
 #define fz_jmp_buf jmp_buf
 #endif
