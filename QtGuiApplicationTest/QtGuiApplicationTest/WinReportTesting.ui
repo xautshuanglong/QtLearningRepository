@@ -242,26 +242,13 @@
           <property name="styleSheet">
            <string notr="true">/*background-color: rgb(200,200,100);*/</string>
           </property>
-          <widget class="QLabel" name="lbRegionRight">
-           <property name="geometry">
-            <rect>
-             <x>9</x>
-             <y>9</y>
-             <width>78</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>lbRegionRight</string>
-           </property>
-          </widget>
           <widget class="QLabel" name="lbImgPdfView">
            <property name="geometry">
             <rect>
-             <x>10</x>
-             <y>50</y>
-             <width>371</width>
-             <height>501</height>
+             <x>0</x>
+             <y>0</y>
+             <width>381</width>
+             <height>541</height>
             </rect>
            </property>
            <property name="text">
@@ -313,9 +300,9 @@ QWidget
         <widget class="QPushButton" name="btnPrintTest">
          <property name="geometry">
           <rect>
-           <x>0</x>
+           <x>10</x>
            <y>10</y>
-           <width>75</width>
+           <width>71</width>
            <height>23</height>
           </rect>
          </property>
@@ -332,9 +319,9 @@ QWidget
         <widget class="QPushButton" name="btnFormatTest">
          <property name="geometry">
           <rect>
-           <x>80</x>
+           <x>83</x>
            <y>10</y>
-           <width>75</width>
+           <width>71</width>
            <height>23</height>
           </rect>
          </property>
@@ -351,9 +338,9 @@ QWidget
         <widget class="QPushButton" name="btnSavePDF">
          <property name="geometry">
           <rect>
-           <x>160</x>
+           <x>156</x>
            <y>10</y>
-           <width>75</width>
+           <width>51</width>
            <height>23</height>
           </rect>
          </property>
@@ -361,17 +348,30 @@ QWidget
           <string>SavePDF</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btnPreviewPDF">
+        <widget class="QPushButton" name="btnPreviewFOP">
          <property name="geometry">
           <rect>
-           <x>240</x>
+           <x>210</x>
            <y>10</y>
-           <width>75</width>
+           <width>71</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>PreviewPDF</string>
+          <string>PreviewFOP</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnPreviewMuPDF">
+         <property name="geometry">
+          <rect>
+           <x>284</x>
+           <y>10</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>PreviewMuPDF</string>
          </property>
         </widget>
        </widget>

@@ -1,6 +1,7 @@
 #include "WinReportTesting.h"
 #include "ui_WinReportTesting.h"
 
+// QT Headers
 #include <QFile>
 #include <QTextDocument>
 #include <QTextFrame>
@@ -9,10 +10,16 @@
 #include <QTcpSocket>
 #include <QThread>
 
+// MuPDF
+//#include <mupdf/fitz.h>
+#include <mupdf/pdf.h>
+
 // Protocol Buffer
 #include "MessageInfo.pb.h"
 
+// Self Define
 #include <MemUtil.h>
+#include <LogUtil.h>
 #include "FramelessWindowHelper.h"
 #include "XmlReportGenerator.h"
 
@@ -193,7 +200,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
     int msgBodyLen = 0;
     int msgLen = 0;
     char *pTempMsgBuffer = nullptr;
-    int count = 10;
+    int count = 1;
     if (connectFlag1)
     {
         while (count > 0)
@@ -228,7 +235,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
     }
 }
 
-void WinReportTesting::on_btnPreviewPDF_clicked()
+void WinReportTesting::on_btnPreviewFOP_clicked()
 {
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
@@ -273,4 +280,60 @@ void WinReportTesting::on_btnPreviewPDF_clicked()
     }
 
     delete[]pTempMsgBuffer;
+}
+
+void WinReportTesting::on_btnPreviewMuPDF_clicked()
+{
+    char *input = const_cast<char*>("E:/Temp/FopTest/QtReportTest.pdf");
+    float zoom, rotate;
+    int page_number, page_count;
+    fz_context *context = NULL;
+    fz_document *document = NULL;
+    fz_pixmap *pixmap = NULL;
+    fz_matrix ctm;
+    page_number = 0;
+    zoom = 100;
+    rotate = 0;
+
+    context = fz_new_context(NULL, NULL, FZ_STORE_UNLIMITED);
+    if (context == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "fz_new_contex failed!");
+    }
+    fz_try(context)
+    {
+        ::fz_register_document_handlers(context);
+        document = ::fz_open_document(context, input);
+        page_count = ::fz_count_pages(context, document);
+        if (page_number < 0 || page_number >= page_count)
+        {
+            qDebug() << stderr << "page number out of range: " << page_number + 1 << "page count:" << page_count;
+            ::fz_drop_document(context, document);
+            ::fz_drop_context(context);
+            return;
+        }
+        ctm = ::fz_scale(zoom / 100, zoom / 100);
+        ::fz_pre_rotate(ctm, rotate);
+        pixmap = ::fz_new_pixmap_from_page_number(context, document, page_number, ctm, fz_device_rgb(context), 0);
+    }
+    fz_catch(context)
+    {
+        LogUtil::Debug(CODE_LOCATION, "MuPDF error: %s", ::fz_caught_message(context));
+        ::fz_drop_document(context, document);
+        ::fz_drop_context(context);
+        return;
+    }
+
+    unsigned char *samples = pixmap->samples;
+    int width = ::fz_pixmap_width(context, pixmap);
+    int height = ::fz_pixmap_height(context, pixmap);
+
+    QImage image(samples, width, height, pixmap->stride, QImage::Format_RGB888);
+    ui->lbImgPdfView->setPixmap(
+        QPixmap::fromImage(
+        image.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(),Qt::KeepAspectRatio, Qt::SmoothTransformation)
+        )
+    );
+    //ªÿ ’ƒ⁄¥Ê
+    ::fz_drop_pixmap(context, pixmap); 
 }
