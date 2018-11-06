@@ -9,6 +9,7 @@
 #include <QPrinter>
 #include <QTcpSocket>
 #include <QThread>
+#include <QNetworkInterface>
 
 // MuPDF
 //#include <mupdf/fitz.h>
@@ -228,6 +229,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
 
             mpSocketClient1->write(pTempMsgBuffer, msgLen);
             mpSocketClient1->waitForBytesWritten();
+            LogUtil::Debug(CODE_LOCATION, "write MsgID: %d", count);
             delete[]pTempMsgBuffer;
             --count;
         }
@@ -237,6 +239,20 @@ void WinReportTesting::on_btnSavePDF_clicked()
 
 void WinReportTesting::on_btnPreviewFOP_clicked()
 {
+    QList<QNetworkInterface> interfaceList = QNetworkInterface::allInterfaces();
+    for each (QNetworkInterface netInterface in interfaceList)
+    {
+        QString name = netInterface.name();
+        QString hardwareAddr = netInterface.hardwareAddress();
+        QList<QNetworkAddressEntry> addrEntryList = netInterface.addressEntries();
+        for (int i = 0; i < addrEntryList.count(); ++i)
+        {
+            QString ip = addrEntryList.at(i).ip().toString();
+            QString mask = addrEntryList.at(i).netmask().toString();
+            QString broadcast = addrEntryList.at(i).broadcast().toString();
+        }
+    }
+
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
