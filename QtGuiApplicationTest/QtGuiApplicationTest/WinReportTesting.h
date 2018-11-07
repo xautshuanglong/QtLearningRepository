@@ -33,4 +33,5 @@ private slots:
     void on_btnSavePDF_clicked();
     void on_btnPreviewFOP_clicked();
     void on_btnPreviewMuPDF_clicked();
+    void on_btnPrintImgPDF_clicked();
 };

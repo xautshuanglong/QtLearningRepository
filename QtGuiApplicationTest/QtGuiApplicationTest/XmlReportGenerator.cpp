@@ -225,7 +225,7 @@ void XmlReportGenerator::CreateReportBody(QDomDocument *pXmlDoc, QDomElement *pR
     QDomElement tempKeyword;
     QDomElement tempValue;
 
-    for (int i = TAG_BODY_PatientInfo_Name; i < TAG_BODY_PatientInfo_Comment; ++i)
+    for (int i = TAG_BODY_PatientInfo_Name; i <= TAG_BODY_PatientInfo_Comment; ++i)
     {
         tempKeyword = pXmlDoc->createElement(mMapTagKeyValue[TAG_BODY_PatientInfo_Keyword].tagString);
         tempKeyword.appendChild(pXmlDoc->createTextNode(mMapTagKeyValue[i].tagKeyword));

@@ -7,6 +7,7 @@
 #include <QTextFrame>
 #include <QTextTable>
 #include <QPrinter>
+#include <QPainter>
 #include <QTcpSocket>
 #include <QThread>
 #include <QNetworkInterface>
@@ -306,6 +307,7 @@ void WinReportTesting::on_btnPreviewMuPDF_clicked()
     fz_context *context = NULL;
     fz_document *document = NULL;
     fz_pixmap *pixmap = NULL;
+    fz_rect pageBox;
     fz_matrix ctm;
     page_number = 0;
     zoom = 100;
@@ -328,7 +330,9 @@ void WinReportTesting::on_btnPreviewMuPDF_clicked()
             ::fz_drop_context(context);
             return;
         }
-        ctm = ::fz_scale(zoom / 100, zoom / 100);
+        pageBox = ::fz_make_rect(0, 0, 100, 100);
+        ctm = ::fz_transform_page(pageBox, 96, 0);
+        //ctm = ::fz_scale(zoom / 100, zoom / 100);
         ::fz_pre_rotate(ctm, rotate);
         pixmap = ::fz_new_pixmap_from_page_number(context, document, page_number, ctm, fz_device_rgb(context), 0);
     }
@@ -350,6 +354,77 @@ void WinReportTesting::on_btnPreviewMuPDF_clicked()
         image.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(),Qt::KeepAspectRatio, Qt::SmoothTransformation)
         )
     );
-    //ªÿ ’ƒ⁄¥Ê
-    ::fz_drop_pixmap(context, pixmap); 
+
+    ::fz_drop_pixmap(context, pixmap);
+    ::fz_drop_document(context, document);
+    ::fz_drop_context(context);
+}
+
+void WinReportTesting::on_btnPrintImgPDF_clicked()
+{
+    QPrinter imagePrinter(QPrinter::HighResolution);
+    //imagePrinter.setPageSize(QPagedPaintDevice::A4);
+    //imagePrinter.setOutputFileName("E:/Temp/FopTest/MGI_ReportTest_image_print.pdf");
+    //imagePrinter.setResolution(QPrinter::ScreenResolution);
+    imagePrinter.setPageMargins(0, 0, 0, 0, QPrinter::Millimeter);
+    int printerResolution = imagePrinter.resolution();
+
+    char *input = const_cast<char*>("E:/Temp/FopTest/QtReportTest.pdf");
+    float zoom, rotate;
+    int page_number, page_count;
+    fz_context *context = NULL;
+    fz_document *document = NULL;
+    fz_pixmap *pixmap = NULL;
+    fz_rect pageBox;
+    fz_matrix ctm;
+    page_number = 0;
+    zoom = 100;
+    rotate = 0;
+
+    context = fz_new_context(NULL, NULL, FZ_STORE_UNLIMITED);
+    if (context == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "fz_new_contex failed!");
+    }
+    fz_try(context)
+    {
+        ::fz_register_document_handlers(context);
+        document = ::fz_open_document(context, input);
+        page_count = ::fz_count_pages(context, document);
+        if (page_number < 0 || page_number >= page_count)
+        {
+            qDebug() << stderr << "page number out of range: " << page_number + 1 << "page count:" << page_count;
+            ::fz_drop_document(context, document);
+            ::fz_drop_context(context);
+            return;
+        }
+        pageBox = ::fz_make_rect(0, 0, 100, 100);
+        ctm = ::fz_transform_page(pageBox, printerResolution, 0);
+        //ctm = ::fz_scale(zoom / 100, zoom / 100);
+        ::fz_pre_rotate(ctm, rotate);
+        pixmap = ::fz_new_pixmap_from_page_number(context, document, page_number, ctm, fz_device_rgb(context), 0);
+    }
+    fz_catch(context)
+    {
+        LogUtil::Debug(CODE_LOCATION, "MuPDF error: %s", ::fz_caught_message(context));
+        ::fz_drop_document(context, document);
+        ::fz_drop_context(context);
+        return;
+    }
+
+    unsigned char *samples = pixmap->samples;
+    int width = ::fz_pixmap_width(context, pixmap);
+    int height = ::fz_pixmap_height(context, pixmap);
+
+    QImage image(samples, width, height, pixmap->stride, QImage::Format_RGB888);
+
+    QPainter imagePainter;
+    bool resFlag = imagePainter.begin(&imagePrinter);
+    QRect painterRect = imagePainter.viewport();
+    imagePainter.drawImage(painterRect, image);
+    resFlag = imagePainter.end();
+
+    ::fz_drop_pixmap(context, pixmap);
+    ::fz_drop_document(context, document);
+    ::fz_drop_context(context);
 }
