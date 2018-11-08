@@ -87,6 +87,11 @@ MainTabPageFirst::~MainTabPageFirst()
     }
 }
 
+void MainTabPageFirst::InitAppList()
+{
+    ui.lwAppList->clear();
+}
+
 bool MainTabPageFirst::event(QEvent *event)
 {
     //LogUtil::Debug(CODE_LOCATION, "eventType: %d", event->type());

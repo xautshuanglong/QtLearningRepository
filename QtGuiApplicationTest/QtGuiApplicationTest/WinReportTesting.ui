@@ -125,7 +125,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QTextEdit" name="textEdit">
+          <widget class="QTextEdit" name="leExamDescription">
            <property name="geometry">
             <rect>
              <x>70</x>

@@ -38,6 +38,7 @@ protected:
     virtual void showEvent(QShowEvent *event) override;
 
 private:
+    void InitAppList();
     void ShowDicomImage(QString &dcmFileName);
     void ReadImageByQImage();
     void ReadImageByQImageMulti();

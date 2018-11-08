@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>541</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -52,9 +52,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>25</y>
-     <width>512</width>
-     <height>512</height>
+     <y>40</y>
+     <width>551</width>
+     <height>231</height>
     </rect>
    </property>
    <property name="text">
@@ -174,7 +174,67 @@
     <string>打印</string>
    </property>
   </widget>
+  <widget class="QListWidget" name="lwAppList">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>641</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="dragDropMode">
+    <enum>QAbstractItemView::NoDragDrop</enum>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::NoSelection</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="gridSize">
+    <size>
+     <width>60</width>
+     <height>60</height>
+    </size>
+   </property>
+   <property name="viewMode">
+    <enum>QListView::IconMode</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="icon">
+     <iconset resource="QtGuiApplicationTest.qrc">
+      <normaloff>:/AppImages/Resources/images/open.png</normaloff>:/AppImages/Resources/images/open.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2</string>
+    </property>
+    <property name="icon">
+     <iconset resource="QtGuiApplicationTest.qrc">
+      <normaloff>:/AppImages/Resources/images/save.png</normaloff>:/AppImages/Resources/images/save.png</iconset>
+    </property>
+   </item>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="QtGuiApplicationTest.qrc"/>
+ </resources>
  <connections/>
 </ui>

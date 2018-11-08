@@ -11,6 +11,7 @@
 #include <QTcpSocket>
 #include <QThread>
 #include <QNetworkInterface>
+#include <QDateTime>
 
 // MuPDF
 //#include <mupdf/fitz.h>
@@ -186,11 +187,11 @@ void WinReportTesting::on_btnSavePDF_clicked()
 {
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
-    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Name, QStringLiteral("Ãû×Ö£º"));
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
-    xmlReport.SetTagKeyword(XmlReportGenerator::TAG_BODY_PatientInfo_Age, QStringLiteral("ËêÊý£º"));
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_ExamDescription, ui->leExamDescription->toPlainText());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_FOOTER_PrintTime, QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     xmlReport.SaveReportAsXml(outXmlFilename);
 
     QString serverIP = "localhost";
@@ -259,6 +260,8 @@ void WinReportTesting::on_btnPreviewFOP_clicked()
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Age, ui->leAge->text());
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_UltrasoundImages_USImage, ui->leUsImgPath->text());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_ExamDescription, ui->leExamDescription->toPlainText());
+    xmlReport.SetTagValue(XmlReportGenerator::TAG_FOOTER_PrintTime, QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     xmlReport.SaveReportAsXml(outXmlFilename);
 
     QString serverIP = "localhost";
@@ -362,11 +365,14 @@ void WinReportTesting::on_btnPreviewMuPDF_clicked()
 
 void WinReportTesting::on_btnPrintImgPDF_clicked()
 {
+    QPrinter::Margins margins = { 0.0f, 0.0f, 0.0f, 0.0f };
     QPrinter imagePrinter(QPrinter::HighResolution);
-    //imagePrinter.setPageSize(QPagedPaintDevice::A4);
+    imagePrinter.setPageSize(QPagedPaintDevice::A4);
+    imagePrinter.setPageMargins(0.0, 0.0, 0.0, 0.0, QPrinter::Millimeter);
+    imagePrinter.setFullPage(true);
+    //imagePrinter.setOutputFormat(QPrinter::PdfFormat);
     //imagePrinter.setOutputFileName("E:/Temp/FopTest/MGI_ReportTest_image_print.pdf");
-    //imagePrinter.setResolution(QPrinter::ScreenResolution);
-    imagePrinter.setPageMargins(0, 0, 0, 0, QPrinter::Millimeter);
+
     int printerResolution = imagePrinter.resolution();
 
     char *input = const_cast<char*>("E:/Temp/FopTest/QtReportTest.pdf");
@@ -398,10 +404,12 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
             ::fz_drop_context(context);
             return;
         }
-        pageBox = ::fz_make_rect(0, 0, 100, 100);
+
+        QSizeF pageSizeMM = imagePrinter.pageSizeMM();
+        pageBox = ::fz_make_rect(0, 0, pageSizeMM.width(), pageSizeMM.height());
         ctm = ::fz_transform_page(pageBox, printerResolution, 0);
         //ctm = ::fz_scale(zoom / 100, zoom / 100);
-        ::fz_pre_rotate(ctm, rotate);
+        //::fz_pre_rotate(ctm, rotate);
         pixmap = ::fz_new_pixmap_from_page_number(context, document, page_number, ctm, fz_device_rgb(context), 0);
     }
     fz_catch(context)
