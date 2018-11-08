@@ -127,6 +127,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppListIcon.cpp" />
     <ClCompile Include="DicomWindow.cpp" />
     <ClCompile Include="FramelessWindowHelper.cpp">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
@@ -150,6 +151,7 @@
     <ClCompile Include="MyWorkerThread.cpp" />
     <ClCompile Include="MyWorkerThreadPool.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
+    <ClCompile Include="UrlUtil.cpp" />
     <ClCompile Include="WinReportTesting.cpp" />
     <ClCompile Include="WorkerTaskBase.cpp" />
     <ClCompile Include="XmlReportGenerator.cpp" />
@@ -170,6 +172,8 @@
     <QtRcc Include="QtGuiApplicationTest.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppListIcon.h" />
+    <ClInclude Include="UrlUtil.h" />
     <ClInclude Include="XmlReportGenerator.h" />
     <QtMoc Include="WinReportTesting.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>

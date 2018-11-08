@@ -39,6 +39,7 @@
 #include "WorkerTaskBase.h"
 #include "MiscellaneousTesting.h"
 #include "WinReportTesting.h"
+#include "UrlUtil.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
@@ -47,6 +48,7 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     , mpBackgroundWorker(Q_NULLPTR)
     , mpMiscellaneousTest(Q_NULLPTR)
     , mpWinReportTest(Q_NULLPTR)
+    , mpCurEnteredItem(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -68,6 +70,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pGroupB->addButton(ui.bGroupObj1);
     pGroupB->addButton(ui.bGroupObj2);
     pGroupB->addButton(ui.bGroupObj3);
+
+    this->InitAppList();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -90,6 +94,59 @@ MainTabPageFirst::~MainTabPageFirst()
 void MainTabPageFirst::InitAppList()
 {
     ui.lwAppList->clear();
+
+    QString icon;
+    QListWidgetItem *pAppItem = Q_NULLPTR;
+    QSize gridSize = ui.lwAppList->gridSize();
+    QSize itemHintSize = gridSize - QSize(2, 2);
+
+    for (int i=0; i<4; ++i)
+    {
+        pAppItem = new QListWidgetItem();
+        icon = UrlUtil::GetAppIcon(i+1);
+        pAppItem->setText(QString("test_%1").arg(i+1));
+        pAppItem->setIcon(QIcon(icon));
+        pAppItem->setBackgroundColor(QColor(160, 200, 240));
+        pAppItem->setSizeHint(itemHintSize);
+        ui.lwAppList->addItem(pAppItem);
+    }
+
+    for (int i = 0; i < 4; ++i)
+    {
+        pAppItem = new QListWidgetItem();
+        icon = UrlUtil::GetAppIcon(i + 1);
+        pAppItem->setText(QString("test_%1").arg(i + 1));
+        pAppItem->setIcon(QIcon(icon));
+        pAppItem->setBackgroundColor(QColor(160, 200, 240));
+        pAppItem->setSizeHint(itemHintSize);
+        ui.lwAppList->addItem(pAppItem);
+    }
+
+    for (int i = 0; i < 4; ++i)
+    {
+        pAppItem = new QListWidgetItem();
+        icon = UrlUtil::GetAppIcon(i + 1);
+        pAppItem->setText(QString("test_%1").arg(i + 1));
+        pAppItem->setIcon(QIcon(icon));
+        pAppItem->setBackgroundColor(QColor(160, 200, 240));
+        pAppItem->setSizeHint(itemHintSize);
+        ui.lwAppList->addItem(pAppItem);
+    }
+
+    for (int i = 0; i < 4; ++i)
+    {
+        pAppItem = new QListWidgetItem();
+        icon = UrlUtil::GetAppIcon(i + 1);
+        pAppItem->setText(QString("test_%1").arg(i + 1));
+        pAppItem->setIcon(QIcon(icon));
+        pAppItem->setBackgroundColor(QColor(160, 200, 240));
+        pAppItem->setSizeHint(itemHintSize);
+        ui.lwAppList->addItem(pAppItem);
+    }
+
+    ui.lwAppList->setMouseTracking(true);
+    this->connect(ui.lwAppList, SIGNAL(itemEntered(QListWidgetItem*)), SLOT(SlotApplistItemEntered(QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(viewportEntered()), SLOT(SlotApplistViewportEntered()));
 }
 
 bool MainTabPageFirst::event(QEvent *event)
@@ -1277,4 +1334,27 @@ void MainTabPageFirst::MyThradPoolTest()
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->Start();
+}
+
+void MainTabPageFirst::SlotApplistItemEntered(QListWidgetItem *item)
+{
+    if (mpCurEnteredItem != item)
+    {
+        if (mpCurEnteredItem != Q_NULLPTR)
+        {
+            mpCurEnteredItem->setBackgroundColor(QColor(160, 200, 240));
+        }
+
+        item->setBackgroundColor(Qt::gray);
+        mpCurEnteredItem = item;
+    }
+}
+
+void MainTabPageFirst::SlotApplistViewportEntered()
+{
+    if (mpCurEnteredItem != Q_NULLPTR)
+    {
+        mpCurEnteredItem->setBackgroundColor(QColor(160, 200, 240));
+        mpCurEnteredItem = Q_NULLPTR;
+    }
 }

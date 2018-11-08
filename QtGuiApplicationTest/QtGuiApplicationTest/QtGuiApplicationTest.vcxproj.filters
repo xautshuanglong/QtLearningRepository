@@ -46,6 +46,12 @@
     <Filter Include="Reports">
       <UniqueIdentifier>{4d4dccba-f4e3-4de1-bca6-5b6670427587}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{669bc527-fbbb-4691-9c88-6b5bb815a572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{2b1f78cf-e8e6-4708-a541-fcb4b0d43a67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,6 +105,12 @@
     <ClCompile Include="XmlReportGenerator.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="UrlUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AppListIcon.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -150,6 +162,12 @@
     </ClInclude>
     <ClInclude Include="XmlReportGenerator.h">
       <Filter>Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AppListIcon.h">
+      <Filter>Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

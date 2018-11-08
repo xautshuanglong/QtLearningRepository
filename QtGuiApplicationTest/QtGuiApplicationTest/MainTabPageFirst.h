@@ -9,6 +9,7 @@ class MiscellaneousTesting;
 class WinReportTesting;
 class MyBackgroundWorker;
 class MyWorkerThreadPool;
+class QListWidgetItem;
 
 namespace SL
 {
@@ -23,6 +24,7 @@ class MainTabPageFirst : public QWidget
     Q_OBJECT
 private:
     Ui::MainTabPageFirst            ui;
+    QListWidgetItem                *mpCurEnteredItem;
     DicomWindow                    *pDcmWidget;
     MiscellaneousTesting           *mpMiscellaneousTest;
     WinReportTesting               *mpWinReportTest;
@@ -53,4 +55,6 @@ private slots:
     void on_btnBrowserDcm_clicked();
     void on_btnBrowserImg_clicked();
     void on_btnPrint_clicked();
+    void SlotApplistItemEntered(QListWidgetItem *item);
+    void SlotApplistViewportEntered();
 };
