@@ -699,7 +699,7 @@ void MainTabPageDicom::ShowDicomImage()
         return;
     }
 
-    ui.labelImage->setGeometry(0, 0, ui.leftWidget->width(), ui.leftWidget->height());
+    ui.labelImage->setGeometry(0, 0, ui.showImgWidget->width(), ui.showImgWidget->height());
     ui.labelImage->setPixmap(QPixmap::fromImage(mDcmImage)
                              .scaled(ui.labelImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
     );
