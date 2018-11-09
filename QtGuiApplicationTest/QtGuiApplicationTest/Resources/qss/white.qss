@@ -347,6 +347,23 @@ QListWidget
     background-color: transparent;
 }
 
+QListWidget::Item
+{
+}
+
+QListWidget::Item:hover
+{
+    background: rgb(160, 200, 240);
+}
+
+QListWidget::item:selected
+{
+}
+
+QListWidget::item:selected:!active
+{
+}
+
 /**********滚动条-水平**********/
 QScrollBar:horizontal {
         height: 18px;

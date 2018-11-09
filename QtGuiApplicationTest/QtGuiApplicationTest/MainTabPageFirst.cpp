@@ -106,47 +106,11 @@ void MainTabPageFirst::InitAppList()
         icon = UrlUtil::GetAppIcon(i+1);
         pAppItem->setText(QString("test_%1").arg(i+1));
         pAppItem->setIcon(QIcon(icon));
-        pAppItem->setBackgroundColor(QColor(160, 200, 240));
         pAppItem->setSizeHint(itemHintSize);
         ui.lwAppList->addItem(pAppItem);
     }
 
-    for (int i = 0; i < 4; ++i)
-    {
-        pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i + 1);
-        pAppItem->setText(QString("test_%1").arg(i + 1));
-        pAppItem->setIcon(QIcon(icon));
-        pAppItem->setBackgroundColor(QColor(160, 200, 240));
-        pAppItem->setSizeHint(itemHintSize);
-        ui.lwAppList->addItem(pAppItem);
-    }
-
-    for (int i = 0; i < 4; ++i)
-    {
-        pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i + 1);
-        pAppItem->setText(QString("test_%1").arg(i + 1));
-        pAppItem->setIcon(QIcon(icon));
-        pAppItem->setBackgroundColor(QColor(160, 200, 240));
-        pAppItem->setSizeHint(itemHintSize);
-        ui.lwAppList->addItem(pAppItem);
-    }
-
-    for (int i = 0; i < 4; ++i)
-    {
-        pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i + 1);
-        pAppItem->setText(QString("test_%1").arg(i + 1));
-        pAppItem->setIcon(QIcon(icon));
-        pAppItem->setBackgroundColor(QColor(160, 200, 240));
-        pAppItem->setSizeHint(itemHintSize);
-        ui.lwAppList->addItem(pAppItem);
-    }
-
-    ui.lwAppList->setMouseTracking(true);
-    this->connect(ui.lwAppList, SIGNAL(itemEntered(QListWidgetItem*)), SLOT(SlotApplistItemEntered(QListWidgetItem*)));
-    this->connect(ui.lwAppList, SIGNAL(viewportEntered()), SLOT(SlotApplistViewportEntered()));
+    //ui.lwAppList->setMouseTracking(true);
 }
 
 bool MainTabPageFirst::event(QEvent *event)
@@ -1334,27 +1298,4 @@ void MainTabPageFirst::MyThradPoolTest()
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->AddTask(SPWorkerTask(new WorkerTaskBase()));
     mpMyWorkerThreadPool->Start();
-}
-
-void MainTabPageFirst::SlotApplistItemEntered(QListWidgetItem *item)
-{
-    if (mpCurEnteredItem != item)
-    {
-        if (mpCurEnteredItem != Q_NULLPTR)
-        {
-            mpCurEnteredItem->setBackgroundColor(QColor(160, 200, 240));
-        }
-
-        item->setBackgroundColor(Qt::gray);
-        mpCurEnteredItem = item;
-    }
-}
-
-void MainTabPageFirst::SlotApplistViewportEntered()
-{
-    if (mpCurEnteredItem != Q_NULLPTR)
-    {
-        mpCurEnteredItem->setBackgroundColor(QColor(160, 200, 240));
-        mpCurEnteredItem = Q_NULLPTR;
-    }
 }
