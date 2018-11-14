@@ -185,6 +185,8 @@ void WinReportTesting::on_btnFormatTest_clicked()
 
 void WinReportTesting::on_btnSavePDF_clicked()
 {
+    static int filenamePostfix = 0;
+
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
     XmlReportGenerator xmlReport;
     xmlReport.SetTagValue(XmlReportGenerator::TAG_BODY_PatientInfo_Name, ui->leName->text());
@@ -203,7 +205,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
     int msgBodyLen = 0;
     int msgLen = 0;
     char *pTempMsgBuffer = nullptr;
-    int count = 1;
+    int count = 100;
     if (connectFlag1)
     {
         while (count > 0)
@@ -217,7 +219,11 @@ void WinReportTesting::on_btnSavePDF_clicked()
             //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
             pMsgCommand->set_xmlfilename(outXmlFilename.toStdString().c_str());
             pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest.xsl");
-            pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
+            //pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
+
+            QString saveFilename = QString("E:/Temp/FopTest/MGI_ReportTest_%1.pdf").arg(++filenamePostfix);
+            pMsgCommand->set_outfilename(saveFilename.toStdString().c_str());
+
             MessageBody *pMsgBody = new MessageBody();
             pMsgBody->set_allocated_msgcommand(pMsgCommand);
             MessageInfo msgInfo;
@@ -368,8 +374,9 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
     QPrinter::Margins margins = { 0.0f, 0.0f, 0.0f, 0.0f };
     QPrinter imagePrinter(QPrinter::HighResolution);
     imagePrinter.setPageSize(QPagedPaintDevice::A4);
+    imagePrinter.setMargins(margins);
     imagePrinter.setPageMargins(0.0, 0.0, 0.0, 0.0, QPrinter::Millimeter);
-    imagePrinter.setFullPage(true);
+    //imagePrinter.setFullPage(true);
     //imagePrinter.setOutputFormat(QPrinter::PdfFormat);
     //imagePrinter.setOutputFileName("E:/Temp/FopTest/MGI_ReportTest_image_print.pdf");
 
@@ -425,6 +432,9 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
     int height = ::fz_pixmap_height(context, pixmap);
 
     QImage image(samples, width, height, pixmap->stride, QImage::Format_RGB888);
+    //image.save("E:/Temp/FopTest/MGI_ReportTest_image_print.png");
+    int imgWidth = image.width();
+    int imgHeight = image.height();
 
     QPainter imagePainter;
     bool resFlag = imagePainter.begin(&imagePrinter);
