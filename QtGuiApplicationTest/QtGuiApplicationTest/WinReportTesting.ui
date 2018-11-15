@@ -387,6 +387,19 @@ QWidget
           <string>PrintImgPDF</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="btnMuPdfWrap">
+         <property name="geometry">
+          <rect>
+           <x>453</x>
+           <y>10</y>
+           <width>71</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfWrap</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>

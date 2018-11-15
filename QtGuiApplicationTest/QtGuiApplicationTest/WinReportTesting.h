@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include "MuPDF.h"
 
 class FramelessWindowHelper;
 class QTcpSocket;
@@ -34,4 +35,6 @@ private slots:
     void on_btnPreviewFOP_clicked();
     void on_btnPreviewMuPDF_clicked();
     void on_btnPrintImgPDF_clicked();
+    void on_btnMuPdfWrap_clicked();
+    void SlotMuPdfError(MuPDF::ErrorCode code, QString errorString);
 };

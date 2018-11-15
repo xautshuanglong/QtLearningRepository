@@ -12,6 +12,7 @@
 #include <QThread>
 #include <QNetworkInterface>
 #include <QDateTime>
+#include <QMetaEnum>
 
 // MuPDF
 //#include <mupdf/fitz.h>
@@ -237,7 +238,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
 
             mpSocketClient1->write(pTempMsgBuffer, msgLen);
             mpSocketClient1->waitForBytesWritten();
-            LogUtil::Debug(CODE_LOCATION, "write MsgID: %d", count);
+            //LogUtil::Debug(CODE_LOCATION, "write MsgID: %d", count);
             delete[]pTempMsgBuffer;
             --count;
         }
@@ -445,4 +446,27 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
     ::fz_drop_pixmap(context, pixmap);
     ::fz_drop_document(context, document);
     ::fz_drop_context(context);
+}
+
+void WinReportTesting::on_btnMuPdfWrap_clicked()
+{
+    MuPDF muPDF;
+    this->connect(&muPDF, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+    muPDF.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
+    QImage firstPage = muPDF.PageFirst();
+    if (!firstPage.isNull())
+    {
+        ui->lbImgPdfView->setPixmap(
+            QPixmap::fromImage(
+                firstPage.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            ));
+    }
+    muPDF.Close();
+    QObject::disconnect(&muPDF, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+}
+
+void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString)
+{
+    QMetaEnum muPdfErrorEnum = QMetaEnum::fromType<MuPDF::ErrorCode>();
+    LogUtil::Debug(CODE_LOCATION, "%s : %s", muPdfErrorEnum.valueToKey(code), errorString.toStdString().c_str());
 }
