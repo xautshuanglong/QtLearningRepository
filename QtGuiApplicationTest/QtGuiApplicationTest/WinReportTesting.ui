@@ -400,6 +400,32 @@ QWidget
           <string>MuPdfWrap</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="btnMuPdfWrapPre">
+         <property name="geometry">
+          <rect>
+           <x>527</x>
+           <y>10</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfWrapPre</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnMuPdfWrapNext">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>10</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfWrapNext</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>

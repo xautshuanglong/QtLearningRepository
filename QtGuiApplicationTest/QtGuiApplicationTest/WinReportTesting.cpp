@@ -465,6 +465,16 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
     QObject::disconnect(&muPDF, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
 }
 
+void WinReportTesting::on_btnMuPdfWrapPre_clicked()
+{
+    int i = 0;
+}
+
+void WinReportTesting::on_btnMuPdfWrapNext_clicked()
+{
+    int i = 0;
+}
+
 void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString)
 {
     QMetaEnum muPdfErrorEnum = QMetaEnum::fromType<MuPDF::ErrorCode>();
