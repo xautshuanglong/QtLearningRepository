@@ -30,7 +30,8 @@ bool MuPDF::Open(QString filename)
         this->Close();
     }
 
-    const char *input = mFilename.toStdString().c_str();
+    std::string inputString = mFilename.toStdString();
+    const char *input = inputString.c_str();
 
     mPdfContext = ::fz_new_context(NULL, NULL, FZ_STORE_UNLIMITED);
     if (mPdfContext == NULL)
