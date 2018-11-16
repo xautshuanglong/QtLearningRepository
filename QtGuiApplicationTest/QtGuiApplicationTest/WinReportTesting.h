@@ -19,6 +19,7 @@ private:
     FramelessWindowHelper  *mpFramelessHelper;
     QTcpSocket             *mpSocketClient1;
     QTcpSocket             *mpSocketClient2;
+    MuPDF                   mPdfPreview;
 
 public:
     explicit WinReportTesting(QWidget *parent = Q_NULLPTR);

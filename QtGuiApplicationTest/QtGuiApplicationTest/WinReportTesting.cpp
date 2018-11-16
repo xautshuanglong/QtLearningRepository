@@ -41,10 +41,15 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     mpSocketClient2 = new QTcpSocket();
 
     ui->teReport->setReadOnly(true);
+
+    this->connect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
 }
 
 WinReportTesting::~WinReportTesting()
 {
+    QObject::disconnect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+    mPdfPreview.Close();
+
     MemUtil::RelesePointer(&mpFramelessHelper);
     if (mpSocketClient1->isOpen())
     {
@@ -450,10 +455,9 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
 
 void WinReportTesting::on_btnMuPdfWrap_clicked()
 {
-    MuPDF muPDF;
-    this->connect(&muPDF, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
-    muPDF.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
-    QImage firstPage = muPDF.PageFirst();
+    //mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
+    mPdfPreview.Open(QString("E:\\Preparation\\MuPDF\\mupdf_explored.pdf"));
+    QImage firstPage = mPdfPreview.PageFirst();
     if (!firstPage.isNull())
     {
         ui->lbImgPdfView->setPixmap(
@@ -461,8 +465,8 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
                 firstPage.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
             ));
     }
-    muPDF.Close();
-    QObject::disconnect(&muPDF, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+    mPdfPreview.Close();
+    QObject::disconnect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
 }
 
 void WinReportTesting::on_btnMuPdfWrapPre_clicked()
