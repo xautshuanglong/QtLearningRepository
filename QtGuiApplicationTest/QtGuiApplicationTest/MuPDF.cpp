@@ -173,6 +173,7 @@ QImage MuPDF::GetPageImageByIndex(int index)
 {
     if (mIsOpened)
     {
+        QImage retValue;
         fz_try(mPdfContext)
         {
             //pageBox = ::fz_make_rect(0, 0, 100, 100);
@@ -184,7 +185,7 @@ QImage MuPDF::GetPageImageByIndex(int index)
             unsigned char *samples = pixmap->samples;
             int width = ::fz_pixmap_width(mPdfContext, pixmap);
             int height = ::fz_pixmap_height(mPdfContext, pixmap);
-            QImage retValue(width, height, QImage::Format_RGB888);
+            retValue = QImage(width, height, QImage::Format_RGB888);
             unsigned char *pCurPixel;
             int colorR = 0, colorG = 0, colorB = 0;
             for (int row = 0; row < height; ++row)
@@ -199,12 +200,14 @@ QImage MuPDF::GetPageImageByIndex(int index)
                 }
             }
             ::fz_drop_pixmap(mPdfContext, pixmap);
-            
-            return retValue;
         }
         fz_catch(mPdfContext)
         {
             LogUtil::Error(CODE_LOCATION, "MuPDF error: %s", ::fz_caught_message(mPdfContext));
+        }
+        if (!retValue.isNull())
+        {
+            return retValue;
         }
     }
 
