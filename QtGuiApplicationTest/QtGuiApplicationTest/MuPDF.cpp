@@ -11,13 +11,13 @@
 */
 
 MuPDF::MuPDF()
-    : mPageSize(380, 540)
+    : mPageSize(100, 100)
     , mIsOpened(false)
     , mPdfContext(NULL)
     , mPdfDocument(NULL)
     , mPageNumberTotal(0)
     , mPageNumberCurrent(0)
-    , mViewPort{ 0.0f, 0.0f, 380.0f, 540.0f }            // 默认大小 100x100 没有偏移
+    , mViewPort{ 0.0f, 0.0f, 100.0f, 100.0f }            // 默认大小 100x100 没有偏移
     , mTranslateMatrix{ 1.0f,0.0f,0.0f,1.0f,0.0f,0.0f }  // 单位阵 【不旋转、不平移、不缩放】
 {
     mCurPageImage = QImage(mPageSize, QImage::Format_RGB888);
@@ -112,22 +112,34 @@ QImage MuPDF::GetPage(int pageNumber)
 QImage MuPDF::PageFirst()
 {
     mPageNumberCurrent = 0;
-    return this->GetPageImageByIndex(0);
+    mCurPageImage = this->GetPageImageByIndex(0);
+    return mCurPageImage;
 }
 
 QImage MuPDF::PageLast()
 {
     mPageNumberCurrent = mPageNumberTotal - 1;
-    return this->GetPageImageByIndex(mPageNumberCurrent);;
+    mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
+    return mCurPageImage;
 }
 
 QImage MuPDF::PagePrevious()
 {
+    if (mPageNumberCurrent > 0)
+    {
+        --mPageNumberCurrent;
+        mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
+    }
     return mCurPageImage;
 }
 
 QImage MuPDF::PageNext()
 {
+    if (mPageNumberCurrent < mPageNumberTotal - 1)
+    {
+        ++mPageNumberCurrent;
+        mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
+    }
     return mCurPageImage;
 }
 
@@ -161,20 +173,39 @@ QImage MuPDF::GetPageImageByIndex(int index)
 {
     if (mIsOpened)
     {
-        fz_pixmap *pixmap = NULL;
+        fz_try(mPdfContext)
+        {
+            //pageBox = ::fz_make_rect(0, 0, 100, 100);
+            //mTranslateMatrix = ::fz_transform_page(mViewPort, 96, 0);
+            //fz_matrix newMatrix = ::fz_post_scale(mTranslateMatrix, 0.62f, 0.62f);
+            //::fz_pre_rotate(ctm, rotate);
+            fz_pixmap *pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, mPageNumberCurrent, mTranslateMatrix, ::fz_device_rgb(mPdfContext), 0);
 
-        //pageBox = ::fz_make_rect(0, 0, 100, 100);
-        //mTranslateMatrix = ::fz_transform_page(mViewPort, 96, 0);
-        //fz_matrix newMatrix = ::fz_post_scale(mTranslateMatrix, 0.62f, 0.62f);
-        //::fz_pre_rotate(ctm, rotate);
-        pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, mPageNumberCurrent, mTranslateMatrix, ::fz_device_rgb(mPdfContext), 0);
-
-        unsigned char *samples = pixmap->samples;
-        int width = ::fz_pixmap_width(mPdfContext, pixmap);
-        int height = ::fz_pixmap_height(mPdfContext, pixmap);
-        QImage retVlue(samples, width, height, pixmap->stride, QImage::Format_RGB888);
-
-        return retVlue;
+            unsigned char *samples = pixmap->samples;
+            int width = ::fz_pixmap_width(mPdfContext, pixmap);
+            int height = ::fz_pixmap_height(mPdfContext, pixmap);
+            QImage retValue(width, height, QImage::Format_RGB888);
+            unsigned char *pCurPixel;
+            int colorR = 0, colorG = 0, colorB = 0;
+            for (int row = 0; row < height; ++row)
+            {
+                for (int col = 0; col < width; ++col)
+                {
+                    pCurPixel = samples + (row * width + col) * 3;
+                    colorR = *(pCurPixel + 0);
+                    colorG = *(pCurPixel + 1);
+                    colorB = *(pCurPixel + 2);
+                    retValue.setPixelColor(col, row, QColor(colorR, colorG, colorB));
+                }
+            }
+            ::fz_drop_pixmap(mPdfContext, pixmap);
+            
+            return retValue;
+        }
+        fz_catch(mPdfContext)
+        {
+            LogUtil::Error(CODE_LOCATION, "MuPDF error: %s", ::fz_caught_message(mPdfContext));
+        }
     }
 
     return mCurPageImage;

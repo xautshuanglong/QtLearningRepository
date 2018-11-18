@@ -104,6 +104,17 @@ void WinReportTesting::QTextEditDocumentTest()
     //ui->teReport->setDocument(pTempDoc);
 }
 
+void WinReportTesting::ShowPdfImage(QImage &pdfImage)
+{
+    if (!pdfImage.isNull())
+    {
+        ui->lbImgPdfView->setPixmap(
+            QPixmap::fromImage(
+                pdfImage.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            ));
+    }
+}
+
 void WinReportTesting::on_btnPrintTest_clicked()
 {
     //this->QTextDocumentTest();
@@ -456,27 +467,21 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
 void WinReportTesting::on_btnMuPdfWrap_clicked()
 {
     //mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
-    mPdfPreview.Open(QString("E:\\Preparation\\MuPDF\\mupdf_explored.pdf"));
+    mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
     QImage firstPage = mPdfPreview.PageFirst();
-    if (!firstPage.isNull())
-    {
-        ui->lbImgPdfView->setPixmap(
-            QPixmap::fromImage(
-                firstPage.scaled(ui->lbImgPdfView->width(), ui->lbImgPdfView->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-            ));
-    }
-    mPdfPreview.Close();
-    QObject::disconnect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+    this->ShowPdfImage(firstPage);
 }
 
 void WinReportTesting::on_btnMuPdfWrapPre_clicked()
 {
-    int i = 0;
+    QImage pdfImage = mPdfPreview.PagePrevious();
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::on_btnMuPdfWrapNext_clicked()
 {
-    int i = 0;
+    QImage pdfImage = mPdfPreview.PageNext();
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString)

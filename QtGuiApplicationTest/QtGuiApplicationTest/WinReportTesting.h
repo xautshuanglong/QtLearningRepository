@@ -28,6 +28,7 @@ public:
 private:
     void QTextDocumentTest();
     void QTextEditDocumentTest();
+    void ShowPdfImage(QImage &pdfImage);
 
 private slots:
     void on_btnPrintTest_clicked();
