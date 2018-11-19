@@ -388,6 +388,9 @@ void WinReportTesting::on_btnPreviewMuPDF_clicked()
 
 void WinReportTesting::on_btnPrintImgPDF_clicked()
 {
+    mPdfPreview.Print();
+    return;
+
     QPrinter::Margins margins = { 0.0f, 0.0f, 0.0f, 0.0f };
     QPrinter imagePrinter(QPrinter::HighResolution);
     imagePrinter.setPageSize(QPagedPaintDevice::A4);
@@ -466,8 +469,8 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
 
 void WinReportTesting::on_btnMuPdfWrap_clicked()
 {
-    //mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
-    mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
+    mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
+    //mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
     QImage firstPage = mPdfPreview.PageFirst();
     this->ShowPdfImage(firstPage);
 }

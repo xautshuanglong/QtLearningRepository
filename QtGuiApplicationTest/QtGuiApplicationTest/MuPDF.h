@@ -55,6 +55,7 @@ public:
 
 private:
     QImage GetPageImageByIndex(int index);
+    QImage MakeQImageFromData(unsigned char* pImgData, int width, int height, QImage::Format colorFormat);
 
 signals:
     void SignalErrorOccurred(MuPDF::ErrorCode errorCode, QString errorString);
