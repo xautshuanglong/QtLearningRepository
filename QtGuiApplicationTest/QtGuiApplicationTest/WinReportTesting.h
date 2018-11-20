@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include "MuPDF.h"
+#include "FopReportClient.h"
 
 class FramelessWindowHelper;
 class QTcpSocket;
@@ -20,6 +21,7 @@ private:
     QTcpSocket             *mpSocketClient1;
     QTcpSocket             *mpSocketClient2;
     MuPDF                   mPdfPreview;
+    FopReportClient         mFopClient;
 
 public:
     explicit WinReportTesting(QWidget *parent = Q_NULLPTR);

@@ -117,6 +117,9 @@
     <ClCompile Include="ReportXmlData.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="FopReportClient.cpp">
+      <Filter>Reports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -208,6 +211,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="MuPDF.h">
+      <Filter>Reports</Filter>
+    </QtMoc>
+    <QtMoc Include="FopReportClient.h">
       <Filter>Reports</Filter>
     </QtMoc>
   </ItemGroup>
