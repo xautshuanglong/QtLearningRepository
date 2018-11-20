@@ -114,6 +114,9 @@
     <ClCompile Include="MuPDF.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="ReportXmlData.cpp">
+      <Filter>Reports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -171,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="AppListIcon.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportXmlData.h">
+      <Filter>Reports</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

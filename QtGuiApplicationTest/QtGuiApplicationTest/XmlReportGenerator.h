@@ -21,7 +21,7 @@ class XmlReportGenerator
 public:
     enum ReportXmlTag
     {
-        TAG_ROOT,                               // 跟标签
+        TAG_ROOT,                               // 根标签
         TAG_HEADER,                             // 报告头部
         TAG_HEADER_HospitalLogo,                // 医院标志图片路径
         TAG_HEADER_MainTitle,                   // 报告主标题

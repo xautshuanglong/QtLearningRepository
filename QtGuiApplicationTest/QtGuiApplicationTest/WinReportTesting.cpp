@@ -26,6 +26,7 @@
 #include <LogUtil.h>
 #include "FramelessWindowHelper.h"
 #include "XmlReportGenerator.h"
+#include "ReportXmlData.h"
 
 using namespace SL::Util;
 using namespace com::genomics::protobuf;
@@ -202,6 +203,12 @@ void WinReportTesting::on_btnFormatTest_clicked()
 
 void WinReportTesting::on_btnSavePDF_clicked()
 {
+    QString xmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
+    ReportXmlData xmlData;
+    xmlData.MakeDefaultData();
+    xmlData.SaveReportAsXml(xmlFilename);
+    return;
+
     static int filenamePostfix = 0;
 
     QString outXmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
@@ -222,7 +229,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
     int msgBodyLen = 0;
     int msgLen = 0;
     char *pTempMsgBuffer = nullptr;
-    int count = 100;
+    int count = 10;
     if (connectFlag1)
     {
         while (count > 0)
