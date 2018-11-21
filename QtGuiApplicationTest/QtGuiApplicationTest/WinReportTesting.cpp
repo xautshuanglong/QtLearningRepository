@@ -27,6 +27,7 @@
 #include "FramelessWindowHelper.h"
 #include "XmlReportGenerator.h"
 #include "ReportXmlData.h"
+#include "FopReportProtocol.h"
 
 using namespace SL::Util;
 using namespace com::genomics::protobuf;
@@ -204,42 +205,10 @@ void WinReportTesting::on_btnFormatTest_clicked()
 void WinReportTesting::on_btnSavePDF_clicked()
 {
     static int filenamePostfix = 0;
-    int msgBodyLen = 0;
-    int msgLen = 0;
-    char *pTempMsgBuffer = nullptr;
-
     QString xmlFilename = "E:/Temp/FopTest/MGI_ReportTestByQt.xml";
-    ReportXmlData xmlData;
-    xmlData.MakeDefaultData();
-    xmlData.SaveReportAsXml(xmlFilename);
-
-    MessageHeader *pMsgHeader = new MessageHeader();
-    pMsgHeader->set_msgid(119);
-    pMsgHeader->set_version(1);
-    pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
-    MessageCommand *pMsgCommand = new MessageCommand();
-    pMsgCommand->set_cmd("SAVE");
-    //pMsgCommand->set_xmlfilename("E:/Temp/FopTest/MGI_ReportTest.xml");
-    pMsgCommand->set_xmlfilename(xmlFilename.toStdString().c_str());
-    pMsgCommand->set_xslfilename("E:/Temp/FopTest/MGI_ReportTest_Upgrade.xsl");
-    //pMsgCommand->set_outfilename("E:/Temp/FopTest/QtReportTest.pdf");
-
-    QString saveFilename = QString("E:/Temp/FopTest/MGI_ReportTest_%1.pdf").arg(++filenamePostfix);
-    pMsgCommand->set_outfilename(saveFilename.toStdString().c_str());
-
-    MessageBody *pMsgBody = new MessageBody();
-    pMsgBody->set_allocated_msgcommand(pMsgCommand);
-    MessageInfo msgInfo;
-    msgInfo.set_allocated_msgheader(pMsgHeader);
-    msgInfo.set_allocated_msgbody(pMsgBody);
-    msgBodyLen = msgInfo.ByteSize();
-    msgLen = msgBodyLen + 4;
-    pTempMsgBuffer = new char[msgLen];
-    memcpy(pTempMsgBuffer, &msgLen, 4);
-    msgInfo.SerializeToArray(pTempMsgBuffer + 4, msgBodyLen);
-
-    mFopClient.SendData(pTempMsgBuffer, msgLen);
-    delete[]pTempMsgBuffer;
+    QString xslFilename = "E:/Temp/FopTest/MGI_ReportTest_Upgrade.xsl";
+    QString outFilename = QString("E:/Temp/FopTest/MGI_ReportTest_%1.pdf").arg(++filenamePostfix);
+    mFopClient.SavePDF("SAVE", xmlFilename, xslFilename, outFilename);
 
     return;
 
@@ -258,6 +227,9 @@ void WinReportTesting::on_btnSavePDF_clicked()
     mpSocketClient1->connectToHost(serverIP, serverPort);
     bool connectFlag1 = mpSocketClient1->waitForConnected(5000);
 
+    int msgBodyLen = 0;
+    int msgLen = 0;
+    char *pTempMsgBuffer = nullptr;
     int count = 10;
     if (connectFlag1)
     {

@@ -120,6 +120,9 @@
     <ClCompile Include="FopReportClient.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="FopReportProtocol.cpp">
+      <Filter>Reports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -179,6 +182,9 @@
       <Filter>Config</Filter>
     </ClInclude>
     <ClInclude Include="ReportXmlData.h">
+      <Filter>Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="FopReportProtocol.h">
       <Filter>Reports</Filter>
     </ClInclude>
   </ItemGroup>

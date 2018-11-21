@@ -10,7 +10,11 @@ public:
     FopReportClient();
     ~FopReportClient();
 
-    void SendData(const char* data, qint64 dataSize);
+    void SavePDF(const QString& cmd, const QString& xmlFile, const QString& xslFile, const QString& outFile);
+
+private:
+    void SendData(QByteArray data);
+    QByteArray PackMessageCommand(const QString& cmd, const QString& xmlFile, const QString& xslFile, const QString& outFile);
 
 private slots:
     void SlotConnected();
@@ -26,4 +30,5 @@ private slots:
 private:
     QTcpSocket  mTcpSocket;
     bool        mIsConnected;
+    static int  gMsgID;
 };

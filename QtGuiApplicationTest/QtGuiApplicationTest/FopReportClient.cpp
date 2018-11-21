@@ -1,7 +1,14 @@
 #include "FopReportClient.h"
 
+#include <QDataStream>
 #include <QMetaEnum>
 #include <LogUtil.h>
+
+// Protocol Buffer
+#include "MessageInfo.pb.h"
+using namespace com::genomics::protobuf;
+
+int FopReportClient::gMsgID = 1;
 
 FopReportClient::FopReportClient()
     : mIsConnected(false)
@@ -12,24 +19,68 @@ FopReportClient::FopReportClient()
     this->connect(&mTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(SlotSocketError(QAbstractSocket::SocketError)));
     //this->connect(&mTcpSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(SlotStateChanged(QAbstractSocket::SocketState)));
     this->connect(&mTcpSocket, SIGNAL(readyRead()), SLOT(SlotReadyRead()));
-    this->connect(&mTcpSocket, SIGNAL(channelReadyRead(int)), SLOT(SlotChannelReadyRead(int)));
     this->connect(&mTcpSocket, SIGNAL(bytesWritten(qint64)), SLOT(SlotBytesWritten(qint64)));
-    this->connect(&mTcpSocket, SIGNAL(channelBytesWritten(int, qint64)), SLOT(SlotChannelBytesWritten(int, qint64)));
+    //this->connect(&mTcpSocket, SIGNAL(channelReadyRead(int)), SLOT(SlotChannelReadyRead(int)));
+    //this->connect(&mTcpSocket, SIGNAL(channelBytesWritten(int, qint64)), SLOT(SlotChannelBytesWritten(int, qint64)));
     //this->connect(&mTcpSocket, SIGNAL(readChannelFinished()), SLOT(SlotReadChannelFinished()));
 }
 
 FopReportClient::~FopReportClient()
 {
+    if (mTcpSocket.isOpen())
+    {
+        mTcpSocket.close();
+    }
 }
 
-void FopReportClient::SendData(const char* data, qint64 dataSize)
+void FopReportClient::SendData(QByteArray data)
 {
     if (!mIsConnected)
     {
         mTcpSocket.connectToHost("127.0.0.1", 8000);
         mTcpSocket.waitForConnected(5000);
     }
-    mTcpSocket.write(data, dataSize);
+    mTcpSocket.write(data);
+}
+
+void FopReportClient::SavePDF(const QString& cmd, const QString& xmlFile, const QString& xslFile, const QString& outFile)
+{
+    QByteArray cmdBuffer = this->PackMessageCommand(cmd, xmlFile, xslFile, outFile);
+    this->SendData(cmdBuffer);
+}
+
+QByteArray FopReportClient::PackMessageCommand(const QString& cmd, const QString& xmlFile, const QString& xslFile, const QString& outFile)
+{
+    MessageHeader *pMsgHeader = new MessageHeader();
+    pMsgHeader->set_msgid(gMsgID++);
+    pMsgHeader->set_version(1);
+    pMsgHeader->set_msgtype(MsgType::MsgTypeCommand);
+    MessageCommand *pMsgCommand = new MessageCommand();
+    pMsgCommand->set_cmd(cmd.toStdString().c_str());
+    pMsgCommand->set_xmlfilename(xmlFile.toStdString().c_str());
+    pMsgCommand->set_xslfilename(xslFile.toStdString().c_str());
+    pMsgCommand->set_outfilename(outFile.toStdString().c_str());
+
+    MessageBody *pMsgBody = new MessageBody();
+    pMsgBody->set_allocated_msgcommand(pMsgCommand);
+    MessageInfo msgInfo;
+    msgInfo.set_allocated_msgheader(pMsgHeader);
+    msgInfo.set_allocated_msgbody(pMsgBody);
+
+    int msgBodyLen = msgInfo.ByteSize();
+    int msgLen = msgBodyLen + 4;
+
+    QByteArray retByteArray;
+    QDataStream msgStream(&retByteArray, QIODevice::WriteOnly);
+    msgStream.setByteOrder(QDataStream::BigEndian);
+    char *pTempMsgBuffer = new char[msgBodyLen];
+    msgInfo.SerializeToArray(pTempMsgBuffer, msgBodyLen);
+    msgStream.writeBytes(pTempMsgBuffer, msgBodyLen); // 注：QDataStream 内部机制，前4字符为data的长度，后面紧跟data内容。
+    msgStream.device()->seek(0);
+    msgStream << msgLen;
+    delete[]pTempMsgBuffer;
+
+    return retByteArray;
 }
 
 void FopReportClient::SlotConnected()
@@ -58,7 +109,9 @@ void FopReportClient::SlotStateChanged(QAbstractSocket::SocketState socketState)
 
 void FopReportClient::SlotReadyRead()
 {
-    LogUtil::Debug(CODE_LOCATION, "QTcpSocket: ready Read");
+    //LogUtil::Debug(CODE_LOCATION, "QTcpSocket: ready Read");
+    //char data[512] = { 0 };
+    //int readByteCount = mTcpSocket.read(data, 512);
 }
 
 void FopReportClient::SlotBytesWritten(qint64 bytesCount)
