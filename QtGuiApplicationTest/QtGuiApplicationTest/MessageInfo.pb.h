@@ -139,6 +139,27 @@ inline bool RequestType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<RequestType>(
     RequestType_descriptor(), name, value);
 }
+enum ResponseType {
+  ResTypeSaveSuccess = 0,
+  ResTypeFileNotFound = 1,
+  ResponseType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ResponseType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ResponseType_IsValid(int value);
+const ResponseType ResponseType_MIN = ResTypeSaveSuccess;
+const ResponseType ResponseType_MAX = ResTypeFileNotFound;
+const int ResponseType_ARRAYSIZE = ResponseType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ResponseType_descriptor();
+inline const ::std::string& ResponseType_Name(ResponseType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ResponseType_descriptor(), value);
+}
+inline bool ResponseType_Parse(
+    const ::std::string& name, ResponseType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ResponseType>(
+    ResponseType_descriptor(), name, value);
+}
 // ===================================================================
 
 class MessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:com.genomics.protobuf.MessageRequest) */ {
@@ -228,9 +249,9 @@ class MessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // string description = 2;
+  // string description = 3;
   void clear_description();
-  static const int kDescriptionFieldNumber = 2;
+  static const int kDescriptionFieldNumber = 3;
   const ::std::string& description() const;
   void set_description(const ::std::string& value);
   #if LANG_CXX11
@@ -248,12 +269,19 @@ class MessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::uint32 requestid() const;
   void set_requestid(::google::protobuf::uint32 value);
 
+  // .com.genomics.protobuf.RequestType requestType = 2;
+  void clear_requesttype();
+  static const int kRequestTypeFieldNumber = 2;
+  ::com::genomics::protobuf::RequestType requesttype() const;
+  void set_requesttype(::com::genomics::protobuf::RequestType value);
+
   // @@protoc_insertion_point(class_scope:com.genomics.protobuf.MessageRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr description_;
   ::google::protobuf::uint32 requestid_;
+  int requesttype_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_MessageInfo_2eproto::TableStruct;
 };
@@ -346,9 +374,9 @@ class MessageResponse : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // string description = 2;
+  // string description = 3;
   void clear_description();
-  static const int kDescriptionFieldNumber = 2;
+  static const int kDescriptionFieldNumber = 3;
   const ::std::string& description() const;
   void set_description(const ::std::string& value);
   #if LANG_CXX11
@@ -360,18 +388,25 @@ class MessageResponse : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_description();
   void set_allocated_description(::std::string* description);
 
-  // uint32 requestID = 1;
-  void clear_requestid();
-  static const int kRequestIDFieldNumber = 1;
-  ::google::protobuf::uint32 requestid() const;
-  void set_requestid(::google::protobuf::uint32 value);
+  // uint32 responseID = 1;
+  void clear_responseid();
+  static const int kResponseIDFieldNumber = 1;
+  ::google::protobuf::uint32 responseid() const;
+  void set_responseid(::google::protobuf::uint32 value);
+
+  // .com.genomics.protobuf.ResponseType responseType = 2;
+  void clear_responsetype();
+  static const int kResponseTypeFieldNumber = 2;
+  ::com::genomics::protobuf::ResponseType responsetype() const;
+  void set_responsetype(::com::genomics::protobuf::ResponseType value);
 
   // @@protoc_insertion_point(class_scope:com.genomics.protobuf.MessageResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr description_;
-  ::google::protobuf::uint32 requestid_;
+  ::google::protobuf::uint32 responseid_;
+  int responsetype_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_MessageInfo_2eproto::TableStruct;
 };
@@ -1148,7 +1183,21 @@ inline void MessageRequest::set_requestid(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageRequest.requestID)
 }
 
-// string description = 2;
+// .com.genomics.protobuf.RequestType requestType = 2;
+inline void MessageRequest::clear_requesttype() {
+  requesttype_ = 0;
+}
+inline ::com::genomics::protobuf::RequestType MessageRequest::requesttype() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageRequest.requestType)
+  return static_cast< ::com::genomics::protobuf::RequestType >(requesttype_);
+}
+inline void MessageRequest::set_requesttype(::com::genomics::protobuf::RequestType value) {
+  
+  requesttype_ = value;
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageRequest.requestType)
+}
+
+// string description = 3;
 inline void MessageRequest::clear_description() {
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1205,21 +1254,35 @@ inline void MessageRequest::set_allocated_description(::std::string* description
 
 // MessageResponse
 
-// uint32 requestID = 1;
-inline void MessageResponse::clear_requestid() {
-  requestid_ = 0u;
+// uint32 responseID = 1;
+inline void MessageResponse::clear_responseid() {
+  responseid_ = 0u;
 }
-inline ::google::protobuf::uint32 MessageResponse::requestid() const {
-  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageResponse.requestID)
-  return requestid_;
+inline ::google::protobuf::uint32 MessageResponse::responseid() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageResponse.responseID)
+  return responseid_;
 }
-inline void MessageResponse::set_requestid(::google::protobuf::uint32 value) {
+inline void MessageResponse::set_responseid(::google::protobuf::uint32 value) {
   
-  requestid_ = value;
-  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageResponse.requestID)
+  responseid_ = value;
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageResponse.responseID)
 }
 
-// string description = 2;
+// .com.genomics.protobuf.ResponseType responseType = 2;
+inline void MessageResponse::clear_responsetype() {
+  responsetype_ = 0;
+}
+inline ::com::genomics::protobuf::ResponseType MessageResponse::responsetype() const {
+  // @@protoc_insertion_point(field_get:com.genomics.protobuf.MessageResponse.responseType)
+  return static_cast< ::com::genomics::protobuf::ResponseType >(responsetype_);
+}
+inline void MessageResponse::set_responsetype(::com::genomics::protobuf::ResponseType value) {
+  
+  responsetype_ = value;
+  // @@protoc_insertion_point(field_set:com.genomics.protobuf.MessageResponse.responseType)
+}
+
+// string description = 3;
 inline void MessageResponse::clear_description() {
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1964,6 +2027,11 @@ template <> struct is_proto_enum< ::com::genomics::protobuf::RequestType> : ::st
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::com::genomics::protobuf::RequestType>() {
   return ::com::genomics::protobuf::RequestType_descriptor();
+}
+template <> struct is_proto_enum< ::com::genomics::protobuf::ResponseType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::com::genomics::protobuf::ResponseType>() {
+  return ::com::genomics::protobuf::ResponseType_descriptor();
 }
 
 }  // namespace protobuf

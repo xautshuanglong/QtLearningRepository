@@ -83,6 +83,25 @@ QByteArray FopReportClient::PackMessageCommand(const QString& cmd, const QString
     return retByteArray;
 }
 
+void FopReportClient::MessageResponseHandler(MessageHeader *pMsgHeader, MessageBody *pMsgBody)
+{
+    MessageResponse msgResponse = pMsgBody->msgresponse();
+
+    int responseID = msgResponse.responseid();
+    const std::string description = msgResponse.description();
+    ResponseType responseType = msgResponse.responsetype();
+
+    LogUtil::Debug(CODE_LOCATION, "MsgResponseID[%d] MsgResponseType[%s] MsgDescription[%s]",
+                   responseID,
+                   ::ResponseType_Name(responseType).c_str(),
+                   description.c_str());
+
+    if (responseType == ResTypeSaveSuccess)
+    {
+        emit SignalSaveCompletely();
+    }
+}
+
 void FopReportClient::SlotConnected()
 {
     mIsConnected = true;
@@ -109,9 +128,39 @@ void FopReportClient::SlotStateChanged(QAbstractSocket::SocketState socketState)
 
 void FopReportClient::SlotReadyRead()
 {
-    //LogUtil::Debug(CODE_LOCATION, "QTcpSocket: ready Read");
-    //char data[512] = { 0 };
-    //int readByteCount = mTcpSocket.read(data, 512);
+    char readData[512] = { 0 };
+    int readByteCount = mTcpSocket.read(readData, 512);
+
+    MessageInfo responseMsg;
+    responseMsg.ParseFromArray(readData + 4, readByteCount - 4);
+
+    MessageHeader msgHeader = responseMsg.msgheader();
+    MessageBody msgBody = responseMsg.msgbody();
+    MsgType msgType = msgHeader.msgtype();
+    int msgID = msgHeader.msgid();
+    int msgVersion = msgHeader.version();
+    LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%s] MsgID[%d]",
+                   msgVersion, ::MsgType_Name(msgType).c_str(), msgID);
+
+    if (msgType != MsgTypeUnknow)
+    {
+        switch (msgType)
+        {
+        case com::genomics::protobuf::MsgTypeRequest:
+            break;
+        case com::genomics::protobuf::MsgTypeResponse:
+            this->MessageResponseHandler(&msgHeader, &msgBody);
+        break;
+        case com::genomics::protobuf::MsgTypePush:
+            break;
+        case com::genomics::protobuf::MsgTypePull:
+            break;
+        case com::genomics::protobuf::MsgTypeCommand:
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void FopReportClient::SlotBytesWritten(qint64 bytesCount)

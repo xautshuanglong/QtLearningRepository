@@ -3,6 +3,18 @@
 #include <QObject>
 #include <QTcpSocket>
 
+namespace com
+{
+    namespace genomics
+    {
+        namespace protobuf
+        {
+            class MessageHeader;
+            class MessageBody;
+        }
+    }
+}
+
 class FopReportClient : public QObject
 {
     Q_OBJECT
@@ -15,6 +27,11 @@ public:
 private:
     void SendData(QByteArray data);
     QByteArray PackMessageCommand(const QString& cmd, const QString& xmlFile, const QString& xslFile, const QString& outFile);
+    void MessageResponseHandler(com::genomics::protobuf::MessageHeader *pMsgHeader,
+                                com::genomics::protobuf::MessageBody *pMsgBody);
+
+signals:
+    void SignalSaveCompletely();
 
 private slots:
     void SlotConnected();

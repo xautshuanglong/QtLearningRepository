@@ -45,6 +45,7 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     ui->teReport->setReadOnly(true);
 
     this->connect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
+    this->connect(&mFopClient, SIGNAL(SignalSaveCompletely()), SLOT(SlotSaveCompletely()));
 }
 
 WinReportTesting::~WinReportTesting()
@@ -499,4 +500,9 @@ void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString
 {
     QMetaEnum muPdfErrorEnum = QMetaEnum::fromType<MuPDF::ErrorCode>();
     LogUtil::Debug(CODE_LOCATION, "%s : %s", muPdfErrorEnum.valueToKey(code), errorString.toStdString().c_str());
+}
+
+void WinReportTesting::SlotSaveCompletely()
+{
+    LogUtil::Debug(CODE_LOCATION, "Save PDF completely");
 }

@@ -43,4 +43,5 @@ private slots:
     void on_btnMuPdfWrapPre_clicked();
     void on_btnMuPdfWrapNext_clicked();
     void SlotMuPdfError(MuPDF::ErrorCode code, QString errorString);
+    void SlotSaveCompletely();
 };

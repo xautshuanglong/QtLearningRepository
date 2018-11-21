@@ -58,8 +58,11 @@ void FopReportProtocol::ParseMessage(const char *pData, int dataLen)
         case com::genomics::protobuf::MsgTypeResponse:
         {
             MessageResponse msgResponse = msgBody.msgresponse();
-            LogUtil::Debug(CODE_LOCATION, "MsgResponseID[%d] MsgDescription[%s]",
-                           msgResponse.requestid(), msgResponse.description().c_str());
+            int responseID = msgResponse.responseid();
+            ResponseType responseType = msgResponse.responsetype();
+            const std::string description = msgResponse.description();
+            LogUtil::Debug(CODE_LOCATION, "MsgResponseID[%d] ResponseType[%s] MsgDescription[%s]",
+                           responseID, ::ResponseType_Name(responseType), description.c_str());
         }
             break;
         case com::genomics::protobuf::MsgTypePush:
