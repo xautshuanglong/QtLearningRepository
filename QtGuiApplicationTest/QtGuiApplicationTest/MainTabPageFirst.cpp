@@ -40,7 +40,6 @@
 #include "MiscellaneousTesting.h"
 #include "WinReportTesting.h"
 #include "UrlUtil.h"
-#include "DebugPanel.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
@@ -56,7 +55,6 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     ui.imgTitleValue->setText("image_filename_test");
 
     pDcmWidget = new DicomWindow();
-    mpDebugPanel = new DebugPanel();
 
     mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
     mpMyWorkerThreadPool = new MyWorkerThreadPool();
@@ -91,8 +89,6 @@ MainTabPageFirst::~MainTabPageFirst()
     {
         delete mpWinReportTest;
     }
-
-    delete mpDebugPanel;
 }
 
 void MainTabPageFirst::InitAppList()
@@ -144,32 +140,9 @@ void MainTabPageFirst::on_btnBrowserDcm_clicked()
 
 void MainTabPageFirst::on_btnBrowserImg_clicked()
 {
-    if (mpDebugPanel->isVisible())
-    {
-        if (mpDebugPanel->isMinimized())
-        {
-            mpDebugPanel->showNormal();
-        }
-        else
-        {
-            mpDebugPanel->hide();
-        }
-    }
-    else
-    {
-        if (mpDebugPanel->isMinimized())
-        {
-            mpDebugPanel->showNormal();
-        }
-        else
-        {
-            mpDebugPanel->show();
-        }
-    }
-
     //this->SelfPaintImage8Bit();
     //this->ReadJpegAndCopyToDicom();
-    //this->ReadImageByQImage();
+    this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
     //this->BackgroundWorkerTest();
     //this->QThreadPoolTest();

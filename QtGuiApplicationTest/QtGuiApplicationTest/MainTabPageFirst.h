@@ -10,7 +10,6 @@ class WinReportTesting;
 class MyBackgroundWorker;
 class MyWorkerThreadPool;
 class QListWidgetItem;
-class DebugPanel;
 
 namespace SL
 {
@@ -26,7 +25,6 @@ class MainTabPageFirst : public QWidget
 private:
     Ui::MainTabPageFirst            ui;
     QListWidgetItem                *mpCurEnteredItem;
-    DebugPanel                     *mpDebugPanel;
     DicomWindow                    *pDcmWidget;
     MiscellaneousTesting           *mpMiscellaneousTest;
     WinReportTesting               *mpWinReportTest;

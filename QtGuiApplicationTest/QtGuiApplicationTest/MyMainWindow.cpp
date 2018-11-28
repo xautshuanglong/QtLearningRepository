@@ -8,7 +8,9 @@
 #include <QGroupBox>
 #include <QSplitter>
 #include <QMenu>
+#include <QMetaEnum>
 #include <QAction>
+#include <QKeySequence>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -21,6 +23,7 @@
 #include "MainTabPageFirst.h"
 #include "MainTabPageSetting.h"
 #include "MainTabPageDicom.h"
+#include "DebugPanel.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -32,6 +35,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
+    mpDebugPanel = new DebugPanel();
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 
@@ -70,6 +74,7 @@ MyMainWindow::~MyMainWindow()
         delete mpFramelessWindow;
         mpFramelessWindow = Q_NULLPTR;
     }
+    delete mpDebugPanel;
 }
 
 bool MyMainWindow::event(QEvent *event)
@@ -183,6 +188,11 @@ void MyMainWindow::wheelEvent(QWheelEvent *event)
 
 void MyMainWindow::keyPressEvent(QKeyEvent *event)
 {
+    if (QKeySequence("Ctrl+Shift+D")== QKeySequence(event->modifiers() | event->key()))
+    {
+        this->ShowOrHideDebugPanel();
+    }
+
     QMainWindow::keyPressEvent(event);
 }
 
@@ -248,6 +258,32 @@ void MyMainWindow::ShowAndActivateWindow()
     if (!this->isActiveWindow())
     {
         this->activateWindow();
+    }
+}
+
+void MyMainWindow::ShowOrHideDebugPanel()
+{
+    if (mpDebugPanel->isVisible())
+    {
+        if (mpDebugPanel->isMinimized())
+        {
+            mpDebugPanel->showNormal();
+        }
+        else
+        {
+            mpDebugPanel->hide();
+        }
+    }
+    else
+    {
+        if (mpDebugPanel->isMinimized())
+        {
+            mpDebugPanel->showNormal();
+        }
+        else
+        {
+            mpDebugPanel->show();
+        }
     }
 }
 

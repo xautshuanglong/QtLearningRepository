@@ -15,6 +15,12 @@ public:
     explicit DebugPanel(QWidget *parent = 0);
     ~DebugPanel();
 
+private:
+    void ShowOrHideDebugPanel();
+
+private slots:
+    void on_pushButton_clicked();
+
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
     virtual void keyPressEvent(QKeyEvent *event) override;
