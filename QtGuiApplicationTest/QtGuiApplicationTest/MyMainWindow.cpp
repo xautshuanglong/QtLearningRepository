@@ -226,6 +226,7 @@ void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
     QMainWindow::closeEvent(event);
+    QApplication::instance()->quit();
 }
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)

@@ -123,6 +123,9 @@
     <ClCompile Include="FopReportProtocol.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="DebugPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -144,6 +147,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="WinReportTesting.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DebugPanel.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -221,6 +227,9 @@
     </QtMoc>
     <QtMoc Include="FopReportClient.h">
       <Filter>Reports</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugPanel.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
