@@ -24,6 +24,7 @@
 #include "MainTabPageSetting.h"
 #include "MainTabPageDicom.h"
 #include "DebugPanel.h"
+#include "DebugInfoBaseWidget.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,6 +37,9 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
     DebugPanel::GetInstance()->ListenKeyboard(this);
+
+    //DebugInfoBaseWidget *pTestWidget = new DebugInfoBaseWidget();
+    //DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("²âÊÔÏî"), pTestWidget);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 

@@ -42,32 +42,31 @@ DebugPanel::DebugPanel(QWidget *parent)
     //pDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
 
     // 列表控件
-    QListWidget *pListWidget = new QListWidget(this);
-    pListWidget->insertItem(0, QString::fromLocal8Bit("第一項"));
-    pListWidget->insertItem(1, QString::fromLocal8Bit("第二項"));
-    pListWidget->insertItem(2, QString::fromLocal8Bit("第三項"));
+    mpListWidget = new QListWidget(this);
+    mpListWidget->insertItem(0, QString::fromLocal8Bit("第一項"));
+    mpListWidget->insertItem(1, QString::fromLocal8Bit("第二項"));
+    mpListWidget->insertItem(2, QString::fromLocal8Bit("第三項"));
     //pListWidget->setFocusPolicy(Qt::NoFocus);
 
     QLabel *label1 = new QLabel(QString::fromLocal8Bit("第一項的內容"));
     QLabel *label2 = new QLabel(QString::fromLocal8Bit("第二項的內容"));
     QLabel *label3 = new QLabel(QString::fromLocal8Bit("第三項的內容"));
 
-    QStackedWidget *stackedWidget = new QStackedWidget(this);
-    stackedWidget->addWidget(label1);
-    stackedWidget->addWidget(label2);
-    stackedWidget->addWidget(label3);
+    mpStackedWidget = new QStackedWidget(this);
+    mpStackedWidget->addWidget(label1);
+    mpStackedWidget->addWidget(label2);
+    mpStackedWidget->addWidget(label3);
 
     QHBoxLayout *mainLayout = new QHBoxLayout(ui->centralWidget);
-    mainLayout->addWidget(pListWidget);
-    mainLayout->addWidget(stackedWidget, 0, Qt::AlignHCenter);
-    mainLayout->setStretchFactor(pListWidget, 1);
-    mainLayout->setStretchFactor(stackedWidget, 4);
-    connect(pListWidget, SIGNAL(currentRowChanged(int)), stackedWidget, SLOT(setCurrentIndex(int)));
+    mainLayout->addWidget(mpListWidget);
+    mainLayout->addWidget(mpStackedWidget, 0, Qt::AlignHCenter);
+    mainLayout->setStretchFactor(mpListWidget, 1);
+    mainLayout->setStretchFactor(mpStackedWidget, 4);
+    connect(mpListWidget, SIGNAL(currentRowChanged(int)), mpStackedWidget, SLOT(setCurrentIndex(int)));
 }
 
 DebugPanel::~DebugPanel()
 {
-    LogUtil::Debug(CODE_LOCATION, "Destruct instance");
     delete ui;
     delete mpMenuBar;
 }
@@ -83,6 +82,15 @@ void DebugPanel::ListenKeyboard(QObject *pTarget)
     if (pTarget != Q_NULLPTR)
     {
         pTarget->installEventFilter(this);
+    }
+}
+
+void DebugPanel::AddDebugInfoWidget(QString topic, QWidget *pWidget)
+{
+    if (pWidget != Q_NULLPTR)
+    {
+        mpListWidget->addItem(topic);
+        mpStackedWidget->addWidget(pWidget);
     }
 }
 

@@ -4,6 +4,8 @@
 #include <QWidget>
 
 class QMenuBar;
+class QListWidget;
+class QStackedWidget;
 
 namespace Ui {
 class DebugPanel;
@@ -18,6 +20,7 @@ public:
 
     static DebugPanel* GetInstance();
     void ListenKeyboard(QObject *pTarget);
+    void AddDebugInfoWidget(QString topic, QWidget *pWidget);
 
 private:
     explicit DebugPanel(QWidget *parent = 0);
@@ -36,6 +39,8 @@ protected:
 private:
     Ui::DebugPanel    *ui;
     QMenuBar          *mpMenuBar;
+    QListWidget       *mpListWidget;
+    QStackedWidget    *mpStackedWidget;
 };
 
 #endif // DEBUG_PANEL_H

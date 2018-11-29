@@ -126,6 +126,9 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DebugInfoBaseWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -229,6 +232,9 @@
       <Filter>Reports</Filter>
     </QtMoc>
     <QtMoc Include="DebugPanel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugInfoBaseWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
