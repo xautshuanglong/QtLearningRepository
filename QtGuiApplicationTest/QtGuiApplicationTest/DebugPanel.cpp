@@ -19,6 +19,7 @@ DebugPanel::DebugPanel(QWidget *parent)
 {
     ui->setupUi(this);
     // 窗口属性
+    this->setAttribute(Qt::WA_QuitOnClose, false);
     this->setWindowTitle(QStringLiteral("调试面板"));
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
@@ -29,18 +30,12 @@ DebugPanel::DebugPanel(QWidget *parent)
     QAction *pAction2 = new QAction(QStringLiteral("视图"), this);
     QAction *pAction3 = new QAction(QStringLiteral("设置项1"), this);
     QAction *pAction4 = new QAction(QStringLiteral("设置项2"), this);
-    QMenu *pTempMenu = new QMenu(QStringLiteral("设置"));
+    QMenu *pTempMenu = new QMenu(QStringLiteral("设置"), this);
     pTempMenu->addAction(pAction3);
     pTempMenu->addAction(pAction4);
     mpMenuBar->addAction(pAction1);
     mpMenuBar->addAction(pAction2);
     mpMenuBar->addMenu(pTempMenu);
-
-    // 停靠窗口部件
-    //QDockWidget *pDockWidget = new QDockWidget("TestDockWindow 1", ui->centralWidget);
-    //QWidget *pDockWidgetContents = new QWidget();
-    //pDockWidget->setWidget(pDockWidgetContents);
-    //pDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
 
     // 列表控件
     mpListWidget = new QListWidget(this);
@@ -57,29 +52,17 @@ DebugPanel::DebugPanel(QWidget *parent)
     mpStackedWidget->addWidget(label3);
     connect(mpListWidget, SIGNAL(currentRowChanged(int)), mpStackedWidget, SLOT(setCurrentIndex(int)));
 
-    QHBoxLayout *mainLayout = new QHBoxLayout(ui->centralWidget);
-    mainLayout->addWidget(mpListWidget);
-    mainLayout->addWidget(mpStackedWidget, 0, Qt::AlignHCenter);
-    mainLayout->setStretchFactor(mpListWidget, 1);
-    mainLayout->setStretchFactor(mpStackedWidget, 4);
-
-    //mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
-    //mpSpliter->addWidget(mpListWidget);
-    //mpSpliter->addWidget(mpStackedWidget);
-    //mpSpliter->setStretchFactor(0, 25);
-    //mpSpliter->setStretchFactor(1, 75);
+    mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
+    mpSpliter->addWidget(mpListWidget);
+    mpSpliter->addWidget(mpStackedWidget);
+    mpSpliter->setStretchFactor(0, 25);
+    mpSpliter->setStretchFactor(1, 75);
     //mpSpliter->setHandleWidth(1);
 }
 
 DebugPanel::~DebugPanel()
 {
     delete ui;
-}
-
-DebugPanel* DebugPanel::GetInstance()
-{
-    static DebugPanel instance;
-    return &instance;
 }
 
 void DebugPanel::ListenKeyboard(QObject *pTarget)
@@ -135,8 +118,7 @@ void DebugPanel::resizeEvent(QResizeEvent *event)
     QSize newSize = event->size();
     mpMenuBar->resize(newSize.width(), menuRectGeometry.height());
     ui->centralWidget->setGeometry(0, menuRectGeometry.height(), newSize.width(), newSize.height() - menuRectGeometry.height());
-    //ui->centralWidget->setGeometry(0, 0, newSize.width(), newSize.height());
-    //mpSpliter->resize(newSize.width(), newSize.height() - menuRectGeometry.height());
+    mpSpliter->resize(newSize.width(), newSize.height() - menuRectGeometry.height());
 }
 
 bool DebugPanel::eventFilter(QObject *obj, QEvent *event)

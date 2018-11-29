@@ -17,14 +17,13 @@ class DebugPanel : public QWidget
     Q_OBJECT
 
 public:
+    explicit DebugPanel(QWidget *parent = 0);
     ~DebugPanel();
 
-    static DebugPanel* GetInstance();
     void ListenKeyboard(QObject *pTarget);
     void AddDebugInfoWidget(QString topic, QWidget *pWidget);
 
 private:
-    explicit DebugPanel(QWidget *parent = 0);
     void HandleKeyPressEvent(QKeyEvent *event);
     void ShowOrHideDebugPanel();
 

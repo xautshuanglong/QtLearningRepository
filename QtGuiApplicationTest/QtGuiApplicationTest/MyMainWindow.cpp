@@ -36,10 +36,11 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
-    DebugPanel::GetInstance()->ListenKeyboard(this);
+    DebugPanel *pDebugPanel = new DebugPanel();
+    pDebugPanel->ListenKeyboard(this);
 
-    //DebugInfoBaseWidget *pTestWidget = new DebugInfoBaseWidget();
-    //DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("²âÊÔÏî"), pTestWidget);
+    DebugInfoBaseWidget *pTestWidget = new DebugInfoBaseWidget();
+    DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("²âÊÔÏî"), pTestWidget);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 
@@ -234,7 +235,6 @@ void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
     QMainWindow::closeEvent(event);
-    QApplication::instance()->quit();
 }
 
 void MyMainWindow::resizeEvent(QResizeEvent *event)
