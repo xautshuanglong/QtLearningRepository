@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QMenuBar;
+
 namespace Ui {
 class DebugPanel;
 }
@@ -12,22 +14,28 @@ class DebugPanel : public QWidget
     Q_OBJECT
 
 public:
-    explicit DebugPanel(QWidget *parent = 0);
     ~DebugPanel();
 
+    static DebugPanel* GetInstance();
+    void ListenKeyboard(QObject *pTarget);
+
 private:
+    explicit DebugPanel(QWidget *parent = 0);
+    void HandleKeyPressEvent(QKeyEvent *event);
     void ShowOrHideDebugPanel();
 
 private slots:
-    void on_pushButton_clicked();
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
     virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void keyReleaseEvent(QKeyEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
+    virtual bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
-    Ui::DebugPanel *ui;
+    Ui::DebugPanel    *ui;
+    QMenuBar          *mpMenuBar;
 };
 
 #endif // DEBUG_PANEL_H

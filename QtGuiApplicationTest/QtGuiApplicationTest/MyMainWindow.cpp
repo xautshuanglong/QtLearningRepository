@@ -35,7 +35,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
-    mpDebugPanel = new DebugPanel();
+    DebugPanel::GetInstance()->ListenKeyboard(this);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 
@@ -74,7 +74,6 @@ MyMainWindow::~MyMainWindow()
         delete mpFramelessWindow;
         mpFramelessWindow = Q_NULLPTR;
     }
-    delete mpDebugPanel;
 }
 
 bool MyMainWindow::event(QEvent *event)
@@ -188,11 +187,6 @@ void MyMainWindow::wheelEvent(QWheelEvent *event)
 
 void MyMainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (QKeySequence("Ctrl+Shift+D")== QKeySequence(event->modifiers() | event->key()))
-    {
-        this->ShowOrHideDebugPanel();
-    }
-
     QMainWindow::keyPressEvent(event);
 }
 
@@ -258,32 +252,6 @@ void MyMainWindow::ShowAndActivateWindow()
     if (!this->isActiveWindow())
     {
         this->activateWindow();
-    }
-}
-
-void MyMainWindow::ShowOrHideDebugPanel()
-{
-    if (mpDebugPanel->isVisible())
-    {
-        if (mpDebugPanel->isMinimized())
-        {
-            mpDebugPanel->showNormal();
-        }
-        else
-        {
-            mpDebugPanel->hide();
-        }
-    }
-    else
-    {
-        if (mpDebugPanel->isMinimized())
-        {
-            mpDebugPanel->showNormal();
-        }
-        else
-        {
-            mpDebugPanel->show();
-        }
     }
 }
 

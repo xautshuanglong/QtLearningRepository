@@ -10,7 +10,6 @@ class MainTabPageDicom;
 class MainTabPageSetting;
 class QMenu;
 class QAction;
-class DebugPanel;
 
 class MyMainWindow : public QMainWindow
 {
@@ -30,7 +29,6 @@ private:
     QMenu                           *mpSystemTrayMenu;
     QAction                         *mpTrayActionShow;
     QAction                         *mpTrayActionExit;
-    DebugPanel                      *mpDebugPanel;
 
 protected:
     virtual bool event(QEvent *event) override;
@@ -58,7 +56,6 @@ protected:
 
 private:
     void ShowAndActivateWindow();
-    void ShowOrHideDebugPanel();
 
 private slots:
     void on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);

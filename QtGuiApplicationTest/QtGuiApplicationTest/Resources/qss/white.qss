@@ -345,13 +345,14 @@ QListWidget
 {
     border: 1px solid rgb(111, 156, 207);
     background-color: transparent;
+    outline: none;
 }
 
-QListWidget::Item
+QListWidget::item
 {
 }
 
-QListWidget::Item:hover
+QListWidget::item:hover
 {
     background: rgb(160, 200, 240);
 }
