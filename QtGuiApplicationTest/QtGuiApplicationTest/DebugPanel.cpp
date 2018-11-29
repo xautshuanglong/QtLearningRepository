@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QStackedWidget>
 #include <QHBoxLayout>
+#include <QSplitter>
 
 #include <LogUtil.h>
 
@@ -43,32 +44,36 @@ DebugPanel::DebugPanel(QWidget *parent)
 
     // 列表控件
     mpListWidget = new QListWidget(this);
-    mpListWidget->insertItem(0, QString::fromLocal8Bit("第一項"));
-    mpListWidget->insertItem(1, QString::fromLocal8Bit("第二項"));
-    mpListWidget->insertItem(2, QString::fromLocal8Bit("第三項"));
+    mpListWidget->insertItem(0, QString::fromLocal8Bit("第一项"));
+    mpListWidget->insertItem(1, QString::fromLocal8Bit("第二项"));
+    mpListWidget->insertItem(2, QString::fromLocal8Bit("第三项"));
     //pListWidget->setFocusPolicy(Qt::NoFocus);
-
-    QLabel *label1 = new QLabel(QString::fromLocal8Bit("第一項的內容"));
-    QLabel *label2 = new QLabel(QString::fromLocal8Bit("第二項的內容"));
-    QLabel *label3 = new QLabel(QString::fromLocal8Bit("第三項的內容"));
-
+    QLabel *label1 = new QLabel(QString::fromLocal8Bit("第一项的內容"));
+    QLabel *label2 = new QLabel(QString::fromLocal8Bit("第二项的內容"));
+    QLabel *label3 = new QLabel(QString::fromLocal8Bit("第三项的內容"));
     mpStackedWidget = new QStackedWidget(this);
     mpStackedWidget->addWidget(label1);
     mpStackedWidget->addWidget(label2);
     mpStackedWidget->addWidget(label3);
+    connect(mpListWidget, SIGNAL(currentRowChanged(int)), mpStackedWidget, SLOT(setCurrentIndex(int)));
 
     QHBoxLayout *mainLayout = new QHBoxLayout(ui->centralWidget);
     mainLayout->addWidget(mpListWidget);
     mainLayout->addWidget(mpStackedWidget, 0, Qt::AlignHCenter);
     mainLayout->setStretchFactor(mpListWidget, 1);
     mainLayout->setStretchFactor(mpStackedWidget, 4);
-    connect(mpListWidget, SIGNAL(currentRowChanged(int)), mpStackedWidget, SLOT(setCurrentIndex(int)));
+
+    //mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
+    //mpSpliter->addWidget(mpListWidget);
+    //mpSpliter->addWidget(mpStackedWidget);
+    //mpSpliter->setStretchFactor(0, 25);
+    //mpSpliter->setStretchFactor(1, 75);
+    //mpSpliter->setHandleWidth(1);
 }
 
 DebugPanel::~DebugPanel()
 {
     delete ui;
-    delete mpMenuBar;
 }
 
 DebugPanel* DebugPanel::GetInstance()
@@ -131,6 +136,7 @@ void DebugPanel::resizeEvent(QResizeEvent *event)
     mpMenuBar->resize(newSize.width(), menuRectGeometry.height());
     ui->centralWidget->setGeometry(0, menuRectGeometry.height(), newSize.width(), newSize.height() - menuRectGeometry.height());
     //ui->centralWidget->setGeometry(0, 0, newSize.width(), newSize.height());
+    //mpSpliter->resize(newSize.width(), newSize.height() - menuRectGeometry.height());
 }
 
 bool DebugPanel::eventFilter(QObject *obj, QEvent *event)

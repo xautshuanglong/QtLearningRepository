@@ -6,6 +6,7 @@
 class QMenuBar;
 class QListWidget;
 class QStackedWidget;
+class QSplitter;
 
 namespace Ui {
 class DebugPanel;
@@ -41,6 +42,7 @@ private:
     QMenuBar          *mpMenuBar;
     QListWidget       *mpListWidget;
     QStackedWidget    *mpStackedWidget;
+    QSplitter         *mpSpliter;
 };
 
 #endif // DEBUG_PANEL_H
