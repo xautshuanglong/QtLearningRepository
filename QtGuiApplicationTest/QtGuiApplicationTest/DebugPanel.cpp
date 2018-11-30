@@ -34,9 +34,13 @@ DebugPanel::DebugPanel(QWidget *parent)
     mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
     mpSpliter->addWidget(mpListWidget);
     mpSpliter->addWidget(mpStackedWidget);
-    mpSpliter->setStretchFactor(0, 25);
-    mpSpliter->setStretchFactor(1, 75);
-    //mpSpliter->setHandleWidth(1);
+    mpSpliter->setStretchFactor(0, 1);
+    mpSpliter->setStretchFactor(1, 99);
+    QSplitterHandle *pSplitterHandle = mpSpliter->handle(1);
+    if (pSplitterHandle)
+    {
+        pSplitterHandle->setFixedWidth(1);
+    }
 }
 
 DebugPanel::~DebugPanel()
