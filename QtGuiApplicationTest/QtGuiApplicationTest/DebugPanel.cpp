@@ -55,19 +55,18 @@ void DebugPanel::InitMenu()
 
     QAction *pActionViewList = new QAction(QStringLiteral("列表"), this);
     QAction *pActionViewTab = new QAction(QStringLiteral("标签"), this);
-    //QMenu *pMenuView    = new QMenu(QStringLiteral("视图"), this);
-    //pMenuView->addAction(pActionViewList);
-    //pMenuView->addAction(pActionViewTab);
+    QMenu *pMenuView = new QMenu(QStringLiteral("视图"), this);
+    pMenuView->addAction(pActionViewList);
+    pMenuView->addAction(pActionViewTab);
 
     QAction *pActionSettingTest = new QAction(QStringLiteral("测试项"), this);
-    //QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
-    //pMenuSetting->addAction(pActionSettingTest);
+    QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
+    pMenuSetting->addAction(pActionSettingTest);
 
     mpMenuBar = new QMenuBar(this);
     mpMenuBar->addMenu(pMenuFile);
-    //mpMenuBar->addMenu(pMenuView);
-    //mpMenuBar->addMenu(pMenuSetting);
-    mpMenuBar->addAction(pActionSettingTest);
+    mpMenuBar->addMenu(pMenuView);
+    mpMenuBar->addMenu(pMenuSetting);
 }
 
 void DebugPanel::InitDebugInfoWidgets()
