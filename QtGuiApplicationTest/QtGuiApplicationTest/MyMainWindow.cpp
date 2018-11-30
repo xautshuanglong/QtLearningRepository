@@ -36,9 +36,11 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
-    DebugPanel *pDebugPanel = new DebugPanel();
-    pDebugPanel->ListenKeyboard(this);
 
+    //DebugPanel *pDebugPanel = new DebugPanel();
+    //pDebugPanel->ListenKeyboard(this);
+
+    DebugPanel::GetInstance()->ListenKeyboard(this);
     DebugInfoBaseWidget *pTestWidget = new DebugInfoBaseWidget();
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("测试项"), pTestWidget);
 
@@ -234,6 +236,7 @@ void MyMainWindow::moveEvent(QMoveEvent *event)
 void MyMainWindow::closeEvent(QCloseEvent *event)
 {
     LogUtil::Info(CODE_LOCATION, "Type=%d Enter close event...", event->type());
+    //DebugPanel::GetInstance()->close(); // DebugPanel 会随着应用退出关闭。
     QMainWindow::closeEvent(event);
 }
 

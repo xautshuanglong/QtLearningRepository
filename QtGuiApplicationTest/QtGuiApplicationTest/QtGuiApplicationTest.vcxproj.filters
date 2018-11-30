@@ -129,6 +129,9 @@
     <ClCompile Include="DebugInfoBaseWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DebugEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="FopReportProtocol.h">
       <Filter>Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugEvent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

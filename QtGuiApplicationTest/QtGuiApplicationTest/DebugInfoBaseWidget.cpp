@@ -14,3 +14,9 @@ DebugInfoBaseWidget::DebugInfoBaseWidget(QWidget *parent)
 DebugInfoBaseWidget::~DebugInfoBaseWidget()
 {
 }
+
+bool DebugInfoBaseWidget::DebugMenuEvent(DebugEvent *event)
+{
+    LogUtil::Warn(CODE_LOCATION, "Do not specify DebugInfoWidget ...");
+    return true;
+}

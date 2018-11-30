@@ -13,6 +13,9 @@
 
 #include <LogUtil.h>
 
+QAtomicPointer<DebugPanel> DebugPanel::mInstance = Q_NULLPTR;
+QMutex DebugPanel::mMutexInstance;
+
 DebugPanel::DebugPanel(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::DebugPanel)
@@ -24,19 +27,51 @@ DebugPanel::DebugPanel(QWidget *parent)
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
 
-    // 菜单栏
-    mpMenuBar = new QMenuBar(this);
-    QAction *pAction1 = new QAction(QStringLiteral("文件"), this);
-    QAction *pAction2 = new QAction(QStringLiteral("视图"), this);
-    QAction *pAction3 = new QAction(QStringLiteral("设置项1"), this);
-    QAction *pAction4 = new QAction(QStringLiteral("设置项2"), this);
-    QMenu *pTempMenu = new QMenu(QStringLiteral("设置"), this);
-    pTempMenu->addAction(pAction3);
-    pTempMenu->addAction(pAction4);
-    mpMenuBar->addAction(pAction1);
-    mpMenuBar->addAction(pAction2);
-    mpMenuBar->addMenu(pTempMenu);
+    this->InitMenu();              // 初始胡菜单栏
+    this->InitDebugInfoWidgets();  // 初始化调试窗口部件
 
+    // 窗口分栏处理
+    mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
+    mpSpliter->addWidget(mpListWidget);
+    mpSpliter->addWidget(mpStackedWidget);
+    mpSpliter->setStretchFactor(0, 25);
+    mpSpliter->setStretchFactor(1, 75);
+    //mpSpliter->setHandleWidth(1);
+}
+
+DebugPanel::~DebugPanel()
+{
+    delete pMenuFile;
+    delete ui;
+}
+
+void DebugPanel::InitMenu()
+{
+    QAction *pActionFileSave = new QAction(QStringLiteral("保存"), this);
+    QAction *pActionFileSaveAs = new QAction(QStringLiteral("另存为"), this);
+    pMenuFile = new QMenu(QStringLiteral("文件"), this);
+    pMenuFile->addAction(pActionFileSave);
+    pMenuFile->addAction(pActionFileSaveAs);
+
+    QAction *pActionViewList = new QAction(QStringLiteral("列表"), this);
+    QAction *pActionViewTab = new QAction(QStringLiteral("标签"), this);
+    //QMenu *pMenuView    = new QMenu(QStringLiteral("视图"), this);
+    //pMenuView->addAction(pActionViewList);
+    //pMenuView->addAction(pActionViewTab);
+
+    QAction *pActionSettingTest = new QAction(QStringLiteral("测试项"), this);
+    //QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
+    //pMenuSetting->addAction(pActionSettingTest);
+
+    mpMenuBar = new QMenuBar(this);
+    mpMenuBar->addMenu(pMenuFile);
+    //mpMenuBar->addMenu(pMenuView);
+    //mpMenuBar->addMenu(pMenuSetting);
+    mpMenuBar->addAction(pActionSettingTest);
+}
+
+void DebugPanel::InitDebugInfoWidgets()
+{
     // 列表控件
     mpListWidget = new QListWidget(this);
     mpListWidget->insertItem(0, QString::fromLocal8Bit("第一项"));
@@ -51,18 +86,27 @@ DebugPanel::DebugPanel(QWidget *parent)
     mpStackedWidget->addWidget(label2);
     mpStackedWidget->addWidget(label3);
     connect(mpListWidget, SIGNAL(currentRowChanged(int)), mpStackedWidget, SLOT(setCurrentIndex(int)));
-
-    mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
-    mpSpliter->addWidget(mpListWidget);
-    mpSpliter->addWidget(mpStackedWidget);
-    mpSpliter->setStretchFactor(0, 25);
-    mpSpliter->setStretchFactor(1, 75);
-    //mpSpliter->setHandleWidth(1);
 }
 
-DebugPanel::~DebugPanel()
+DebugPanel* DebugPanel::GetInstance()
 {
-    delete ui;
+#ifdef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
+    if (mInstance.testAndSetOrdered(0, 0))//第一次检测
+    {
+        QMutexLocker locker(&mMutexInstance);
+        mInstance.testAndSetOrdered(0, new DebugPanel());
+    }
+#else
+    if (mInstance == Q_NULLPTR)
+    {
+        QMutexLocker locker(&mMutexInstance);
+        if (mInstance == Q_NULLPTR)
+        {
+            mInstance = new DebugPanel();
+        }
+    }
+#endif
+    return mInstance;
 }
 
 void DebugPanel::ListenKeyboard(QObject *pTarget)
