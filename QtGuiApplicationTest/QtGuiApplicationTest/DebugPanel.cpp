@@ -26,6 +26,7 @@ DebugPanel::DebugPanel(QWidget *parent)
     this->setWindowTitle(QStringLiteral("调试面板"));
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    //this->setFocusPolicy(Qt::StrongFocus); // 保证可接收到显示字符，否则只能接受特殊键，如：Control、Shift、Alt 等。
 
     this->InitMenu();              // 初始胡菜单栏
     this->InitDebugInfoWidgets();  // 初始化调试窗口部件
@@ -136,11 +137,11 @@ void DebugPanel::closeEvent(QCloseEvent *event)
 
 void DebugPanel::keyPressEvent(QKeyEvent *event)
 {
-    //int keyValue = event->key();
-    //Qt::KeyboardModifiers modifiers = event->modifiers();
-    //QMetaEnum KeyboardModifierEnum = QMetaEnum::fromType<Qt::KeyboardModifiers>();
-    //QByteArray modifierArray = KeyboardModifierEnum.valueToKeys(modifiers);
-    //LogUtil::Debug(CODE_LOCATION, "%s + %d", modifierArray.toStdString().c_str(), keyValue);
+    int keyValue = event->key();
+    Qt::KeyboardModifiers modifiers = event->modifiers();
+    QMetaEnum KeyboardModifierEnum = QMetaEnum::fromType<Qt::KeyboardModifiers>();
+    QByteArray modifierArray = KeyboardModifierEnum.valueToKeys(modifiers);
+    LogUtil::Debug(CODE_LOCATION, "%s + %d", modifierArray.toStdString().c_str(), keyValue);
     
     if (event->matches(QKeySequence::Cancel) || QKeySequence("Ctrl+Shift+D")== QKeySequence(event->modifiers() | event->key()))
     {
@@ -155,7 +156,6 @@ void DebugPanel::keyReleaseEvent(QKeyEvent *event)
     QMetaEnum KeyboardModifierEnum = QMetaEnum::fromType<Qt::KeyboardModifiers>();
     QByteArray modifierArray = KeyboardModifierEnum.valueToKeys(modifiers);
     //LogUtil::Debug(CODE_LOCATION, "%s + %d", modifierArray.toStdString().c_str(), keyValue);
-    this->window();
 }
 
 void DebugPanel::resizeEvent(QResizeEvent *event)
@@ -184,6 +184,12 @@ bool DebugPanel::eventFilter(QObject *obj, QEvent *event)
 
 void DebugPanel::HandleKeyPressEvent(QKeyEvent *event)
 {
+    int keyValue = event->key();
+    Qt::KeyboardModifiers modifiers = event->modifiers();
+    QMetaEnum KeyboardModifierEnum = QMetaEnum::fromType<Qt::KeyboardModifiers>();
+    QByteArray modifierArray = KeyboardModifierEnum.valueToKeys(modifiers);
+    LogUtil::Debug(CODE_LOCATION, "%s + %d", modifierArray.toStdString().c_str(), keyValue);
+
     if (QKeySequence("Ctrl+Shift+D") == QKeySequence(event->modifiers() | event->key()))
     {
         this->ShowOrHideDebugPanel();
