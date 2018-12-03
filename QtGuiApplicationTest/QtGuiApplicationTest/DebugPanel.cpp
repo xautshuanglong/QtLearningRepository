@@ -15,6 +15,7 @@
 #include <LogUtil.h>
 #include "DebugMenuEvent.h"
 #include "DebugInfoBaseWidget.h"
+#include "TitleBarWidget.h"
 
 QAtomicPointer<DebugPanel> DebugPanel::mInstance = Q_NULLPTR;
 QMutex DebugPanel::mMutexInstance;
@@ -65,6 +66,8 @@ DebugPanel::DebugPanel(QWidget *parent)
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     //this->setFocusPolicy(Qt::StrongFocus); // 保证可接收到显示字符，否则只能接受特殊键，如：Control、Shift、Alt 等。
+
+    mpTitleWidget = new TitleBarWidget(this);
 
     this->InitMenu();              // 初始胡菜单栏
     this->InitDebugInfoWidgets();  // 初始化调试窗口部件
@@ -261,11 +264,23 @@ void DebugPanel::keyReleaseEvent(QKeyEvent *event)
 void DebugPanel::resizeEvent(QResizeEvent *event)
 {
     //ui->centralWidget->setStyleSheet("background-color: green;");
-    QRect menuRectGeometry = mpMenuBar->geometry();
+    int borderSize = 5;
     QSize newSize = event->size();
-    mpMenuBar->resize(newSize.width(), menuRectGeometry.height());
-    ui->centralWidget->setGeometry(0, menuRectGeometry.height(), newSize.width(), newSize.height() - menuRectGeometry.height());
-    mpSpliter->resize(newSize.width(), newSize.height() - menuRectGeometry.height());
+
+    int x = borderSize;
+    int w = newSize.width() - borderSize * 2;
+
+    int titleBarHeight = mpTitleWidget->height();
+    int y = borderSize;
+    mpTitleWidget->setGeometry(x, y, w, titleBarHeight);
+
+    int menuHeight = mpMenuBar->height();
+    y += titleBarHeight;
+    mpMenuBar->setGeometry(x, y, w, menuHeight);
+
+    int centralHeight = newSize.height() - titleBarHeight - menuHeight;
+    ui->centralWidget->setGeometry(x, y, newSize.width(), centralHeight);
+    mpSpliter->resize(newSize.width(), centralHeight);
 }
 
 bool DebugPanel::eventFilter(QObject *obj, QEvent *event)

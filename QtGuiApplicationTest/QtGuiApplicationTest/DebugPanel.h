@@ -10,6 +10,7 @@ class QListWidget;
 class QStackedWidget;
 class QSplitter;
 class DebugInfoBaseWidget;
+class TitleBarWidget;
 
 namespace Ui {
 class DebugPanel;
@@ -74,6 +75,7 @@ private:
     static QAtomicPointer<DebugPanel> mInstance;
     static QMutex                     mMutexInstance;
     Ui::DebugPanel    *ui;
+    TitleBarWidget    *mpTitleWidget;
     QMenu             *pMenuFile;
     QMenuBar          *mpMenuBar;
     QListWidget       *mpListWidget;

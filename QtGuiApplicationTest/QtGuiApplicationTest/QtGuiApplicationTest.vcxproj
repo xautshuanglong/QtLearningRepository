@@ -158,6 +158,7 @@
     <ClCompile Include="MyWorkerThreadPool.cpp" />
     <ClCompile Include="ReportXmlData.cpp" />
     <ClCompile Include="ThreadWaitCondition.cpp" />
+    <ClCompile Include="TitleBarWidget.cpp" />
     <ClCompile Include="UrlUtil.cpp" />
     <ClCompile Include="WinReportTesting.cpp" />
     <ClCompile Include="WorkerTaskBase.cpp" />
@@ -213,6 +214,7 @@
     </ClInclude>
     <ClInclude Include="FopReportProtocol.h" />
     <ClInclude Include="ReportXmlData.h" />
+    <ClInclude Include="TitleBarWidget.h" />
     <ClInclude Include="UrlUtil.h" />
     <ClInclude Include="XmlReportGenerator.h" />
     <QtMoc Include="WinReportTesting.h">
