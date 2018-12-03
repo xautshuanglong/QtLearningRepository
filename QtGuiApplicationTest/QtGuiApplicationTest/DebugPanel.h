@@ -9,6 +9,7 @@ class QMenuBar;
 class QListWidget;
 class QStackedWidget;
 class QSplitter;
+class DebugInfoBaseWidget;
 
 namespace Ui {
 class DebugPanel;
@@ -25,12 +26,33 @@ class DebugPanel : public QWidget
     Q_OBJECT
 
 public:
+    enum MenuID
+    {
+        // 文件菜单
+        FILE,
+        FILE_SAVE,
+        FILE_SAVE_AS,
+        // 视图菜单
+        VIEW,
+        VIEW_LIST,
+        VIEW_TAB,
+        // 设置菜单
+        SETTING,
+        SETTING_DEBUG,
+        SETTING_DEBUG_TEST1,
+        SETTING_DEBUG_TEST2,
+        SETTING_REGION,
+        SETTING_REGION_CN,
+        SETTING_REGION_EN
+    };
+
+public:
     explicit DebugPanel(QWidget *parent = 0);
     ~DebugPanel();
 
     static DebugPanel* GetInstance();
     void ListenKeyboard(QObject *pTarget);
-    void AddDebugInfoWidget(QString topic, QWidget *pWidget);
+    void AddDebugInfoWidget(QString topic, DebugInfoBaseWidget *pWidget);
 
 private:
     void InitMenu();
@@ -38,7 +60,8 @@ private:
     void HandleKeyPressEvent(QKeyEvent *event);
     void ShowOrHideDebugPanel();
 
-private slots:
+    private slots:
+    void SlotMenuMapped(int menuID);
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;

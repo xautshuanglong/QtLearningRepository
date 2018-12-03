@@ -129,7 +129,7 @@
     <ClCompile Include="DebugInfoBaseWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DebugEvent.cpp">
+    <ClCompile Include="DebugMenuEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -199,7 +199,7 @@
     <ClInclude Include="FopReportProtocol.h">
       <Filter>Reports</Filter>
     </ClInclude>
-    <ClInclude Include="DebugEvent.h">
+    <ClInclude Include="DebugMenuEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

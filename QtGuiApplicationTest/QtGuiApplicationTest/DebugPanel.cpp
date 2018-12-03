@@ -10,11 +10,49 @@
 #include <QStackedWidget>
 #include <QHBoxLayout>
 #include <QSplitter>
+#include <QSignalMapper>
 
 #include <LogUtil.h>
+#include "DebugMenuEvent.h"
+#include "DebugInfoBaseWidget.h"
 
 QAtomicPointer<DebugPanel> DebugPanel::mInstance = Q_NULLPTR;
 QMutex DebugPanel::mMutexInstance;
+
+enum MenuItemType
+{
+    MenuItemType_unknow = 0,
+    MenuItemType_menu = 1, // 作为父级菜单，点击没有动作
+    MenuItemType_action = 2, // 菜单项点击会有动作触发响应的处理函数
+};
+
+/*
+* 为了处理方便，先定义父级菜单，按包含关系及先后顺序定义子级菜单。
+*/
+typedef struct tagMenuItem
+{
+    int id;              // 点击了哪个菜单项（在 HDebugPanel.h 中枚举）
+    int parent;          // 隶属于哪个父菜单
+    MenuItemType type;   // QMenu 还是 QAction，后者需做槽函数映射处理
+    QString text;        // 菜单项显示的文本
+}HMenuItem;
+
+static HMenuItem gMenuItems[] =
+{
+    { DebugPanel::FILE,                DebugPanel::FILE,           MenuItemType_menu,   "File" },          // 文件
+    { DebugPanel::FILE_SAVE,           DebugPanel::FILE,           MenuItemType_action, "Save" },          // 文件-保存
+    { DebugPanel::FILE_SAVE_AS,        DebugPanel::FILE,           MenuItemType_action, "Save As" },       // 文件-另存为
+    { DebugPanel::VIEW,                DebugPanel::VIEW,           MenuItemType_menu,   "View" },          // 视图
+    { DebugPanel::VIEW_LIST,           DebugPanel::VIEW,           MenuItemType_action, "ListView" },      // 视图-列表视图
+    { DebugPanel::VIEW_TAB,            DebugPanel::VIEW,           MenuItemType_action, "TabView" },       // 视图-标前视图
+    { DebugPanel::SETTING,             DebugPanel::SETTING,        MenuItemType_menu,   "Settings" },      // 设置
+    { DebugPanel::SETTING_DEBUG,       DebugPanel::SETTING,        MenuItemType_menu,   "Debug" },         // 设置-调试
+    { DebugPanel::SETTING_DEBUG_TEST1, DebugPanel::SETTING_DEBUG,  MenuItemType_action, "Debug_Test_1" },  // 设置-调试-测试 1
+    { DebugPanel::SETTING_DEBUG_TEST2, DebugPanel::SETTING_DEBUG,  MenuItemType_action, "Debug_Test_2" },  // 设置-调试-测试 2
+    { DebugPanel::SETTING_REGION,      DebugPanel::SETTING,        MenuItemType_menu,   "Region" },        // 设置-区域
+    { DebugPanel::SETTING_REGION_CN,   DebugPanel::SETTING_REGION, MenuItemType_action, "Region_CN" },     // 设置-区域-中文
+    { DebugPanel::SETTING_REGION_EN,   DebugPanel::SETTING_REGION, MenuItemType_action, "Region_EN" },     // 设置-区域-英文
+};
 
 DebugPanel::DebugPanel(QWidget *parent)
     : QWidget(parent)
@@ -52,26 +90,74 @@ DebugPanel::~DebugPanel()
 
 void DebugPanel::InitMenu()
 {
-    QAction *pActionFileSave = new QAction(QStringLiteral("保存"), this);
-    QAction *pActionFileSaveAs = new QAction(QStringLiteral("另存为"), this);
-    pMenuFile = new QMenu(QStringLiteral("文件"), this);
-    pMenuFile->addAction(pActionFileSave);
-    pMenuFile->addAction(pActionFileSaveAs);
+    //QAction *pActionFileSave = new QAction(QStringLiteral("保存"), this);
+    //QAction *pActionFileSaveAs = new QAction(QStringLiteral("另存为"), this);
+    //pMenuFile = new QMenu(QStringLiteral("文件"), this);
+    //pMenuFile->addAction(pActionFileSave);
+    //pMenuFile->addAction(pActionFileSaveAs);
 
-    QAction *pActionViewList = new QAction(QStringLiteral("列表"), this);
-    QAction *pActionViewTab = new QAction(QStringLiteral("标签"), this);
-    QMenu *pMenuView = new QMenu(QStringLiteral("视图"), this);
-    pMenuView->addAction(pActionViewList);
-    pMenuView->addAction(pActionViewTab);
+    //QAction *pActionViewList = new QAction(QStringLiteral("列表"), this);
+    //QAction *pActionViewTab = new QAction(QStringLiteral("标签"), this);
+    //QMenu *pMenuView = new QMenu(QStringLiteral("视图"), this);
+    //pMenuView->addAction(pActionViewList);
+    //pMenuView->addAction(pActionViewTab);
 
-    QAction *pActionSettingTest = new QAction(QStringLiteral("测试项"), this);
-    QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
-    pMenuSetting->addAction(pActionSettingTest);
+    //QAction *pActionSettingTest = new QAction(QStringLiteral("测试项"), this);
+    //QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
+    //pMenuSetting->addAction(pActionSettingTest);
+
+    //mpMenuBar = new QMenuBar(this);
+    //mpMenuBar->addMenu(pMenuFile);
+    //mpMenuBar->addMenu(pMenuView);
+    //mpMenuBar->addMenu(pMenuSetting);
 
     mpMenuBar = new QMenuBar(this);
-    mpMenuBar->addMenu(pMenuFile);
-    mpMenuBar->addMenu(pMenuView);
-    mpMenuBar->addMenu(pMenuSetting);
+
+    // 菜单响应槽定义
+    QSignalMapper *pSignalMapper = new QSignalMapper(this);
+    this->connect(pSignalMapper, SIGNAL(mapped(int)), SLOT(SlotMenuMapped(int)));
+
+    // 菜单表处理
+    QMap<int, QObject*> menuItemMap;
+    int menuCount = sizeof(gMenuItems) / sizeof(HMenuItem);
+    int menuItemID, parentID;
+    QString menuItemText;
+    MenuItemType menuItemType;
+    QMenu *pMenuTemp, *pMenuParent;
+    QAction *pActionTemp;
+    for (int i = 0; i < menuCount; ++i)
+    {
+        menuItemID = gMenuItems[i].id;
+        menuItemType = gMenuItems[i].type;
+        menuItemText = gMenuItems[i].text;
+        parentID = gMenuItems[i].parent;
+        if (menuItemID == parentID) // 顶级菜单
+        {
+            pMenuTemp = new QMenu(menuItemText, this);
+            menuItemMap[menuItemID] = pMenuTemp;
+            mpMenuBar->addMenu(pMenuTemp);
+        }
+        else
+        {
+            if (menuItemType == MenuItemType_menu)
+            {
+                pMenuTemp = new QMenu(menuItemText, this);
+                menuItemMap[menuItemID] = pMenuTemp;
+                pMenuParent = (QMenu*)menuItemMap[parentID];
+                pMenuParent->addMenu(pMenuTemp);
+            }
+            else if (menuItemType == MenuItemType_action)
+            {
+                pActionTemp = new QAction(menuItemText, this);
+                menuItemMap[menuItemID] = pActionTemp;
+                pMenuParent = (QMenu*)menuItemMap[parentID];
+                pMenuParent->addAction(pActionTemp);
+                // 信号映射
+                pSignalMapper->setMapping(pActionTemp, menuItemID);
+                connect(pActionTemp, SIGNAL(triggered()), pSignalMapper, SLOT(map()));
+            }
+        }
+    }
 }
 
 void DebugPanel::InitDebugInfoWidgets()
@@ -121,12 +207,26 @@ void DebugPanel::ListenKeyboard(QObject *pTarget)
     }
 }
 
-void DebugPanel::AddDebugInfoWidget(QString topic, QWidget *pWidget)
+void DebugPanel::AddDebugInfoWidget(QString topic, DebugInfoBaseWidget *pWidget)
 {
     if (pWidget != Q_NULLPTR)
     {
         mpListWidget->addItem(topic);
         mpStackedWidget->addWidget(pWidget);
+    }
+}
+
+void DebugPanel::SlotMenuMapped(int menuID)
+{
+    //    LogUtil::Debug(CODE_LOCATION, "menu item clicked : %d", menuID);
+    QWidget *pCurWidget = mpStackedWidget->currentWidget();
+    DebugInfoBaseWidget *pDebugBaseWidget = dynamic_cast<DebugInfoBaseWidget*>(pCurWidget);
+    if (pDebugBaseWidget != Q_NULLPTR)
+    {
+        DebugMenuEvent *pDebugEnvet = new DebugMenuEvent();
+        pDebugEnvet->SetMenuID(menuID);
+        pDebugBaseWidget->OnDebugMenuEvent(pDebugEnvet);
+        delete pDebugEnvet;
     }
 }
 

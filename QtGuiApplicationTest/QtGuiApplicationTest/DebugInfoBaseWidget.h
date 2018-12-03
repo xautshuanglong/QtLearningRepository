@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class DebugEvent;
+class DebugMenuEvent;
 
 class DebugInfoBaseWidget : public QWidget
 {
@@ -12,9 +12,7 @@ class DebugInfoBaseWidget : public QWidget
 public:
     explicit DebugInfoBaseWidget(QWidget *parent = 0);
     ~DebugInfoBaseWidget();
-
-protected:
-    virtual bool DebugMenuEvent(DebugEvent *event);
+    virtual bool OnDebugMenuEvent(DebugMenuEvent *event);
 };
 
 #endif // DEBUG_INFO_BASE_WIDGET_H
