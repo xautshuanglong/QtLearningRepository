@@ -278,8 +278,9 @@ void DebugPanel::resizeEvent(QResizeEvent *event)
     y += titleBarHeight;
     mpMenuBar->setGeometry(x, y, w, menuHeight);
 
-    int centralHeight = newSize.height() - titleBarHeight - menuHeight;
-    ui->centralWidget->setGeometry(x, y, newSize.width(), centralHeight);
+    int centralHeight = newSize.height() - titleBarHeight - menuHeight - borderSize * 2;
+    y += menuHeight;
+    ui->centralWidget->setGeometry(x, y, w, centralHeight);
     mpSpliter->resize(newSize.width(), centralHeight);
 }
 

@@ -7,6 +7,9 @@
 #include <QStyle>
 #include <QHBoxLayout>
 #include <QRubberBand>
+#include <QWindowStateChangeEvent>
+
+#include <LogUtil.h>
 
 TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
@@ -14,6 +17,7 @@ TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
 {
     mpWidgetParent = parent;
     mpRubberBand = new QRubberBand(QRubberBand::Rectangle);
+    mpRectNormalWindow = new QRect();
 
     this->InitUI();
 
@@ -26,6 +30,7 @@ TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
 TitleBarWidget::~TitleBarWidget()
 {
     delete mpRubberBand;
+    delete mpRectNormalWindow;
 }
 
 void TitleBarWidget::InitUI()
@@ -44,13 +49,13 @@ void TitleBarWidget::InitUI()
     pLabelTitle->setAlignment(Qt::AlignCenter);
     pLabelTitle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QToolButton *pBtnMinimum = new QToolButton(this);
-    QToolButton *pBtnMaximum = new QToolButton(this);
-    QToolButton *pBtnClose = new QToolButton(this);
+    mpBtnMinimum = new QToolButton(this);
+    mpBtnMaximum = new QToolButton(this);
+    mpBtnClose = new QToolButton(this);
 
-    pBtnMinimum->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMinButton));
-    pBtnMaximum->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
-    pBtnClose->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarCloseButton));
+    mpBtnMinimum->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMinButton));
+    mpBtnMaximum->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
+    mpBtnClose->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarCloseButton));
 
     QHBoxLayout *pHorizontalLayout = new QHBoxLayout(this);
     pHorizontalLayout->setSpacing(0);
@@ -58,9 +63,9 @@ void TitleBarWidget::InitUI()
 
     pHorizontalLayout->addWidget(pLabelIcon);
     pHorizontalLayout->addWidget(pLabelTitle);
-    pHorizontalLayout->addWidget(pBtnMinimum);
-    pHorizontalLayout->addWidget(pBtnMaximum);
-    pHorizontalLayout->addWidget(pBtnClose);
+    pHorizontalLayout->addWidget(mpBtnMinimum);
+    pHorizontalLayout->addWidget(mpBtnMaximum);
+    pHorizontalLayout->addWidget(mpBtnClose);
 
     if (mpWidgetParent != Q_NULLPTR)
     {
@@ -69,9 +74,9 @@ void TitleBarWidget::InitUI()
 
         //pLabelIcon->setPixmap(winIcon.pixmap(QSize(24, 24)));
         pLabelTitle->setText(mpWidgetParent->windowTitle());
-        this->connect(pBtnMaximum, SIGNAL(clicked()), mpWidgetParent, SLOT(showMaximized()));
-        this->connect(pBtnMinimum, SIGNAL(clicked()), mpWidgetParent, SLOT(showMinimized()));
-        this->connect(pBtnClose, SIGNAL(clicked()), mpWidgetParent, SLOT(close()));
+        this->connect(mpBtnMaximum, SIGNAL(clicked()), this, SLOT(SlotMaximizeButtonClicked()));
+        this->connect(mpBtnMinimum, SIGNAL(clicked()), mpWidgetParent, SLOT(showMinimized()));
+        this->connect(mpBtnClose, SIGNAL(clicked()), mpWidgetParent, SLOT(close()));
     }
 }
 
@@ -94,6 +99,8 @@ bool TitleBarWidget::eventFilter(QObject *obj, QEvent *event)
     case QEvent::HoverMove:
         this->HandleEventHoverMove(obj, static_cast<QHoverEvent*>(event));
         break;
+    case QEvent::WindowStateChange:
+        this->HandleEventWindowStateChange(obj, static_cast<QWindowStateChangeEvent*>(event));
     default:
         break;
     }
@@ -154,6 +161,7 @@ void TitleBarWidget::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 
 void TitleBarWidget::HandleEventMouseLeave(QObject *obj, QMouseEvent *event)
 {
+    int  i = 0;
 }
 
 void TitleBarWidget::HandleEventHoverMove(QObject *obj, QHoverEvent *event)
@@ -163,6 +171,11 @@ void TitleBarWidget::HandleEventHoverMove(QObject *obj, QHoverEvent *event)
         QPoint globalMousePos = mpWidgetParent->mapToGlobal(event->pos());
         UpdateCursorShape(globalMousePos);
     }
+}
+
+void TitleBarWidget::HandleEventWindowStateChange(QObject *obj, QWindowStateChangeEvent *event)
+{
+    this->UpdateMaximizeButton();
 }
 
 void TitleBarWidget::CheckCursorPosition(const QPoint& globalMousePos, const QRect& frameRect)
@@ -317,6 +330,38 @@ void TitleBarWidget::ResizeWindow(const QPoint& globalMousePos)
         else
         {
             mpWidgetParent->setGeometry(newRect);
+        }
+    }
+}
+
+void TitleBarWidget::SlotMaximizeButtonClicked()
+{
+    if (mpWidgetParent == Q_NULLPTR) return;
+
+    if (mpWidgetParent->isMaximized())
+    {
+        mpWidgetParent->showNormal();
+    }
+    else
+    {
+        *mpRectNormalWindow = mpWidgetParent->rect();
+        mpWidgetParent->showMaximized();
+    }
+}
+
+void TitleBarWidget::UpdateMaximizeButton()
+{
+    if (mpWidgetParent == Q_NULLPTR) return;
+
+    if (mpWidgetParent->isTopLevel())
+    {
+        if (mpWidgetParent->isMaximized())
+        {
+            mpBtnMaximum->setIcon(style()->standardPixmap(QStyle::SP_TitleBarNormalButton));
+        }
+        else
+        {
+            mpBtnMaximum->setIcon(style()->standardPixmap(QStyle::SP_TitleBarMaxButton));
         }
     }
 }

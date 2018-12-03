@@ -205,9 +205,6 @@
     <ClInclude Include="DebugMenuEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TitleBarWidget.h">
-      <Filter>Core</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -248,6 +245,9 @@
     </QtMoc>
     <QtMoc Include="DebugInfoBaseWidget.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TitleBarWidget.h">
+      <Filter>Core</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
