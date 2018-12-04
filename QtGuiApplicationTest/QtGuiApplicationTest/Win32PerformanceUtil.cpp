@@ -45,28 +45,28 @@ double Win32PerformanceUtil::GetCpuUsageProcess()
 
 double Win32PerformanceUtil::GetCpuUsageSystem()
 {
-    static int gPreIdleTime = 0;
-    static int gPreKernelTime = 0;
-    static int gPreUserTime = 0;
+    static FILETIME gPreIdleTime = { 0, 0 };
+    static FILETIME gPreKernelTime = { 0, 0 };
+    static FILETIME gPreUserTime = { 0, 0 };
 
-    FILETIME idleTime;
-    FILETIME kernelTime;
-    FILETIME userTime;
-    GetSystemTimes(&idleTime, &kernelTime, &userTime);
+    FILETIME curIdleTime;
+    FILETIME curKernelTime;
+    FILETIME curUserTime;
+    ::GetSystemTimes(&curIdleTime, &curKernelTime, &curUserTime);
 
 
-    int idle = CompareFileTime(gPreIdleTime, idleTime);
-    int kernel = CompareFileTime(gPreKernelTime, kernelTime);
-    int user = CompareFileTime(gPreUserTime, userTime);
+    long idle = CompareFileTime(&gPreIdleTime, &curIdleTime);
+    long kernel = CompareFileTime(&gPreKernelTime, &curKernelTime);
+    long user = CompareFileTime(&gPreUserTime, &curUserTime);
 
 
     if (kernel + user == 0)
         return 0.0;
     //（总的时间-空闲时间）/总的时间=占用cpu的时间就是使用率
-    double cpu = (kernel + user - idle) * 100 / (kernel + user);
+    double cpuPercent = (kernel + user - idle) * 100 / (kernel + user);
 
-    gPreIdleTime = idleTime;
-    gPreKernelTime = kernelTime;
-    gPreUserTime = userTime;
-    return cpu;
+    gPreIdleTime = curIdleTime;
+    gPreKernelTime = curKernelTime;
+    gPreUserTime = curUserTime;
+    return cpuPercent;
 }

@@ -60,8 +60,8 @@ void TitleBarWidget::InitUI()
     mpBtnClose->setIcon(this->style()->standardPixmap(QStyle::SP_TitleBarCloseButton));
 
     QHBoxLayout *pHorizontalLayout = new QHBoxLayout(this);
-    pHorizontalLayout->setSpacing(0);
-    pHorizontalLayout->setMargin(3);
+    pHorizontalLayout->setSpacing(3);
+    pHorizontalLayout->setMargin(0);
 
     pHorizontalLayout->addWidget(pLabelIcon);
     pHorizontalLayout->addWidget(pLabelTitle);
