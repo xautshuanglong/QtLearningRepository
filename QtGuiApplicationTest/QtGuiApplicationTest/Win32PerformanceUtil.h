@@ -1,4 +1,7 @@
 #pragma once
+
+#include <windows.h>
+
 class Win32PerformanceUtil
 {
 public:
@@ -7,5 +10,8 @@ public:
 
     static double GetCpuUsageProcess();
     static double GetCpuUsageSystem();
+
+private:
+    static long FileTimeDiff(FILETIME time1, FILETIME time2);
 };
 

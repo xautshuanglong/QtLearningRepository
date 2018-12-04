@@ -12,8 +12,9 @@ class QSplitter;
 class DebugInfoBaseWidget;
 class TitleBarWidget;
 
-namespace Ui {
-class DebugPanel;
+namespace Ui
+{
+    class DebugPanel;
 }
 
 /************************************************************************/
@@ -46,6 +47,7 @@ public:
         SETTING_REGION_CN,
         SETTING_REGION_EN
     };
+    Q_ENUM(MenuID)
 
 public:
     explicit DebugPanel(QWidget *parent = 0);

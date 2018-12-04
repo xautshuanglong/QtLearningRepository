@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DebugInfoCpuUsageWidget</class>
+ <widget class="QWidget" name="DebugInfoCpuUsageWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>939</width>
+    <height>534</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="btnRefreshCpuUsage">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>190</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh CPU</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbCpuUsageTotal">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>50</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CPU Usage Total : 0%</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbCpuUsageProcess">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>90</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CPU Usage Process : 0%</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

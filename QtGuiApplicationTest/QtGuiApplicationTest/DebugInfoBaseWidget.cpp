@@ -9,7 +9,6 @@
 DebugInfoBaseWidget::DebugInfoBaseWidget(QWidget *parent)
     : QWidget(parent)
 {
-    QLabel *pTempLabel = new QLabel("Test Item", this);
 }
 
 DebugInfoBaseWidget::~DebugInfoBaseWidget()

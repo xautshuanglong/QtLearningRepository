@@ -8,6 +8,7 @@ class FramelessWindowHelper;
 class MainTabPageFirst;
 class MainTabPageDicom;
 class MainTabPageSetting;
+class DebugInfoCpuUsageWidget;
 class QMenu;
 class QAction;
 
@@ -25,6 +26,7 @@ private:
     MainTabPageFirst                *mpPageFirst;
     MainTabPageDicom                *mpPageDicom;
     MainTabPageSetting              *mpPageSetting;
+    DebugInfoCpuUsageWidget         *mpCpuUsageWidget;
     QSystemTrayIcon                 *mpSystemTray;
     QMenu                           *mpSystemTrayMenu;
     QAction                         *mpTrayActionShow;
