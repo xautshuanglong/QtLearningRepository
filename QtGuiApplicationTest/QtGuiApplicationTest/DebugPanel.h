@@ -61,7 +61,7 @@ private:
     void HandleKeyPressEvent(QKeyEvent *event);
     void ShowOrHideDebugPanel();
 
-    private slots:
+private slots:
     void SlotMenuMapped(int menuID);
 
 protected:

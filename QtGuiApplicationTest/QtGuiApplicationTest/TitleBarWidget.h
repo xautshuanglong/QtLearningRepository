@@ -5,6 +5,9 @@
 
 class QRubberBand;
 class QToolButton;
+class QResizeEvent;
+class QMouseEvent;
+class QHoverEvent;
 class QWindowStateChangeEvent;
 
 class TitleBarWidget : public QWidget
@@ -42,16 +45,16 @@ private:
     QToolButton    *mpBtnClose;
     QRect          *mpRectNormalWindow;
     int             mnBorderWidth;
-    bool            mbRubberBandOnResize;
-    bool            mbLeftBtnPressed;
-    bool            mbCursorShapeChanged;
-    bool            mbOnCornerTopLeft;
-    bool            mbOnCornerTopRight;
-    bool            mbOnCornerBottomLeft;
-    bool            mbOnCornerBottomRight;
-    bool            mbOnEdge;
-    bool            mbOnEdgeLeft;
-    bool            mbOnEdgeRight;
-    bool            mbOnEdgeTop;
-    bool            mbOnEdgeBottom;
+    bool            mbRubberBandOnResize = false;
+    bool            mbLeftBtnPressed = false;
+    bool            mbCursorShapeChanged = false;
+    bool            mbOnCornerTopLeft = false;
+    bool            mbOnCornerTopRight = false;
+    bool            mbOnCornerBottomLeft = false;
+    bool            mbOnCornerBottomRight = false;
+    bool            mbOnEdge = false;
+    bool            mbOnEdgeLeft = false;
+    bool            mbOnEdgeRight = false;
+    bool            mbOnEdgeTop = false;
+    bool            mbOnEdgeBottom = false;
 };

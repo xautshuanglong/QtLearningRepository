@@ -24,6 +24,7 @@ TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
     if (mpWidgetParent != nullptr)
     {
         mpWidgetParent->installEventFilter(this);
+        mpWidgetParent->setAttribute(Qt::WA_Hover);
     }
 }
 
@@ -104,7 +105,7 @@ bool TitleBarWidget::eventFilter(QObject *obj, QEvent *event)
     default:
         break;
     }
-    return QObject::eventFilter(obj, event);
+    return QWidget::eventFilter(obj, event);
 }
 
 void TitleBarWidget::HandleEventResize(QObject *obj, QResizeEvent *event)
