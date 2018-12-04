@@ -18,6 +18,7 @@ TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
     mpWidgetParent = parent;
     mpRubberBand = new QRubberBand(QRubberBand::Rectangle);
     mpRectNormalWindow = new QRect();
+    mpPointMoveStart = new QPoint();
 
     this->InitUI();
 
@@ -81,6 +82,70 @@ void TitleBarWidget::InitUI()
     }
 }
 
+void TitleBarWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton == event->button())
+    {
+        this->SlotMaximizeButtonClicked();
+        mbLeftDoublePressed = true;
+    }
+    event->accept();
+    //QWidget::mouseDoubleClickEvent(event);
+}
+
+void TitleBarWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton == event->button() && !mbLeftDoublePressed)
+    {
+        mbLeftBtnPressedTitle = true;
+        *mpPointMoveStart = event->globalPos();
+    }
+    event->accept();
+    //QWidget::mousePressEvent(event);
+}
+
+void TitleBarWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (Qt::LeftButton == event->button())
+    {
+        mbLeftBtnPressedTitle = false;
+        mbLeftDoublePressed = false;
+    }
+    event->accept();
+}
+
+void TitleBarWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (mbLeftBtnPressedTitle)
+    {
+        if (mpWidgetParent->isMaximized())
+        {
+            QPoint curMousePos = event->globalPos();
+            QPoint maxWindowPos = mpWidgetParent->pos();
+            QSize maxWinSize = mpWidgetParent->size();
+            float xPercent = (curMousePos.x() - maxWindowPos.x()) * 1.0f / maxWinSize.width();
+            QPoint newNormalPos;
+            newNormalPos.setX(mpRectNormalWindow->left() + mpRectNormalWindow->width() * xPercent);
+            newNormalPos.setY(mpRectNormalWindow->top() + curMousePos.y() - maxWindowPos.y());
+            QPoint movePoint = curMousePos - newNormalPos;
+            *mpPointMoveStart = curMousePos;
+
+            mpWidgetParent->showNormal(); // 当为最大化时，还原为正常模式
+            mpRectNormalWindow->moveTopLeft(movePoint);
+            mpWidgetParent->setGeometry(*mpRectNormalWindow);
+        }
+        else
+        {
+            QPoint movePoint = event->globalPos() - *mpPointMoveStart;
+            QPoint widgetPos = mpWidgetParent->pos();
+            *mpPointMoveStart = event->globalPos();
+            mpWidgetParent->move(widgetPos.x() + movePoint.x(), widgetPos.y() + movePoint.y());
+        }
+    }
+    event->accept();
+}
+
+
 bool TitleBarWidget::eventFilter(QObject *obj, QEvent *event)
 {
     switch (event->type())
@@ -119,7 +184,7 @@ void TitleBarWidget::HandleEventMousePress(QObject *obj, QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        mbLeftBtnPressed = true;
+        mbLeftBtnPressedParent = true;
 
         QRect frameRect = mpWidgetParent->frameGeometry();
         QPoint globalMousePos = event->globalPos();
@@ -137,7 +202,7 @@ void TitleBarWidget::HandleEventMouseRelease(QObject *obj, QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        mbLeftBtnPressed = false;
+        mbLeftBtnPressedParent = false;
         if (mpRubberBand && mpRubberBand->isVisible())
         {
             mpRubberBand->hide();
@@ -150,7 +215,7 @@ void TitleBarWidget::HandleEventMouseRelease(QObject *obj, QMouseEvent *event)
 
 void TitleBarWidget::HandleEventMouseMove(QObject *obj, QMouseEvent *event)
 {
-    if (mbLeftBtnPressed)
+    if (mbLeftBtnPressedParent)
     {
         if (mbOnEdge)
         {
@@ -167,7 +232,7 @@ void TitleBarWidget::HandleEventMouseLeave(QObject *obj, QMouseEvent *event)
 
 void TitleBarWidget::HandleEventHoverMove(QObject *obj, QHoverEvent *event)
 {
-    if (!mbLeftBtnPressed)
+    if (!mbLeftBtnPressedParent)
     {
         QPoint globalMousePos = mpWidgetParent->mapToGlobal(event->pos());
         UpdateCursorShape(globalMousePos);
@@ -246,14 +311,7 @@ void TitleBarWidget::UpdateCursorShape(const QPoint& globalMousePos)
 void TitleBarWidget::ResizeWindow(const QPoint& globalMousePos)
 {
     QRect originalWinRect;
-    if (mbRubberBandOnResize)
-    {
-        originalWinRect = mpRubberBand->frameGeometry();
-    }
-    else
-    {
-        originalWinRect = mpWidgetParent->frameGeometry();
-    }
+    originalWinRect = mpRubberBand->frameGeometry();
 
     int left = 0, top = 0, right = 0, bottom = 0;
     originalWinRect.getCoords(&left, &top, &right, &bottom);
@@ -324,14 +382,7 @@ void TitleBarWidget::ResizeWindow(const QPoint& globalMousePos)
             }
         }
 
-        if (mbRubberBandOnResize)
-        {
-            mpRubberBand->setGeometry(newRect);
-        }
-        else
-        {
-            mpWidgetParent->setGeometry(newRect);
-        }
+        mpRubberBand->setGeometry(newRect);
     }
 }
 
