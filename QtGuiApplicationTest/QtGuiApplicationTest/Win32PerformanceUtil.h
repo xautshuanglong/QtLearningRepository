@@ -5,6 +5,7 @@ public:
     Win32PerformanceUtil() = delete;
     ~Win32PerformanceUtil() = delete;
 
-    static double CpuUsageRateTest();
+    static double GetCpuUsageProcess();
+    static double GetCpuUsageSystem();
 };
 
