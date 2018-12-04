@@ -160,6 +160,7 @@
     <ClCompile Include="ThreadWaitCondition.cpp" />
     <ClCompile Include="TitleBarWidget.cpp" />
     <ClCompile Include="UrlUtil.cpp" />
+    <ClCompile Include="Win32PerformanceUtil.cpp" />
     <ClCompile Include="WinReportTesting.cpp" />
     <ClCompile Include="WorkerTaskBase.cpp" />
     <ClCompile Include="XmlReportGenerator.cpp" />
@@ -221,6 +222,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="UrlUtil.h" />
+    <ClInclude Include="Win32PerformanceUtil.h" />
     <ClInclude Include="XmlReportGenerator.h" />
     <QtMoc Include="WinReportTesting.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>

@@ -135,6 +135,9 @@
     <ClCompile Include="TitleBarWidget.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Win32PerformanceUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -204,6 +207,9 @@
     </ClInclude>
     <ClInclude Include="DebugMenuEvent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32PerformanceUtil.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
