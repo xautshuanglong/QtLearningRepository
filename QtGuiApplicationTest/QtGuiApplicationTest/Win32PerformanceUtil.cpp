@@ -69,7 +69,7 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
         return 0.0;
 
     //（总的时间-空闲时间）/总的时间=占用cpu的时间就是使用率
-    double cpuPercent = (kernel + user - idle) * 100 / (kernel + user);
+    double cpuPercent = (kernel + user - idle) * 100.0 / (kernel + user);
 
     gPreIdleTime = curIdleTime;
     gPreKernelTime = curKernelTime;
@@ -80,9 +80,10 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
 
 long Win32PerformanceUtil::FileTimeDiff(FILETIME time1, FILETIME time2)
 {
-    __int64 value1 = time1.dwHighDateTime << 32 | time1.dwLowDateTime;
-    __int64 value2 = time2.dwHighDateTime << 32 | time2.dwLowDateTime;
+    __int64 value1 = time1.dwHighDateTime;
+    __int64 value2 = time2.dwHighDateTime;
+    value1 = value1 << 32 | time1.dwLowDateTime;
+    value2 = value2 << 32 | time2.dwLowDateTime;
     long retValue = value1 - value2;
-    
     return retValue;
 }

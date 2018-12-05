@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DebugInfoCpuUsageWidget</class>
- <widget class="QWidget" name="DebugInfoCpuUsageWidget">
+ <class>DebugInfoHardwareWidget</class>
+ <widget class="QWidget" name="DebugInfoHardwareWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

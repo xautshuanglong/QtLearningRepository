@@ -24,7 +24,7 @@
 #include "MainTabPageSetting.h"
 #include "MainTabPageDicom.h"
 #include "DebugPanel.h"
-#include "DebugInfoCpuUsageWidget.h"
+#include "DebugInfoHardwareWidget.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,8 +41,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //pDebugPanel->ListenKeyboard(this);
 
     DebugPanel::GetInstance()->ListenKeyboard(this);
-    mpCpuUsageWidget = new DebugInfoCpuUsageWidget();
-    DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("测试项"), mpCpuUsageWidget);
+    mpCpuUsageWidget = new DebugInfoHardwareWidget();
+    DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("硬件信息"), mpCpuUsageWidget);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
 

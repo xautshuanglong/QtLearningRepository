@@ -138,7 +138,7 @@
     <ClCompile Include="Win32PerformanceUtil.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="DebugInfoCpuUsageWidget.cpp">
+    <ClCompile Include="DebugInfoHardwareWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,7 +167,7 @@
     <QtUic Include="DebugPanel.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DebugInfoCpuUsageWidget.ui">
+    <QtUic Include="DebugInfoHardwareWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -261,7 +261,7 @@
     <QtMoc Include="TitleBarWidget.h">
       <Filter>Core</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoCpuUsageWidget.h">
+    <QtMoc Include="DebugInfoHardwareWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
