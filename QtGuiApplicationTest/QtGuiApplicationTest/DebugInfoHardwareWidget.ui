@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="btnRefreshCpuUsage">
+  <widget class="QPushButton" name="btnRefresh">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -23,14 +23,14 @@
     </rect>
    </property>
    <property name="text">
-    <string>Refresh CPU</string>
+    <string>Refresh</string>
    </property>
   </widget>
   <widget class="QLabel" name="lbCpuUsageTotal">
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>50</y>
+     <y>57</y>
      <width>161</width>
      <height>21</height>
     </rect>
@@ -50,6 +50,32 @@
    </property>
    <property name="text">
     <string>CPU Usage Process : 0%</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbMemoryUsageSystem">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>160</y>
+     <width>411</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Memory Usage System: 00% ( 00000MB / 00000MB )</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbMemoryUsageProcess">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>127</y>
+     <width>411</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Memory Usage Process: 00000KB</string>
    </property>
   </widget>
  </widget>

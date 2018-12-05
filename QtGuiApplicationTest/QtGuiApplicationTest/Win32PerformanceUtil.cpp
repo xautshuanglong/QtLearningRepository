@@ -1,7 +1,7 @@
 #include "Win32PerformanceUtil.h"
 
 #include <windows.h>
-#include <Pdh.h>
+#include <Psapi.h>
 
 double Win32PerformanceUtil::GetCpuUsageProcess()
 {
@@ -66,11 +66,8 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
     long user = FileTimeDiff(curUserTime, gPreUserTime);
 
     if (kernel + user == 0)
-        return 0.0;
-
-    //（总的时间-空闲时间）/总的时间=占用cpu的时间就是使用率
+        return 0.00;
     double cpuPercent = (kernel + user - idle) * 100.0 / (kernel + user);
-
     gPreIdleTime = curIdleTime;
     gPreKernelTime = curKernelTime;
     gPreUserTime = curUserTime;
@@ -86,4 +83,26 @@ long Win32PerformanceUtil::FileTimeDiff(FILETIME time1, FILETIME time2)
     value2 = value2 << 32 | time2.dwLowDateTime;
     long retValue = value1 - value2;
     return retValue;
+}
+
+void Win32PerformanceUtil::GetMemoryInfoSystem(ULONGLONG &outMemTotal, ULONGLONG &outMemUsed)
+{
+    MEMORYSTATUSEX memoryStatus;
+    memoryStatus.dwLength = sizeof(MEMORYSTATUSEX);
+    if (::GlobalMemoryStatusEx(&memoryStatus))
+    {
+        outMemTotal = memoryStatus.ullTotalPhys;
+        outMemUsed = memoryStatus.ullTotalPhys - memoryStatus.ullAvailPhys;
+    }
+}
+
+void Win32PerformanceUtil::GetMemoryInfoProcess(ULONGLONG &outMemUsed)
+{
+    HANDLE hProcess = ::GetCurrentProcess();
+    PROCESS_MEMORY_COUNTERS_EX processMemCounter;
+    processMemCounter.cb = sizeof(processMemCounter);
+    if (::GetProcessMemoryInfo(hProcess, (PROCESS_MEMORY_COUNTERS*)&processMemCounter, processMemCounter.cb))
+    {
+        outMemUsed = processMemCounter.PagefileUsage;
+    }
 }

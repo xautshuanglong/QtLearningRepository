@@ -20,8 +20,8 @@ protected:
     virtual void hideEvent(QHideEvent *event) override;
 
 private slots:
-    void SlotUpdateCpuUsage();
-    void on_btnRefreshCpuUsage_clicked();
+    void SlotUpdateHardwareInfo();
+    void on_btnRefresh_clicked();
 
 private:
     Ui::DebugInfoHardwareWidget    *ui;
