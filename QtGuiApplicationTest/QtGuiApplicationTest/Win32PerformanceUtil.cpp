@@ -85,24 +85,47 @@ long Win32PerformanceUtil::FileTimeDiff(FILETIME time1, FILETIME time2)
     return retValue;
 }
 
-void Win32PerformanceUtil::GetMemoryInfoSystem(ULONGLONG &outMemTotal, ULONGLONG &outMemUsed)
+void Win32PerformanceUtil::GetMemoryInfoSystem(ULONG &outMemLoad, ULONGLONG &outMemTotal, ULONGLONG &outMemAvailable)
 {
     MEMORYSTATUSEX memoryStatus;
     memoryStatus.dwLength = sizeof(MEMORYSTATUSEX);
     if (::GlobalMemoryStatusEx(&memoryStatus))
     {
+        outMemLoad = memoryStatus.dwMemoryLoad;
         outMemTotal = memoryStatus.ullTotalPhys;
-        outMemUsed = memoryStatus.ullTotalPhys - memoryStatus.ullAvailPhys;
+        outMemAvailable= memoryStatus.ullAvailPhys;
     }
+
+    ULONGLONG ullTotalPhys = memoryStatus.ullTotalPhys / 1024 / 1024;
+    ULONGLONG ullAvailPhys = memoryStatus.ullAvailPhys / 1024 / 1024;
+    ULONGLONG ullTotalPageFile = memoryStatus.ullTotalPageFile / 1024 / 1024;
+    ULONGLONG ullAvailPageFile = memoryStatus.ullAvailPageFile / 1024 / 1024;
+    ULONGLONG ullTotalVirtual = memoryStatus.ullTotalVirtual / 1024 / 1024;
+    ULONGLONG ullAvailVirtual = memoryStatus.ullAvailVirtual / 1024 / 1024;
+    ULONGLONG ullAvailExtendedVirtual = memoryStatus.ullAvailExtendedVirtual / 1024 / 1024;
+
+    int stop = 0;
 }
 
-void Win32PerformanceUtil::GetMemoryInfoProcess(ULONGLONG &outMemUsed)
+void Win32PerformanceUtil::GetMemoryInfoProcess(ULONGLONG &outWorkingSetSize, ULONGLONG &outPagefileUasge)
 {
     HANDLE hProcess = ::GetCurrentProcess();
-    PROCESS_MEMORY_COUNTERS_EX processMemCounter;
+    PROCESS_MEMORY_COUNTERS processMemCounter;
     processMemCounter.cb = sizeof(processMemCounter);
-    if (::GetProcessMemoryInfo(hProcess, (PROCESS_MEMORY_COUNTERS*)&processMemCounter, processMemCounter.cb))
+    if (::GetProcessMemoryInfo(hProcess, &processMemCounter, processMemCounter.cb))
     {
-        outMemUsed = processMemCounter.PagefileUsage;
+        outWorkingSetSize = processMemCounter.WorkingSetSize;
+        outPagefileUasge = processMemCounter.PagefileUsage;
     }
+
+    SIZE_T peakWorkingSetSize = processMemCounter.PeakWorkingSetSize / 1024;
+    SIZE_T workingSetSize = processMemCounter.WorkingSetSize / 1024;
+    SIZE_T quotaPeakPagedPoolUsage = processMemCounter.QuotaPeakPagedPoolUsage / 1024;
+    SIZE_T quotaPagedPoolUsage = processMemCounter.QuotaPagedPoolUsage / 1024;
+    SIZE_T quotaPeakNonPagedPoolUsage = processMemCounter.QuotaPeakNonPagedPoolUsage / 1024;
+    SIZE_T quotaNonPagedPoolUsage = processMemCounter.QuotaNonPagedPoolUsage / 1024;
+    SIZE_T pagefileUsage = processMemCounter.PagefileUsage / 1024;
+    SIZE_T peakPagefileUsage = processMemCounter.PeakPagefileUsage / 1024;
+
+    int stop = 0;
 }

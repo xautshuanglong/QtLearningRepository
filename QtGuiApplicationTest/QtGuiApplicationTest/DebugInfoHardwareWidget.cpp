@@ -51,23 +51,26 @@ void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
     ui->lbCpuUsageProcess->setText(QString("CPU Usage Process : %1 %").arg(cpuUsageProcess, 0, 'f', 2));
     //LogUtil::Debug(CODE_LOCATION, "CpuUsageTotal: %.2lf   CpuUsageProcess: %.2lf", cpuUsageTotal, cpuUsageProcess);
 
-    ULONGLONG memTotal = 0, memUsed = 0, processMemUsed = 0;
-    Win32PerformanceUtil::GetMemoryInfoSystem(memTotal, memUsed);
-    double memUsagePercent = memUsed * 100.0 / memTotal;
-    float memTotalMB = memTotal / 1024.0f / 1024.0f;
-    float memUsedMB = memUsed / 1024.0f / 1024.0f;
+    ULONG memLoadPercent = 0;
+    ULONGLONG memTotal = 0, memAvailable = 0, memUsed = 0, workingSetSize = 0, pagefileUsage = 0;
+    Win32PerformanceUtil::GetMemoryInfoSystem(memLoadPercent, memTotal, memAvailable);
+    memUsed = memTotal - memAvailable;
+    ULONG memTotalMB = memTotal / 1024 / 1024;
+    ULONG memUsedMB = memUsed / 1024 / 1024;
     ui->lbMemoryUsageSystem->setText(QString("Memory Usage System: %1% ( %2MB / %3MB )")
-                               .arg(memUsagePercent, 0, 'f', 2)
-                               .arg(memUsedMB, 0, 'f', 2)
-                               .arg(memTotalMB, 0, 'f', 2));
+                               .arg(memLoadPercent)
+                               .arg(memUsedMB)
+                               .arg(memTotalMB));
 
-    Win32PerformanceUtil::GetMemoryInfoProcess(processMemUsed);
-    float processMemUsedKB = processMemUsed / 1024.0f;
-    ui->lbMemoryUsageProcess->setText(QString("Memory Usage Process: %1KB")
-                                      .arg(processMemUsedKB, 0, 'f', 2));
+    Win32PerformanceUtil::GetMemoryInfoProcess(workingSetSize, pagefileUsage);
+    ULONGLONG processWorkingSetKB = workingSetSize / 1024;
+    ULONGLONG processPagefileUsageKB = pagefileUsage / 1024;
+    ui->lbMemoryUsageProcess->setText(QString("Memory Usage Process: wokingSet=%1KB pagefileUsage=%2KB")
+                                      .arg(processWorkingSetKB)
+                                      .arg(processPagefileUsageKB));
 
-    LogUtil::Debug(CODE_LOCATION, "Percent: %.2f  MemoryTotal: %.2fMB   MemoryUsed: %.2fMB  ProcessMemUsed: %.2fKB",
-                   memUsagePercent, memTotalMB, memUsedMB, processMemUsedKB);
+    LogUtil::Debug(CODE_LOCATION, "Percent: %u  MemoryTotal: %uMB   MemoryUsed: %uMB  ProcessWorkingSet: %ullKB  ProcessPagefileUsage: %ullKB",
+                   memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
 }
 
 void DebugInfoHardwareWidget::on_btnRefresh_clicked()

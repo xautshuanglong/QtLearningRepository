@@ -10,8 +10,8 @@ public:
 
     static double GetCpuUsageProcess();
     static double GetCpuUsageSystem();
-    static void GetMemoryInfoSystem(ULONGLONG &outMemTotal, ULONGLONG &outMemUsed);
-    static void GetMemoryInfoProcess(ULONGLONG &outMemUsed);
+    static void GetMemoryInfoSystem(ULONG &outMemLoad, ULONGLONG &outMemTotal, ULONGLONG &outMemAvailable);
+    static void GetMemoryInfoProcess(ULONGLONG &outWorkingSetSize, ULONGLONG &outPagefileUasge);
 
 private:
     static long FileTimeDiff(FILETIME time1, FILETIME time2);
