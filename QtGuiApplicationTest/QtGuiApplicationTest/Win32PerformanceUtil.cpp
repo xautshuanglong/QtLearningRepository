@@ -1,7 +1,14 @@
 #include "Win32PerformanceUtil.h"
 
+// Win32 Headers
 #include <windows.h>
 #include <Psapi.h>
+#include <IPHlpApi.h>
+
+// QT
+#include <QList>
+
+#include <LogUtil.h>
 
 double Win32PerformanceUtil::GetCpuUsageProcess()
 {
@@ -96,15 +103,14 @@ void Win32PerformanceUtil::GetMemoryInfoSystem(ULONG &outMemLoad, ULONGLONG &out
         outMemAvailable= memoryStatus.ullAvailPhys;
     }
 
-    ULONGLONG ullTotalPhys = memoryStatus.ullTotalPhys / 1024 / 1024;
-    ULONGLONG ullAvailPhys = memoryStatus.ullAvailPhys / 1024 / 1024;
-    ULONGLONG ullTotalPageFile = memoryStatus.ullTotalPageFile / 1024 / 1024;
-    ULONGLONG ullAvailPageFile = memoryStatus.ullAvailPageFile / 1024 / 1024;
-    ULONGLONG ullTotalVirtual = memoryStatus.ullTotalVirtual / 1024 / 1024;
-    ULONGLONG ullAvailVirtual = memoryStatus.ullAvailVirtual / 1024 / 1024;
-    ULONGLONG ullAvailExtendedVirtual = memoryStatus.ullAvailExtendedVirtual / 1024 / 1024;
-
-    int stop = 0;
+    //ULONGLONG ullTotalPhys = memoryStatus.ullTotalPhys / 1024 / 1024;
+    //ULONGLONG ullAvailPhys = memoryStatus.ullAvailPhys / 1024 / 1024;
+    //ULONGLONG ullTotalPageFile = memoryStatus.ullTotalPageFile / 1024 / 1024;
+    //ULONGLONG ullAvailPageFile = memoryStatus.ullAvailPageFile / 1024 / 1024;
+    //ULONGLONG ullTotalVirtual = memoryStatus.ullTotalVirtual / 1024 / 1024;
+    //ULONGLONG ullAvailVirtual = memoryStatus.ullAvailVirtual / 1024 / 1024;
+    //ULONGLONG ullAvailExtendedVirtual = memoryStatus.ullAvailExtendedVirtual / 1024 / 1024;
+    //int stop = 0;
 }
 
 void Win32PerformanceUtil::GetMemoryInfoProcess(ULONGLONG &outWorkingSetSize, ULONGLONG &outPagefileUasge)
@@ -118,14 +124,213 @@ void Win32PerformanceUtil::GetMemoryInfoProcess(ULONGLONG &outWorkingSetSize, UL
         outPagefileUasge = processMemCounter.PagefileUsage;
     }
 
-    SIZE_T peakWorkingSetSize = processMemCounter.PeakWorkingSetSize / 1024;
-    SIZE_T workingSetSize = processMemCounter.WorkingSetSize / 1024;
-    SIZE_T quotaPeakPagedPoolUsage = processMemCounter.QuotaPeakPagedPoolUsage / 1024;
-    SIZE_T quotaPagedPoolUsage = processMemCounter.QuotaPagedPoolUsage / 1024;
-    SIZE_T quotaPeakNonPagedPoolUsage = processMemCounter.QuotaPeakNonPagedPoolUsage / 1024;
-    SIZE_T quotaNonPagedPoolUsage = processMemCounter.QuotaNonPagedPoolUsage / 1024;
-    SIZE_T pagefileUsage = processMemCounter.PagefileUsage / 1024;
-    SIZE_T peakPagefileUsage = processMemCounter.PeakPagefileUsage / 1024;
+    //SIZE_T peakWorkingSetSize = processMemCounter.PeakWorkingSetSize / 1024;
+    //SIZE_T workingSetSize = processMemCounter.WorkingSetSize / 1024;
+    //SIZE_T quotaPeakPagedPoolUsage = processMemCounter.QuotaPeakPagedPoolUsage / 1024;
+    //SIZE_T quotaPagedPoolUsage = processMemCounter.QuotaPagedPoolUsage / 1024;
+    //SIZE_T quotaPeakNonPagedPoolUsage = processMemCounter.QuotaPeakNonPagedPoolUsage / 1024;
+    //SIZE_T quotaNonPagedPoolUsage = processMemCounter.QuotaNonPagedPoolUsage / 1024;
+    //SIZE_T pagefileUsage = processMemCounter.PagefileUsage / 1024;
+    //SIZE_T peakPagefileUsage = processMemCounter.PeakPagefileUsage / 1024;
+    //int stop = 0;
+}
 
-    int stop = 0;
+void Win32PerformanceUtil::GetTcpStaticsInfo(ULONG inProtoclFamily)
+{
+    MIB_TCPSTATS mibTcpStatistics;
+    DWORD dwRetFlag = ::GetTcpStatisticsEx(&mibTcpStatistics, inProtoclFamily);
+    if (dwRetFlag == NO_ERROR)
+    {
+        int test = 0;
+    }
+    else if (dwRetFlag == ERROR_INVALID_PARAMETER)
+    {
+        LogUtil::Debug(CODE_LOCATION, "The pStats parameter is NULL or does not point to valid memory, or the dwFamily parameter is not a valid value.");
+    }
+    else if (dwRetFlag == ERROR_NOT_SUPPORTED)
+    {
+        LogUtil::Debug(CODE_LOCATION, "This function is not supported on the operating system on which the function call was made.");
+    }
+    else
+    {
+        LPVOID lpMsgBuf = NULL;
+        if (::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                            NULL, dwRetFlag, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)lpMsgBuf, 0, NULL))
+        {
+            LogUtil::Debug(CODE_LOCATION, "GetTcpStatisticsEx Error: %s", lpMsgBuf);
+        }
+        ::LocalFree(lpMsgBuf);
+    }
+}
+
+void Win32PerformanceUtil::GetUdpStaticsInfo(ULONG inProtoclFamily)
+{
+    MIB_UDPSTATS mibUdpStatistics;
+    DWORD dwRetFlag = ::GetUdpStatisticsEx(&mibUdpStatistics, inProtoclFamily);
+    if (dwRetFlag == NO_ERROR)
+    {
+        int test = 0;
+    }
+    else if (dwRetFlag == ERROR_INVALID_PARAMETER)
+    {
+        LogUtil::Error(CODE_LOCATION, "The pStats parameter is NULL or does not point to valid memory, or the dwFamily parameter is not a valid value.");
+    }
+    else if (dwRetFlag == ERROR_NOT_SUPPORTED)
+    {
+        LogUtil::Error(CODE_LOCATION, "This function is not supported on the operating system on which the function call was made.");
+    }
+    else
+    {
+        LPVOID lpMsgBuf = NULL;
+        if (::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                            NULL, dwRetFlag, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                            (LPTSTR)lpMsgBuf, 0, NULL))
+        {
+            LogUtil::Error(CODE_LOCATION, "GetTcpStatisticsEx Error: %s", lpMsgBuf);
+        }
+        ::LocalFree(lpMsgBuf);
+    }
+}
+
+void Win32PerformanceUtil::GetExtendTcpTableInfo(ULONG inProtoclFamily, QList<TcpConnections> &outListConnections)
+{
+    PMIB_TCPTABLE_OWNER_PID pTcpTable = NULL;
+    DWORD  dwSize = 0;
+    DWORD retFlag = ::GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, inProtoclFamily, TCP_TABLE_OWNER_PID_ALL, 0);
+    pTcpTable = (PMIB_TCPTABLE_OWNER_PID)new char[dwSize];
+
+    retFlag = ::GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, inProtoclFamily, TCP_TABLE_OWNER_PID_ALL, 0);
+    if (retFlag == NO_ERROR)
+    {
+        DWORD currentPID = ::GetCurrentProcessId();
+        DWORD dwNumEntries = pTcpTable->dwNumEntries;
+        IN_ADDR tempAddrLocal, tempAddrRemote;
+        TcpConnections tempConnection;
+        for (DWORD index=0; index<dwNumEntries; ++index)
+        {
+            if (currentPID == pTcpTable->table[index].dwOwningPid)
+            {
+                tempAddrLocal.S_un.S_addr = pTcpTable->table[index].dwLocalAddr;
+                tempAddrRemote.S_un.S_addr = pTcpTable->table[index].dwRemoteAddr;
+
+                tempConnection.localAddress = ::inet_ntoa(tempAddrLocal);
+                tempConnection.remoteAddress = ::inet_ntoa(tempAddrRemote);
+                tempConnection.localPort = ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwLocalPort));
+                tempConnection.remotePort = ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwRemotePort));
+                tempConnection.status = GetTcpState(pTcpTable->table[index].dwState);
+                outListConnections.append(tempConnection);
+
+                LogUtil::Debug(CODE_LOCATION, "PID: %d    Local: %s::%d    Remote: %s::%d    State: %d",
+                               pTcpTable->table[index].dwOwningPid,
+                               ::inet_ntoa(tempAddrLocal),
+                               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwLocalPort)),
+                               ::inet_ntoa(tempAddrRemote),
+                               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwRemotePort)),
+                               GetTcpState(pTcpTable->table[index].dwState)
+                );
+            }
+        }
+    }
+    else if (retFlag == ERROR_INSUFFICIENT_BUFFER)
+    {
+        LogUtil::Error(CODE_LOCATION, "An insufficient amount of space was allocated for the table.");
+    }
+    else if (retFlag == ERROR_INVALID_PARAMETER)
+    {
+        LogUtil::Error(CODE_LOCATION, "An invalid parameter was passed to the function.");
+    }
+
+    delete pTcpTable;
+}
+
+
+void Win32PerformanceUtil::GetExtendUdpTableInfo(ULONG inProtoclFamily, QList<UdpConnections> &outListConnections)
+{
+    PMIB_UDPTABLE_OWNER_PID pUdpTable = NULL;
+    DWORD  dwSize = 0;
+    DWORD retFlag = ::GetExtendedUdpTable(pUdpTable, &dwSize, TRUE, inProtoclFamily, UDP_TABLE_OWNER_PID, 0);
+    pUdpTable = (PMIB_UDPTABLE_OWNER_PID)new char[dwSize];
+
+    retFlag = ::GetExtendedUdpTable(pUdpTable, &dwSize, TRUE, inProtoclFamily, UDP_TABLE_OWNER_PID, 0);
+    if (retFlag == NO_ERROR)
+    {
+        DWORD currentPID = ::GetCurrentProcessId();
+        DWORD dwNumEntries = pUdpTable->dwNumEntries;
+        IN_ADDR tempAddrLocal;
+        UdpConnections tempConnection;
+        for (DWORD index = 0; index < dwNumEntries; ++index)
+        {
+            if (currentPID == pUdpTable->table[index].dwOwningPid)
+            {
+                tempAddrLocal.S_un.S_addr = pUdpTable->table[index].dwLocalAddr;
+
+                tempConnection.localAddress = ::inet_ntoa(tempAddrLocal);
+                tempConnection.localPort = ::ntohs((unsigned short)(0x0000FFFF & pUdpTable->table[index].dwLocalPort));
+                outListConnections.append(tempConnection);
+
+                LogUtil::Debug(CODE_LOCATION, "PID: %d    Local: %s::%d",
+                               pUdpTable->table[index].dwOwningPid,
+                               ::inet_ntoa(tempAddrLocal),
+                               ::ntohs((unsigned short)(0x0000FFFF & pUdpTable->table[index].dwLocalPort))
+                );
+            }
+        }
+    }
+    else if (retFlag == ERROR_INSUFFICIENT_BUFFER)
+    {
+        LogUtil::Error(CODE_LOCATION, "An insufficient amount of space was allocated for the table.");
+    }
+    else if (retFlag == ERROR_INVALID_PARAMETER)
+    {
+        LogUtil::Error(CODE_LOCATION, "An invalid parameter was passed to the function.");
+    }
+
+    delete pUdpTable;
+}
+
+QString Win32PerformanceUtil::GetTcpState(DWORD state)
+{
+    QString retValue = "UNKNOWN";
+    switch (state)
+    {
+    case MIB_TCP_STATE_CLOSED:
+        retValue = "MIB_TCP_STATE_CLOSED";
+        break;
+    case MIB_TCP_STATE_LISTEN:
+        retValue = "MIB_TCP_STATE_LISTEN";
+        break;
+    case MIB_TCP_STATE_SYN_SENT:
+        retValue = "MIB_TCP_STATE_SYN_SENT";
+        break;
+    case MIB_TCP_STATE_SYN_RCVD:
+        retValue = "MIB_TCP_STATE_SYN_RCVD";
+        break;
+    case MIB_TCP_STATE_ESTAB:
+            retValue = "MIB_TCP_STATE_ESTAB";
+        break;
+    case MIB_TCP_STATE_FIN_WAIT1:
+        retValue = "MIB_TCP_STATE_FIN_WAIT1";
+        break;
+    case MIB_TCP_STATE_FIN_WAIT2:
+        retValue = "MIB_TCP_STATE_FIN_WAIT2";
+        break;
+    case MIB_TCP_STATE_CLOSE_WAIT:
+        retValue = "MIB_TCP_STATE_CLOSE_WAIT";
+        break;
+    case MIB_TCP_STATE_CLOSING:
+        retValue = "MIB_TCP_STATE_CLOSING";
+        break;
+    case MIB_TCP_STATE_LAST_ACK:
+        retValue = "MIB_TCP_STATE_LAST_ACK";
+        break;
+    case MIB_TCP_STATE_TIME_WAIT:
+        retValue = "MIB_TCP_STATE_TIME_WAIT";
+        break;
+    case MIB_TCP_STATE_DELETE_TCB:
+        retValue = "MIB_TCP_STATE_DELETE_TCB";
+        break;
+    default:
+        break;
+    }
+    return retValue;
 }

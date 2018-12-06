@@ -16,6 +16,17 @@ DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     ui->setupUi(this);
     mpUpdateTimer = new QTimer(this);
     this->connect(mpUpdateTimer, SIGNAL(timeout()), SLOT(SlotUpdateHardwareInfo()));
+
+    // 当前网络连接状态
+    QStringList header;
+    header << "Protocol" << "LocalAddress" << "RemoteAddress" << "Status";
+    ui->twNetConnection->setColumnCount(4);
+    ui->twNetConnection->setHorizontalHeaderLabels(header);
+    ui->twNetConnection->verticalHeader()->setVisible(false);
+    ui->twNetConnection->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->twNetConnection->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->twNetConnection->horizontalHeader()->setSectionsClickable(false);
+    ui->twNetConnection->setFocusPolicy(Qt::NoFocus);
 }
 
 DebugInfoHardwareWidget::~DebugInfoHardwareWidget()
@@ -71,6 +82,41 @@ void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
 
     LogUtil::Debug(CODE_LOCATION, "Percent: %u  MemoryTotal: %uMB   MemoryUsed: %uMB  ProcessWorkingSet: %ullKB  ProcessPagefileUsage: %ullKB",
                    memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
+
+    QList<Win32PerformanceUtil::TcpConnections> listConnectionTcp;
+    Win32PerformanceUtil::GetExtendTcpTableInfo(AF_INET, listConnectionTcp);
+    QList<Win32PerformanceUtil::UdpConnections> listConnectionUdp;
+    Win32PerformanceUtil::GetExtendUdpTableInfo(AF_INET, listConnectionUdp);
+    int listCountTcp = listConnectionTcp.count();
+    int listCountUdp = listConnectionUdp.count();
+    int totalCount = listCountTcp + listCountUdp;
+    int rowCount = ui->twNetConnection->rowCount();
+    for (int i = 0; i < listCountTcp; ++i)
+    {
+        if (i >= rowCount)
+        {
+            ui->twNetConnection->insertRow(i);
+        }
+        ui->twNetConnection->setItem(i, 0, new QTableWidgetItem("TCP"));
+        ui->twNetConnection->setItem(i, 1, new QTableWidgetItem(QString("%1%2%3").arg(listConnectionTcp.at(i).localAddress).arg(":").arg(listConnectionTcp.at(i).localPort)));
+        ui->twNetConnection->setItem(i, 2, new QTableWidgetItem(QString("%1%2%3").arg(listConnectionTcp.at(i).remoteAddress).arg(":").arg(listConnectionTcp.at(i).remotePort)));
+        ui->twNetConnection->setItem(i, 3, new QTableWidgetItem(listConnectionTcp.at(i).status));
+    }
+    for (int i = 0; i < listCountUdp; ++i)
+    {
+        if (i+listCountTcp >= rowCount)
+        {
+            ui->twNetConnection->insertRow(i);
+        }
+        ui->twNetConnection->setItem(i+listCountTcp, 0, new QTableWidgetItem("UDP"));
+        ui->twNetConnection->setItem(i+listCountTcp, 1, new QTableWidgetItem(QString("%1%2%3").arg(listConnectionUdp.at(i).localAddress).arg(":").arg(listConnectionUdp.at(i).localPort)));
+        ui->twNetConnection->setItem(i+listCountTcp, 2, new QTableWidgetItem("*:*"));
+        ui->twNetConnection->setItem(i+listCountTcp, 3, new QTableWidgetItem("*"));
+    }
+    for (int i = rowCount; i >= totalCount; --i)
+    {
+        ui->twNetConnection->removeRow(i);
+    }
 }
 
 void DebugInfoHardwareWidget::on_btnRefresh_clicked()
