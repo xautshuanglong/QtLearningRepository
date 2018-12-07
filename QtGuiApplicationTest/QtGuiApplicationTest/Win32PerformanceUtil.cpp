@@ -1,7 +1,6 @@
 #include "Win32PerformanceUtil.h"
 
 // Win32 Headers
-#include <windows.h>
 #include <Psapi.h>
 #include <IPHlpApi.h>
 
@@ -242,7 +241,6 @@ void Win32PerformanceUtil::GetExtendTcpTableInfo(ULONG inProtoclFamily, QList<Tc
 
     delete pTcpTable;
 }
-
 
 void Win32PerformanceUtil::GetExtendUdpTableInfo(ULONG inProtoclFamily, QList<UdpConnections> &outListConnections)
 {
