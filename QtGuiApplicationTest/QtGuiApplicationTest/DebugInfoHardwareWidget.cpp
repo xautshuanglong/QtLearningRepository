@@ -37,7 +37,7 @@ bool DebugInfoHardwareWidget::OnDebugMenuEvent(DebugMenuEvent *event)
 {
     int menuID = event->GetMenuID();
     QMetaEnum menuIDEnum = QMetaEnum::fromType<DebugPanel::MenuID>();
-    LogUtil::Info(CODE_LOCATION, "Do not specify MenuID = %s", menuIDEnum.valueToKey(menuID));
+    LogUtil::Info(CODE_LOCATION, "Do not specify MenuID = %s handler ...", menuIDEnum.valueToKey(menuID));
 
     return true;
 }

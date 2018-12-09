@@ -350,6 +350,7 @@ QListWidget
 
 QListWidget::item
 {
+    height: 30px;
 }
 
 QListWidget::item:hover

@@ -130,14 +130,14 @@ void DebugPanel::InitMenu()
         }
         else
         {
-            if (menuItemType == MenuItemType_menu)
+            if (menuItemType == MenuItemType_menu) // 子菜单
             {
                 pMenuTemp = new QMenu(menuItemText, this);
                 menuItemMap[menuItemID] = pMenuTemp;
                 pMenuParent = (QMenu*)menuItemMap[parentID];
                 pMenuParent->addMenu(pMenuTemp);
             }
-            else if (menuItemType == MenuItemType_action)
+            else if (menuItemType == MenuItemType_action) // 具体菜单动作
             {
                 pActionTemp = new QAction(menuItemText, this);
                 menuItemMap[menuItemID] = pActionTemp;
@@ -145,7 +145,7 @@ void DebugPanel::InitMenu()
                 pMenuParent->addAction(pActionTemp);
                 // 信号映射
                 pSignalMapper->setMapping(pActionTemp, menuItemID);
-                connect(pActionTemp, SIGNAL(triggered()), pSignalMapper, SLOT(map()));
+                this->connect(pActionTemp, SIGNAL(triggered()), pSignalMapper, SLOT(map()));
             }
         }
     }
@@ -154,20 +154,10 @@ void DebugPanel::InitMenu()
 void DebugPanel::InitDebugInfoWidgets()
 {
     // 列表控件
-    mpListWidget = new QListWidget(this);
-    //mpListWidget->insertItem(0, QString::fromLocal8Bit("第一项"));
-    //mpListWidget->insertItem(1, QString::fromLocal8Bit("第二项"));
-    //mpListWidget->insertItem(2, QString::fromLocal8Bit("第三项"));
-    //pListWidget->setFocusPolicy(Qt::NoFocus);
-    //QLabel *label1 = new QLabel(QString::fromLocal8Bit("第一项的內容"));
-    //QLabel *label2 = new QLabel(QString::fromLocal8Bit("第二项的內容"));
-    //QLabel *label3 = new QLabel(QString::fromLocal8Bit("第三项的內容"));
-    mpStackedWidget = new QStackedWidget(this);
-    QSize stackedSize = mpStackedWidget->size();
-    QSize listSize = mpListWidget->size();
-    //mpStackedWidget->addWidget(label1);
-    //mpStackedWidget->addWidget(label2);
-    //mpStackedWidget->addWidget(label3);
+    mpListWidget = new QListWidget(ui->centralWidget);
+    mpListWidget->setGeometry(0, 0, 100, 50);
+    mpStackedWidget = new QStackedWidget(ui->centralWidget);
+    mpStackedWidget->setGeometry(100, 0, 100, 50);
 
     // 窗口分栏处理
     mpSpliter = new QSplitter(Qt::Horizontal, ui->centralWidget);
@@ -284,9 +274,7 @@ void DebugPanel::resizeEvent(QResizeEvent *event)
     int centralHeight = newSize.height() - titleBarHeight - menuHeight - borderSize * 2;
     y += menuHeight;
     ui->centralWidget->setGeometry(x, y, w, centralHeight);
-    QSize stackedSize = mpStackedWidget->size();
-    QSize listSize = mpListWidget->size();
-    //mpSpliter->resize(newSize.width(), centralHeight);
+    mpSpliter->resize(newSize.width(), centralHeight);
 }
 
 bool DebugPanel::eventFilter(QObject *obj, QEvent *event)
