@@ -18,7 +18,7 @@ QWidget#customWidget {
 
 /**********子界面中央背景**********/
 QWidget#centralWidget {
-        border: 1px solid rgb(0, 78, 161);
+        border: 1px solid rgb(111, 156, 207);
         border-top: none;
         background: rgb(187, 212, 238);
 }
@@ -47,6 +47,11 @@ QWidget#remoteWidget {
         background: transparent;
 }
 
+TitleBarWidget {
+    border: 1px solid rgb(111, 156, 207);
+    background: rgb(187, 212, 238);
+}
+
 StyledWidget {
         qproperty-normalColor: rgb(65, 65, 65);
         qproperty-disableColor: rgb(180, 180, 180);
@@ -69,8 +74,6 @@ QToolTip{
 QMenuBar {
         background: rgb(187, 212, 238);
         border: 1px solid rgb(111, 156, 207);
-        border-left: none;
-        border-right: none;
 }
 QMenuBar::item {
         border: 1px solid transparent;

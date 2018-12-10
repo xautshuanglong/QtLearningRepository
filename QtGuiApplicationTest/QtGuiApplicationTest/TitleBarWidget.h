@@ -40,6 +40,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual bool eventFilter(QObject *obj, QEvent *event) override;
+    virtual void paintEvent(QPaintEvent *event) override;
 
 private:
     QWidget        *mpWidgetParent;

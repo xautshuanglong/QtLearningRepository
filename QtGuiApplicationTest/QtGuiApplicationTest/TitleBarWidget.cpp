@@ -4,7 +4,8 @@
 #include <QResizeEvent>
 #include <QLabel>
 #include <QToolButton>
-#include <QStyle>
+#include <QStyleOption>
+#include <QPainter>
 #include <QHBoxLayout>
 #include <QRubberBand>
 #include <QWindowStateChangeEvent>
@@ -37,13 +38,6 @@ TitleBarWidget::~TitleBarWidget()
 
 void TitleBarWidget::InitUI()
 {
-    this->setStyleSheet(""
-                        ".QWidget"
-                        "{"
-                        "   border: 1px solid green;"
-                        "}"
-    );
-
     QLabel *pLabelIcon = new QLabel(this);
     pLabelIcon->setFixedWidth(80);
     QLabel *pLabelTitle = new QLabel(this);
@@ -171,6 +165,14 @@ bool TitleBarWidget::eventFilter(QObject *obj, QEvent *event)
         break;
     }
     return QWidget::eventFilter(obj, event);
+}
+
+void TitleBarWidget::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void TitleBarWidget::HandleEventResize(QObject *obj, QResizeEvent *event)
