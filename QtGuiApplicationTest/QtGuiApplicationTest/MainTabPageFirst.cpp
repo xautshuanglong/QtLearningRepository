@@ -145,8 +145,8 @@ void MainTabPageFirst::InitAppListView()
     ui.lvAppList->setViewMode(QListView::IconMode);
     ui.lvAppList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui.lvAppList->setModel(mpModelAppListItem);
-    QScrollBar *pScrollBar = new QScrollBar(Qt::Horizontal, this);
-    SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(Qt::Vertical, ui.lvAppList);
+    SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lvAppList->verticalScrollBar(), ui.lvAppList);
+    pSuspendScrollBar->setFixedHeight(250);
     //this->connect(pSuspendScrollBar, SIGNAL(valueChanged(int)), SLOT(SlotSuspendBarValueChanged(int)));
 }
 

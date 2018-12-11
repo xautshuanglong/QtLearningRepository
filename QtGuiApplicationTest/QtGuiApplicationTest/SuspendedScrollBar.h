@@ -6,12 +6,11 @@ class SuspendedScrollBar : public QScrollBar
 {
     Q_OBJECT
 public:
-    explicit SuspendedScrollBar(QWidget *parent = Q_NULLPTR);
-    explicit SuspendedScrollBar(Qt::Orientation orientation, QWidget *parent = Q_NULLPTR);
+    explicit SuspendedScrollBar(QScrollBar *pShadowScrollBar, QWidget *parent = Q_NULLPTR);
+    //explicit SuspendedScrollBar(Qt::Orientation orientation, QWidget *parent = Q_NULLPTR);
     ~SuspendedScrollBar();
 
 private:
-    void InitUI();
     void HandleEventResize(QObject *obj, QResizeEvent *event);
     void HandleMouseEnter(QObject *obj, QMouseEvent *event);
     void HandleMouseLeave(QObject *obj, QMouseEvent *event);
@@ -23,4 +22,7 @@ protected:
 private slots:
     void SlotScrollBarValueChange(int value);
     void SlotScrollBarRangeChanged(int minValue, int maxValue);
+
+private:
+    QScrollBar   *mpScrollBarShadow;
 };

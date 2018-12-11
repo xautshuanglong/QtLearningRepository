@@ -98,14 +98,8 @@ QSize AppListItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QM
 
 QWidget *AppListItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    return nullptr;
     return QStyledItemDelegate::createEditor(parent, option, index);
-
-    QSpinBox *pSpinBox = new QSpinBox(parent);
-    pSpinBox->setFrame(false);
-    pSpinBox->setMinimum(0);
-    pSpinBox->setMaximum(100);
-
-    return pSpinBox;
 }
 
 void AppListItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
