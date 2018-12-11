@@ -483,6 +483,53 @@ QScrollBar#verticalScrollBar:vertical {
         margin-top: 30px;
 }
 
+/**********滚动条-垂直**********/
+SuspendedScrollBar:vertical {
+        width: 18px;
+        background: transparent;
+        margin-left: 1px;
+        margin-right: 1px;
+}
+SuspendedScrollBar::handle:vertical {
+        width: 10px;
+        min-height: 18px;
+        background: rgb(0, 195, 225);
+        margin-top: 18px;
+        margin-bottom: 18px;
+        margin-left: 3px;
+        margin-right: 3px;
+        border-radius:5px;
+}
+SuspendedScrollBar::handle:vertical:hover {
+        background: rgb(113,186,245);
+}
+SuspendedScrollBar::sub-line:vertical {
+        height: 18px;
+        background: transparent;
+        image: url(:/AppImages/Resources/images/white/arrow_up.png);
+        subcontrol-position: top;
+}
+SuspendedScrollBar::add-line:vertical {
+        height: 18px;
+        background: transparent;
+        image: url(:/AppImages/Resources/images/white/arrow_down.png);
+        subcontrol-position: bottom;
+}
+SuspendedScrollBar::sub-line:vertical:hover {
+        /*background: rgb(113,186,245);*/
+}
+SuspendedScrollBar::add-line:vertical:hover {
+        /*background: rgb(113,186,245);*/
+}
+SuspendedScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+        background: transparent;
+}
+
+SuspendedScrollBar#verticalScrollBar:vertical {
+        margin-top: 30px;
+}
+
+
 /**********下拉列表**********/
 QComboBox {
         height: 25px;

@@ -44,6 +44,7 @@
 #include "WorkerTaskBase.h"
 #include "MiscellaneousTesting.h"
 #include "WinReportTesting.h"
+#include "SuspendedScrollBar.h"
 #include "UrlUtil.h"
 
 static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
@@ -144,7 +145,9 @@ void MainTabPageFirst::InitAppListView()
     ui.lvAppList->setViewMode(QListView::IconMode);
     ui.lvAppList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui.lvAppList->setModel(mpModelAppListItem);
-    //ui.lvAppList->setDragEnabled(false);
+    QScrollBar *pScrollBar = new QScrollBar(Qt::Horizontal, this);
+    SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(Qt::Vertical, ui.lvAppList);
+    //this->connect(pSuspendScrollBar, SIGNAL(valueChanged(int)), SLOT(SlotSuspendBarValueChanged(int)));
 }
 
 void MainTabPageFirst::InitAppListWidget()
