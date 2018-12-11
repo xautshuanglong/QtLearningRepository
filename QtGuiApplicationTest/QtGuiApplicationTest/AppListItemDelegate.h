@@ -9,11 +9,38 @@ enum AppListItemStatus
     ITEMSTATUS_YELLOW
 };
 
-struct AppListItemData
+//struct AppListItemData
+//{
+//    QString name;
+//    QString description;
+//    int     nStar;
+//};
+//Q_DECLARE_METATYPE(AppListItemData)
+
+class AppListItemData
 {
+public:
+    AppListItemData() {}
+    ~AppListItemData() {}
     QString name;
     QString description;
     int     nStar;
+
+    friend QDataStream& operator << (QDataStream &arch, const AppListItemData &object)
+    {
+        arch << object.name;
+        arch << object.description;
+        arch << object.nStar;
+        return arch;
+    }
+
+    friend QDataStream& operator >> (QDataStream &arch, AppListItemData &object)
+    {
+        arch >> object.name;
+        arch >> object.description;
+        arch >> object.nStar;
+        return arch;
+    }
 };
 Q_DECLARE_METATYPE(AppListItemData)
 

@@ -1,5 +1,6 @@
 #include "MainTabPageFirst.h"
 
+// QT Headers
 #include <QString>
 #include <QImage>
 #include <QTime>
@@ -15,6 +16,7 @@
 #include <QScreen>
 #include <QStandardItemModel>
 #include <QStringListModel>
+#include <QMetaType>
 
 /* DCMTK 3.6.3 Headers */
 #include <dcmtk/ofstd/offile.h>
@@ -107,6 +109,7 @@ void MainTabPageFirst::InitAppListView()
     //    pStrListModel->setData(pStrListModel->index(i), QString("Item ") + QString('A' + i));
     //}
 
+    qRegisterMetaTypeStreamOperators<AppListItemData>("AppListItemData");
     mpModelAppListItem = new QStandardItemModel();
     AppListItemData tempAppItemData;
     AppListItemStatus tempAppItemStatus;
@@ -138,11 +141,11 @@ void MainTabPageFirst::InitAppListView()
         mpModelAppListItem->appendRow(pTempAppListItem);
     }
 
-    ui.lvAppList->setViewMode(QListView::IconMode);
-    ui.lvAppList->setSelectionMode(QAbstractItemView::MultiSelection);
-    ui.lvAppList->setModel(mpModelAppListItem);
     ui.lvAppList->setItemDelegate(new AppListItemDelegate(this));
-    int spacing = ui.lvAppList->spacing();
+    ui.lvAppList->setViewMode(QListView::IconMode);
+    ui.lvAppList->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui.lvAppList->setModel(mpModelAppListItem);
+    //ui.lvAppList->setDragEnabled(false);
 }
 
 void MainTabPageFirst::InitAppListWidget()
