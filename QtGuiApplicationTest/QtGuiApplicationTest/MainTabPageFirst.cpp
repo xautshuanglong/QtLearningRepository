@@ -109,7 +109,6 @@ void MainTabPageFirst::InitAppListView()
     //    pStrListModel->setData(pStrListModel->index(i), QString("Item ") + QString('A' + i));
     //}
 
-    qRegisterMetaTypeStreamOperators<AppListItemData>("AppListItemData");
     mpModelAppListItem = new QStandardItemModel();
     AppListItemData tempAppItemData;
     AppListItemStatus tempAppItemStatus;

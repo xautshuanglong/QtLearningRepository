@@ -20,7 +20,10 @@ enum AppListItemStatus
 class AppListItemData
 {
 public:
-    AppListItemData() {}
+    AppListItemData()
+    {
+        qRegisterMetaTypeStreamOperators<AppListItemData>("AppListItemData");
+    }
     ~AppListItemData() {}
     QString name;
     QString description;
