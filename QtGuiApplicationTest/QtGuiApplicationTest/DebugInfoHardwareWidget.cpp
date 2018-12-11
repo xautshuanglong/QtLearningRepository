@@ -27,6 +27,11 @@ DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     ui->twNetConnection->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->twNetConnection->horizontalHeader()->setSectionsClickable(false);
     ui->twNetConnection->setFocusPolicy(Qt::NoFocus);
+
+    ui->twNetConnection->setColumnWidth(0, 80);  // 协议族
+    ui->twNetConnection->setColumnWidth(1, 120); // 本地 IP:Port
+    ui->twNetConnection->setColumnWidth(2, 120); // 远程 IP:Port
+    ui->twNetConnection->setColumnWidth(3, 150); // 网络状态
 }
 
 DebugInfoHardwareWidget::~DebugInfoHardwareWidget()

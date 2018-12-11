@@ -13,6 +13,8 @@
 #include <QPrintPreviewDialog>
 #include <QTextCodec>
 #include <QScreen>
+#include <QStandardItemModel>
+#include <QStringListModel>
 
 /* DCMTK 3.6.3 Headers */
 #include <dcmtk/ofstd/offile.h>
@@ -34,6 +36,7 @@
 #include <TaskBase.h>
 
 #include "DicomWindow.h"
+#include "AppListItemDelegate.h"
 #include "MyBackgroundWorker.h"
 #include "MyWorkerThreadPool.h"
 #include "WorkerTaskBase.h"
@@ -71,7 +74,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pGroupB->addButton(ui.bGroupObj2);
     pGroupB->addButton(ui.bGroupObj3);
 
-    this->InitAppList();
+    this->InitAppListView();
+    //this->InitAppListWidget();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -91,26 +95,76 @@ MainTabPageFirst::~MainTabPageFirst()
     }
 }
 
-void MainTabPageFirst::InitAppList()
+void MainTabPageFirst::InitAppListView()
 {
-    ui.lwAppList->clear();
+    ui.lwAppList->setVisible(false);
+    ui.lvAppList->setVisible(true);
+
+    //QStringListModel *pStrListModel = new QStringListModel(this);
+    //pStrListModel->insertRows(0, 10);
+    //for (int i=0; i<10; ++i)
+    //{
+    //    pStrListModel->setData(pStrListModel->index(i), QString("Item ") + QString('A' + i));
+    //}
+
+    mpModelAppListItem = new QStandardItemModel();
+    AppListItemData tempAppItemData;
+    AppListItemStatus tempAppItemStatus;
+    QStandardItem *pTempAppListItem = Q_NULLPTR;
+
+    for (int i = 0; i < 20; ++i)
+    {
+        tempAppItemData.name = QString("Item %1").arg(i);
+        tempAppItemData.description = QString("description string %1").arg(i);
+        tempAppItemData.nStar = i;
+        pTempAppListItem = new QStandardItem();
+        
+        int randNum = rand() % 3;
+        switch (randNum)
+        {
+        case 0:
+            tempAppItemStatus = ITEMSTATUS_RED;
+            break;
+        case 1:
+            tempAppItemStatus = ITEMSTATUS_BLUE;
+            break;
+        case 2:
+            tempAppItemStatus = ITEMSTATUS_YELLOW;
+            break;
+        }
+        pTempAppListItem->setData(tempAppItemStatus, Qt::UserRole);
+        pTempAppListItem->setData(QVariant::fromValue(tempAppItemData), Qt::UserRole + 1);
+
+        mpModelAppListItem->appendRow(pTempAppListItem);
+    }
+
+    ui.lvAppList->setViewMode(QListView::IconMode);
+    ui.lvAppList->setSelectionMode(QAbstractItemView::MultiSelection);
+    ui.lvAppList->setModel(mpModelAppListItem);
+    ui.lvAppList->setItemDelegate(new AppListItemDelegate(this));
+    int spacing = ui.lvAppList->spacing();
+}
+
+void MainTabPageFirst::InitAppListWidget()
+{
+    ui.lvAppList->setVisible(false);
+    ui.lwAppList->setVisible(true);
 
     QString icon;
     QListWidgetItem *pAppItem = Q_NULLPTR;
-    QSize gridSize = ui.lwAppList->gridSize();
+    QSize gridSize = ui.lvAppList->gridSize();
     QSize itemHintSize = gridSize - QSize(2, 2);
 
-    for (int i=0; i<4; ++i)
+    ui.lwAppList->clear();
+    for (int i = 0; i < 4; ++i)
     {
         pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i+1);
-        pAppItem->setText(QString("test_%1").arg(i+1));
+        icon = UrlUtil::GetAppIcon(i + 1);
+        pAppItem->setText(QString("test_%1").arg(i + 1));
         pAppItem->setIcon(QIcon(icon));
         pAppItem->setSizeHint(itemHintSize);
         ui.lwAppList->addItem(pAppItem);
     }
-
-    //ui.lwAppList->setMouseTracking(true);
 }
 
 bool MainTabPageFirst::event(QEvent *event)

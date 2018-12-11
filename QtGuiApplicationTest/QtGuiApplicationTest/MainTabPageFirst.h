@@ -10,6 +10,7 @@ class WinReportTesting;
 class MyBackgroundWorker;
 class MyWorkerThreadPool;
 class QListWidgetItem;
+class QStandardItemModel;
 
 namespace SL
 {
@@ -29,6 +30,7 @@ private:
     MiscellaneousTesting           *mpMiscellaneousTest;
     WinReportTesting               *mpWinReportTest;
     MyWorkerThreadPool             *mpMyWorkerThreadPool;
+    QStandardItemModel             *mpModelAppListItem;
     SL::Core::BackgroundWorkerTest *mpBackgroundWorker;
 
 public:
@@ -40,7 +42,8 @@ protected:
     virtual void showEvent(QShowEvent *event) override;
 
 private:
-    void InitAppList();
+    void InitAppListView();
+    void InitAppListWidget();
     void ShowDicomImage(QString &dcmFileName);
     void ReadImageByQImage();
     void ReadImageByQImageMulti();

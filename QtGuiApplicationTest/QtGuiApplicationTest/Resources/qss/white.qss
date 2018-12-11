@@ -343,6 +343,32 @@ QTableView::indicator:enabled:indeterminate:pressed {
         image: url(:/White/checkBoxIndeterminatePressed);
 }
 
+/********** 列表视图 **********/
+QListView
+{
+    border: 1px solid rgb(111, 156, 207);
+    background-color: transparent;
+    outline: none;
+}
+
+QListView::item
+{
+    height: 30px;
+}
+
+QListView::item:hover
+{
+    background: rgb(160, 200, 240);
+}
+
+QListView::item:selected
+{
+}
+
+QListView::item:selected:!active
+{
+}
+
 /********** 列表框 **********/
 QListWidget
 {
