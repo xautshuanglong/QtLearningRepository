@@ -33,19 +33,19 @@ void AppListItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
     const qreal radius = 10;
     QPen itemBoderPen(Qt::gray);
-    itemBoderPen.setWidth(2);
+    itemBoderPen.setWidth(1);
 
     if (option.state.testFlag(QStyle::State_Selected))
     {
         itemBoderPen.setColor(Qt::blue);
         painter->setPen(itemBoderPen);
-        painter->setBrush(QColor(229, 241, 255));
+        painter->setBrush(QColor(120, 170, 220));
     }
     else if (option.state.testFlag(QStyle::State_MouseOver))
     {
         itemBoderPen.setColor(Qt::green);
         painter->setPen(itemBoderPen);
-        painter->setBrush(Qt::NoBrush);
+        painter->setBrush(QColor(229, 241, 255));
     }
     else
     {
@@ -53,6 +53,7 @@ void AppListItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         painter->setPen(itemBoderPen);
         painter->setBrush(Qt::NoBrush);
     }
+    painter->setRenderHint(QPainter::Antialiasing);
     painter->drawRoundedRect(itemRectF, radius, radius);
 
     QRect NameRect = QRect(itemRectF.left() + 10, itemRectF.top() + 10, itemRectF.width() - 30, 20);
