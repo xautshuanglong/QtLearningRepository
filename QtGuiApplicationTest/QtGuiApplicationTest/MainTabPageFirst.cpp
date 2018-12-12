@@ -146,8 +146,17 @@ void MainTabPageFirst::InitAppListView()
     ui.lvAppList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui.lvAppList->setModel(mpModelAppListItem);
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lvAppList->verticalScrollBar(), ui.lvAppList);
-    pSuspendScrollBar->setFixedHeight(250);
+    //SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(Q_NULLPTR, ui.lvAppList);
+    //pSuspendScrollBar->setRange(0, 300);
+    //pSuspendScrollBar->setPageStep(10);
     //this->connect(pSuspendScrollBar, SIGNAL(valueChanged(int)), SLOT(SlotSuspendBarValueChanged(int)));
+
+    // ScrollBar testing
+    //QScrollBar *pScrollBar = new QScrollBar(Qt::Horizontal, ui.lvAppList);
+    //pScrollBar->setFixedWidth(200);
+    //pScrollBar->setValue(0);
+    //pScrollBar->setRange(0, 100);
+    //pScrollBar->setPageStep(10);
 }
 
 void MainTabPageFirst::InitAppListWidget()
@@ -161,15 +170,16 @@ void MainTabPageFirst::InitAppListWidget()
     QSize itemHintSize = gridSize - QSize(2, 2);
 
     ui.lwAppList->clear();
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 80; ++i)
     {
         pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i + 1);
-        pAppItem->setText(QString("test_%1").arg(i + 1));
+        icon = UrlUtil::GetAppIcon(i % 4 + 1);
+        pAppItem->setText(QString("test_%1").arg(i % 4 + 1));
         pAppItem->setIcon(QIcon(icon));
         pAppItem->setSizeHint(itemHintSize);
         ui.lwAppList->addItem(pAppItem);
     }
+    SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lwAppList->verticalScrollBar(), ui.lwAppList);
 }
 
 bool MainTabPageFirst::event(QEvent *event)

@@ -7,7 +7,6 @@ class SuspendedScrollBar : public QScrollBar
     Q_OBJECT
 public:
     explicit SuspendedScrollBar(QScrollBar *pShadowScrollBar, QWidget *parent = Q_NULLPTR);
-    //explicit SuspendedScrollBar(Qt::Orientation orientation, QWidget *parent = Q_NULLPTR);
     ~SuspendedScrollBar();
 
 private:

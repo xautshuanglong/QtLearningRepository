@@ -6,32 +6,37 @@
 #include <QPainter>
 #include <QStyleOption>
 
+// Self Headers
+#include <LogUtil.h>
+
 SuspendedScrollBar::SuspendedScrollBar(QScrollBar *pShadowScrollBar, QWidget *parent /* = Q_NULLPTR */)
     : QScrollBar(parent)
 {
     mpScrollBarShadow = pShadowScrollBar;
 
     this->hide();
-    this->setOrientation(pShadowScrollBar->orientation());
-    this->setRange(0, 100);
-    this->setValue(0);
+
     if (parent != Q_NULLPTR)
     {
         parent->installEventFilter(this);
     }
 
-    //this->connect(mpScrollBarShadow, SIGNAL(valueChanged(int)), SLOT(setValue(int)));
-    //this->connect(mpScrollBarShadow, SIGNAL(rangeChanged(int, int)), SLOT(setRange(int, int)));
+    if (mpScrollBarShadow != Q_NULLPTR)
+    {
+        this->setOrientation(mpScrollBarShadow->orientation());
+        this->setValue(mpScrollBarShadow->value());
+        this->setRange(mpScrollBarShadow->minimum(), mpScrollBarShadow->maximum());
+        this->setPageStep(mpScrollBarShadow->pageStep());
 
-    this->connect(mpScrollBarShadow, SIGNAL(valueChanged(int)), SLOT(SlotScrollBarValueChange(int)));
-    this->connect(mpScrollBarShadow, SIGNAL(rangeChanged(int, int)), SLOT(SlotScrollBarRangeChanged(int, int)));
+        this->connect(this, SIGNAL(valueChanged(int)), mpScrollBarShadow, SLOT(setValue(int)));
+
+        //this->connect(mpScrollBarShadow, SIGNAL(valueChanged(int)), SLOT(setValue(int)));
+        //this->connect(mpScrollBarShadow, SIGNAL(rangeChanged(int, int)), SLOT(setRange(int, int)));
+
+        this->connect(mpScrollBarShadow, SIGNAL(valueChanged(int)), SLOT(SlotScrollBarValueChange(int)));
+        this->connect(mpScrollBarShadow, SIGNAL(rangeChanged(int, int)), SLOT(SlotScrollBarRangeChanged(int, int)));
+    }
 }
-
-//SuspendedScrollBar::SuspendedScrollBar(Qt::Orientation orientation, QWidget *parent /* = Q_NULLPTR */)
-//    : QScrollBar(orientation, parent)
-//{
-//    this->InitUI();
-//}
 
 SuspendedScrollBar::~SuspendedScrollBar()
 {
@@ -39,12 +44,14 @@ SuspendedScrollBar::~SuspendedScrollBar()
 
 void SuspendedScrollBar::HandleEventResize(QObject *obj, QResizeEvent *event)
 {
-    //QRect scrollBarRect = this->geometry();
-    //scrollBarRect.moveTo(event->size().width()-scrollBarRect.width(), 0);
-    //scrollBarRect.setHeight(event->size().height());
-    //this->setGeometry(scrollBarRect);
-
+    //QRect shadowRect = mpScrollBarShadow->geometry();
     //this->setGeometry(mpScrollBarShadow->geometry());
+
+    QRect scrollBarRect(0, 0, 0, 0);
+    scrollBarRect.setHeight(event->size().height());
+    scrollBarRect.setLeft(event->size().width() - 20);
+    scrollBarRect.setWidth(20);
+    this->setGeometry(scrollBarRect);
 }
 
 void SuspendedScrollBar::HandleMouseEnter(QObject *obj, QMouseEvent *event)
@@ -59,10 +66,12 @@ void SuspendedScrollBar::HandleMouseLeave(QObject *obj, QMouseEvent *event)
 
 void SuspendedScrollBar::paintEvent(QPaintEvent *event)
 {
-    QStyleOptionSlider opt;
-    opt.init(this);
-    QPainter p(this);
-    this->style()->drawComplexControl(QStyle::CC_ScrollBar, &opt, &p, this);
+    //QStyleOptionSlider opt;
+    //opt.init(this);
+    //QPainter p(this);
+    //this->style()->drawComplexControl(QStyle::CC_ScrollBar, &opt, &p, this);
+
+    QScrollBar::paintEvent(event);
 }
 
 bool SuspendedScrollBar::eventFilter(QObject *obj, QEvent *event)
@@ -86,11 +95,17 @@ bool SuspendedScrollBar::eventFilter(QObject *obj, QEvent *event)
 
 void SuspendedScrollBar::SlotScrollBarValueChange(int value)
 {
+    LogUtil::Debug(CODE_LOCATION, "ScrollBar value = %d", value);
     this->setValue(value);
 }
 
 void SuspendedScrollBar::SlotScrollBarRangeChanged(int minValue, int maxValue)
 {
-    this->setMinimum(minValue);
-    this->setMaximum(maxValue);
+    LogUtil::Debug(CODE_LOCATION, "ScrollBar range : %d - %d", minValue, maxValue);
+
+    //this->setMinimum(minValue);
+    //this->setMaximum(maxValue);
+
+    this->setRange(minValue, maxValue);
+    this->setPageStep(0.5 * (this->height() + maxValue));
 }
