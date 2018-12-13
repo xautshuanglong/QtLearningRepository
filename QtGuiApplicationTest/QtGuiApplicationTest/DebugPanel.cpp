@@ -184,10 +184,10 @@ void DebugPanel::ClearInstance()
         delete pTempPanel;
     }
 #else
-    if (mInstance == Q_NULLPTR)
+    if (mInstance != Q_NULLPTR)
     {
         QMutexLocker locker(&mMutexInstance);
-        if (mInstance == Q_NULLPTR)
+        if (mInstance != Q_NULLPTR)
         {
             delete mInstance;
             mInstance = Q_NULLPTR;
