@@ -57,8 +57,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     // ÍÐÅÌÓÒ¼ü²Ëµ¥À¸
     mpSystemTrayMenu = new QMenu(this);
-    mpTrayActionShow = new QAction(QStringLiteral("ÏÔÊ¾"));
-    mpTrayActionExit = new QAction(QStringLiteral("ÍË³ö"));
+    mpTrayActionShow = new QAction(QStringLiteral("ÏÔÊ¾"), this);
+    mpTrayActionExit = new QAction(QStringLiteral("ÍË³ö"), this);
     mpSystemTrayMenu->addAction(mpTrayActionShow);
     mpSystemTrayMenu->addAction(mpTrayActionExit);
     this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
@@ -82,6 +82,7 @@ MyMainWindow::~MyMainWindow()
         mpFramelessWindow = Q_NULLPTR;
     }
     delete mpCpuUsageWidget;
+    DebugPanel::ClearInstance();
 }
 
 bool MyMainWindow::event(QEvent *event)

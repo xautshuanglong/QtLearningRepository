@@ -75,33 +75,11 @@ DebugPanel::DebugPanel(QWidget *parent)
 
 DebugPanel::~DebugPanel()
 {
-    delete pMenuFile;
     delete ui;
 }
 
 void DebugPanel::InitMenu()
 {
-    //QAction *pActionFileSave = new QAction(QStringLiteral("保存"), this);
-    //QAction *pActionFileSaveAs = new QAction(QStringLiteral("另存为"), this);
-    //pMenuFile = new QMenu(QStringLiteral("文件"), this);
-    //pMenuFile->addAction(pActionFileSave);
-    //pMenuFile->addAction(pActionFileSaveAs);
-
-    //QAction *pActionViewList = new QAction(QStringLiteral("列表"), this);
-    //QAction *pActionViewTab = new QAction(QStringLiteral("标签"), this);
-    //QMenu *pMenuView = new QMenu(QStringLiteral("视图"), this);
-    //pMenuView->addAction(pActionViewList);
-    //pMenuView->addAction(pActionViewTab);
-
-    //QAction *pActionSettingTest = new QAction(QStringLiteral("测试项"), this);
-    //QMenu *pMenuSetting = new QMenu(QStringLiteral("设置"), this);
-    //pMenuSetting->addAction(pActionSettingTest);
-
-    //mpMenuBar = new QMenuBar(this);
-    //mpMenuBar->addMenu(pMenuFile);
-    //mpMenuBar->addMenu(pMenuView);
-    //mpMenuBar->addMenu(pMenuSetting);
-
     mpMenuBar = new QMenuBar(this);
 
     // 菜单响应槽定义
@@ -177,7 +155,7 @@ void DebugPanel::InitDebugInfoWidgets()
 DebugPanel* DebugPanel::GetInstance()
 {
 #ifdef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
-    if (mInstance.testAndSetOrdered(0, 0))//第一次检测
+    if (mInstance.testAndSetOrdered(0, 0))
     {
         QMutexLocker locker(&mMutexInstance);
         mInstance.testAndSetOrdered(0, new DebugPanel());
@@ -193,6 +171,29 @@ DebugPanel* DebugPanel::GetInstance()
     }
 #endif
     return mInstance;
+}
+
+void DebugPanel::ClearInstance()
+{
+#ifdef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
+
+    if (!mInstance.testAndSetOrdered(0, 0))
+    {
+        QMutexLocker locker(&mMutexInstance);
+        DebugPanel *pTempPanel = mInstance.fetchAndStoreOrdered(Q_NULLPTR);
+        delete pTempPanel;
+    }
+#else
+    if (mInstance == Q_NULLPTR)
+    {
+        QMutexLocker locker(&mMutexInstance);
+        if (mInstance == Q_NULLPTR)
+        {
+            delete mInstance;
+            mInstance = Q_NULLPTR;
+        }
+    }
+#endif
 }
 
 void DebugPanel::ListenKeyboard(QObject *pTarget)

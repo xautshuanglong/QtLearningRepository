@@ -60,7 +60,7 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
 
     ui.imgTitleValue->setText("image_filename_test");
 
-    pDcmWidget = new DicomWindow();
+    pDcmWidget = new DicomWindow(this);
 
     mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
     mpMyWorkerThreadPool = new MyWorkerThreadPool();
@@ -96,6 +96,11 @@ MainTabPageFirst::~MainTabPageFirst()
     {
         delete mpWinReportTest;
     }
+    if (mpMyWorkerThreadPool != Q_NULLPTR)
+    {
+        mpMyWorkerThreadPool->Stop();
+        delete mpMyWorkerThreadPool;
+    }
 }
 
 void MainTabPageFirst::InitAppListView()
@@ -110,7 +115,7 @@ void MainTabPageFirst::InitAppListView()
     //    pStrListModel->setData(pStrListModel->index(i), QString("Item ") + QString('A' + i));
     //}
 
-    mpModelAppListItem = new QStandardItemModel();
+    mpModelAppListItem = new QStandardItemModel(this);
     AppListItemData tempAppItemData;
     AppListItemStatus tempAppItemStatus;
     QStandardItem *pTempAppListItem = Q_NULLPTR;

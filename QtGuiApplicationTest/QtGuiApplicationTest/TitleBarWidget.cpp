@@ -34,6 +34,7 @@ TitleBarWidget::~TitleBarWidget()
 {
     delete mpRubberBand;
     delete mpRectNormalWindow;
+    delete mpPointMoveStart;
 }
 
 void TitleBarWidget::InitUI()

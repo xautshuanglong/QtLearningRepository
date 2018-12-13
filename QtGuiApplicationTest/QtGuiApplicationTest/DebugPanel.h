@@ -54,6 +54,7 @@ public:
     ~DebugPanel();
 
     static DebugPanel* GetInstance();
+    static void ClearInstance();
     void ListenKeyboard(QObject *pTarget);
     void AddDebugInfoWidget(QString topic, DebugInfoBaseWidget *pWidget);
 
@@ -78,7 +79,6 @@ private:
     static QMutex                     mMutexInstance;
     Ui::DebugPanel    *ui;
     TitleBarWidget    *mpTitleWidget;
-    QMenu             *pMenuFile;
     QMenuBar          *mpMenuBar;
     QListWidget       *mpListWidget;
     QStackedWidget    *mpStackedWidget;

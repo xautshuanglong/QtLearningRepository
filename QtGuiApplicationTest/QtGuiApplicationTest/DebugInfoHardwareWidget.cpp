@@ -36,6 +36,7 @@ DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
 
 DebugInfoHardwareWidget::~DebugInfoHardwareWidget()
 {
+    delete ui;
 }
 
 bool DebugInfoHardwareWidget::OnDebugMenuEvent(DebugMenuEvent *event)

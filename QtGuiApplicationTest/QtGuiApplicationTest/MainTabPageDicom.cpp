@@ -45,12 +45,12 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     //ui.labelImage->setStyleSheet("background: rgb(12,23,56);");
     //ui.tableDcmTag->setStyleSheet("background:red;");
 
-    mpActionOpen = new QAction(QIcon(":/AppImages/Resources/images/open.png"), "Open");
-    mpActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Save");
-    mpActionPrevious = new QAction(QIcon(":/AppImages/Resources/images/frame_previous.png"), "Previous");
-    mpActionNext = new QAction(QIcon(":/AppImages/Resources/images/frame_next.png"), "Next");
+    mpActionOpen = new QAction(QIcon(":/AppImages/Resources/images/open.png"), "Open", this);
+    mpActionSave = new QAction(QIcon(":/AppImages/Resources/images/save.png"), "Save", this);
+    mpActionPrevious = new QAction(QIcon(":/AppImages/Resources/images/frame_previous.png"), "Previous", this);
+    mpActionNext = new QAction(QIcon(":/AppImages/Resources/images/frame_next.png"), "Next", this);
 
-    QToolBar *pDcmToolBar = new QToolBar();
+    QToolBar *pDcmToolBar = new QToolBar(this);
     pDcmToolBar->addAction(mpActionOpen);
     pDcmToolBar->addAction(mpActionSave);
     pDcmToolBar->addAction(mpActionPrevious);

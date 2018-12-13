@@ -1,7 +1,13 @@
+
+// QT Headers
 #include <QCoreApplication>
 #include <QDebug>
 #include <QThread>
 
+// VLD Headers
+#include <vld/vld.h>
+
+// Self Headers
 #include <LogUtil.h>
 #include "TestManager.h"
 

@@ -1,9 +1,15 @@
 #include "MyApplication.h"
 #include "MyMainWindow.h"
 
+// QT Headers
 #include <QtWidgets/QApplication>
 #include <QDebug>
 
+// VLD
+//#define VLD_FORCE_ENABLE
+//#include <vld/vld.h>
+
+// Self Headers
 #include <LogUtil.h>
 
 int main(int argc, char *argv[])

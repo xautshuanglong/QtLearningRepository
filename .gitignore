@@ -168,3 +168,6 @@ $RECYCLE.BIN/
 # QT generated files
 **/GeneratedFiles/**
 **/.vs/**
+
+# VLD report
+**/memory_leak_report.txt
