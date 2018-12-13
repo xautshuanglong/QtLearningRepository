@@ -37,11 +37,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
 
-    //DebugPanel *pDebugPanel = new DebugPanel();
-    //pDebugPanel->ListenKeyboard(this);
-
     DebugPanel::GetInstance()->ListenKeyboard(this);
-    mpCpuUsageWidget = new DebugInfoHardwareWidget();
+    mpCpuUsageWidget = new DebugInfoHardwareWidget(this);
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("Ó²¼þÐÅÏ¢"), mpCpuUsageWidget);
 
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
@@ -81,7 +78,6 @@ MyMainWindow::~MyMainWindow()
         delete mpFramelessWindow;
         mpFramelessWindow = Q_NULLPTR;
     }
-    delete mpCpuUsageWidget;
     DebugPanel::ClearInstance();
 }
 
