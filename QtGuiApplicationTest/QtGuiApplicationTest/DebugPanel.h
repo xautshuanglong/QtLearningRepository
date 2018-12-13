@@ -57,6 +57,11 @@ public:
     static void ClearInstance();
     void ListenKeyboard(QObject *pTarget);
     void AddDebugInfoWidget(QString topic, DebugInfoBaseWidget *pWidget);
+    template <typename T> T* GetDebugInfoWidget()
+    {
+        LogUtil::Debug(CODE_LOCATION, "Class: %s  hash_code: %u  %d", typeid(T).name(), typeid(T).hash_code(), typeid(T));
+        return Q_NULLPTR;
+    }
 
 private:
     void InitMenu();

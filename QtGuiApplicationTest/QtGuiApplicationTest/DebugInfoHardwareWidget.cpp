@@ -86,8 +86,8 @@ void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
                                       .arg(processWorkingSetKB)
                                       .arg(processPagefileUsageKB));
 
-    LogUtil::Debug(CODE_LOCATION, "Percent: %u  MemoryTotal: %uMB   MemoryUsed: %uMB  ProcessWorkingSet: %ullKB  ProcessPagefileUsage: %ullKB",
-                   memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
+    //LogUtil::Debug(CODE_LOCATION, "Percent: %u  MemoryTotal: %uMB   MemoryUsed: %uMB  ProcessWorkingSet: %ullKB  ProcessPagefileUsage: %ullKB",
+    //               memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
 
     QList<Win32PerformanceUtil::TcpConnections> listConnectionTcp;
     Win32PerformanceUtil::GetExtendTcpTableInfo(AF_INET, listConnectionTcp);
@@ -128,4 +128,9 @@ void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
 void DebugInfoHardwareWidget::on_btnRefresh_clicked()
 {
     this->SlotUpdateHardwareInfo();
+
+    DebugPanel::GetInstance()->GetDebugInfoWidget<int>();
+    DebugPanel::GetInstance()->GetDebugInfoWidget<float>();
+    DebugPanel::GetInstance()->GetDebugInfoWidget<double>();
+    DebugPanel::GetInstance()->GetDebugInfoWidget<DebugInfoHardwareWidget>();
 }

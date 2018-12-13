@@ -219,14 +219,14 @@ void Win32PerformanceUtil::GetExtendTcpTableInfo(ULONG inProtoclFamily, QList<Tc
                 tempConnection.status = GetTcpState(pTcpTable->table[index].dwState);
                 outListConnections.append(tempConnection);
 
-                LogUtil::Debug(CODE_LOCATION, "PID: %d    Local: %s::%d    Remote: %s::%d    State: %d",
-                               pTcpTable->table[index].dwOwningPid,
-                               ::inet_ntoa(tempAddrLocal),
-                               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwLocalPort)),
-                               ::inet_ntoa(tempAddrRemote),
-                               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwRemotePort)),
-                               GetTcpState(pTcpTable->table[index].dwState)
-                );
+                //LogUtil::Debug(CODE_LOCATION, "PID: %d    Local: %s::%d    Remote: %s::%d    State: %d",
+                //               pTcpTable->table[index].dwOwningPid,
+                //               ::inet_ntoa(tempAddrLocal),
+                //               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwLocalPort)),
+                //               ::inet_ntoa(tempAddrRemote),
+                //               ::ntohs((unsigned short)(0x0000FFFF & pTcpTable->table[index].dwRemotePort)),
+                //               GetTcpState(pTcpTable->table[index].dwState)
+                //);
             }
         }
     }
