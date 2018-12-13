@@ -44,8 +44,12 @@ void FopReportProtocol::ParseMessage(const char *pData, int dataLen)
     msgID = msgHeader.msgid();
     msgVersion = msgHeader.version();
     msgType = msgHeader.msgtype();
-    LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%s] MsgID[%d]",
-                   msgVersion, ::MsgType_Name(msgType).c_str(), msgID);
+    //LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%s] MsgID[%d]",
+    //               msgVersion, ::MsgType_Name(msgType).c_str(), msgID);
+
+    // VLD Ð¹Â©¼ì²â
+    LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%d] MsgID[%d]",
+                   msgVersion, msgType, msgID);
 
     MessageBody msgBody = responseMsg.msgbody();
 

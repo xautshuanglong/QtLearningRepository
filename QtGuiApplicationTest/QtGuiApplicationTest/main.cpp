@@ -5,9 +5,12 @@
 #include <QtWidgets/QApplication>
 #include <QDebug>
 
+// Google ProtoBuf
+#include <google/protobuf/stubs/common.h>
+
 // VLD
 //#define VLD_FORCE_ENABLE
-//#include <vld/vld.h>
+#include <vld/vld.h>
 
 // Self Headers
 #include <LogUtil.h>
@@ -27,5 +30,8 @@ int main(int argc, char *argv[])
 
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");
 
-    return app.exec();
+    int appRetValue = app.exec();
+    google::protobuf::ShutdownProtobufLibrary();
+
+    return appRetValue;
 }

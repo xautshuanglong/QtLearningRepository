@@ -139,8 +139,12 @@ void FopReportClient::SlotReadyRead()
     MsgType msgType = msgHeader.msgtype();
     int msgID = msgHeader.msgid();
     int msgVersion = msgHeader.version();
-    LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%s] MsgID[%d]",
-                   msgVersion, ::MsgType_Name(msgType).c_str(), msgID);
+    //LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%s] MsgID[%d]",
+    //               msgVersion, ::MsgType_Name(msgType).c_str(), msgID);
+
+    // VLD ÄÚ´æÐ¹Â©¼ì²â
+    LogUtil::Debug(CODE_LOCATION, "MsgVersion[%d] MsgType[%d] MsgID[%d]",
+                   msgVersion, msgType, msgID);
 
     if (msgType != MsgTypeUnknow)
     {

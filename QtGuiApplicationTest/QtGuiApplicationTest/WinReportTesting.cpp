@@ -50,6 +50,8 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 
 WinReportTesting::~WinReportTesting()
 {
+    delete ui;
+
     QObject::disconnect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), this, SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
     mPdfPreview.Close();
 
