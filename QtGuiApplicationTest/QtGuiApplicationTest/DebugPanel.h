@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMutex>
+#include <QMap>
 
 class QMenu;
 class QMenuBar;
@@ -60,7 +61,9 @@ public:
     template <typename T> T* GetDebugInfoWidget()
     {
         LogUtil::Debug(CODE_LOCATION, "Class: %s  hash_code: %u  %d", typeid(T).name(), typeid(T).hash_code(), typeid(T));
-        return Q_NULLPTR;
+        DebugInfoBaseWidget *pWidget = mMapTypeWidget[typeid(T).hash_code()];
+        T* pRetValue = dynamic_cast<T*>(pWidget);
+        return pRetValue;
     }
 
 private:
@@ -80,14 +83,15 @@ protected:
     virtual bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
-    static QAtomicPointer<DebugPanel> mInstance;
-    static QMutex                     mMutexInstance;
-    Ui::DebugPanel    *ui;
-    TitleBarWidget    *mpTitleWidget;
-    QMenuBar          *mpMenuBar;
-    QListWidget       *mpListWidget;
-    QStackedWidget    *mpStackedWidget;
-    QSplitter         *mpSpliter;
+    static QAtomicPointer<DebugPanel>    mInstance;
+    static QMutex                        mMutexInstance;
+    Ui::DebugPanel                      *ui;
+    TitleBarWidget                      *mpTitleWidget;
+    QMenuBar                            *mpMenuBar;
+    QListWidget                         *mpListWidget;
+    QStackedWidget                      *mpStackedWidget;
+    QSplitter                           *mpSpliter;
+    QMap<quint64, DebugInfoBaseWidget *> mMapTypeWidget;
 };
 
 #endif // DEBUG_PANEL_H

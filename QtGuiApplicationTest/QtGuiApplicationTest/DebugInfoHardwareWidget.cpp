@@ -8,6 +8,7 @@
 #include "DebugMenuEvent.h"
 #include "DebugPanel.h"
 #include "Win32PerformanceUtil.h"
+#include "DebugInfoTestWidget.h"
 
 DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     : DebugInfoBaseWidget(parent)
@@ -129,8 +130,11 @@ void DebugInfoHardwareWidget::on_btnRefresh_clicked()
 {
     this->SlotUpdateHardwareInfo();
 
-    DebugPanel::GetInstance()->GetDebugInfoWidget<int>();
-    DebugPanel::GetInstance()->GetDebugInfoWidget<float>();
-    DebugPanel::GetInstance()->GetDebugInfoWidget<double>();
     DebugPanel::GetInstance()->GetDebugInfoWidget<DebugInfoHardwareWidget>();
+    DebugInfoTestWidget *pTestWidget = DebugPanel::GetInstance()->GetDebugInfoWidget<DebugInfoTestWidget>();
+    if (pTestWidget)
+    {
+        static int test = 0;
+        pTestWidget->UpdateLabelTest(++test);
+    }
 }

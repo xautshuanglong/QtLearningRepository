@@ -210,6 +210,8 @@ void DebugPanel::AddDebugInfoWidget(QString topic, DebugInfoBaseWidget *pWidget)
     {
         mpListWidget->addItem(topic);
         mpStackedWidget->addWidget(pWidget);
+        LogUtil::Debug(CODE_LOCATION, "Class: %s  hash_code: %u  %d", typeid(*pWidget).name(), typeid(*pWidget).hash_code(), typeid(*pWidget));
+        mMapTypeWidget[typeid(*pWidget).hash_code()] = pWidget;
     }
 }
 
