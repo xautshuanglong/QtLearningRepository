@@ -12,7 +12,7 @@ public:
     ~UrlUtil() = delete;
 
     static QString GetApplicationPath();
-    static QString GetAppIcon(int appID);
+    static QString GetAppIconPath(int appID);
     static QString GetConfigPath();
 };
 

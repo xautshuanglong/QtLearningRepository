@@ -258,7 +258,7 @@
    </property>
    <property name="gridSize">
     <size>
-     <width>60</width>
+     <width>160</width>
      <height>60</height>
     </size>
    </property>
@@ -284,19 +284,6 @@
     </property>
    </item>
   </widget>
-  <zorder>lwAppList</zorder>
-  <zorder>imgTitleTip</zorder>
-  <zorder>imgTitleValue</zorder>
-  <zorder>imgContent</zorder>
-  <zorder>btnBrowserDcm</zorder>
-  <zorder>btnBrowserImg</zorder>
-  <zorder>aGroupObj1</zorder>
-  <zorder>aGroupObj2</zorder>
-  <zorder>bGroupObj1</zorder>
-  <zorder>bGroupObj2</zorder>
-  <zorder>bGroupObj3</zorder>
-  <zorder>btnPrint</zorder>
-  <zorder>lvAppList</zorder>
  </widget>
  <resources>
   <include location="QtGuiApplicationTest.qrc"/>

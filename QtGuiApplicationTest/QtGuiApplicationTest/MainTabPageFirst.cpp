@@ -39,6 +39,7 @@
 
 #include "DicomWindow.h"
 #include "AppListItemDelegate.h"
+#include "AppListItemWidget.h"
 #include "MyBackgroundWorker.h"
 #include "MyWorkerThreadPool.h"
 #include "WorkerTaskBase.h"
@@ -77,8 +78,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pGroupB->addButton(ui.bGroupObj2);
     pGroupB->addButton(ui.bGroupObj3);
 
-    this->InitAppListView();
-    //this->InitAppListWidget();
+    //this->InitAppListView();
+    this->InitAppListWidget();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -169,20 +170,25 @@ void MainTabPageFirst::InitAppListWidget()
     ui.lvAppList->setVisible(false);
     ui.lwAppList->setVisible(true);
 
-    QString icon;
+    QString appIconPath;
     QListWidgetItem *pAppItem = Q_NULLPTR;
+    AppListItemWidget *pAppItemWidget = Q_NULLPTR;
     QSize gridSize = ui.lvAppList->gridSize();
-    QSize itemHintSize = gridSize - QSize(2, 2);
 
     ui.lwAppList->clear();
     for (int i = 0; i < 80; ++i)
     {
-        pAppItem = new QListWidgetItem();
-        icon = UrlUtil::GetAppIcon(i % 4 + 1);
-        pAppItem->setText(QString("test_%1").arg(i % 4 + 1));
-        pAppItem->setIcon(QIcon(icon));
-        pAppItem->setSizeHint(itemHintSize);
+        pAppItem = new QListWidgetItem(ui.lwAppList);
+        pAppItem->setSizeHint(gridSize);
+
+        pAppItemWidget = new AppListItemWidget(ui.lwAppList);
+        appIconPath = UrlUtil::GetAppIconPath(i % 4 + 1);
+        pAppItemWidget->SetIconPath(appIconPath);
+        pAppItemWidget->SetAppName(QString("AppItem%1").arg(i));
+        pAppItemWidget->SetAppDescription(QString("AppItemTest_%1").arg(i));
+
         ui.lwAppList->addItem(pAppItem);
+        ui.lwAppList->setItemWidget(pAppItem, pAppItemWidget);
     }
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lwAppList->verticalScrollBar(), ui.lwAppList);
 }

@@ -13,7 +13,7 @@ QString UrlUtil::GetApplicationPath()
     return applicationPath;
 }
 
-QString UrlUtil::GetAppIcon(int appID)
+QString UrlUtil::GetAppIconPath(int appID)
 {
     return GetApplicationPath() + QString("/resource/icon/%1.png").arg(appID);
 }

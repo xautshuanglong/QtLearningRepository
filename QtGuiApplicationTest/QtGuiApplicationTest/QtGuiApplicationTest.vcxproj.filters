@@ -150,6 +150,9 @@
     <ClCompile Include="DebugInfoTestWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AppListItemWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -180,6 +183,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="DebugInfoTestWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AppListItemWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -283,6 +289,9 @@
       <Filter>Core</Filter>
     </QtMoc>
     <QtMoc Include="DebugInfoTestWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AppListItemWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
