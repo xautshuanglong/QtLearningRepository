@@ -20,3 +20,8 @@ bool DebugInfoBaseWidget::OnDebugMenuEvent(DebugMenuEvent *event)
     LogUtil::Warn(CODE_LOCATION, "Do not specify DebugInfoWidget MenuID = %d", event->GetMenuID());
     return true;
 }
+
+void DebugInfoBaseWidget::OnUpdateDebugInfo()
+{
+    LogUtil::Warn(CODE_LOCATION, "nothing to update");
+}

@@ -11,6 +11,7 @@ class QMenuBar;
 class QListWidget;
 class QStackedWidget;
 class QSplitter;
+class QTimer;
 class DebugInfoBaseWidget;
 class TitleBarWidget;
 
@@ -38,6 +39,10 @@ public:
         FILE_SAVE_AS,
         // 视图菜单
         VIEW,
+        VIEW_UPDATE,         // 更新频率
+        VIEW_UPDATE_HIGH,    // 更新频率 - 高
+        VIEW_UPDATE_MIDDLE,  // 更新频率 - 中
+        VIEW_UPDATE_LOW,     // 更新频率 - 低
         VIEW_LIST,
         VIEW_TAB,
         // 设置菜单
@@ -72,10 +77,12 @@ private:
     void InitMenu();
     void InitDebugInfoWidgets();
     void HandleKeyPressEvent(QKeyEvent *event);
+    void HandleUpdateRate(int menuID);
     void ShowOrHideDebugPanel();
 
 private slots:
     void SlotMenuMapped(int menuID);
+    void SlotUpdateDebugWidget();
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
@@ -83,6 +90,8 @@ protected:
     virtual void keyReleaseEvent(QKeyEvent *event) override;
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual bool eventFilter(QObject *obj, QEvent *event) override;
+    virtual void showEvent(QShowEvent *event) override;
+    virtual void hideEvent(QHideEvent *event) override;
 
 private:
     static QAtomicPointer<DebugPanel>    mInstance;
@@ -93,7 +102,9 @@ private:
     QListWidget                         *mpListWidget;
     QStackedWidget                      *mpStackedWidget;
     QSplitter                           *mpSpliter;
+    QTimer                              *mpUpdateTimer;
     QMap<quint64, DebugInfoBaseWidget *> mMapTypeWidget;
+    QMap<int, QObject*>                  mMapMenuIdItem;
 };
 
 #endif // DEBUG_PANEL_H

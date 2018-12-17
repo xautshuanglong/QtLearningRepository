@@ -49,19 +49,7 @@ bool DebugInfoHardwareWidget::OnDebugMenuEvent(DebugMenuEvent *event)
     return true;
 }
 
-void DebugInfoHardwareWidget::showEvent(QShowEvent *event)
-{
-    mpUpdateTimer->start(1000);
-    //LogUtil::Debug(CODE_LOCATION, "Show this widget ...");
-}
-
-void DebugInfoHardwareWidget::hideEvent(QHideEvent *event)
-{
-    mpUpdateTimer->stop();
-    //LogUtil::Debug(CODE_LOCATION, "Hide this widget ...");
-}
-
-void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
+void DebugInfoHardwareWidget::OnUpdateDebugInfo()
 {
     double cpuUsageTotal = Win32PerformanceUtil::GetCpuUsageSystem();
     double cpuUsageProcess = Win32PerformanceUtil::GetCpuUsageProcess();
@@ -128,8 +116,9 @@ void DebugInfoHardwareWidget::SlotUpdateHardwareInfo()
 
 void DebugInfoHardwareWidget::on_btnRefresh_clicked()
 {
-    this->SlotUpdateHardwareInfo();
+    this->OnUpdateDebugInfo();
 
+    // 外部操作调试面板测试
     DebugPanel::GetInstance()->GetDebugInfoWidget<DebugInfoHardwareWidget>();
     DebugInfoTestWidget *pTestWidget = DebugPanel::GetInstance()->GetDebugInfoWidget<DebugInfoTestWidget>();
     if (pTestWidget)

@@ -21,6 +21,6 @@ protected:
     virtual void hideEvent(QHideEvent *event) override;
 
 private:
-    Ui::DebugInfoTestWidget    *ui;
-    QTimer                         *mpUpdateTimer;
+    Ui::DebugInfoTestWidget       *ui;
+    QTimer                        *mpUpdateTimer;
 };

@@ -16,11 +16,9 @@ public:
 
 protected:
     virtual bool OnDebugMenuEvent(DebugMenuEvent *event) override;
-    virtual void showEvent(QShowEvent *event) override;
-    virtual void hideEvent(QHideEvent *event) override;
+    virtual void OnUpdateDebugInfo() override;
 
 private slots:
-    void SlotUpdateHardwareInfo();
     void on_btnRefresh_clicked();
 
 private:
