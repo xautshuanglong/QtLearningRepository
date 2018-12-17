@@ -61,6 +61,9 @@ private slots:
     void SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious);
     void SlotCurrentRowChanged(int currentRow);
     // QListView signals handlers
+    void SlotListViewItemClicked(const QModelIndex &index);
+    void SlotListViewItemDoubleClicked(const QModelIndex &index);
+    void SlotListViewItemPressed(const QModelIndex & index);
     // UI controls handlers
     void on_btnBrowserDcm_clicked();
     void on_btnBrowserImg_clicked();

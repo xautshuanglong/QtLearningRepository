@@ -78,8 +78,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pGroupB->addButton(ui.bGroupObj2);
     pGroupB->addButton(ui.bGroupObj3);
 
-    //this->InitAppListView();
-    this->InitAppListWidget();
+    this->InitAppListView();
+    //this->InitAppListWidget();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -153,7 +153,10 @@ void MainTabPageFirst::InitAppListView()
     ui.lvAppList->setModel(mpModelAppListItem);
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lvAppList->verticalScrollBar(), ui.lvAppList);
 
-    // 
+    // QListView ÐÅºÅ´¦Àí
+    this->connect(ui.lvAppList, SIGNAL(clicked(const QModelIndex&)), SLOT(SlotListViewItemClicked(const QModelIndex&)));
+    this->connect(ui.lvAppList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(SlotListViewItemDoubleClicked(const QModelIndex&)));
+    this->connect(ui.lvAppList, SIGNAL(pressed(const QModelIndex&)), SLOT(SlotListViewItemPressed(const QModelIndex&)));
 }
 
 void MainTabPageFirst::InitAppListWidget()
@@ -230,6 +233,21 @@ void MainTabPageFirst::SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QLi
 void MainTabPageFirst::SlotCurrentRowChanged(int currentRow)
 {
     LogUtil::Debug(CODE_LOCATION, "RowIndex: %d", currentRow);
+}
+
+void MainTabPageFirst::SlotListViewItemClicked(const QModelIndex &index)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowCol: %d - %d", index.row(), index.column());
+}
+
+void MainTabPageFirst::SlotListViewItemDoubleClicked(const QModelIndex &index)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowCol: %d - %d", index.row(), index.column());
+}
+
+void MainTabPageFirst::SlotListViewItemPressed(const QModelIndex &index)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowCol: %d - %d", index.row(), index.column());
 }
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
