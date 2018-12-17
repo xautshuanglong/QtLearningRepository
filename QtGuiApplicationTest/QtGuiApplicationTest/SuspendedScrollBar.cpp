@@ -95,13 +95,13 @@ bool SuspendedScrollBar::eventFilter(QObject *obj, QEvent *event)
 
 void SuspendedScrollBar::SlotScrollBarValueChange(int value)
 {
-    LogUtil::Debug(CODE_LOCATION, "ScrollBar value = %d", value);
+    //LogUtil::Debug(CODE_LOCATION, "ScrollBar value = %d", value);
     this->setValue(value);
 }
 
 void SuspendedScrollBar::SlotScrollBarRangeChanged(int minValue, int maxValue)
 {
-    LogUtil::Debug(CODE_LOCATION, "ScrollBar range : %d - %d", minValue, maxValue);
+    //LogUtil::Debug(CODE_LOCATION, "ScrollBar range : %d - %d", minValue, maxValue);
 
     //this->setMinimum(minValue);
     //this->setMaximum(maxValue);

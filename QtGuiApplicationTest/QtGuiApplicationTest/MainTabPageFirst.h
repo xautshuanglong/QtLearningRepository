@@ -55,6 +55,13 @@ private:
     void MyThradPoolTest();
 
 private slots:
+    // QListWidget signals handlers
+    void SlotItemClicked(QListWidgetItem *pItem);
+    void SlotItemDoubleClicked(QListWidgetItem *pItem);
+    void SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious);
+    void SlotCurrentRowChanged(int currentRow);
+    // QListView signals handlers
+    // UI controls handlers
     void on_btnBrowserDcm_clicked();
     void on_btnBrowserImg_clicked();
     void on_btnPrint_clicked();

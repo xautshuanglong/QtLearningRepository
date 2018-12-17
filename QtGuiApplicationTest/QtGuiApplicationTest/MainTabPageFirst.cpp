@@ -152,17 +152,8 @@ void MainTabPageFirst::InitAppListView()
     ui.lvAppList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui.lvAppList->setModel(mpModelAppListItem);
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lvAppList->verticalScrollBar(), ui.lvAppList);
-    //SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(Q_NULLPTR, ui.lvAppList);
-    //pSuspendScrollBar->setRange(0, 300);
-    //pSuspendScrollBar->setPageStep(10);
-    //this->connect(pSuspendScrollBar, SIGNAL(valueChanged(int)), SLOT(SlotSuspendBarValueChanged(int)));
 
-    // ScrollBar testing
-    //QScrollBar *pScrollBar = new QScrollBar(Qt::Horizontal, ui.lvAppList);
-    //pScrollBar->setFixedWidth(200);
-    //pScrollBar->setValue(0);
-    //pScrollBar->setRange(0, 100);
-    //pScrollBar->setPageStep(10);
+    // 
 }
 
 void MainTabPageFirst::InitAppListWidget()
@@ -191,6 +182,12 @@ void MainTabPageFirst::InitAppListWidget()
         ui.lwAppList->setItemWidget(pAppItem, pAppItemWidget);
     }
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lwAppList->verticalScrollBar(), ui.lwAppList);
+
+    // QListWidget ÐÅºÅ´¦Àí
+    this->connect(ui.lwAppList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(SlotItemClicked(QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(SlotItemDoubleClicked(QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), SLOT(SlotCurrentItemChanged(QListWidgetItem*, QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(currentRowChanged(int)), SLOT(SlotCurrentRowChanged(int)));
 }
 
 bool MainTabPageFirst::event(QEvent *event)
@@ -209,6 +206,30 @@ bool MainTabPageFirst::event(QEvent *event)
 void MainTabPageFirst::showEvent(QShowEvent *event)
 {
     return QWidget::showEvent(event);
+}
+
+void MainTabPageFirst::SlotItemClicked(QListWidgetItem *pItem)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->colorCount(), ui.lwAppList->row(pItem));
+}
+
+void MainTabPageFirst::SlotItemDoubleClicked(QListWidgetItem *pItem)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->colorCount(), ui.lwAppList->row(pItem));
+}
+
+void MainTabPageFirst::SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d -> %d-%d",
+                   ui.lwAppList->colorCount(),
+                   ui.lwAppList->row(pItemPrevious),
+                   ui.lwAppList->colorCount(),
+                   ui.lwAppList->row(pItemCurrent));
+}
+
+void MainTabPageFirst::SlotCurrentRowChanged(int currentRow)
+{
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d", currentRow);
 }
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
