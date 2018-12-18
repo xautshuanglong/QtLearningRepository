@@ -6,88 +6,125 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>515</height>
+    <width>957</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="btnRefresh">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>150</y>
-     <width>101</width>
-     <height>31</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1">
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>Refresh</string>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
-  </widget>
-  <widget class="QLabel" name="lbCpuUsageTotal">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>161</width>
-     <height>21</height>
-    </rect>
+   <property name="leftMargin">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>CPU Usage Total : 0%</string>
+   <property name="topMargin">
+    <number>0</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="lbCpuUsageProcess">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>161</width>
-     <height>21</height>
-    </rect>
+   <property name="rightMargin">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>CPU Usage Process : 0%</string>
+   <property name="bottomMargin">
+    <number>0</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="lbMemoryUsageSystem">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>100</y>
-     <width>411</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Memory Usage System: 00% ( 00000MB / 00000MB )</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbMemoryUsageProcess">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>411</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Memory Usage Process: 00000KB</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="twNetConnection">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>220</y>
-     <width>671</width>
-     <height>251</height>
-    </rect>
-   </property>
-  </widget>
+   <item>
+    <layout class="QHBoxLayout" name="topLayout" stretch="1,1">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item>
+      <widget class="QWidget" name="topLeftWidget" native="true"/>
+     </item>
+     <item>
+      <widget class="QWidget" name="topRightWidget" native="true">
+       <widget class="QPushButton" name="btnRefresh">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>130</y>
+          <width>152</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Refresh</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbMemoryUsageSystem">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>210</y>
+          <width>301</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Memory Usage System: 00% ( 00000MB / 00000MB )</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbCpuUsageProcess">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>70</y>
+          <width>201</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>CPU Usage Process : 0%</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbMemoryUsageProcess">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>311</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Memory Usage Process: 00000KB</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbCpuUsageTotal">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>170</y>
+          <width>331</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>CPU Usage Total : 0%</string>
+        </property>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="bottomLayout" stretch="0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTableWidget" name="twNetConnection"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

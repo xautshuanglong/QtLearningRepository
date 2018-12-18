@@ -141,6 +141,9 @@ void DebugPanel::InitMenu()
             }
         }
     }
+    // 特殊菜单项初始化
+    QAction *pUpdateDefault = (QAction*)mMapMenuIdItem[VIEW_UPDATE_MIDDLE];
+    pUpdateDefault->setChecked(true);
 }
 
 void DebugPanel::InitDebugInfoWidgets()
