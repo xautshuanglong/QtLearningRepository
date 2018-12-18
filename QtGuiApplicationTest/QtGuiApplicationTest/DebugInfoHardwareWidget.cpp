@@ -37,7 +37,9 @@ DebugInfoHardwareWidget::~DebugInfoHardwareWidget()
 void DebugInfoHardwareWidget::InitChartView()
 {
     mpLineSeriesCpuTotal = new QLineSeries(this);
+    mpLineSeriesCpuTotal->setName(tr("Total"));
     mpLineSeriesCpuProcess = new QLineSeries(this);
+    mpLineSeriesCpuProcess->setName(tr("Process"));
 
     for (int i=0; i<mAxisRangeX; ++i)
     {
@@ -53,7 +55,8 @@ void DebugInfoHardwareWidget::InitChartView()
     chart->axisX()->setLabelsVisible(false);
     chart->axisY()->setRange(0, mAxisRangeY);
     chart->setTitle("CPU Usage Rate");
-    chart->setTheme(QT_CHARTS_NAMESPACE::QChart::ChartTheme::ChartThemeBrownSand);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    //chart->setTheme(QT_CHARTS_NAMESPACE::QChart::ChartTheme::ChartThemeBrownSand);
     //chart->setBackgroundVisible(false);
 
     mpChartView = new QChartView(chart, ui->topLeftWidget);
