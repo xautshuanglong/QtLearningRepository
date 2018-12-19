@@ -7,6 +7,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
 class QPieSeries;
 class QChartView;
+class QChart;
 QT_CHARTS_END_NAMESPACE
 
 namespace Ui
@@ -41,6 +42,8 @@ private:
     QT_CHARTS_NAMESPACE::QLineSeries    *mpLineSeriesCpuTotal;
     QT_CHARTS_NAMESPACE::QLineSeries    *mpLineSeriesCpuProcess;
     QT_CHARTS_NAMESPACE::QPieSeries     *mpPieSeries;
+    QT_CHARTS_NAMESPACE::QChart         *mpLineChart;
+    QT_CHARTS_NAMESPACE::QChart         *mpPieChart;
     QT_CHARTS_NAMESPACE::QChartView     *mpChartViewLine;
     QT_CHARTS_NAMESPACE::QChartView     *mpChartViewPie;
     int                                  mAxisRangeX;
