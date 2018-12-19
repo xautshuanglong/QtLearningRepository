@@ -24,6 +24,7 @@ DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     , ui(new Ui::DebugInfoHardwareWidget)
     , mAxisRangeX(50)
     , mAxisRangeY(100)
+    , mIsUpdating(false)
 {
     ui->setupUi(this);
 
@@ -224,9 +225,14 @@ bool DebugInfoHardwareWidget::OnDebugMenuEvent(DebugMenuEvent *event)
 
 void DebugInfoHardwareWidget::OnUpdateDebugInfo()
 {
-    this->UpdateCpuUsageRate();     // CPU 使用率
-    this->UpdateMemoryUsageRate();  // 内存使用率
-    this->UpdateNetConnections();   // 枚举当前进程 Socket 连接
+    if (!mIsUpdating)
+    {
+        mIsUpdating = true;
+        this->UpdateCpuUsageRate();     // CPU 使用率
+        this->UpdateMemoryUsageRate();  // 内存使用率
+        this->UpdateNetConnections();   // 枚举当前进程 Socket 连接
+        mIsUpdating = false;
+    }
 }
 
 void DebugInfoHardwareWidget::resizeEvent(QResizeEvent *event)
