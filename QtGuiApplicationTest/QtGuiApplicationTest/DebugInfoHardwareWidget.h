@@ -5,6 +5,7 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
+class QPieSeries;
 class QChartView;
 QT_CHARTS_END_NAMESPACE
 
@@ -39,7 +40,9 @@ private:
     Ui::DebugInfoHardwareWidget         *ui;
     QT_CHARTS_NAMESPACE::QLineSeries    *mpLineSeriesCpuTotal;
     QT_CHARTS_NAMESPACE::QLineSeries    *mpLineSeriesCpuProcess;
-    QT_CHARTS_NAMESPACE::QChartView     *mpChartView;
+    QT_CHARTS_NAMESPACE::QPieSeries     *mpPieSeries;
+    QT_CHARTS_NAMESPACE::QChartView     *mpChartViewLine;
+    QT_CHARTS_NAMESPACE::QChartView     *mpChartViewPie;
     int                                  mAxisRangeX;
     int                                  mAxisRangeY;
 };

@@ -306,7 +306,7 @@ void DebugPanel::resizeEvent(QResizeEvent *event)
     int centralHeight = newSize.height() - titleBarHeight - menuHeight - borderSize * 2;
     y += menuHeight;
     ui->centralWidget->setGeometry(x, y, w, centralHeight);
-    mpSpliter->resize(newSize.width(), centralHeight);
+    mpSpliter->resize(w, centralHeight);
 }
 
 bool DebugPanel::eventFilter(QObject *obj, QEvent *event)

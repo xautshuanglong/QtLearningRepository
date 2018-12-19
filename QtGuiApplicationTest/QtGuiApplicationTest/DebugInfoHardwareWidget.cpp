@@ -5,6 +5,8 @@
 #include <QMetaEnum>
 #include <QTimer>
 #include <QLineSeries>
+#include <QPieSeries>
+#include <QPieSlice>
 #include <QChar>
 #include <QChartView>
 #include <QValueAxis>
@@ -36,6 +38,7 @@ DebugInfoHardwareWidget::~DebugInfoHardwareWidget()
 
 void DebugInfoHardwareWidget::InitChartView()
 {
+    // ÕÛÏßÍ¼
     mpLineSeriesCpuTotal = new QLineSeries(this);
     mpLineSeriesCpuTotal->setName(tr("Total"));
     mpLineSeriesCpuProcess = new QLineSeries(this);
@@ -47,23 +50,42 @@ void DebugInfoHardwareWidget::InitChartView()
         mpLineSeriesCpuProcess->append(i, 0);
     }
 
-    QChart *chart = new QChart();
-    chart->addSeries(mpLineSeriesCpuTotal);
-    chart->addSeries(mpLineSeriesCpuProcess);
-    chart->createDefaultAxes();
-    chart->axisX()->setRange(0, mAxisRangeX);
-    chart->axisX()->setLabelsVisible(false);
-    chart->axisY()->setRange(0, mAxisRangeY);
-    chart->setTitle("CPU Usage Rate");
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    QChart *lineChart = new QChart();
+    lineChart->addSeries(mpLineSeriesCpuTotal);
+    lineChart->addSeries(mpLineSeriesCpuProcess);
+    lineChart->createDefaultAxes();
+    lineChart->axisX()->setRange(0, mAxisRangeX);
+    lineChart->axisX()->setLabelsVisible(false);
+    lineChart->axisY()->setRange(0, mAxisRangeY);
+    lineChart->setTitle("CPU Usage Rate");
+    lineChart->legend()->setAlignment(Qt::AlignRight);
     //chart->setTheme(QT_CHARTS_NAMESPACE::QChart::ChartTheme::ChartThemeBrownSand);
     //chart->setBackgroundVisible(false);
 
-    mpChartView = new QChartView(chart, ui->topLeftWidget);
-    mpChartView->setRenderHint(QPainter::Antialiasing);
-    QPalette chartPalette = mpChartView->palette();
+    mpChartViewLine = new QChartView(lineChart, ui->topLeftWidget);
+    mpChartViewLine->setRenderHint(QPainter::Antialiasing);
+    QPalette chartPalette = mpChartViewLine->palette();
     chartPalette.setColor(QPalette::Background, QColor(255, 255, 0, 0));
-    mpChartView->setPalette(chartPalette);
+    mpChartViewLine->setPalette(chartPalette);
+
+    // ±ýÍ¼
+    mpPieSeries = new QPieSeries(this);
+    mpPieSeries->append("CurProcess", 1);
+    mpPieSeries->append("Others", 1);
+    mpPieSeries->append("Unused", 1);
+    mpPieSeries->setLabelsVisible();
+    mpPieSeries->setLabelsVisible(false);
+
+    QChart *pieChart = new QChart();
+    pieChart->addSeries(mpPieSeries);
+    pieChart->setTitle("Memory Statistic");
+    pieChart->legend()->setAlignment(Qt::AlignRight);
+    
+    mpChartViewPie = new QChartView(pieChart, ui->topRightWidget);
+    mpChartViewPie->setRenderHint(QPainter::Antialiasing);
+    chartPalette = mpChartViewPie->palette();
+    chartPalette.setColor(QPalette::Background, QColor(255, 255, 0, 0));
+    mpChartViewPie->setPalette(chartPalette);
 }
 
 void DebugInfoHardwareWidget::InitNetConnectionList()
@@ -88,8 +110,8 @@ void DebugInfoHardwareWidget::UpdateCpuUsageRate()
 {
     double cpuUsageTotal = Win32PerformanceUtil::GetCpuUsageSystem();
     double cpuUsageProcess = Win32PerformanceUtil::GetCpuUsageProcess();
-    ui->lbCpuUsageTotal->setText(QString("CPU Usage Total : %1 %").arg(cpuUsageTotal, 0, 'f', 2));
-    ui->lbCpuUsageProcess->setText(QString("CPU Usage Process : %1 %").arg(cpuUsageProcess, 0, 'f', 2));
+    ui->lbCpuUsageTotal->setText(QString("%1 %2%").arg(tr("CPU Total :")).arg(cpuUsageTotal, 0, 'f', 2));
+    ui->lbCpuUsageProcess->setText(QString("%1 %2%").arg(tr("CPU Process :")).arg(cpuUsageProcess, 0, 'f', 2));
     //LogUtil::Debug(CODE_LOCATION, "CpuUsageTotal: %.2lf   CpuUsageProcess: %.2lf", cpuUsageTotal, cpuUsageProcess);
 
     QVector<QPointF> pointsCpuTotal = mpLineSeriesCpuTotal->pointsVector();
@@ -104,6 +126,8 @@ void DebugInfoHardwareWidget::UpdateCpuUsageRate()
     pointsCpuProcess[pointCount - 1].setY(cpuUsageProcess);
     mpLineSeriesCpuTotal->replace(pointsCpuTotal);
     mpLineSeriesCpuProcess->replace(pointsCpuProcess);
+    //mpLineSeriesCpuTotal->setName(QString("%1 %2").arg(tr("Total")).arg(cpuUsageTotal, 0, 'f', 2));
+    //mpLineSeriesCpuProcess->setName(QString("%1 %2").arg(tr("Process")).arg(cpuUsageProcess, 0, 'f', 2));
 }
 
 void DebugInfoHardwareWidget::UpdateMemoryUsageRate()
@@ -114,19 +138,39 @@ void DebugInfoHardwareWidget::UpdateMemoryUsageRate()
     memUsed = memTotal - memAvailable;
     ULONG memTotalMB = memTotal / 1024 / 1024;
     ULONG memUsedMB = memUsed / 1024 / 1024;
-    ui->lbMemoryUsageSystem->setText(QString("Memory Usage System: %1% ( %2MB / %3MB )")
-                                     .arg(memLoadPercent)
-                                     .arg(memUsedMB)
-                                     .arg(memTotalMB));
+    ui->lbMemoryTotal->setText(QString("%1 %2MB").arg(tr("MemTotal:")).arg(memTotalMB));
+    ui->lbMemoryUsed->setText(QString("%1 %2MB").arg(tr("MemUsed:")).arg(memUsedMB));
+    ui->lbMemoryRate->setText(QString("%1 %2%").arg(tr("MemUsageRage:")).arg(memLoadPercent));
 
     Win32PerformanceUtil::GetMemoryInfoProcess(workingSetSize, pagefileUsage);
     ULONGLONG processWorkingSetKB = workingSetSize / 1024;
     ULONGLONG processPagefileUsageKB = pagefileUsage / 1024;
-    ui->lbMemoryUsageProcess->setText(QString("Memory Usage Process: wokingSet=%1KB pagefileUsage=%2KB")
-                                      .arg(processWorkingSetKB)
-                                      .arg(processPagefileUsageKB));
+    ui->lbProcessWorkset->setText(QString("%1 %2KB").arg(tr("ProcessWorkset:")).arg(processWorkingSetKB));
+    ui->lbProcessPagefile->setText(QString("%1 %2KB").arg(tr("ProcessPagefile:")).arg(processPagefileUsageKB));
     //LogUtil::Debug(CODE_LOCATION, "Percent: %u  MemoryTotal: %uMB   MemoryUsed: %uMB  ProcessWorkingSet: %ullKB  ProcessPagefileUsage: %ullKB",
     //               memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
+
+    // ¸üÐÂ±ýÍ¼
+    float memProcessPercent = processWorkingSetKB * 1.0 / memTotal;
+    ULONGLONG memOther = memUsed - workingSetSize;
+    float memOtherPercent = memOther * 1.0 / memTotal;
+    float memUnusedPercent = 1 - memProcessPercent - memOtherPercent;
+
+    QVector<qreal> sliceValue = { memUnusedPercent, memOtherPercent, memProcessPercent };
+    QStringList sliceLabel;
+    sliceLabel << QString("%1 %2%").arg(tr("Unused")).arg(memUnusedPercent*100, 0, 'f', 2);
+    sliceLabel << QString("%1 %2%").arg(tr("Others")).arg(memOtherPercent*100, 0, 'f', 2);
+    sliceLabel << QString("%1 %2%").arg(tr("CurProcess")).arg(memProcessPercent*100, 0, 'f', 2);
+
+    QPieSlice *pTempPieSlice = Q_NULLPTR;
+    QList<QT_CHARTS_NAMESPACE::QPieSlice*> listSlice = mpPieSeries->slices();
+    int loopCount = qMin(sliceValue.count(), qMin(sliceLabel.count(), listSlice.count()));
+    for (int i=0; i<loopCount; ++i)
+    {
+        pTempPieSlice = listSlice.at(i);
+        pTempPieSlice->setLabel(sliceLabel.at(i));
+        pTempPieSlice->setValue(sliceValue.at(i));
+    }
 }
 
 void DebugInfoHardwareWidget::UpdateNetConnections()
@@ -185,7 +229,8 @@ void DebugInfoHardwareWidget::OnUpdateDebugInfo()
 
 void DebugInfoHardwareWidget::resizeEvent(QResizeEvent *event)
 {
-    mpChartView->resize(ui->topLeftWidget->size());
+    mpChartViewLine->resize(ui->topLeftWidget->size());
+    mpChartViewPie->resize(ui->topRightWidget->size());
 }
 
 void DebugInfoHardwareWidget::on_btnRefresh_clicked()

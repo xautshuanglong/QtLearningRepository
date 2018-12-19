@@ -33,7 +33,7 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="topLayout" stretch="1,1">
+    <layout class="QHBoxLayout" name="topLayout" stretch="2,1,2">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -41,76 +41,80 @@
       <enum>QLayout::SetMinAndMaxSize</enum>
      </property>
      <item>
-      <widget class="QWidget" name="topLeftWidget" native="true"/>
+      <widget class="QWidget" name="topLeftWidget" native="true">
+       <zorder>topMiddleWidget</zorder>
+      </widget>
      </item>
      <item>
-      <widget class="QWidget" name="topRightWidget" native="true">
-       <widget class="QPushButton" name="btnRefresh">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>130</y>
-          <width>152</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbMemoryUsageSystem">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>210</y>
-          <width>301</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Memory Usage System: 00% ( 00000MB / 00000MB )</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbCpuUsageProcess">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>70</y>
-          <width>201</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>CPU Usage Process : 0%</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbMemoryUsageProcess">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>10</y>
-          <width>311</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Memory Usage Process: 00000KB</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbCpuUsageTotal">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>170</y>
-          <width>331</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>CPU Usage Total : 0%</string>
-        </property>
-       </widget>
+      <widget class="QWidget" name="topMiddleWidget" native="true">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="lbCpuUsageProcess">
+          <property name="text">
+           <string>CPU Process : 0%</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbCpuUsageTotal">
+          <property name="text">
+           <string>CPU Total : 0%</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbProcessWorkset">
+          <property name="text">
+           <string>ProcessWorkset: 00000KB</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbProcessPagefile">
+          <property name="text">
+           <string>ProcessPagefile: 00000KB</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbMemoryTotal">
+          <property name="text">
+           <string>Mem Total: 00000MB</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbMemoryUsed">
+          <property name="text">
+           <string>Mem Used: 00000MB</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbMemoryRate">
+          <property name="text">
+           <string>Mem Usage Rate: 00%</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnRefresh">
+          <property name="text">
+           <string>Refresh</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="topRightWidget" native="true"/>
      </item>
     </layout>
    </item>
