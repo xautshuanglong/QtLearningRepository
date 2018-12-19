@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+class QPropertyAnimation;
+
 namespace Ui
 {
     class AppListItemWidget;
@@ -23,7 +25,12 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
+    virtual void enterEvent(QEvent *event) override;
+    virtual void leaveEvent(QEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
-    Ui::AppListItemWidget *ui;
+    Ui::AppListItemWidget  *ui;
+    QPropertyAnimation     *mpAnimateEnter;
+    QPropertyAnimation     *mpAnimateLeave;
 };

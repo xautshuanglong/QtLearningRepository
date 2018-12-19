@@ -3,6 +3,7 @@
 
 // QT Headers
 #include <QMouseEvent>
+#include <QPropertyAnimation>
 
 #include <LogUtil.h>
 
@@ -12,6 +13,10 @@ AppListItemWidget::AppListItemWidget(QWidget *parent)
     ui = new Ui::AppListItemWidget();
     ui->setupUi(this);
     ui->lbAppName->setText(tr("AppNameTest"));
+    ui->maskWidget->setStyleSheet("background-color: lightblue;");
+
+    mpAnimateEnter = new QPropertyAnimation(ui->maskWidget, "pos", this);
+    mpAnimateLeave = new QPropertyAnimation(ui->maskWidget, "pos", this);
 }
 
 AppListItemWidget::~AppListItemWidget()
@@ -50,4 +55,32 @@ void AppListItemWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     LogUtil::Debug(CODE_LOCATION, "mouse double clicked");
     event->ignore();
+}
+
+void AppListItemWidget::enterEvent(QEvent *event)
+{
+    mpAnimateLeave->stop();
+    mpAnimateEnter->start();
+    event->ignore();
+}
+
+void AppListItemWidget::leaveEvent(QEvent *event)
+{
+    mpAnimateEnter->stop();
+    mpAnimateLeave->start();
+    event->ignore();
+}
+
+void AppListItemWidget::resizeEvent(QResizeEvent *event)
+{
+    int hideY = -1 * event->size().height();
+    ui->maskWidget->resize(event->size());
+    ui->maskWidget->move(0, hideY);
+
+    mpAnimateEnter->setDuration(300);
+    mpAnimateEnter->setStartValue(QPoint(0, hideY));
+    mpAnimateEnter->setEndValue(QPoint(0, 0));
+    mpAnimateLeave->setDuration(300);
+    mpAnimateLeave->setStartValue(QPoint(0, 0));
+    mpAnimateLeave->setEndValue(QPoint(0, hideY));
 }

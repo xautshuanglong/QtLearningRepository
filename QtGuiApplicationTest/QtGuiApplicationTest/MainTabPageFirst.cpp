@@ -78,8 +78,8 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     pGroupB->addButton(ui.bGroupObj2);
     pGroupB->addButton(ui.bGroupObj3);
 
-    this->InitAppListView();
-    //this->InitAppListWidget();
+    //this->InitAppListView();
+    this->InitAppListWidget();
 }
 
 MainTabPageFirst::~MainTabPageFirst()
@@ -180,6 +180,7 @@ void MainTabPageFirst::InitAppListWidget()
         pAppItemWidget->SetIconPath(appIconPath);
         pAppItemWidget->SetAppName(QString("AppItem%1").arg(i));
         pAppItemWidget->SetAppDescription(QString("AppItemTest_%1").arg(i));
+        pAppItemWidget->setFixedSize(gridSize);
 
         ui.lwAppList->addItem(pAppItem);
         ui.lwAppList->setItemWidget(pAppItem, pAppItemWidget);
