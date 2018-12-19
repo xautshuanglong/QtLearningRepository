@@ -3,7 +3,7 @@
 class DicomFileParserTest;
 class DicomNetworkTest;
 class CognexDataManSDKTest;
-class ImportComTest;
+//class ImportComTest;
 class OpensslTest;
 class ProtocolBufferTest;
 
@@ -13,7 +13,7 @@ private:
     DicomFileParserTest    *mpDicomFileParserTest;
     DicomNetworkTest       *mpDicomNetworkTest;
     CognexDataManSDKTest   *mpCognexDataManSDKTest;
-    ImportComTest          *mpImportComTest;
+    //ImportComTest          *mpImportComTest;
     OpensslTest            *mpOpensslTest;
     ProtocolBufferTest     *mpProtoBufTest;
 

@@ -153,7 +153,7 @@ void DebugInfoHardwareWidget::UpdateMemoryUsageRate()
     //               memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
 
     // ¸üÐÂ±ýÍ¼
-    float memProcessPercent = 0.10;// processWorkingSetKB * 1.0 / memTotal;
+    float memProcessPercent = processWorkingSetKB * 1.0 / memTotal;
     ULONGLONG memOther = memUsed - workingSetSize;
     float memOtherPercent = memOther * 1.0 / memTotal;
     float memUnusedPercent = 1 - memProcessPercent - memOtherPercent;

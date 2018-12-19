@@ -66,7 +66,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Networkd.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -89,7 +89,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Network.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;Qt5Gui.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -105,7 +105,9 @@
     <ClCompile Include="CognexDataManSDKTest.cpp" />
     <ClCompile Include="DicomFileParserTest.cpp" />
     <ClCompile Include="DicomNetworkTest.cpp" />
-    <ClCompile Include="ImportComTest.cpp" />
+    <ClCompile Include="ImportComTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpensslTest.cpp" />
     <ClCompile Include="ProtocolBufferTest.cpp" />
@@ -116,15 +118,12 @@
     <ClInclude Include="CognexDataManSDKTest.h" />
     <ClInclude Include="DicomFileParserTest.h" />
     <ClInclude Include="DicomNetworkTest.h" />
-    <ClInclude Include="ImportComTest.h" />
+    <ClInclude Include="ImportComTest.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="OpensslTest.h" />
     <ClInclude Include="ProtocolBufferTest.h" />
     <ClInclude Include="TestManager.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CognexDataManSDK\CognexDataManSDK.vcxproj">
-      <Project>{5492b3c6-9e0c-4304-86de-1d650e22c214}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
