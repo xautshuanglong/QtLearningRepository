@@ -102,29 +102,6 @@
           <property name="styleSheet">
            <string notr="true">/*background-color: rgb(100,200,100);*/</string>
           </property>
-          <widget class="QLabel" name="lbRegionLeft">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>10</y>
-             <width>131</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>文本测试窗口</string>
-           </property>
-          </widget>
-          <widget class="QTextEdit" name="teReport">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>30</y>
-             <width>371</width>
-             <height>241</height>
-            </rect>
-           </property>
-          </widget>
           <widget class="QTextEdit" name="leExamDescription">
            <property name="geometry">
             <rect>
@@ -242,20 +219,23 @@
           <property name="styleSheet">
            <string notr="true">/*background-color: rgb(200,200,100);*/</string>
           </property>
-          <widget class="QLabel" name="lbImgPdfView">
+          <widget class="QListWidget" name="lwPdfPreview">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>381</width>
-             <height>541</height>
+             <width>411</width>
+             <height>531</height>
             </rect>
            </property>
-           <property name="text">
-            <string>PDF Image Preview</string>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
+           <property name="viewMode">
+            <enum>QListView::IconMode</enum>
            </property>
           </widget>
          </widget>
@@ -295,44 +275,6 @@ QWidget
          </property>
          <property name="text">
           <string>lbRegionBottom</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btnPrintTest">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>71</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>PrintTest</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btnFormatTest">
-         <property name="geometry">
-          <rect>
-           <x>83</x>
-           <y>10</y>
-           <width>71</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>FormatTest</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
          </property>
         </widget>
         <widget class="QPushButton" name="btnSavePDF">

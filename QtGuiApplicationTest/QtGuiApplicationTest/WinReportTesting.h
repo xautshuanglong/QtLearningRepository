@@ -28,13 +28,8 @@ public:
     ~WinReportTesting();
 
 private:
-    void QTextDocumentTest();
-    void QTextEditDocumentTest();
-    void ShowPdfImage(QImage &pdfImage);
 
 private slots:
-    void on_btnPrintTest_clicked();
-    void on_btnFormatTest_clicked();
     void on_btnSavePDF_clicked();
     void on_btnPreviewFOP_clicked();
     void on_btnPreviewMuPDF_clicked();
