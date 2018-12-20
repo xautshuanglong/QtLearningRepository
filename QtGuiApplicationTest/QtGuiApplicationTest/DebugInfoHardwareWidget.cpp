@@ -112,25 +112,29 @@ void DebugInfoHardwareWidget::InitNetConnectionList()
 void DebugInfoHardwareWidget::UpdateCpuUsageRate()
 {
     double cpuUsageTotal = Win32PerformanceUtil::GetCpuUsageSystem();
-    double cpuUsageProcess = Win32PerformanceUtil::GetCpuUsageProcess();
-    ui->lbCpuUsageTotal->setText(QString("%1 %2%").arg(tr("CPU Total :")).arg(cpuUsageTotal, 0, 'f', 2));
-    ui->lbCpuUsageProcess->setText(QString("%1 %2%").arg(tr("CPU Process :")).arg(cpuUsageProcess, 0, 'f', 2));
-    //LogUtil::Debug(CODE_LOCATION, "CpuUsageTotal: %.2lf   CpuUsageProcess: %.2lf", cpuUsageTotal, cpuUsageProcess);
-
-    QVector<QPointF> pointsCpuTotal = mpLineSeriesCpuTotal->pointsVector();
-    QVector<QPointF> pointsCpuProcess = mpLineSeriesCpuProcess->pointsVector();
-    int pointCount = pointsCpuTotal.count();
-    for (int i=0; i<pointCount-1; ++i)
+    double cpuUsageProcess = 0;
+    if (Win32PerformanceUtil::GetCpuUsageProcess(cpuUsageProcess))
     {
-        pointsCpuTotal[i].setY(pointsCpuTotal[i+1].y());
-        pointsCpuProcess[i].setY(pointsCpuProcess[i+1].y());
+        ui->lbCpuUsageTotal->setText(QString("%1 %2%").arg(tr("CPU Total :")).arg(cpuUsageTotal, 0, 'f', 2));
+        ui->lbCpuUsageProcess->setText(QString("%1 %2%").arg(tr("CPU Process :")).arg(cpuUsageProcess, 0, 'f', 2));
+        //LogUtil::Debug(CODE_LOCATION, "CpuUsageTotal: %.2lf   CpuUsageProcess: %.2lf", cpuUsageTotal, cpuUsageProcess);
+
+        QVector<QPointF> pointsCpuTotal = mpLineSeriesCpuTotal->pointsVector();
+        QVector<QPointF> pointsCpuProcess = mpLineSeriesCpuProcess->pointsVector();
+        int pointCount = pointsCpuTotal.count();
+        for (int i = 0; i < pointCount - 1; ++i)
+        {
+            pointsCpuTotal[i].setY(pointsCpuTotal[i + 1].y());
+            pointsCpuProcess[i].setY(pointsCpuProcess[i + 1].y());
+        }
+        pointsCpuTotal[pointCount - 1].setY(cpuUsageTotal);
+        pointsCpuProcess[pointCount - 1].setY(cpuUsageProcess);
+        mpLineSeriesCpuTotal->replace(pointsCpuTotal);
+        mpLineSeriesCpuProcess->replace(pointsCpuProcess);
+
+        //mpLineSeriesCpuTotal->setName(QString("%1 %2").arg(tr("Total")).arg(cpuUsageTotal, 0, 'f', 2));
+        //mpLineSeriesCpuProcess->setName(QString("%1 %2").arg(tr("Process")).arg(cpuUsageProcess, 0, 'f', 2));
     }
-    pointsCpuTotal[pointCount-1].setY(cpuUsageTotal);
-    pointsCpuProcess[pointCount - 1].setY(cpuUsageProcess);
-    mpLineSeriesCpuTotal->replace(pointsCpuTotal);
-    mpLineSeriesCpuProcess->replace(pointsCpuProcess);
-    //mpLineSeriesCpuTotal->setName(QString("%1 %2").arg(tr("Total")).arg(cpuUsageTotal, 0, 'f', 2));
-    //mpLineSeriesCpuProcess->setName(QString("%1 %2").arg(tr("Process")).arg(cpuUsageProcess, 0, 'f', 2));
 }
 
 void DebugInfoHardwareWidget::UpdateMemoryUsageRate()

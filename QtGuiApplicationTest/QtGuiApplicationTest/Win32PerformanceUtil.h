@@ -25,7 +25,7 @@ public:
     Win32PerformanceUtil() = delete;
     ~Win32PerformanceUtil() = delete;
 
-    static double GetCpuUsageProcess();
+    static bool GetCpuUsageProcess(double &outCpuPercent);
     static double GetCpuUsageSystem();
     static void GetMemoryInfoSystem(ULONG &outMemLoad, ULONGLONG &outMemTotal, ULONGLONG &outMemAvailable);
     static void GetMemoryInfoProcess(ULONGLONG &outWorkingSetSize, ULONGLONG &outPagefileUasge);

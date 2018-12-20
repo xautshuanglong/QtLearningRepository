@@ -9,8 +9,9 @@
 
 #include <LogUtil.h>
 
-double Win32PerformanceUtil::GetCpuUsageProcess()
+bool Win32PerformanceUtil::GetCpuUsageProcess(double &outCpuPercent)
 {
+    bool retValue = true;
     HANDLE hProcess = ::GetCurrentProcess();
     static DWORD s_dwTickCountOld = 0;
     static LARGE_INTEGER s_lgProcessTimeOld = { 0 };
@@ -40,14 +41,22 @@ double Win32PerformanceUtil::GetCpuUsageProcess()
         if (s_lgProcessTimeOld.QuadPart)
         {
             DWORD dwElepsedTime = ::GetTickCount() - s_dwTickCountOld;
-            dbProcCpuPercent = (double)(((double)((lgCurTime.QuadPart - s_lgProcessTimeOld.QuadPart) * 100)) / dwElepsedTime) / 10000;
-            dbProcCpuPercent = dbProcCpuPercent / s_dwProcessorCoreNum;
+            if (dwElepsedTime != 0)
+            {
+                dbProcCpuPercent = (lgCurTime.QuadPart - s_lgProcessTimeOld.QuadPart) * 100.0 / dwElepsedTime / 10000;
+                dbProcCpuPercent = dbProcCpuPercent / s_dwProcessorCoreNum;
+                outCpuPercent = dbProcCpuPercent;
+            }
+            else
+            {
+                retValue = false;
+            }
         }
         s_lgProcessTimeOld = lgCurTime;
         s_dwTickCountOld = ::GetTickCount();
     }
 
-    return dbProcCpuPercent;
+    return retValue;
 }
 
 double Win32PerformanceUtil::GetCpuUsageSystem()
