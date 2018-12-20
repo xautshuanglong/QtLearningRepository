@@ -48,4 +48,5 @@ private:
     QT_CHARTS_NAMESPACE::QChartView     *mpChartViewPie;
     int                                  mAxisRangeX;
     int                                  mAxisRangeY;
+    bool                                 mIsUpdating;
 };

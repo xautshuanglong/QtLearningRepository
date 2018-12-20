@@ -47,9 +47,6 @@
     <ClCompile Include="CognexDataManSDKTest.cpp">
       <Filter>ThirdPartTest</Filter>
     </ClCompile>
-    <ClCompile Include="ImportComTest.cpp">
-      <Filter>ComTest</Filter>
-    </ClCompile>
     <ClCompile Include="OpensslTest.cpp">
       <Filter>OpenSSL</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="AddressBook.pb.cc">
       <Filter>ThirdPartTest</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportComTest.cpp">
+      <Filter>ComTest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

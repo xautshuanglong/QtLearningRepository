@@ -24,6 +24,7 @@ DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     , ui(new Ui::DebugInfoHardwareWidget)
     , mAxisRangeX(50)
     , mAxisRangeY(100)
+    , mIsUpdating(false)
 {
     ui->setupUi(this);
 
@@ -153,7 +154,7 @@ void DebugInfoHardwareWidget::UpdateMemoryUsageRate()
     //               memLoadPercent, memTotalMB, memUsedMB, processWorkingSetKB, processPagefileUsageKB);
 
     // 更新饼图
-    float memProcessPercent = 0.10;// processWorkingSetKB * 1.0 / memTotal;
+    float memProcessPercent = processWorkingSetKB * 1.0 / memTotal;
     ULONGLONG memOther = memUsed - workingSetSize;
     float memOtherPercent = memOther * 1.0 / memTotal;
     float memUnusedPercent = 1 - memProcessPercent - memOtherPercent;
@@ -224,9 +225,14 @@ bool DebugInfoHardwareWidget::OnDebugMenuEvent(DebugMenuEvent *event)
 
 void DebugInfoHardwareWidget::OnUpdateDebugInfo()
 {
-    this->UpdateCpuUsageRate();     // CPU 使用率
-    this->UpdateMemoryUsageRate();  // 内存使用率
-    this->UpdateNetConnections();   // 枚举当前进程 Socket 连接
+    if (!mIsUpdating)
+    {
+        mIsUpdating = true;
+        this->UpdateCpuUsageRate();     // CPU 使用率
+        this->UpdateMemoryUsageRate();  // 内存使用率
+        this->UpdateNetConnections();   // 枚举当前进程 Socket 连接
+        mIsUpdating = false;
+    }
 }
 
 void DebugInfoHardwareWidget::resizeEvent(QResizeEvent *event)
