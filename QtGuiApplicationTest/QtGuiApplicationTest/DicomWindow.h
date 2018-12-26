@@ -38,7 +38,7 @@ private slots:
     void on_action_dicom_pull();
 
 private:
-    QToolBar                      *mpToolBar;
+    QToolBar                          *mpToolBar;
     QPointer<DicomServerBrowserWidget> mPointerDcmServerBroswer;
     QPointer<DicomDownloadWigdet>      mPointerDcmDownload;
 

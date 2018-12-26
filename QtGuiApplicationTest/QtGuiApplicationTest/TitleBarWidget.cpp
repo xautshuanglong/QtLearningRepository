@@ -57,6 +57,7 @@ void TitleBarWidget::InitUI()
     QHBoxLayout *pHorizontalLayout = new QHBoxLayout(this);
     pHorizontalLayout->setSpacing(3);
     pHorizontalLayout->setMargin(0);
+    pHorizontalLayout->setContentsMargins(0, 0, 5, 0);
 
     pHorizontalLayout->addWidget(pLabelIcon);
     pHorizontalLayout->addWidget(pLabelTitle);

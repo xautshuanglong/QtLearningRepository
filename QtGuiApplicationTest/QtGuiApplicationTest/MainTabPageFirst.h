@@ -26,7 +26,7 @@ class MainTabPageFirst : public QWidget
 private:
     Ui::MainTabPageFirst            ui;
     QListWidgetItem                *mpCurEnteredItem;
-    DicomWindow                    *pDcmWidget;
+    DicomWindow                    *mpDcmWidget;
     MiscellaneousTesting           *mpMiscellaneousTest;
     WinReportTesting               *mpWinReportTest;
     MyWorkerThreadPool             *mpMyWorkerThreadPool;

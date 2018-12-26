@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+class TitleBarWidget;
+
 namespace Ui
 {
     class DicomServerBrowserWidget;
@@ -17,4 +19,5 @@ public:
 
 private:
     Ui::DicomServerBrowserWidget *ui;
+    TitleBarWidget               *mpTitleBarWidget;
 };

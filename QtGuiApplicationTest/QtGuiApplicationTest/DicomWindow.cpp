@@ -7,6 +7,7 @@
 #include "FramelessWindowHelper.h"
 #include "DicomServerBrowserWidget.h"
 #include "DicomDownloadWigdet.h"
+#include "DebugPanel.h"
 
 DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     : QMainWindow(parent)
@@ -23,6 +24,9 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     //mpDicomServerBroswer->setStyleSheet("background-color: green;");
 
     this->InitToolBar();
+
+    // 用于打开调试面板
+    DebugPanel::GetInstance()->ListenKeyboard(this);
 }
 
 DicomWindow::~DicomWindow()
@@ -49,6 +53,8 @@ void DicomWindow::InitToolBar()
 
 void DicomWindow::closeEvent(QCloseEvent *event)
 {
+    mPointerDcmServerBroswer->close();
+    mPointerDcmDownload->close();
     emit SignalClosed();
 }
 

@@ -56,7 +56,7 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     , mpMiscellaneousTest(Q_NULLPTR)
     , mpWinReportTest(Q_NULLPTR)
     , mpCurEnteredItem(Q_NULLPTR)
-    , pDcmWidget(Q_NULLPTR)
+    , mpDcmWidget(Q_NULLPTR)
 {
     ui.setupUi(this);
 
@@ -102,6 +102,11 @@ MainTabPageFirst::~MainTabPageFirst()
     {
         mpMyWorkerThreadPool->Stop();
         delete mpMyWorkerThreadPool;
+    }
+    if (mpDcmWidget != Q_NULLPTR)
+    {
+        delete mpDcmWidget;
+        mpDcmWidget = nullptr;
     }
 }
 
@@ -227,12 +232,12 @@ void MainTabPageFirst::SlotListWidgetItemClicked(QListWidgetItem *pItem)
     LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->count(), ui.lwAppList->row(pItem));
     if (0 == ui.lwAppList->row(pItem))
     {
-        if (pDcmWidget == Q_NULLPTR)
+        if (mpDcmWidget == Q_NULLPTR)
         {
-            pDcmWidget = new DicomWindow(this);
-            this->connect(pDcmWidget, SIGNAL(SignalClosed()), SLOT(SlotDicomWindowClosed()));
+            mpDcmWidget = new DicomWindow();
+            this->connect(mpDcmWidget, SIGNAL(SignalClosed()), SLOT(SlotDicomWindowClosed()));
         }
-        pDcmWidget->show();
+        mpDcmWidget->show();
     }
 }
 
@@ -506,12 +511,12 @@ void MainTabPageFirst::on_btnPrint_clicked()
 void MainTabPageFirst::SlotDicomWindowClosed()
 {
     LogUtil::Debug(CODE_LOCATION, "Will delete DicomWindow pointer ...");
-    if (pDcmWidget)
+    if (mpDcmWidget)
     {
         //delete pDcmWidget;
         //pDcmWidget = Q_NULLPTR;
-        pDcmWidget->deleteLater();
-        pDcmWidget = Q_NULLPTR;
+        mpDcmWidget->deleteLater();
+        mpDcmWidget = Q_NULLPTR;
     }
 }
 
