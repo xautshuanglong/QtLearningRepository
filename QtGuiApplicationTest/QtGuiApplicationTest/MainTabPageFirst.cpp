@@ -56,12 +56,11 @@ MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
     , mpMiscellaneousTest(Q_NULLPTR)
     , mpWinReportTest(Q_NULLPTR)
     , mpCurEnteredItem(Q_NULLPTR)
+    , pDcmWidget(Q_NULLPTR)
 {
     ui.setupUi(this);
 
     //ui.imgTitleValue->setText("image_filename_test");
-
-    pDcmWidget = new DicomWindow(this);
 
     mpBackgroundWorker = new SL::Core::BackgroundWorkerTest();
     mpMyWorkerThreadPool = new MyWorkerThreadPool();
@@ -190,10 +189,10 @@ void MainTabPageFirst::InitAppListWidget()
     SuspendedScrollBar *pSuspendScrollBar = new SuspendedScrollBar(ui.lwAppList->verticalScrollBar(), ui.lwAppList);
 
     // QListWidget ÐÅºÅ´¦Àí
-    this->connect(ui.lwAppList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(SlotItemClicked(QListWidgetItem*)));
-    this->connect(ui.lwAppList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(SlotItemDoubleClicked(QListWidgetItem*)));
-    this->connect(ui.lwAppList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), SLOT(SlotCurrentItemChanged(QListWidgetItem*, QListWidgetItem*)));
-    this->connect(ui.lwAppList, SIGNAL(currentRowChanged(int)), SLOT(SlotCurrentRowChanged(int)));
+    this->connect(ui.lwAppList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(SlotListWidgetItemClicked(QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(SlotListWidgetItemDoubleClicked(QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), SLOT(SlotListWidgetCurrentItemChanged(QListWidgetItem*, QListWidgetItem*)));
+    this->connect(ui.lwAppList, SIGNAL(currentRowChanged(int)), SLOT(SlotListWidgetCurrentRowChanged(int)));
 }
 
 bool MainTabPageFirst::event(QEvent *event)
@@ -223,26 +222,35 @@ void MainTabPageFirst::resizeEvent(QResizeEvent *event)
     ui.lwAppList->resize(ui.listContainer->size());
 }
 
-void MainTabPageFirst::SlotItemClicked(QListWidgetItem *pItem)
+void MainTabPageFirst::SlotListWidgetItemClicked(QListWidgetItem *pItem)
 {
-    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->colorCount(), ui.lwAppList->row(pItem));
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->count(), ui.lwAppList->row(pItem));
+    if (0 == ui.lwAppList->row(pItem))
+    {
+        if (pDcmWidget == Q_NULLPTR)
+        {
+            pDcmWidget = new DicomWindow(this);
+            this->connect(pDcmWidget, SIGNAL(SignalClosed()), SLOT(SlotDicomWindowClosed()));
+        }
+        pDcmWidget->show();
+    }
 }
 
-void MainTabPageFirst::SlotItemDoubleClicked(QListWidgetItem *pItem)
+void MainTabPageFirst::SlotListWidgetItemDoubleClicked(QListWidgetItem *pItem)
 {
-    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->colorCount(), ui.lwAppList->row(pItem));
+    LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d", ui.lwAppList->count(), ui.lwAppList->row(pItem));
 }
 
-void MainTabPageFirst::SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious)
+void MainTabPageFirst::SlotListWidgetCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious)
 {
     LogUtil::Debug(CODE_LOCATION, "RowIndex: %d-%d -> %d-%d",
-                   ui.lwAppList->colorCount(),
+                   ui.lwAppList->count(),
                    ui.lwAppList->row(pItemPrevious),
-                   ui.lwAppList->colorCount(),
+                   ui.lwAppList->count(),
                    ui.lwAppList->row(pItemCurrent));
 }
 
-void MainTabPageFirst::SlotCurrentRowChanged(int currentRow)
+void MainTabPageFirst::SlotListWidgetCurrentRowChanged(int currentRow)
 {
     LogUtil::Debug(CODE_LOCATION, "RowIndex: %d", currentRow);
 }
@@ -264,6 +272,10 @@ void MainTabPageFirst::SlotListViewItemPressed(const QModelIndex &index)
 
 void MainTabPageFirst::on_btnBrowserDcm_clicked()
 {
+    static int spacing = 10;
+    ui.lwAppList->setSpacing(++spacing);
+    return;
+
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
     //ShowDicomImage(dcmFileName);
@@ -488,6 +500,18 @@ void MainTabPageFirst::on_btnPrint_clicked()
         }
 
         painter.end();
+    }
+}
+
+void MainTabPageFirst::SlotDicomWindowClosed()
+{
+    LogUtil::Debug(CODE_LOCATION, "Will delete DicomWindow pointer ...");
+    if (pDcmWidget)
+    {
+        //delete pDcmWidget;
+        //pDcmWidget = Q_NULLPTR;
+        pDcmWidget->deleteLater();
+        pDcmWidget = Q_NULLPTR;
     }
 }
 

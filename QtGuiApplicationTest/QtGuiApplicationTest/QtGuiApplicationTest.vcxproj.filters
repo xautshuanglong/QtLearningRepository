@@ -199,9 +199,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DicomWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyBackgroundWorker.h">
       <Filter>QThreadTest</Filter>
     </ClInclude>
@@ -292,6 +289,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AppListItemWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DicomWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -8,7 +8,7 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
 {
     ui.setupUi(this);
 
-    QIcon winIcon("test.ico");
+    QIcon winIcon(":/AppImages/Resources/images/XRay_DICOM.ico");
     this->setWindowIcon(winIcon);
 
     mpFramelessWindow = new FramelessWindowHelper(this);
@@ -16,4 +16,10 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
 
 DicomWindow::~DicomWindow()
 {
+    int i = 0;
+}
+
+void DicomWindow::closeEvent(QCloseEvent *event)
+{
+    emit SignalClosed();
 }

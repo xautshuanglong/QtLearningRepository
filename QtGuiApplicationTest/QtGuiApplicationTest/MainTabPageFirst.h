@@ -57,10 +57,10 @@ private:
 
 private slots:
     // QListWidget signals handlers
-    void SlotItemClicked(QListWidgetItem *pItem);
-    void SlotItemDoubleClicked(QListWidgetItem *pItem);
-    void SlotCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious);
-    void SlotCurrentRowChanged(int currentRow);
+    void SlotListWidgetItemClicked(QListWidgetItem *pItem);
+    void SlotListWidgetItemDoubleClicked(QListWidgetItem *pItem);
+    void SlotListWidgetCurrentItemChanged(QListWidgetItem *pItemCurrent, QListWidgetItem *pItemPrevious);
+    void SlotListWidgetCurrentRowChanged(int currentRow);
     // QListView signals handlers
     void SlotListViewItemClicked(const QModelIndex &index);
     void SlotListViewItemDoubleClicked(const QModelIndex &index);
@@ -69,4 +69,6 @@ private slots:
     void on_btnBrowserDcm_clicked();
     void on_btnBrowserImg_clicked();
     void on_btnPrint_clicked();
+    // Custom Slots
+    void SlotDicomWindowClosed();
 };

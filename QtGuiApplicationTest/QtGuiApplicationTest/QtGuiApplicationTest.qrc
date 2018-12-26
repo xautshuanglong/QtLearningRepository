@@ -26,5 +26,6 @@
         <file>Resources/images/orange/arrow_right.png</file>
         <file>Resources/images/orange/arrow_up.png</file>
         <file>Resources/images/app.ico</file>
+        <file>Resources/images/XRay_DICOM.ico</file>
     </qresource>
 </RCC>
