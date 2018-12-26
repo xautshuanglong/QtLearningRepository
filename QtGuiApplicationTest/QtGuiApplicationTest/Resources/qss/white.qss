@@ -157,7 +157,7 @@ QGroupBox::title {
 /**********¹¤¾ßÀ¸**********/
 QToolBar {
         border: none;
-        /*background: rgb(170, 200, 230);*/
+        background: rgb(170, 200, 230);
         padding: 5px;
 }
 

@@ -2,10 +2,13 @@
 #define DICOM_WINDOW_H
 
 #include <QMainWindow>
+#include <QPointer>
 #include "ui_DicomWindow.h"
 
-class FramelessWindowHelper;
 class QToolBar;
+class FramelessWindowHelper;
+class DicomServerBrowserWidget;
+class DicomDownloadWigdet;
 
 class DicomWindow : public QMainWindow
 {
@@ -35,7 +38,10 @@ private slots:
     void on_action_dicom_pull();
 
 private:
-    QToolBar             *mpToolBar;
+    QToolBar                      *mpToolBar;
+    QPointer<DicomServerBrowserWidget> mPointerDcmServerBroswer;
+    QPointer<DicomDownloadWigdet>      mPointerDcmDownload;
+
 };
 
 #endif // DICOM_WINDOW_H

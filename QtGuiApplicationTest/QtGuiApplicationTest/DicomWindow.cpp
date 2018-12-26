@@ -5,23 +5,30 @@
 
 #include <LogUtil.h>
 #include "FramelessWindowHelper.h"
+#include "DicomServerBrowserWidget.h"
+#include "DicomDownloadWigdet.h"
 
 DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     : QMainWindow(parent)
-    , mpFramelessWindow(Q_NULLPTR)
+    , mPointerDcmServerBroswer(new DicomServerBrowserWidget)
+    , mPointerDcmDownload(new DicomDownloadWigdet)
 {
     ui.setupUi(this);
 
-    QIcon winIcon(":/AppImages/Resources/images/XRay_DICOM.ico");
+    QIcon winIcon(":/AppImages/Resources/images/dicom_xray.ico");
     this->setWindowIcon(winIcon);
     mpFramelessWindow = new FramelessWindowHelper(this);
+
+    //mpDicomServerBroswer->setVisible(false);
+    //mpDicomServerBroswer->setStyleSheet("background-color: green;");
 
     this->InitToolBar();
 }
 
 DicomWindow::~DicomWindow()
 {
-    int i = 0;
+    mPointerDcmServerBroswer.clear();
+    mPointerDcmDownload.clear();
 }
 
 void DicomWindow::InitToolBar()
@@ -61,5 +68,6 @@ void DicomWindow::on_action_dicom_save()
 
 void DicomWindow::on_action_dicom_pull()
 {
-    LogUtil::Debug(CODE_LOCATION, "Dicom pull ...");
+    //LogUtil::Debug(CODE_LOCATION, "Dicom pull ...");
+    mPointerDcmServerBroswer->show();
 }

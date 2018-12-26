@@ -159,6 +159,12 @@
     <ClCompile Include="WinReportTesting.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
+    <ClCompile Include="DicomDownloadWigdet.cpp">
+      <Filter>DICOM</Filter>
+    </ClCompile>
+    <ClCompile Include="DicomServerBrowserWidget.cpp">
+      <Filter>DICOM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -193,6 +199,12 @@
     </QtUic>
     <QtUic Include="WinReportTesting.ui">
       <Filter>Reports</Filter>
+    </QtUic>
+    <QtUic Include="DicomDownloadWigdet.ui">
+      <Filter>DICOM</Filter>
+    </QtUic>
+    <QtUic Include="DicomServerBrowserWidget.ui">
+      <Filter>DICOM</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +311,12 @@
     </QtMoc>
     <QtMoc Include="WinReportTesting.h">
       <Filter>Reports</Filter>
+    </QtMoc>
+    <QtMoc Include="DicomDownloadWigdet.h">
+      <Filter>DICOM</Filter>
+    </QtMoc>
+    <QtMoc Include="DicomServerBrowserWidget.h">
+      <Filter>DICOM</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

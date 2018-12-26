@@ -38,20 +38,19 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
 
+    // 调试面板
     DebugPanel::GetInstance()->ListenKeyboard(this);
     mpCpuUsageWidget = new DebugInfoHardwareWidget(this);
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("硬件信息"), mpCpuUsageWidget);
     mpDebugTestWidget = new DebugInfoTestWidget(this);
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("调试测试"), mpDebugTestWidget);
 
+    // 主窗口添加 Table 子页
     ui.mainTabWidget->tabBar()->setObjectName("mainTabWidget_TabBar");
-
     mpPageFirst = new MainTabPageFirst(this);
     ui.mainTabWidget->addTab(mpPageFirst, "First");
-
     mpPageDicom = new MainTabPageDicom(this);
     ui.mainTabWidget->addTab(mpPageDicom, "Dicom");
-
     mpPageSetting = new MainTabPageSetting(this);
     ui.mainTabWidget->addTab(mpPageSetting, "Setting");
 
@@ -63,6 +62,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpSystemTrayMenu->addAction(mpTrayActionExit);
     this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
     this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(on_trayActionExit_triggered(bool)));
+
     // 系统托盘
     mpSystemTray = new QSystemTrayIcon(this);
     mpSystemTray->setIcon(QIcon(":/AppImages/Resources/images/app.ico"));
