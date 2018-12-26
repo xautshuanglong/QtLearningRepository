@@ -40,19 +40,20 @@ public:
 protected:
     virtual bool event(QEvent *event) override;
     virtual void showEvent(QShowEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
     void InitAppListView();
     void InitAppListWidget();
-    void ShowDicomImage(QString &dcmFileName);
-    void ReadImageByQImage();
-    void ReadImageByQImageMulti();
-    void ReadJpegAndCopyToDicom();
-    void BackupFunction();
-    void SelfPaintImage8Bit();
-    void BackgroundWorkerTest();
-    void QThreadPoolTest();
-    void MyThradPoolTest();
+    //void ShowDicomImage(QString &dcmFileName);
+    //void ReadImageByQImage();
+    //void ReadImageByQImageMulti();
+    //void ReadJpegAndCopyToDicom();
+    //void BackupFunction();
+    //void SelfPaintImage8Bit();
+    //void BackgroundWorkerTest();
+    //void QThreadPoolTest();
+    //void MyThradPoolTest();
 
 private slots:
     // QListWidget signals handlers
