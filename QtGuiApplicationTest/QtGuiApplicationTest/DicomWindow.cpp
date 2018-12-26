@@ -3,6 +3,9 @@
 // QT Headers
 #include <QAction>
 
+// DCMTK Headers
+#include <dcmtk/ofstd/ofstd.h>
+
 #include <LogUtil.h>
 #include "FramelessWindowHelper.h"
 #include "DicomServerBrowserWidget.h"
@@ -25,14 +28,21 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
 
     this->InitToolBar();
 
-    // 用于打开调试面板
-    DebugPanel::GetInstance()->ListenKeyboard(this);
+    DebugPanel::GetInstance()->ListenKeyboard(this); // 用于打开调试面板
+    OFStandard::initializeNetwork();
 }
 
 DicomWindow::~DicomWindow()
 {
+    DicomServerBrowserWidget *pServerBrowserWidget = mPointerDcmServerBroswer.data();
+    delete pServerBrowserWidget;
     mPointerDcmServerBroswer.clear();
+
+    DicomDownloadWigdet *pTempDownloadWidget = mPointerDcmDownload.data();
+    delete pTempDownloadWidget;
     mPointerDcmDownload.clear();
+
+    OFStandard::shutdownNetwork();
 }
 
 void DicomWindow::InitToolBar()

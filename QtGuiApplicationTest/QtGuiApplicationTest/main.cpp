@@ -10,7 +10,7 @@
 
 // VLD
 //#define VLD_FORCE_ENABLE
-//#include <vld/vld.h>
+#include <vld/vld.h>
 
 // Self Headers
 #include <LogUtil.h>

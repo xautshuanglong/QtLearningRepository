@@ -30,7 +30,73 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="centralWidget" native="true"/>
+    <widget class="QWidget" name="centralWidget" native="true">
+     <widget class="QPushButton" name="btnGetTest">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>350</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>C-GET</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnMoveTest">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>380</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>C-MOVE</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnFindTest">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>320</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>C-FIND</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnEchoTest">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>290</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>C-ECHO</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnStoreTest">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>410</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>C-STORE</string>
+      </property>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
