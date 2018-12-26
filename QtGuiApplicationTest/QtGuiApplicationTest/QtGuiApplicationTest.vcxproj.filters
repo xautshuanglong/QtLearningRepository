@@ -52,6 +52,12 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{2b1f78cf-e8e6-4708-a541-fcb4b0d43a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DICOM">
+      <UniqueIdentifier>{7a2e442f-999c-4d3b-a820-85ab27028f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debugger">
+      <UniqueIdentifier>{516e2a7d-bc5e-4729-b720-c651d2aa9a75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -70,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainTabPageSetting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DicomWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainTabPageDicom.cpp">
@@ -94,9 +97,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousTesting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WinReportTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MessageInfo.pb.cc">
@@ -123,23 +123,11 @@
     <ClCompile Include="FopReportProtocol.cpp">
       <Filter>Reports</Filter>
     </ClCompile>
-    <ClCompile Include="DebugPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugInfoBaseWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugMenuEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TitleBarWidget.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Win32PerformanceUtil.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugInfoHardwareWidget.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppListItemDelegate.cpp">
       <Filter>Source Files</Filter>
@@ -147,11 +135,29 @@
     <ClCompile Include="SuspendedScrollBar.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="DebugInfoTestWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AppListItemWidget.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugInfoBaseWidget.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugInfoHardwareWidget.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugInfoTestWidget.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMenuEvent.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanel.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="DicomWindow.cpp">
+      <Filter>DICOM</Filter>
+    </ClCompile>
+    <ClCompile Include="WinReportTesting.cpp">
+      <Filter>Reports</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,32 +167,32 @@
     <QtUic Include="MainTabPageFirst.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DicomWindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="MainTabPageDicom.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousTesting.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="WinReportTesting.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="DebugPanel.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="DebugInfoHardwareWidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="MainTabPageSetting.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="DebugInfoTestWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="AppListItemWidget.ui">
       <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DicomWindow.ui">
+      <Filter>DICOM</Filter>
+    </QtUic>
+    <QtUic Include="DebugInfoTestWidget.ui">
+      <Filter>Debugger</Filter>
+    </QtUic>
+    <QtUic Include="DebugInfoHardwareWidget.ui">
+      <Filter>Debugger</Filter>
+    </QtUic>
+    <QtUic Include="DebugPanel.ui">
+      <Filter>Debugger</Filter>
+    </QtUic>
+    <QtUic Include="WinReportTesting.ui">
+      <Filter>Reports</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -226,11 +232,11 @@
     <ClInclude Include="FopReportProtocol.h">
       <Filter>Reports</Filter>
     </ClInclude>
-    <ClInclude Include="DebugMenuEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Win32PerformanceUtil.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugMenuEvent.h">
+      <Filter>Debugger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,26 +264,14 @@
     <QtMoc Include="MiscellaneousTesting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="WinReportTesting.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="MuPDF.h">
       <Filter>Reports</Filter>
     </QtMoc>
     <QtMoc Include="FopReportClient.h">
       <Filter>Reports</Filter>
     </QtMoc>
-    <QtMoc Include="DebugPanel.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="DebugInfoBaseWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="TitleBarWidget.h">
       <Filter>Core</Filter>
-    </QtMoc>
-    <QtMoc Include="DebugInfoHardwareWidget.h">
-      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AppListItemDelegate.h">
       <Filter>Header Files</Filter>
@@ -285,14 +279,26 @@
     <QtMoc Include="SuspendedScrollBar.h">
       <Filter>Core</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoTestWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="AppListItemWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="DebugInfoTestWidget.h">
+      <Filter>Debugger</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugInfoHardwareWidget.h">
+      <Filter>Debugger</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugInfoBaseWidget.h">
+      <Filter>Debugger</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugPanel.h">
+      <Filter>Debugger</Filter>
+    </QtMoc>
     <QtMoc Include="DicomWindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>DICOM</Filter>
+    </QtMoc>
+    <QtMoc Include="WinReportTesting.h">
+      <Filter>Reports</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
