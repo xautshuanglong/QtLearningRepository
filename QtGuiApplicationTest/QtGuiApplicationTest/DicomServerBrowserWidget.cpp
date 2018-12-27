@@ -5,6 +5,7 @@
 #include <dcmtk/config/osconfig.h>
 #include <dcmtk/dcmnet/dimse.h>
 #include <dcmtk/dcmnet/diutil.h>
+#include <dcmtk/dcmnet/dfindscu.h>
 #include <dcmtk/dcmtls/tlsopt.h>
 
 #include <LogUtil.h>
@@ -234,6 +235,65 @@ void DicomServerBrowserWidget::on_btnEchoTest_clicked()
 
 void DicomServerBrowserWidget::on_btnFindTest_clicked()
 {
+    OFString errorString;
+    int timeOut = 30;
+    unsigned int dcmServerPort = 5678;
+    OFString dcmServerHost = "localhost:5678";
+    OFString ourTitle = APPLICATIONTITLE;
+    OFString dcmServerTitle = PEERAPPLICATIONTITLE;
+    //OFString abstractSyntax = UID_FINDModalityWorklistInformationModel;
+    OFString abstractSyntax = UID_FINDPatientRootQueryRetrieveInformationModel;
+    //OFString abstractSyntax = UID_FINDStudyRootQueryRetrieveInformationModel;
+    E_TransferSyntax transferSyntax = EXS_Unknown;
+    T_DIMSE_BlockingMode  blockMode = DIMSE_BLOCKING;
+    DcmFindSCUExtractMode extractMode = FEM_none;
+    OFString              extractXMLFilename;
+    OFString              outputDirectory = ".";
+    OFCmdUnsignedInt      maxReceivePDULength = ASC_DEFAULTMAXPDU; // 32768 Conquest DICOM Server
+    OFCmdSignedInt        cancelAfterNResponses = -1;
+    OFBool                secureConnection = OFFalse;
+    OFBool                abortAssociation = OFFalse;
+
+    OFList<OFString>      fileNameList;
+
+    OFList<OFString>      overrideKeys;
+    overrideKeys.push_back("0x0010,0x0010=HEAD EXP2");
+    overrideKeys.push_back("0x0008,0x0052=PATIENT");
+
+    DcmFindSCU dcmFindScu;
+    OFCondition condition = dcmFindScu.initializeNetwork(timeOut);
+    if (condition.bad())
+    {
+        LogUtil::Error(CODE_LOCATION, "Error: %s", DimseCondition::dump(errorString, condition).c_str());
+        return;
+    }
+
+    dcmFindScu.performQuery(dcmServerHost.c_str(),
+                            dcmServerPort,
+                            ourTitle.c_str(),
+                            dcmServerTitle.c_str(),
+                            abstractSyntax.c_str(),
+                            transferSyntax,
+                            blockMode,
+                            timeOut,
+                            maxReceivePDULength,
+                            secureConnection,
+                            abortAssociation,
+                            1,
+                            extractMode,
+                            cancelAfterNResponses,
+                            &overrideKeys,
+                            NULL,
+                            &fileNameList,
+                            outputDirectory.c_str(),
+                            extractXMLFilename.c_str());
+
+    condition = dcmFindScu.dropNetwork();
+    if (condition.bad())
+    {
+        LogUtil::Error(CODE_LOCATION, "Error: %s", DimseCondition::dump(errorString, condition).c_str());
+        return;
+    }
 }
 
 void DicomServerBrowserWidget::on_btnGetTest_clicked()
