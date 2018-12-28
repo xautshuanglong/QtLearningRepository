@@ -64,6 +64,7 @@ static const char* transferSyntaxes[] =
 
 static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes);
 static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys);
+static void progressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req);
 
 DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
     : QWidget(parent)
@@ -522,5 +523,14 @@ static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overr
             LogUtil::Error(CODE_LOCATION, "Bad override key/path: %s %s", (*path).c_str(), cond.text());
         }
         path++;
+    }
+}
+
+static void progressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req)
+{
+    if (progress->state == DIMSE_StoreBegin)
+    {
+        OFString str;
+        LogUtil::Debug(CODE_LOCATION, "%s", DIMSE_dumpMessage(str, *req, DIMSE_OUTGOING).c_str());
     }
 }
