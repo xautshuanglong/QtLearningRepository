@@ -6,6 +6,8 @@
 #include <dcmtk/dcmnet/dimse.h>
 #include <dcmtk/dcmnet/diutil.h>
 #include <dcmtk/dcmnet/dfindscu.h>
+#include <dcmtk/dcmnet/scu.h>
+#include <dcmtk/dcmdata/dcpath.h>
 #include <dcmtk/dcmtls/tlsopt.h>
 
 #include <LogUtil.h>
@@ -59,6 +61,9 @@ static const char* transferSyntaxes[] =
     UID_HEVCMainProfileLevel5_1TransferSyntax,
     UID_HEVCMain10ProfileLevel5_1TransferSyntax
 };
+
+static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes);
+static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys);
 
 DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
     : QWidget(parent)
@@ -266,7 +271,6 @@ void DicomServerBrowserWidget::on_btnFindTest_clicked()
     overrideKeys.push_back("SeriesNumber");
     overrideKeys.push_back("NumberOfStudyRelatedInstances");
 
-
     DcmFindSCU dcmFindScu;
     OFCondition condition = dcmFindScu.initializeNetwork(timeOut);
     if (condition.bad())
@@ -305,6 +309,145 @@ void DicomServerBrowserWidget::on_btnFindTest_clicked()
 
 void DicomServerBrowserWidget::on_btnGetTest_clicked()
 {
+    OFString                errormsg;
+    OFCmdUnsignedInt        maxPDU = 32768; // ASC_DEFAULTMAXPDU;
+    E_TransferSyntax        storeTransferSyntax = EXS_Unknown;
+    E_TransferSyntax        getTransferSyntax = EXS_Unknown;
+    DcmStorageMode          storageMode = DCMSCU_STORAGE_DISK;
+    OFBool                  showPresentationContexts = OFFalse;
+    OFBool                  abortAssociation = OFFalse;
+    OFCmdUnsignedInt        repeatCount = 1;
+    OFCmdUnsignedInt        dcmServerPort = 5678;
+    T_DIMSE_BlockingMode    blockMode = DIMSE_BLOCKING;
+    int                     dimseTimeout = 0;
+    int                     acseTimeout = 30;
+    OFString                outputDirectory = ".";
+    OFList<OFString>        fileNameList;
+    OFList<OFString>        overrideKeys;
+
+    overrideKeys.push_back("PatientID=KHIS001");
+
+    OFList<OFString> syntaxes;
+    prepareTS(getTransferSyntax, syntaxes);
+
+    DcmSCU getSCU;
+    getSCU.setMaxReceivePDULength(maxPDU);
+    getSCU.setACSETimeout(acseTimeout);
+    getSCU.setDIMSEBlockingMode(blockMode);
+    getSCU.setDIMSETimeout(dimseTimeout);
+    getSCU.setAETitle(APPLICATIONTITLE);
+    getSCU.setPeerHostName("localhost");
+    getSCU.setPeerPort(OFstatic_cast(Uint16, dcmServerPort));
+    getSCU.setPeerAETitle(PEERAPPLICATIONTITLE);
+    getSCU.setVerbosePCMode(showPresentationContexts);
+    getSCU.addPresentationContext(UID_GETPatientRootQueryRetrieveInformationModel, syntaxes);
+
+    syntaxes.clear();
+    prepareTS(storeTransferSyntax, syntaxes);
+    for (Uint16 j = 0; j < numberOfDcmLongSCUStorageSOPClassUIDs; j++)
+    {
+        getSCU.addPresentationContext(dcmLongSCUStorageSOPClassUIDs[j], syntaxes, ASC_SC_ROLE_SCP);
+    }
+
+    getSCU.setStorageMode(storageMode);
+    if (storageMode != DCMSCU_STORAGE_IGNORE)
+    {
+        getSCU.setStorageDir(outputDirectory);
+    }
+
+    /* initialize network and negotiate association */
+    OFCondition cond = getSCU.initNetwork();
+    if (cond.bad())
+    {
+        LogUtil::Error(CODE_LOCATION, "Error: %s", DimseCondition::dump(errormsg, cond));
+        return;
+    }
+    cond = getSCU.negotiateAssociation();
+    if (cond.bad())
+    {
+        LogUtil::Error(CODE_LOCATION, "No Acceptable Presentation Contexts");
+        return;
+    }
+    cond = EC_Normal;
+    T_ASC_PresentationContextID pcid = getSCU.findPresentationContextID(UID_GETPatientRootQueryRetrieveInformationModel, "");
+    if (pcid == 0)
+    {
+        LogUtil::Error(CODE_LOCATION, "No adequate Presentation Contexts for sending C-GET");
+        return;
+    }
+
+    for (Uint16 repeat = 0; repeat < repeatCount; repeat++)
+    {
+        size_t numRuns = 1;
+        DcmFileFormat dcmff;
+        DcmDataset *dset = dcmff.getDataset();
+        OFListConstIterator(OFString) it;
+        if (!fileNameList.empty())
+        {
+            numRuns = fileNameList.size();
+            it = fileNameList.begin();
+            cond = dcmff.loadFile((*it).c_str());
+            if (cond.bad())
+            {
+                LogUtil::Error(CODE_LOCATION, "Error: %s", DimseCondition::dump(errormsg, cond));
+                return;
+            }
+            dset = dcmff.getDataset();
+        }
+        OFList<RetrieveResponse*> responses;
+        for (Uint16 i = 0; i < numRuns; i++)
+        {
+            applyOverrideKeys(dset, overrideKeys);
+            cond = getSCU.sendCGETRequest(pcid, dset, &responses);
+            if (cond.bad())
+            {
+                return;
+            }
+            if (numRuns > 1)
+            {
+                it++;
+                cond = dcmff.loadFile((*it).c_str());
+                if (cond.bad())
+                {
+                    LogUtil::Error(CODE_LOCATION, "Error: %s", DimseCondition::dump(errormsg, cond).c_str());
+                    return;
+                }
+                dset = dcmff.getDataset();
+            }
+        }
+        if (!responses.empty())
+        {
+            LogUtil::Debug(CODE_LOCATION, "Final status report from last C-GET message:");
+            (*(--responses.end()))->print();
+            OFListIterator(RetrieveResponse*) iter = responses.begin();
+            OFListConstIterator(RetrieveResponse*) last = responses.end();
+            while (iter != last)
+            {
+                delete (*iter);
+                iter = responses.erase(iter);
+            }
+        }
+    }
+
+    if (cond == EC_Normal)
+    {
+        if (abortAssociation)
+            getSCU.abortAssociation();
+        else
+            getSCU.releaseAssociation();
+    }
+    else
+    {
+        if (cond == DUL_PEERREQUESTEDRELEASE)
+            getSCU.closeAssociation(DCMSCU_PEER_REQUESTED_RELEASE);
+        else if (cond == DUL_PEERABORTEDASSOCIATION)
+            getSCU.closeAssociation(DCMSCU_PEER_ABORTED_ASSOCIATION);
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "Get SCU Failed: %s", DimseCondition::dump(errormsg, cond).c_str());
+            getSCU.abortAssociation();
+        }
+    }
 }
 
 void DicomServerBrowserWidget::on_btnMoveTest_clicked()
@@ -313,4 +456,71 @@ void DicomServerBrowserWidget::on_btnMoveTest_clicked()
 
 void DicomServerBrowserWidget::on_btnStoreTest_clicked()
 {
+}
+
+static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes)
+{
+    switch (ts)
+    {
+    case EXS_LittleEndianImplicit:
+        syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+        break;
+    case EXS_LittleEndianExplicit:
+        syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_BigEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_LittleEndianImplicitTransferSyntax);
+        break;
+    case EXS_BigEndianExplicit:
+        syntaxes.push_back(UID_BigEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_LittleEndianImplicitTransferSyntax);
+        break;
+#ifdef WITH_ZLIB
+    case EXS_DeflatedLittleEndianExplicit:
+        /* we prefer Deflated Little Endian Explicit */
+        syntaxes.push_back(UID_DeflatedExplicitVRLittleEndianTransferSyntax);
+        syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_BigEndianExplicitTransferSyntax);
+        syntaxes.push_back(UID_LittleEndianImplicitTransferSyntax);
+        break;
+#endif
+    default:
+        DcmXfer xfer(ts);
+        if (xfer.isEncapsulated())
+        {
+            syntaxes.push_back(xfer.getXferID());
+        }
+        if (gLocalByteOrder == EBO_LittleEndian)
+        {
+            syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+            syntaxes.push_back(UID_BigEndianExplicitTransferSyntax);
+        }
+        else
+        {
+            syntaxes.push_back(UID_BigEndianExplicitTransferSyntax);
+            syntaxes.push_back(UID_LittleEndianExplicitTransferSyntax);
+        }
+        syntaxes.push_back(UID_LittleEndianImplicitTransferSyntax);
+        break;
+    }
+}
+
+static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys)
+{
+    /* replace specific keys by those in overrideKeys */
+    OFListConstIterator(OFString) path = overrideKeys.begin();
+    OFListConstIterator(OFString) endOfList = overrideKeys.end();
+    DcmPathProcessor proc;
+    proc.setItemWildcardSupport(OFFalse);
+    proc.checkPrivateReservations(OFFalse);
+    OFCondition cond;
+    while (path != endOfList)
+    {
+        cond = proc.applyPathWithValue(dataset, *path);
+        if (cond.bad())
+        {
+            LogUtil::Error(CODE_LOCATION, "Bad override key/path: %s %s", (*path).c_str(), cond.text());
+        }
+        path++;
+    }
 }
