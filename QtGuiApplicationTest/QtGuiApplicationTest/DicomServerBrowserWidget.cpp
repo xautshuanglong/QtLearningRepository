@@ -242,8 +242,8 @@ void DicomServerBrowserWidget::on_btnFindTest_clicked()
     OFString ourTitle = APPLICATIONTITLE;
     OFString dcmServerTitle = PEERAPPLICATIONTITLE;
     //OFString abstractSyntax = UID_FINDModalityWorklistInformationModel;
-    OFString abstractSyntax = UID_FINDPatientRootQueryRetrieveInformationModel;
-    //OFString abstractSyntax = UID_FINDStudyRootQueryRetrieveInformationModel;
+    //OFString abstractSyntax = UID_FINDPatientRootQueryRetrieveInformationModel;
+    OFString abstractSyntax = UID_FINDStudyRootQueryRetrieveInformationModel;
     E_TransferSyntax transferSyntax = EXS_Unknown;
     T_DIMSE_BlockingMode  blockMode = DIMSE_BLOCKING;
     DcmFindSCUExtractMode extractMode = FEM_none;
@@ -257,8 +257,15 @@ void DicomServerBrowserWidget::on_btnFindTest_clicked()
     OFList<OFString>      fileNameList;
 
     OFList<OFString>      overrideKeys;
-    overrideKeys.push_back("0x0010,0x0010=HEAD EXP2");
-    overrideKeys.push_back("0x0008,0x0052=PATIENT");
+    overrideKeys.push_back("PatientName=HEAD EXP2");
+    overrideKeys.push_back("QueryRetrieveLevel=STUDY");
+    overrideKeys.push_back("InstanceNumber");
+    overrideKeys.push_back("PatientID");
+    overrideKeys.push_back("StudyInstanceUID");
+    overrideKeys.push_back("SeriesInstanceUID");
+    overrideKeys.push_back("SeriesNumber");
+    overrideKeys.push_back("NumberOfStudyRelatedInstances");
+
 
     DcmFindSCU dcmFindScu;
     OFCondition condition = dcmFindScu.initializeNetwork(timeOut);
@@ -307,4 +314,3 @@ void DicomServerBrowserWidget::on_btnMoveTest_clicked()
 void DicomServerBrowserWidget::on_btnStoreTest_clicked()
 {
 }
-
