@@ -62,9 +62,9 @@ static const char* transferSyntaxes[] =
     UID_HEVCMain10ProfileLevel5_1TransferSyntax
 };
 
-static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes);
-static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys);
-static void progressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req);
+static void GetTest_PrepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes);
+static void GetTest_ApplyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys);
+static void StoreTest_ProgressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req);
 
 DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
     : QWidget(parent)
@@ -327,7 +327,7 @@ void DicomServerBrowserWidget::on_btnGetTest_clicked()
     overrideKeys.push_back("PatientID=KHIS001");
 
     OFList<OFString> syntaxes;
-    prepareTS(getTransferSyntax, syntaxes);
+    GetTest_PrepareTS(getTransferSyntax, syntaxes);
 
     DcmSCU getSCU;
     getSCU.setMaxReceivePDULength(maxPDU);
@@ -342,7 +342,7 @@ void DicomServerBrowserWidget::on_btnGetTest_clicked()
     getSCU.addPresentationContext(UID_GETPatientRootQueryRetrieveInformationModel, syntaxes);
 
     syntaxes.clear();
-    prepareTS(storeTransferSyntax, syntaxes);
+    GetTest_PrepareTS(storeTransferSyntax, syntaxes);
     for (Uint16 j = 0; j < numberOfDcmLongSCUStorageSOPClassUIDs; j++)
     {
         getSCU.addPresentationContext(dcmLongSCUStorageSOPClassUIDs[j], syntaxes, ASC_SC_ROLE_SCP);
@@ -396,7 +396,7 @@ void DicomServerBrowserWidget::on_btnGetTest_clicked()
         OFList<RetrieveResponse*> responses;
         for (Uint16 i = 0; i < numRuns; i++)
         {
-            applyOverrideKeys(dset, overrideKeys);
+            GetTest_ApplyOverrideKeys(dset, overrideKeys);
             cond = getSCU.sendCGETRequest(pcid, dset, &responses);
             if (cond.bad())
             {
@@ -457,7 +457,7 @@ void DicomServerBrowserWidget::on_btnStoreTest_clicked()
 {
 }
 
-static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes)
+static void GetTest_PrepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes)
 {
     switch (ts)
     {
@@ -504,7 +504,7 @@ static void prepareTS(E_TransferSyntax ts, OFList<OFString>& syntaxes)
     }
 }
 
-static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys)
+static void GetTest_ApplyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overrideKeys)
 {
     /* replace specific keys by those in overrideKeys */
     OFListConstIterator(OFString) path = overrideKeys.begin();
@@ -524,11 +524,26 @@ static void applyOverrideKeys(DcmDataset *dataset, const OFList<OFString> &overr
     }
 }
 
-static void progressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req)
+static void StoreTest_ProgressCallback(void *callbackData, T_DIMSE_StoreProgress *progress, T_DIMSE_C_StoreRQ * req)
 {
     if (progress->state == DIMSE_StoreBegin)
     {
         OFString str;
         LogUtil::Debug(CODE_LOCATION, "%s", DIMSE_dumpMessage(str, *req, DIMSE_OUTGOING).c_str());
+    }
+
+    switch (progress->state)
+    {
+    case DIMSE_StoreBegin:
+        LogUtil::Debug(CODE_LOCATION, "StoreBegin ========================");
+        break;
+    case DIMSE_StoreProgressing:
+        LogUtil::Debug(CODE_LOCATION, "StoreProgressing: %d / %d", progress->progressBytes, progress->totalBytes);
+        break;
+    case DIMSE_StoreEnd:
+        LogUtil::Debug(CODE_LOCATION, "StoreEnd ========================");
+        break;
+    default:
+        break;
     }
 }
