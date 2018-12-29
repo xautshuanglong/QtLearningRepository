@@ -24,6 +24,8 @@ public:
 
 private:
     void InitToolBar();
+    void InitializeDicomEnvironment();
+    void UninitializeDicomEnvironment();
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;

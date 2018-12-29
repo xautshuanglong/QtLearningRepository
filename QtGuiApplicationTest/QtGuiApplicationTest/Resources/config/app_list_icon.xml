@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IconList>
+    <AppIcons>
+        <Icon id="1" label="诊断工具" description="test1"/>
+        <Icon id="2" label="垃圾回收" description="test2"/>
+        <Icon id="3" label="磁盘清理" description="test3"/>
+        <Icon id="4" label="微信聊天" description="test4"/>
+    </AppIcons>
+</IconList>

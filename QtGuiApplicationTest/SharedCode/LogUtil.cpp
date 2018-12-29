@@ -44,7 +44,7 @@ void LogUtil::Init(LogLevelType level, ZLogCallback zlogHandler/* =/* =nullptr *
     {
         mLoggerID = zlog::IZLogManager::getRef().createLogger("LogUtil");
     }
-    zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./log/");
+    zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./logs/");
     zlog::IZLogManager::getRef().setFilterLogLevel(mLoggerID, level);
     zlog::IZLogManager::getRef().setLogFileSizeLimit(mLoggerID, 10);
     zlog::IZLogManager::getRef().setIsDisplayOnConsole(mLoggerID, true);

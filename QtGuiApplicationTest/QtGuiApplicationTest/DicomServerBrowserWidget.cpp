@@ -84,8 +84,6 @@ DicomServerBrowserWidget::~DicomServerBrowserWidget()
 
 void DicomServerBrowserWidget::on_btnEchoTest_clicked()
 {
-    DCM_dcmnetLogger.setLogLevel(OFLogger::DEBUG_LOG_LEVEL);
-
     DcmTLSOptions         tlsOptions(NET_REQUESTOR);
     T_ASC_Network        *pNetwork = nullptr;
     T_ASC_Parameters     *pAscParams = nullptr;
