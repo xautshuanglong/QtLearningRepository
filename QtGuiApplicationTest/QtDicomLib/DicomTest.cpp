@@ -523,14 +523,16 @@ void DicomTest::DcmtkTestStore()
     const int repeatCount = 1;
     OFOStringStream optStream;
 
-    const char *opt_peer = NULL;
-    OFCmdUnsignedInt opt_port = 104;
+    const char *opt_peer = "localhost";
+    OFCmdUnsignedInt opt_port = 5678;
     const char *opt_peerTitle = PEERAPPLICATIONTITLE;
     const char *opt_ourTitle = APPLICATIONTITLE;
 
     OFList<OFString> fileNameList;
     OFList<OFString> sopClassUIDList;
     OFList<OFString> sopInstanceUIDList;
+
+    fileNameList.push_back("./image18.dcm");
 
     OFString temp_str;
     OFConsoleApplication app(OFFIS_CONSOLE_APPLICATION, "DICOM storage (C-STORE) SCU", rcsid);
@@ -1098,15 +1100,13 @@ static OFCondition StoreTest_AddStoragePresentationContexts(T_ASC_Parameters *pa
     return cond;
 }
 
-static int
-secondsSince1970()
+static int secondsSince1970()
 {
     time_t t = time(NULL);
     return OFstatic_cast(int, t);
 }
 
-static OFString
-intToString(int i)
+static OFString intToString(int i)
 {
     char numbuf[32];
     sprintf(numbuf, "%d", i);
