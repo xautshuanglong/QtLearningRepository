@@ -311,6 +311,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
+		SharedCode\SharedCode.vcxitems*{37b56bb3-5e9a-4170-9ef3-4c7433d10f76}*SharedItemsImports = 4
 		SharedCode\SharedCode.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
 		SharedCode\SharedCode.vcxitems*{b12702ad-abfb-343a-a199-8e24837244a3}*SharedItemsImports = 4
 		SharedCode\SharedCode.vcxitems*{dbe3666b-5bab-4d98-84e6-af03523b008c}*SharedItemsImports = 4

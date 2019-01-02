@@ -164,6 +164,12 @@ $RECYCLE.BIN/
 **/libs/*/x[86][64]/[Dd]ebug/
 **/libs/*/x[86][64]/[Rr]elease
 **/libs/dcmtk/**
+**/libs/dcmtk-libiconv-1.15/**
+**/libs/dcmtk-libpng-1.6.34/**
+**/libs/dcmtk-libxml2-2.9.7/**
+**/libs/dcmtk-zlib-1.2.11/**
+**/libs/dcmtk-libtiff-4.0.9/**
+**/libs/dcmtk-openssl-1.1.0g/**
 
 # QT generated files
 **/GeneratedFiles/**
