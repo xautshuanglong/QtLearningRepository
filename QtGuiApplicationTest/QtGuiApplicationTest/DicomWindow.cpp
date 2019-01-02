@@ -3,13 +3,8 @@
 // QT Headers
 #include <QAction>
 
-// DCMTK Headers
-#include <dcmtk/oflog/oflog.h>
-#include <dcmtk/ofstd/ofstd.h>
-#include <dcmtk/ofstd/ofconapp.h>
-#include <dcmtk/ofstd/ofcmdln.h>
-
 #include <LogUtil.h>
+#include <DicomEnv.h>
 #include "FramelessWindowHelper.h"
 #include "DicomServerBrowserWidget.h"
 #include "DicomDownloadWigdet.h"
@@ -30,8 +25,8 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     //mpDicomServerBroswer->setStyleSheet("background-color: green;");
 
     this->InitToolBar();
-    this->InitializeDicomEnvironment(); // DICOM 初始化入口
     DebugPanel::GetInstance()->ListenKeyboard(this); // 用于打开调试面板
+    DicomEnv::Initialize();
 }
 
 DicomWindow::~DicomWindow()
@@ -44,7 +39,7 @@ DicomWindow::~DicomWindow()
     delete pTempDownloadWidget;
     mPointerDcmDownload.clear();
 
-    this->UninitializeDicomEnvironment();
+    DicomEnv::Uninitialize();
 }
 
 void DicomWindow::InitToolBar()
@@ -61,48 +56,6 @@ void DicomWindow::InitToolBar()
     this->connect(pActionOpen, SIGNAL(triggered()), SLOT(on_action_dicom_open()));
     this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_dicom_save()));
     this->connect(pActionPull, SIGNAL(triggered()), SLOT(on_action_dicom_pull()));
-}
-
-void DicomWindow::InitializeDicomEnvironment()
-{
-    QString appName = QCoreApplication::applicationName();
-    QString appFilePath = QCoreApplication::applicationFilePath();
-    QString appDirPath = QCoreApplication::applicationDirPath();
-    OFConsoleApplication dcmConsoleApp("QtDemo_dcmtk");
-    OFCommandLine cmd;
-    OFLog::addOptions(cmd);
-
-    char tempFilePath[MAX_PATH] = { 0 };
-    std::memcpy(tempFilePath, appFilePath.toStdString().c_str(), appFilePath.length());
-    char tempConfigPath[MAX_PATH] = { 0 };
-    appDirPath.append("/config/log4cplus.properties");
-    std::memcpy(tempConfigPath, appDirPath.toStdString().c_str(), appDirPath.length());
-    char *argValues[] =
-    {
-        tempFilePath,
-        "-lc", // "--log-config",
-        tempConfigPath
-    };
-    int argc = sizeof(argValues) / sizeof(char*);
-    if (!OFStandard::fileExists(tempConfigPath))
-    {
-        LogUtil::Warn(CODE_LOCATION, "File does not exist: %s", tempConfigPath);
-    }
-    else if (!OFStandard::isReadable(tempConfigPath))
-    {
-        LogUtil::Warn(CODE_LOCATION, "File is not readable: %s", tempConfigPath);
-    }
-    else
-    {
-        dcmConsoleApp.parseCommandLine(cmd, argc, argValues);
-        OFLog::configureFromCommandLine(cmd, dcmConsoleApp);
-    }
-    OFStandard::initializeNetwork(); // 初始化 DICOM 网络环境
-}
-
-void DicomWindow::UninitializeDicomEnvironment()
-{
-    OFStandard::shutdownNetwork();
 }
 
 void DicomWindow::closeEvent(QCloseEvent *event)

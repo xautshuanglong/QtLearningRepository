@@ -96,13 +96,13 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DicomEnv.cpp" />
     <ClCompile Include="DicomTest.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="QtDicomLib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DicomEnv.h" />
     <ClInclude Include="DicomTest.h" />
-    <ClInclude Include="QtDicomLib.h" />
     <ClInclude Include="qtdicomlib_global.h" />
   </ItemGroup>
   <ItemGroup>
