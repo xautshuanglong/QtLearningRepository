@@ -127,7 +127,6 @@ void DicomFileParserTest::ParseDicomFile()
                     pTempElement->getString(pTempBuffer);
                 }
                 OFLOG_DEBUG(gLogger, " " << tempTag.toString() << " " << tempTag.getVRName() << " --> " << tempTag.getTagName()
-                            << " NumOfValues:" << pTempObj->getNumberOfValues()
                             << "  " << (pTempBuffer ? pTempBuffer : "null")
                             << "[len=" << pTempObj->getLengthField() << "]"
                 );
