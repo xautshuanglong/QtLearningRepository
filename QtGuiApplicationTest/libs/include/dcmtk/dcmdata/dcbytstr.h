@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (C) 1994-2018, OFFIS e.V.
+ *  Copyright (C) 1994-2017, OFFIS e.V.
  *  All rights reserved.  See COPYRIGHT file for details.
  *
  *  This software and supporting documentation were developed by
@@ -90,15 +90,15 @@ class DCMTK_DCMDATA_EXPORT DcmByteString: public DcmElement
      *  object (if applicable).
      *  @param  rhs the right hand side of the comparison
      *  @return 0 if the object values are equal.
-     *    -1 if this element has fewer components than the rhs element.
-     *    Also -1 if the value of the first component that does not match
-     *    is lower in this object than in rhs. Also returned if rhs
-     *    cannot be casted to this object type or both objects are of
-     *    different VR (i.e. the DcmEVR returned by the element's ident()
-     *    call are different).
-     *    1 if either this element has more components than the rhs element, or
-     *    if the first component that does not match is greater in this object
-     *    than in rhs object.
+     *          -1 if this element has fewer components than the rhs element.
+     *          Also -1 if the value of the first component that does not match
+     *          is lower in this object than in rhs. Also returned if rhs
+     *          cannot be casted to this object type or both objects are of
+     *          different VR (i.e. the DcmEVR returned by the element's ident()
+     *          call are different).
+     *          1 if either this element has more components than the rhs element, or
+     *          if the first component that does not match is greater in this object than
+     *          in rhs object.
      */
     virtual int compare(const DcmElement& rhs) const;
 
@@ -139,12 +139,6 @@ class DCMTK_DCMDATA_EXPORT DcmByteString: public DcmElement
      *  @return number of string components (separated by a backslash)
      */
     virtual unsigned long getVM();
-
-    /** get number of values stored in this element.
-     *  The result is the same as getVM() unless overwritten in a derived class.
-     *  @return number of values in this element
-     */
-    virtual unsigned long getNumberOfValues();
 
     /** get length of the stored value.
      *  Trailing spaces (padding characters) are ignored for the "real" length.

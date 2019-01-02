@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (C) 1994-2018, OFFIS e.V.
+ *  Copyright (C) 1994-2017, OFFIS e.V.
  *  All rights reserved.  See COPYRIGHT file for details.
  *
  *  This software and supporting documentation were developed by
@@ -269,10 +269,7 @@ public:
       setVR(evr);
     }
 
-    /** constructor.
-     *  Please note that only the first two characters of the passed string are
-     *  actually checked.  Value Representations that are labeled for internal
-     *  use only are mapped to EVR_UNKNOWN.
+    /** constructor
      *  @param vrName symbolic name of value representation
      */
     DcmVR(const char* vrName)
@@ -294,10 +291,7 @@ public:
      */
     void setVR(DcmEVR evr);
 
-    /** assign new VR value by name.
-     *  Please note that only the first two characters of the passed string are
-     *  actually checked.  Value Representations that are labeled for internal
-     *  use only are mapped to EVR_UNKNOWN.
+    /** assign new VR value by name
      *  @param vrName symbolic name of value representation
      */
     void setVR(const char* vrName);

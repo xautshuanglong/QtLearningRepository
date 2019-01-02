@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (C) 2000-2018, OFFIS e.V.
+ *  Copyright (C) 2000-2017, OFFIS e.V.
  *  All rights reserved.  See COPYRIGHT file for details.
  *
  *  This software and supporting documentation were developed by
@@ -81,18 +81,14 @@ template<class T> class DSRListOfItems
      */
     inline DSRListOfItems<T> &operator=(const DSRListOfItems<T> &lst)
     {
-        /* check for self-assignment, which would not work */
-        if (this != &lst)
+        /* class OFList has no overloaded assignment operator */
+        ItemList.clear();
+        const OFLIST_TYPENAME OFListConstIterator(T) endPos = lst.ItemList.end();
+        OFLIST_TYPENAME OFListConstIterator(T) iterator = lst.ItemList.begin();
+        while (iterator != endPos)
         {
-            /* class OFList has no overloaded assignment operator */
-            ItemList.clear();
-            const OFLIST_TYPENAME OFListConstIterator(T) endPos = lst.ItemList.end();
-            OFLIST_TYPENAME OFListConstIterator(T) iterator = lst.ItemList.begin();
-            while (iterator != endPos)
-            {
-                ItemList.push_back(*iterator);
-                iterator++;
-            }
+            ItemList.push_back(*iterator);
+            iterator++;
         }
         return *this;
     }

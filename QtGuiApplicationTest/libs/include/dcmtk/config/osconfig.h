@@ -48,7 +48,7 @@
 /* #undef C_RIGHTSHIFT_UNSIGNED */
 
 /* Define the DCMTK default path */
-#define DCMTK_PREFIX "E:\\VS2015\\DICOM\\dcmtk\\build\\x64\\InstallDir"
+#define DCMTK_PREFIX "E:\\WorkMGI\\08_unhandled\\jiangchuanbiao\\DicomSources\\dcmtk\\build\\InstallDir"
 
 /* Define the default data dictionary path for the dcmdata library package */
 #define DCM_DICT_DEFAULT_PATH ""
@@ -461,16 +461,16 @@
 /* #undef HAVE_PROTOTYPE_GETTIMEOFDAY */
 
 /* Define if your system has a prototype for isinf in math.h */
-#define HAVE_PROTOTYPE_ISINF 1
+/* #undef HAVE_PROTOTYPE_ISINF */
 
 /* Define if your system has a prototype for isnan in math.h */
-#define HAVE_PROTOTYPE_ISNAN 1
+/* #undef HAVE_PROTOTYPE_ISNAN */
 
 /* Define if your system has a prototype for std::isinf in cmath */
-#define HAVE_PROTOTYPE_STD__ISINF 1
+/* #undef HAVE_PROTOTYPE_STD__ISINF */
 
 /* Define if your system has a prototype for std::isnan in cmath */
-#define HAVE_PROTOTYPE_STD__ISNAN 1
+/* #undef HAVE_PROTOTYPE_STD__ISNAN */
 
 /* Define if your system has a prototype for fpclassf in math.h */
 #define HAVE_PROTOTYPE__FPCLASSF 1
@@ -840,13 +840,13 @@
 /* #undef PACKAGE_TARNAME */
 
 /* Define to the date of this package. */
-#define PACKAGE_DATE "DEV"
+#define PACKAGE_DATE "2018-02-05"
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "3.6.3"
 
 /* Define to the version suffix of this package. */
-#define PACKAGE_VERSION_SUFFIX "+"
+#define PACKAGE_VERSION_SUFFIX ""
 
 /* Define to the version number of this package. */
 #define PACKAGE_VERSION_NUMBER 363
@@ -904,7 +904,7 @@
 #define USE_STD_CXX_INCLUDES
 
 /* Define if we are compiling with libiconv support. */
-/* #undef WITH_LIBICONV */
+#define WITH_LIBICONV
 
 /* Define if the C standard library has iconv builtin. */
 /* #undef WITH_STDLIBC_ICONV */
@@ -924,16 +924,16 @@
 /* #undef LIBICONV_SECOND_ARGUMENT_CONST */
 
 /* Define if we are compiling with libpng support */
-/* #undef WITH_LIBPNG */
+#define WITH_LIBPNG
 
 /* Define if we are compiling with libtiff support */
-/* #undef WITH_LIBTIFF */
+#define WITH_LIBTIFF
 
 /* Define if we are compiling with libxml support */
-/* #undef WITH_LIBXML */
+#define WITH_LIBXML
 
 /* Define if we are compiling with OpenSSL support */
-/* #undef WITH_OPENSSL */
+#define WITH_OPENSSL
 
 /* Define if we are compiling for built-in private tag dictionary */
 /* #undef ENABLE_PRIVATE_TAGS */
@@ -945,7 +945,7 @@
 /* #undef WITH_TCPWRAPPER */
 
 /* Define if we are compiling with zlib support */
-/* #undef WITH_ZLIB */
+#define WITH_ZLIB
 
 /* Define if we are compiling with any type of Multi-thread support */
 #define WITH_THREADS
@@ -1073,9 +1073,6 @@ typedef unsigned long ulong;
 /* Define if the compiler supports operator delete (std::nothrow) */
 #define HAVE_NOTHROW_DELETE 1
 
-/* Define if the compiler supports static_assert */
-#define HAVE_STATIC_ASSERT 1
-
 /* Define if your system has a prototype for std::vfprintf in stdarg.h */
 #define HAVE_PROTOTYPE_STD__VFPRINTF 1
 
@@ -1095,7 +1092,7 @@ typedef unsigned long ulong;
 /* #undef HAVE_SIGJMP_BUF */
 
 /* Define if your OpenSSL library provides the SSL_CTX_GET0_PARAM function */
-/* #undef HAVE_SSL_CTX_GET0_PARAM */
+#define HAVE_SSL_CTX_GET0_PARAM 1
 
 /* Define if your OpenSSL library provides the RAND_egd function */
 /* #undef HAVE_RAND_EGD */

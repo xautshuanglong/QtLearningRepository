@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (C) 2017-2018, J. Riesmeier, Oldenburg, Germany
+ *  Copyright (C) 2017, J. Riesmeier, Oldenburg, Germany
  *  All rights reserved.  See COPYRIGHT file for details.
  *
  *  This software and supporting documentation are maintained by
@@ -74,10 +74,6 @@ class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeFilterList
 
   public:
 
-    /** default constructor
-     */
-    DSRDocumentTreeNodeFilterList();
-
     /** destructor
      */
     virtual ~DSRDocumentTreeNodeFilterList();
@@ -101,14 +97,6 @@ class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeFilterList
 
     /// list of pointers to filter criteria
     OFList<DSRDocumentTreeNodeFilter *> FilterList;
-
-
-  private:
-
- // --- declaration of copy constructor and assignment operator
-
-    DSRDocumentTreeNodeFilterList(const DSRDocumentTreeNodeFilterList &);
-    DSRDocumentTreeNodeFilterList &operator=(const DSRDocumentTreeNodeFilterList &);
 };
 
 
@@ -163,7 +151,7 @@ class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeHasChildrenFilter
 
   public:
 
-    /** (default) constructor
+    /** constructor
      ** @param  hasChildren  mode specifying whether the filter matches on the presence
      *                       (default) or absence of child nodes
      */
@@ -197,7 +185,7 @@ class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeHasSiblingsFilter
 
   public:
 
-    /** (default) constructor
+    /** constructor
      ** @param  hasSiblings  mode specifying whether the filter matches on the presence
      *                       (default) or absence of sibling nodes
      */
@@ -219,40 +207,6 @@ class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeHasSiblingsFilter
     /// mode specifying whether the filter matches on the presence or absence of sibling
     /// nodes
     const OFBool HasSiblings;
-};
-
-
-/** Class implementing a document tree node filter that checks for the presence (or
- *  absence) of a concept name.  An empty concept name is treated as absent.
- */
-class DCMTK_DCMSR_EXPORT DSRDocumentTreeNodeHasConceptNameFilter
-  : public DSRDocumentTreeNodeFilter
-{
-
-  public:
-
-    /** constructor
-     ** @param  hasConceptName  mode specifying whether the filter matches on the
-     *                          presence (default) or absence of a concept name
-     */
-    DSRDocumentTreeNodeHasConceptNameFilter(const OFBool hasConceptName = OFTrue);
-
-    /** destructor
-     */
-    virtual ~DSRDocumentTreeNodeHasConceptNameFilter();
-
-    /** check whether given node matches the filter criterion
-     ** @param  node  pointer to the node to be checked
-     ** @return OFTrue if 'node' matches the filter criterion, OFFalse otherwise
-     */
-    virtual OFBool matches(const DSRDocumentTreeNode *node) const;
-
-
-  private:
-
-    /// mode specifying whether the filter matches on the presence or absence of a
-    /// concept name
-    const OFBool HasConceptName;
 };
 
 

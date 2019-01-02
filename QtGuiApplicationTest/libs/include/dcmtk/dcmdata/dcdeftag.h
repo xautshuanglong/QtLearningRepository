@@ -4,7 +4,7 @@
 **
 **   User: joergr
 **   Host: thinkpad
-**   Date: 2018-04-12 18:52:47
+**   Date: 2017-12-07 15:02:11
 **   Prog: /home/joergr/Source/dcmtk-full/public/dcmdata/libsrc/mkdeftag
 **
 **   From: ../data/dicom.dic
@@ -17,12 +17,12 @@
 
 #include "dcmtk/dcmdata/dctagkey.h"
 
-#define DCM_DICT_DEFTAG_BUILD_DATE "2018-04-12 18:52:47"
+#define DCM_DICT_DEFTAG_BUILD_DATE "2017-12-07 15:02:11"
 
 
 /*
 ** Fixed Tags in ascending (gggg,eeee) order.
-** Number of entries: 4263
+** Number of entries: 4254
 ** Tags with a repeating component (repeating tags) are listed later.
 */
 #define DCM_CommandGroupLength                   DcmTagKey(0x0000, 0x0000)
@@ -238,7 +238,6 @@
 #define DCM_ReferencedRealWorldValueMappingInstanceSequence DcmTagKey(0x0008, 0x114b)
 #define DCM_ReferencedSOPClassUID                DcmTagKey(0x0008, 0x1150)
 #define DCM_ReferencedSOPInstanceUID             DcmTagKey(0x0008, 0x1155)
-#define DCM_DefinitionSourceSequence             DcmTagKey(0x0008, 0x1156)
 #define DCM_SOPClassesSupported                  DcmTagKey(0x0008, 0x115a)
 #define DCM_ReferencedFrameNumber                DcmTagKey(0x0008, 0x1160)
 #define DCM_SimpleFrameList                      DcmTagKey(0x0008, 0x1161)
@@ -2230,7 +2229,6 @@
 #define DCM_SpecimenPreparationStepContentItemSequence DcmTagKey(0x0040, 0x0612)
 #define DCM_SpecimenLocalizationContentItemSequence DcmTagKey(0x0040, 0x0620)
 #define DCM_RETIRED_SlideIdentifier              DcmTagKey(0x0040, 0x06fa)
-#define DCM_WholeSlideMicroscopyImageFrameTypeSequence DcmTagKey(0x0040, 0x0710)
 #define DCM_ImageCenterPointCoordinatesSequence  DcmTagKey(0x0040, 0x071a)
 #define DCM_XOffsetInSlideCoordinateSystem       DcmTagKey(0x0040, 0x072a)
 #define DCM_YOffsetInSlideCoordinateSystem       DcmTagKey(0x0040, 0x073a)
@@ -2277,8 +2275,7 @@
 #define DCM_RETIRED_ScheduledProcessingApplicationsCodeSequence DcmTagKey(0x0040, 0x4004)
 #define DCM_ScheduledProcedureStepStartDateTime  DcmTagKey(0x0040, 0x4005)
 #define DCM_RETIRED_MultipleCopiesFlag           DcmTagKey(0x0040, 0x4006)
-#define DCM_RETIRED_PerformedProcessingApplicationsCodeSequence DcmTagKey(0x0040, 0x4007)
-#define DCM_ScheduledProcedureStepExpirationDateTime DcmTagKey(0x0040, 0x4008)
+#define DCM_PerformedProcessingApplicationsCodeSequence DcmTagKey(0x0040, 0x4007)
 #define DCM_HumanPerformerCodeSequence           DcmTagKey(0x0040, 0x4009)
 #define DCM_ScheduledProcedureStepModificationDateTime DcmTagKey(0x0040, 0x4010)
 #define DCM_ExpectedCompletionDateTime           DcmTagKey(0x0040, 0x4011)
@@ -2598,8 +2595,6 @@
 #define DCM_ColumnPositionInTotalImagePixelMatrix DcmTagKey(0x0048, 0x021e)
 #define DCM_RowPositionInTotalImagePixelMatrix   DcmTagKey(0x0048, 0x021f)
 #define DCM_PixelOriginInterpretation            DcmTagKey(0x0048, 0x0301)
-#define DCM_NumberOfOpticalPaths                 DcmTagKey(0x0048, 0x0302)
-#define DCM_TotalPixelMatrixFocalPlanes          DcmTagKey(0x0048, 0x0303)
 #define DCM_CalibrationImage                     DcmTagKey(0x0050, 0x0004)
 #define DCM_DeviceSequence                       DcmTagKey(0x0050, 0x0010)
 #define DCM_ContainerComponentTypeCodeSequence   DcmTagKey(0x0050, 0x0012)
@@ -2895,9 +2890,6 @@
 #define DCM_TwoDPlaneIntersection                DcmTagKey(0x0068, 0x65f0)
 #define DCM_ThreeDPlaneOrigin                    DcmTagKey(0x0068, 0x6610)
 #define DCM_ThreeDPlaneNormal                    DcmTagKey(0x0068, 0x6620)
-#define DCM_ModelModification                    DcmTagKey(0x0068, 0x7001)
-#define DCM_ModelMirroring                       DcmTagKey(0x0068, 0x7002)
-#define DCM_ModelUsageCodeSequence               DcmTagKey(0x0068, 0x7003)
 #define DCM_GraphicAnnotationSequence            DcmTagKey(0x0070, 0x0001)
 #define DCM_GraphicLayer                         DcmTagKey(0x0070, 0x0002)
 #define DCM_BoundingBoxAnnotationUnits           DcmTagKey(0x0070, 0x0003)
@@ -2998,7 +2990,6 @@
 #define DCM_UsedFiducialsSequence                DcmTagKey(0x0070, 0x0314)
 #define DCM_GraphicCoordinatesDataSequence       DcmTagKey(0x0070, 0x0318)
 #define DCM_FiducialUID                          DcmTagKey(0x0070, 0x031a)
-#define DCM_ReferencedFiducialUID                DcmTagKey(0x0070, 0x031b)
 #define DCM_FiducialSetSequence                  DcmTagKey(0x0070, 0x031c)
 #define DCM_FiducialSequence                     DcmTagKey(0x0070, 0x031e)
 #define DCM_FiducialsPropertyCategoryCodeSequence DcmTagKey(0x0070, 0x031f)

@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (C) 1999-2018, OFFIS e.V.
+ *  Copyright (C) 1999-2012, OFFIS e.V.
  *  All rights reserved.  See COPYRIGHT file for details.
  *
  *  This software and supporting documentation were developed by
@@ -27,8 +27,7 @@
 
 #include "dcmtk/ofstd/oftypes.h"
 #include "dcmtk/ofstd/ofcmdln.h"
-#include "dcmtk/ofstd/ofexit.h"     /* for common exit codes */
-#include "dcmtk/ofstd/ofstring.h"   /* for class OFString */
+#include "dcmtk/ofstd/ofstring.h" /* for class OFString */
 
 
 /*---------------------*
@@ -139,7 +138,7 @@ class DCMTK_OFSTD_EXPORT OFConsoleApplication
      *  @param  code  error code to be returned (exit)
      */
     void printError(const char *str,
-                    const int code = EXITCODE_COMMANDLINE_SYNTAX_ERROR);
+    				const int code = 1);
 
     /** print warning message (w/o header) to standard error stream
      *
