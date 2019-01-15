@@ -4,6 +4,7 @@
 // Self Headers
 #include <LogUtil.h>
 #include <DicomTest.h>
+#include <DicomFindSCU.h>
 #include "TitleBarWidget.h"
 
 DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
@@ -30,8 +31,17 @@ void DicomServerBrowserWidget::on_btnEchoTest_clicked()
 
 void DicomServerBrowserWidget::on_btnFindTest_clicked()
 {
-    DicomTest dcmTest;
-    dcmTest.DcmtkTestFind();
+    //DicomTest dcmTest;
+    //dcmTest.DcmtkTestFind();
+    DicomFindSCU findSCU;
+    findSCU.InitializeNetwork();
+    findSCU.SetAppEntityTitle("DebugTest", "DICOM");
+    findSCU.AppendOverrideKey("QueryRetrieveLevel=STUDY");
+    findSCU.AppendOverrideKey("PatientName");
+    findSCU.AppendOverrideKey("PatientID");
+    findSCU.AppendOverrideKey("NumberOfStudyRelatedInstances");
+    findSCU.PerformQuery();
+    findSCU.DropNetwork();
 }
 
 void DicomServerBrowserWidget::on_btnGetTest_clicked()

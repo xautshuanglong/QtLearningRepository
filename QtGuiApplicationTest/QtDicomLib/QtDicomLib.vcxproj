@@ -70,8 +70,10 @@
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_DLL;QT_CORE_LIB;QTDICOMLIB_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>WIN32;WIN64;QT_DLL;QT_CORE_LIB;QTDICOMLIB_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;_WINDLL;_MBCS</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -91,17 +93,21 @@
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_o.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QTDICOMLIB_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QTDICOMLIB_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;_WINDLL</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DicomEnv.cpp" />
+    <ClCompile Include="DicomFindSCU.cpp" />
     <ClCompile Include="DicomTest.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomEnv.h" />
+    <QtMoc Include="DicomFindSCU.h" />
     <ClInclude Include="DicomTest.h" />
     <ClInclude Include="qtdicomlib_global.h" />
   </ItemGroup>

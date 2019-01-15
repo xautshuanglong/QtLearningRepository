@@ -35,6 +35,9 @@
     <ClCompile Include="DicomEnv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DicomFindSCU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomTest.h">
@@ -48,5 +51,10 @@
     <ClInclude Include="qtdicomlib_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="DicomFindSCU.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
