@@ -24,6 +24,7 @@ DicomFindSCU::DicomFindSCU(QObject *parent /* = Q_NULLPTR */)
     , mMaxReceivePDU(32768)
     , mpTLSLayer(Q_NULLPTR)
     , mOutputDirectory("./")
+    , mBlockingMode(true)
 {
     mpDcmFindSCU = new DcmFindSCU();
 }
@@ -84,7 +85,7 @@ void DicomFindSCU::PerformQuery()
     //OFString abstractSyntax = UID_FINDPatientRootQueryRetrieveInformationModel;
     OFString abstractSyntax = UID_FINDStudyRootQueryRetrieveInformationModel;
     E_TransferSyntax transferSyntax = EXS_Unknown;
-    T_DIMSE_BlockingMode  blockMode = DIMSE_BLOCKING;
+    T_DIMSE_BlockingMode  blockMode = mBlockingMode ? DIMSE_BLOCKING : DIMSE_NONBLOCKING;
     DcmFindSCUExtractMode extractMode = FEM_none;
     OFCmdSignedInt        cancelAfterNResponses = -1;
     OFBool                secureConnection = OFFalse;

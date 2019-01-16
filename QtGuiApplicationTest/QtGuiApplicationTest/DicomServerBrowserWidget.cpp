@@ -4,6 +4,7 @@
 // Self Headers
 #include <LogUtil.h>
 #include <DicomTest.h>
+#include <DicomEchoSCU.h>
 #include <DicomFindSCU.h>
 #include "TitleBarWidget.h"
 
@@ -25,8 +26,10 @@ DicomServerBrowserWidget::~DicomServerBrowserWidget()
 
 void DicomServerBrowserWidget::on_btnEchoTest_clicked()
 {
-    DicomTest dcmTest;
-    dcmTest.DcmtkTestEcho();
+    //DicomTest dcmTest;
+    //dcmTest.DcmtkTestEcho();
+    DicomEchoSCU echoSCU;
+    echoSCU.PerformEcho();
 }
 
 void DicomServerBrowserWidget::on_btnFindTest_clicked()
@@ -35,6 +38,7 @@ void DicomServerBrowserWidget::on_btnFindTest_clicked()
     //dcmTest.DcmtkTestFind();
     DicomFindSCU findSCU;
     findSCU.InitializeNetwork();
+    findSCU.SetBlockingMode(false); // ·Ç×èÈûÄ£Ê½ select
     findSCU.SetAppEntityTitle("DebugTest", "DICOM");
     findSCU.AppendOverrideKey("QueryRetrieveLevel=STUDY");
     findSCU.AppendOverrideKey("PatientName");

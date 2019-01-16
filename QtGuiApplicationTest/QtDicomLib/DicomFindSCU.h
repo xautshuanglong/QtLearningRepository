@@ -23,6 +23,7 @@ public:
     void SetOutputDirectory(const QString& outDirectory) { mOutputDirectory = outDirectory; }
     void SetOutputXmlFilename(const QString& outXmlFilename) { mOutputXmlFilename = outXmlFilename; }
     void SetMaxReceivePDU(const unsigned int& maxPDU) { mMaxReceivePDU = maxPDU; }
+    void SetBlockingMode(const bool blockFlag) { mBlockingMode = blockFlag; }
     void AppendOverrideKey(const QString& key) { mOverrideKes.append(key); }
     void ClearOverridKeys() { mOverrideKes.clear(); }
     void AppendFilename(const QString& filename) { mFilenameList.append(filename); }
@@ -50,6 +51,7 @@ private:
     QString               mServerIP;
     unsigned int          mServerPort;
     unsigned int          mMaxReceivePDU;
+    bool                  mBlockingMode;    // true：网络采用阻塞模式
     QStringList           mOverrideKes;     // list of keys/paths that override those in the query files
     QStringList           mFilenameList;
     QString               mOutputDirectory;

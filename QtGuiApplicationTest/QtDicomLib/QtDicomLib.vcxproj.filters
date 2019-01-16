@@ -38,6 +38,9 @@
     <ClCompile Include="DicomFindSCU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DicomEchoSCU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DicomTest.h">
@@ -54,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DicomFindSCU.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DicomEchoSCU.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
