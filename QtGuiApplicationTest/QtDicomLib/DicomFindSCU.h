@@ -3,10 +3,13 @@
 #include "qtdicomlib_global.h"
 #include <QObject>
 
+// DCMTK Headers
+#include <dcmtk/dcmnet/dfindscu.h>
+
 class DcmFindSCU;
 class DcmTLSTransportLayer;
 
-class QTDICOMLIB_EXPORT DicomFindSCU : public QObject
+class QTDICOMLIB_EXPORT DicomFindSCU : public QObject, public DcmFindSCUCallback
 {
     Q_OBJECT
 
@@ -28,12 +31,19 @@ public:
     void DropNetwork();
     void PerformQuery();
 
+    // DcmFindSCUCallback handle find response
+    virtual void callback(T_DIMSE_C_FindRQ *request, int responseCount, T_DIMSE_C_FindRSP *rsp, DcmDataset *responseIdentifiers) override;
+
+private:
+    void ExtractResponseToFile(int responseCount, DcmDataset *pResponseIdentifiers);
+
 signals:
     void SigErrorString(const QString & errorString);
 
 private:
     DcmFindSCU           *mpDcmFindSCU;
     DcmTLSTransportLayer *mpTLSLayer;       // TLS 安全传输，身份认证
+    DcmFindSCUExtractMode mExtractMode;     // 对响应结果提取模式
     int                   mTimeoutSeconds;  // 连接读取超时 默认 30S
     QString               mAppEntityTitle;  // 本应用实体 Title
     QString               mPeerEntityTitle; // 对端应用实体 Title
