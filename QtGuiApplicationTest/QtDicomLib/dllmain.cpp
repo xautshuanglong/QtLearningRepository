@@ -1,5 +1,9 @@
 #include "qtdicomlib_global.h"
 
+// VLD
+//#define VLD_FORCE_ENABLE
+//#include <vld/vld.h>
+
 #ifdef WIN32
 
 #include <windows.h>

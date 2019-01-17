@@ -150,7 +150,7 @@ void DicomEnv::ConfigureLog4CplusFormCode()
     rootLogget.addAppender(rollingFile);
 #ifdef _DEBUG
     rootLogget.setLogLevel(OFLogger::DEBUG_LOG_LEVEL);
-#elif
+#else
     rootLogget.setLogLevel(OFLogger::INFO_LOG_LEVEL);
 #endif
 }
