@@ -1,12 +1,16 @@
 #include "DicomEnv.h"
 
 // QT Headers
+#include <QDir>
 #include <QString>
 #include <QCoreApplication>
 
 // DCMTK Headers
+#include <dcmtk/oflog/consap.h>
+#include <dcmtk/oflog/fileap.h>
 #include <dcmtk/oflog/oflog.h>
 #include <dcmtk/ofstd/ofstd.h>
+#include <dcmtk/ofstd/ofutil.h>
 #include <dcmtk/ofstd/ofconapp.h>
 #include <dcmtk/ofstd/ofcmdln.h>
 
@@ -64,6 +68,13 @@ void DicomEnv::InitializeLog4Cplus()
     if (isLog4CplusInitialized) return;
     isLog4CplusInitialized = true;
 
+    //DicomEnv::ConfigureLog4CplusFormFile();
+    DicomEnv::ConfigureLog4CplusFormCode();
+}
+
+// 模拟 DCMTK 命令行工具参数设置配置文件路径，进而配置日志输出策略。
+void DicomEnv::ConfigureLog4CplusFormFile()
+{
     QString appName = QCoreApplication::applicationName();
     QString appFilePath = QCoreApplication::applicationFilePath();
     QString appDirPath = QCoreApplication::applicationDirPath();
@@ -96,4 +107,50 @@ void DicomEnv::InitializeLog4Cplus()
         dcmConsoleApp.parseCommandLine(cmd, argc, argValues);
         OFLog::configureFromCommandLine(cmd, dcmConsoleApp);
     }
+}
+
+void DicomEnv::ConfigureLog4CplusFormCode()
+{
+    QString appDirPath = QCoreApplication::applicationDirPath();
+    QString curDirPath = QCoreApplication::applicationDirPath();
+    QString logsDirPath = "./logs"; // appDirPath.append("/logs");
+    QDir logsDir(logsDirPath);
+    if (!logsDir.exists())
+    {
+        logsDir.mkpath(logsDirPath);
+    }
+
+    QString tempLogFilename = logsDirPath + "/DCMTK_TempFile.log";
+    QString rollingLogFilename = logsDirPath + "/DCMTK_RollingFile.log";
+
+    const char *noDatePattern = "%D{%H:%M:%S} %-5p %c{2} %x - %m  --> %l%n";
+    const char *rollingFilePattern = "%D{%Y-%m-%d %H:%M:%S} %-5p %c{2} %x - %m  --> %l%n";
+
+    OFunique_ptr<dcmtk::log4cplus::Layout> consoleLayout(new dcmtk::log4cplus::PatternLayout(noDatePattern));
+    OFunique_ptr<dcmtk::log4cplus::Layout> tempFileLayout(new dcmtk::log4cplus::PatternLayout(noDatePattern));
+    OFunique_ptr<dcmtk::log4cplus::Layout> rollingFileLayout(new dcmtk::log4cplus::PatternLayout(rollingFilePattern));
+
+    dcmtk::log4cplus::SharedAppenderPtr console(
+        new dcmtk::log4cplus::ConsoleAppender(OFTrue, OFTrue));
+    console->setLayout(OFmove(consoleLayout));
+
+    dcmtk::log4cplus::SharedAppenderPtr tempFile(
+        new dcmtk::log4cplus::FileAppender(tempLogFilename.toStdString().c_str()));
+    tempFile->setLayout(OFmove(tempFileLayout));
+
+    dcmtk::log4cplus::SharedAppenderPtr rollingFile(
+        new dcmtk::log4cplus::RollingFileAppender(rollingLogFilename.toStdString().c_str(), 10*1024*1024, 100));
+    rollingFile->setLayout(OFmove(rollingFileLayout));
+
+    // 重新配置 DCMTK Log4Cplus
+    dcmtk::log4cplus::Logger rootLogget = dcmtk::log4cplus::Logger::getRoot();
+    rootLogget.removeAllAppenders();
+    rootLogget.addAppender(console);
+    rootLogget.addAppender(tempFile);
+    rootLogget.addAppender(rollingFile);
+#ifdef _DEBUG
+    rootLogget.setLogLevel(OFLogger::DEBUG_LOG_LEVEL);
+#elif
+    rootLogget.setLogLevel(OFLogger::INFO_LOG_LEVEL);
+#endif
 }
