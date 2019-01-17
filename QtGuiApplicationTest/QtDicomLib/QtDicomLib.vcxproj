@@ -100,17 +100,32 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DicomClient.cpp" />
     <ClCompile Include="DicomEchoSCU.cpp" />
     <ClCompile Include="DicomEnv.cpp" />
     <ClCompile Include="DicomFindSCU.cpp" />
+    <ClCompile Include="DicomSCUBase.cpp" />
+    <ClCompile Include="DicomSCUEcho.cpp" />
+    <ClCompile Include="DicomSCUFind.cpp" />
+    <ClCompile Include="DicomSCUGet.cpp" />
+    <ClCompile Include="DicomSCUMove.cpp" />
+    <ClCompile Include="DicomSCUStore.cpp" />
     <ClCompile Include="DicomTest.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DicomEchoSCU.h" />
+    <ClInclude Include="DicomClient.h" />
     <ClInclude Include="DicomEnv.h" />
     <QtMoc Include="DicomFindSCU.h" />
+    <ClInclude Include="DicomSCUBase.h" />
+    <ClInclude Include="DicomSCUEcho.h" />
+    <ClInclude Include="DicomSCUFind.h" />
+    <ClInclude Include="DicomSCUGet.h" />
+    <ClInclude Include="DicomSCUMove.h" />
+    <ClInclude Include="DicomSCUStore.h" />
     <ClInclude Include="DicomTest.h" />
+    <ClInclude Include="IDicomSCUObserver.h" />
     <ClInclude Include="qtdicomlib_global.h" />
   </ItemGroup>
   <ItemGroup>
