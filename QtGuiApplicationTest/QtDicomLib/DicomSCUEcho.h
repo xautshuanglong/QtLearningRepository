@@ -2,9 +2,11 @@
 
 #include "DicomSCUBase.h"
 
-class DicomSCUEcho : public DicomSCUBase
+class QTDICOMLIB_EXPORT DicomSCUEcho : public DicomSCUBase
 {
 public:
     DicomSCUEcho();
     ~DicomSCUEcho();
+
+    OFCondition PerformEcho();
 };

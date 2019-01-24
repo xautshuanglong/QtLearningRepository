@@ -7,4 +7,6 @@ class DicomSCUStore : public DicomSCUBase
 public:
     DicomSCUStore();
     ~DicomSCUStore();
+
+    OFCondition PerformStore();
 };

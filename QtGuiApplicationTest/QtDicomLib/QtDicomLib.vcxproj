@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DicomEchoSCU.h" />
-    <ClInclude Include="DicomClient.h" />
+    <QtMoc Include="DicomClient.h" />
     <ClInclude Include="DicomEnv.h" />
     <QtMoc Include="DicomFindSCU.h" />
     <ClInclude Include="DicomSCUBase.h" />

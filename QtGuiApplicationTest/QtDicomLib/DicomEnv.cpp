@@ -123,8 +123,8 @@ void DicomEnv::ConfigureLog4CplusFormCode()
     QString tempLogFilename = logsDirPath + "/DCMTK_TempFile.log";
     QString rollingLogFilename = logsDirPath + "/DCMTK_RollingFile.log";
 
-    const char *noDatePattern = "%D{%H:%M:%S} %-5p %c{2} %x - %m  --> %l%n";
-    const char *rollingFilePattern = "%D{%Y-%m-%d %H:%M:%S} %-5p %c{2} %x - %m  --> %l%n";
+    const char *noDatePattern = "%D{%H:%M:%S.%q} %-5p %c{2} %x - %m  --> %l%n";
+    const char *rollingFilePattern = "%D{%Y-%m-%d %H:%M:%S.%q} %-5p %c{2} %x - %m  --> %l%n";
 
     OFunique_ptr<dcmtk::log4cplus::Layout> consoleLayout(new dcmtk::log4cplus::PatternLayout(noDatePattern));
     OFunique_ptr<dcmtk::log4cplus::Layout> tempFileLayout(new dcmtk::log4cplus::PatternLayout(noDatePattern));
