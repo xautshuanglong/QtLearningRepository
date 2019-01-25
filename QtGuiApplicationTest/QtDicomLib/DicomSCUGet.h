@@ -17,12 +17,13 @@ public:
 
     OFCondition PerformGet(GetModel getModel);
     // 处理获取响应
-    void HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount, T_DIMSE_C_GetRSP *pResponse);
+    void HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount,
+                           T_DIMSE_C_GetRSP *pResponse, OFBool &continueFlag);
     static void GetUserCallback(void *pCallbackData, T_DIMSE_C_GetRQ *pRequest,
-                                int responseCount, T_DIMSE_C_GetRSP *pResponse);
+                                int responseCount, T_DIMSE_C_GetRSP *pResponse, OFBool &continueFlag);
     // 处理存储响应（C-GET请求被处理后会收到C-STORE请求，存储服务端返回的数据集。）
-    void HandleSubOperationStore(T_ASC_Network *pNetwork, T_ASC_Association **ppSubOpAssoc);
-    static void SubOperationCallback(void *pSubOpCallbackData, T_ASC_Network *pNetwork, T_ASC_Association **ppSubOpAssoc);
+    void HandleSubOperationCallbackEx(T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession);
+    static void SubOperationCallbackEx(void *pSubOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession);
 
 private:
     T_DIMSE_C_GetRQ  m_request;

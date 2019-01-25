@@ -372,8 +372,8 @@ OFCondition DicomSCUBase::FindUser(const char *abstractSyntax, OFList<OFString> 
 
 OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                                    T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
-                                   DIMSE_GetUserCallback callback, void *callbackData,
-                                   DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData)
+                                   DIMSE_GetUserCallbackEx callback, void *callbackData,
+                                   DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData)
 {
     T_ASC_PresentationContextID presId;
     DcmFileFormat dcmFileFormat;
@@ -416,7 +416,7 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
     DcmDataset *statusDetail = NULL;
     DcmDataset *responseIdentifiers = NULL;
     // TODO 回调处理
-    condition = DIMSE_getUser(m_pAssociation, presId, pRequest, requestIdentifiers, callback, callbackData,
+    condition = DIMSE_getUserEx(m_pAssociation, presId, pRequest, requestIdentifiers, callback, callbackData,
                               m_blockMode, m_dimseTimeoutSeconds,
                               m_pNetwork, subOpCallback, subOpCallbackData,
                               pRsponse, &statusDetail, &responseIdentifiers);
@@ -455,5 +455,118 @@ OFCondition DicomSCUBase::MoveUser()
 OFCondition DicomSCUBase::StoreUser()
 {
     OFCondition condition;
+    return condition;
+}
+
+OFCondition DicomSCUBase::DIMSE_getUserEx(T_ASC_Association *pAssociation, T_ASC_PresentationContextID presentationID, T_DIMSE_C_GetRQ *pRequest,
+                                          DcmDataset *pRequestIdentifiers, DIMSE_GetUserCallbackEx callback, void *callbackData,
+                                          T_DIMSE_BlockingMode blockMode, int timeout, T_ASC_Network *pNetwork,
+                                          DIMSE_SubOpProviderCallbackEx subOpCallback, void *pSubOpCallbackData,
+                                          T_DIMSE_C_GetRSP *pResponse, DcmDataset **ppStatusDetail, DcmDataset **ppResponseIdentifers)
+{
+    OFCondition condition;
+    OFString tempString;
+
+    int responseCount = 0;
+    DIC_US msgId;
+    OFBool continueSession = OFTrue;
+    T_DIMSE_Message requestMSG, responseMSG;
+
+    if (pRequestIdentifiers == NULL) return DIMSE_NULLKEY;
+
+    bzero((char*)&requestMSG, sizeof(requestMSG));
+    bzero((char*)&responseMSG, sizeof(responseMSG));
+
+    requestMSG.CommandField = DIMSE_C_GET_RQ;
+    pRequest->DataSetType = DIMSE_DATASET_PRESENT;
+    requestMSG.msg.CGetRQ = *pRequest;
+
+    msgId = pRequest->MessageID;
+
+    condition = DIMSE_sendMessageUsingMemoryData(pAssociation, presentationID, &requestMSG,NULL, pRequestIdentifiers, NULL, NULL);
+    if (condition.bad())
+    {
+        DCMNET_ERROR("Failed sending C-GET request: " << DimseCondition::dump(tempString, condition));
+        return condition;
+    }
+
+    while (continueSession)
+    {
+        T_ASC_PresentationContextID recvPresentationID = 0;
+
+        condition = DIMSE_receiveCommand(pAssociation, blockMode, timeout, &recvPresentationID, &responseMSG, ppStatusDetail);
+        if (condition.bad())
+        {
+            DCMNET_ERROR("Failed receiving C-GET receiving DIMSE command" << DimseCondition::dump(tempString, condition));
+            return condition;
+        }
+
+        if (responseMSG.CommandField == DIMSE_C_GET_RSP) // C-GET 响应处理
+        {
+            ++responseCount;
+            *pResponse = responseMSG.msg.CGetRSP;
+            DCMNET_INFO("Received C-GET Response");
+            DCMNET_DEBUG(DIMSE_dumpMessage(tempString, responseMSG, DIMSE_INCOMING, NULL, recvPresentationID));
+            if (callback != NULL)
+            {
+                callback(callbackData, pRequest, responseCount, pResponse, continueSession);
+            }
+        }
+        else if (responseMSG.CommandField == DIMSE_C_STORE_RQ) // C-STORE 存储请求
+        {
+            T_DIMSE_C_StoreRQ cstoreRequest = responseMSG.msg.CStoreRQ;
+
+            DCMNET_INFO("Received C-STORE Request");
+            DCMNET_DEBUG(DIMSE_dumpMessage(tempString, responseMSG, DIMSE_INCOMING, NULL, recvPresentationID));
+
+            Uint16 cstoreReturnStatus = 0;
+            DcmDataset *pResponseDataSet = NULL;
+            condition = DIMSE_receiveDataSetInMemory(m_pAssociation, m_blockMode, m_dimseTimeoutSeconds, &recvPresentationID, &pResponseDataSet, NULL, NULL);
+            if (condition.bad())
+            {
+                DCMNET_ERROR("Failed receiving C-GET receiving DIMSE command" << DimseCondition::dump(tempString, condition));
+                cstoreReturnStatus = STATUS_STORE_Error_CannotUnderstand;
+                continueSession = OFFalse;
+            }
+            else
+            {
+                if (subOpCallback)
+                {
+                    subOpCallback(pSubOpCallbackData, &cstoreRequest, presentationID, cstoreReturnStatus);
+                }
+            }
+
+            T_DIMSE_Message cstoreResponseMSG;
+            bzero((char*)&cstoreResponseMSG, sizeof(cstoreResponseMSG));
+            cstoreResponseMSG.CommandField = DIMSE_C_STORE_RSP;
+            T_DIMSE_C_StoreRSP &storeRsp = cstoreResponseMSG.msg.CStoreRSP;
+            storeRsp.MessageIDBeingRespondedTo = cstoreRequest.MessageID;
+            storeRsp.DimseStatus = cstoreReturnStatus;
+            storeRsp.DataSetType = DIMSE_DATASET_NULL;
+
+            OFStandard::strlcpy(storeRsp.AffectedSOPClassUID, cstoreRequest.AffectedSOPClassUID, sizeof(storeRsp.AffectedSOPClassUID));
+            OFStandard::strlcpy(storeRsp.AffectedSOPInstanceUID, cstoreRequest.AffectedSOPInstanceUID, sizeof(storeRsp.AffectedSOPInstanceUID));
+            storeRsp.opts = O_STORE_AFFECTEDSOPCLASSUID | O_STORE_AFFECTEDSOPINSTANCEUID;
+
+            DCMNET_INFO("Sending C-STORE Response");
+            DCMNET_DEBUG(DIMSE_dumpMessage(tempString, cstoreResponseMSG, DIMSE_OUTGOING, NULL, presentationID));
+
+            condition = DIMSE_sendMessageUsingMemoryData(m_pAssociation, presentationID, &cstoreResponseMSG, NULL, NULL, NULL, NULL);
+            if (condition.bad())
+            {
+                DCMNET_ERROR("Failed sending C-STORE response: " << DimseCondition::dump(tempString, condition));
+            }
+        }
+        else
+        {
+            DCMNET_ERROR("Expected C-GET response or C-STORE request but received DIMSE command 0x"
+                         << std::hex << std::setfill('0') << std::setw(4)
+                         << OFstatic_cast(unsigned int, responseMSG.CommandField));
+            DCMNET_DEBUG(DIMSE_dumpMessage(tempString, responseMSG, DIMSE_INCOMING, NULL, presentationID));
+            condition = DIMSE_BADCOMMANDTYPE;
+            continueSession = OFFalse;
+        }
+    }
+
     return condition;
 }

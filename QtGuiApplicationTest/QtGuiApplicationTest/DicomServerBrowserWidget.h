@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class TitleBarWidget;
+class DicomClient;
 
 namespace Ui
 {
@@ -27,4 +28,5 @@ private slots:
 private:
     Ui::DicomServerBrowserWidget *ui;
     TitleBarWidget               *mpTitleBarWidget;
+    DicomClient                  *mpDicomClient;
 };

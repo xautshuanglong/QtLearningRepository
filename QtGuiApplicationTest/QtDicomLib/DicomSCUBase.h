@@ -15,6 +15,9 @@ struct DicomPresentationContext
     T_ASC_SC_ROLE roleSelect;
 };
 
+typedef void(*DIMSE_GetUserCallbackEx)(void *callbackData, T_DIMSE_C_GetRQ *request, int responseCount, T_DIMSE_C_GetRSP *response, OFBool &continueFlag);
+typedef void(*DIMSE_SubOpProviderCallbackEx)(void *subOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession);
+
 class DicomSCUBase
 {
 public:
@@ -49,10 +52,18 @@ public:
                          DIMSE_FindUserCallback callback = Q_NULLPTR, void *callbackData = Q_NULLPTR);
     OFCondition GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                         T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
-                        DIMSE_GetUserCallback callback, void *callbackData,
-                        DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData);
+                        DIMSE_GetUserCallbackEx callback, void *callbackData,
+                        DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData);
     OFCondition MoveUser();
     OFCondition StoreUser();
+
+private:
+    // DCMTK 中的 DIMSE_getUserEx 未经测试，存在缺陷，此处仿照 scu.cpp 重新实现 C-GET 操作。
+    OFCondition DIMSE_getUserEx( T_ASC_Association *pAssociation, T_ASC_PresentationContextID presentationID, T_DIMSE_C_GetRQ *pRequest,
+                              DcmDataset *pRequestIdentifiers, DIMSE_GetUserCallbackEx callback, void *callbackData,
+                              T_DIMSE_BlockingMode blockMode, int timeout, T_ASC_Network *pNetwork,
+                              DIMSE_SubOpProviderCallbackEx subOpCallback, void *pSubOpCallbackData,
+                              T_DIMSE_C_GetRSP *pResponse, DcmDataset **ppStatusDetail, DcmDataset **ppResponseIdentifers);
 
 protected:
     T_ASC_Association               *m_pAssociation;

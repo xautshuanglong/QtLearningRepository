@@ -65,7 +65,7 @@ void DicomSCUFind::HandleFindCallback(T_DIMSE_C_FindRQ *pRequest, int responseCo
 }
 
 void DicomSCUFind::FindUserCallback(void *pCallbackData, T_DIMSE_C_FindRQ *pRequest,
-                                     int responseCount, T_DIMSE_C_FindRSP *pResponse, DcmDataset *pResponseIdentifiers)
+                                    int responseCount, T_DIMSE_C_FindRSP *pResponse, DcmDataset *pResponseIdentifiers)
 {
     DicomSCUFind *pCallback = OFreinterpret_cast(DicomSCUFind*, pCallbackData);
     if (pCallback)
