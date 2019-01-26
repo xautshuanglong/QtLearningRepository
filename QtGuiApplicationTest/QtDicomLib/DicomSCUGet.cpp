@@ -1,6 +1,9 @@
 #include "DicomSCUGet.h"
 
 #include <LogUtil.h>
+#include <dcmtk/dcmdata/dcdeftag.h>
+#include <dcmtk/dcmdata/dcfilefo.h>
+#include <dcmtk/dcmdata/dcuid.h>
 #include <dcmtk/dcmnet/diutil.h>
 
 static const char* gsGetModelUID[] =
@@ -107,7 +110,7 @@ void DicomSCUGet::HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount
 }
 
 void DicomSCUGet::GetUserCallback(void *pCallbackData, T_DIMSE_C_GetRQ *pRequest,
-                                   int responseCount, T_DIMSE_C_GetRSP *pResponse, OFBool &continueFlag)
+                                  int responseCount, T_DIMSE_C_GetRSP *pResponse, OFBool &continueFlag)
 {
     DicomSCUGet *pCallback = OFreinterpret_cast(DicomSCUGet*, pCallbackData);
     if (pCallback)
@@ -116,17 +119,67 @@ void DicomSCUGet::GetUserCallback(void *pCallbackData, T_DIMSE_C_GetRQ *pRequest
     }
 }
 
-void DicomSCUGet::HandleSubOperationCallbackEx(T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession)
+void DicomSCUGet::HandleSubOperationCallbackEx(T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID *presentationID,
+                                               OFBool &continueSession, Uint16 &cstoreReturnStatus, DcmDataset *pRspDataset)
 {
-    ;
+    if (pRspDataset == NULL)
+    {
+        cstoreReturnStatus = STATUS_STORE_Error_CannotUnderstand;
+        continueSession = false;
+        return;
+    }
+
+    OFString sopClassUID;
+    OFString sopInstanceUID;
+    E_TransferSyntax transferSyntax;
+    OFCondition condition;
+    transferSyntax = pRspDataset->getOriginalXfer();
+    condition = pRspDataset->findAndGetOFString(DCM_SOPClassUID, sopClassUID);
+    if (condition.good())
+    {
+        condition = pRspDataset->findAndGetOFString(DCM_SOPInstanceUID, sopInstanceUID);
+    }
+    if (condition.bad())
+    {
+        DCMNET_ERROR("Cannot store received object: either SOP Instance or SOP Class UID not present");
+        cstoreReturnStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
+        continueSession = OFFalse;
+        return;
+    }
+
+    OFString tempName = dcmSOPClassUIDToModality(sopClassUID.c_str(), "UNKNOWN");
+    tempName += ".";
+    tempName += sopInstanceUID;
+    OFString filename;
+    OFStandard::combineDirAndFilename(filename, ".", tempName, OFTrue);
+    if (OFStandard::fileExists(filename))
+    {
+        DCMNET_WARN("DICOM file already exists, overwriting: " << filename);
+    }
+    DcmFileFormat dcmff(pRspDataset, OFFalse);
+    condition = dcmff.saveFile(filename);
+    if (condition.good())
+    {
+        DCMNET_DEBUG("Stored instance to disk:");
+        DCMNET_DEBUG("  Filename: " << filename);
+        DCMNET_DEBUG("  SOP Class UID: " << sopClassUID);
+        DCMNET_DEBUG("  SOP Instance UID: " << sopInstanceUID);
+        cstoreReturnStatus = STATUS_Success;
+    }
+    else
+    {
+        DCMNET_ERROR("cannot write DICOM file: " << filename);
+        cstoreReturnStatus = STATUS_STORE_Refused_OutOfResources;
+        OFStandard::deleteFile(filename);
+    }
 }
 
-void DicomSCUGet::SubOperationCallbackEx(void *pSubOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession)
+void DicomSCUGet::SubOperationCallbackEx(void *pSubOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID *presentationID, OFBool &continueSession, Uint16 &cstoreReturnStatus, DcmDataset *pRspDataset)
 {
     // TODO ´¦Àí´æ´¢ÇëÇó
     DicomSCUGet *pCallback = OFreinterpret_cast(DicomSCUGet*, pSubOpCallbackData);
     if (pCallback)
     {
-        pCallback->HandleSubOperationCallbackEx(request, presentationID, continueSession);
+        pCallback->HandleSubOperationCallbackEx(request, presentationID, continueSession, cstoreReturnStatus, pRspDataset);
     }
 }

@@ -409,7 +409,7 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->MessageID = m_pAssociation->nextMsgID++;
-    DCMNET_INFO("Sending Find Request (MsgID " << pRequest->MessageID << ")");
+    DCMNET_INFO("Sending C-GET Request (MsgID " << pRequest->MessageID << ")");
     DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_OUTGOING, NULL, presId));
     DCMNET_INFO("Request Identifiers:" << OFendl << DcmObject::PrintHelper(*requestIdentifiers));
 
@@ -532,7 +532,7 @@ OFCondition DicomSCUBase::DIMSE_getUserEx(T_ASC_Association *pAssociation, T_ASC
             {
                 if (subOpCallback)
                 {
-                    subOpCallback(pSubOpCallbackData, &cstoreRequest, presentationID, cstoreReturnStatus);
+                    subOpCallback(pSubOpCallbackData, &cstoreRequest, &recvPresentationID, continueSession, cstoreReturnStatus, pResponseDataSet);
                 }
             }
 

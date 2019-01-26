@@ -144,6 +144,7 @@ void DicomClient::PerformGet()
     {
         transferSyntaxList.push_back(transferSyntaxes[i]);
     }
+    m_pDicomGet->SetMaxReceivePDU(m_maxReceivePDU);
     m_pDicomGet->ClearPresentationContex(); // 考虑使用已接收的表示上下文
     m_pDicomGet->AddPresentationContext(UID_GETPatientRootQueryRetrieveInformationModel, transferSyntaxList);
     for (Uint16 j = 0; j < numberOfDcmLongSCUStorageSOPClassUIDs; j++)
@@ -151,7 +152,8 @@ void DicomClient::PerformGet()
         m_pDicomGet->AddPresentationContext(dcmLongSCUStorageSOPClassUIDs[j], transferSyntaxList, ASC_SC_ROLE_SCP);
     }
 
-    m_pDicomGet->AddQueryKey("PatientName=HEAD EXP2");
+    //m_pDicomGet->AddQueryKey("PatientName=HEAD EXP2");
+    m_pDicomGet->AddQueryKey("PatientName=GAMAGE^MARY");
 
     OFCondition condition = m_pDicomGet->PerformGet(GetModel_PatientRoot);
     if (condition.bad())

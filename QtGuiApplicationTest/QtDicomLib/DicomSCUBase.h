@@ -15,8 +15,9 @@ struct DicomPresentationContext
     T_ASC_SC_ROLE roleSelect;
 };
 
-typedef void(*DIMSE_GetUserCallbackEx)(void *callbackData, T_DIMSE_C_GetRQ *request, int responseCount, T_DIMSE_C_GetRSP *response, OFBool &continueFlag);
-typedef void(*DIMSE_SubOpProviderCallbackEx)(void *subOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID presentationID, Uint16 &continueSession);
+typedef void(*DIMSE_GetUserCallbackEx)(void *callbackData, T_DIMSE_C_GetRQ *request, int responseCount, T_DIMSE_C_GetRSP *response, OFBool &continueSession);
+typedef void(*DIMSE_SubOpProviderCallbackEx)(void *subOpCallbackData, T_DIMSE_C_StoreRQ *request, T_ASC_PresentationContextID *presentationID,
+                                             OFBool &continueSession, Uint16 &cstoreReturnStatus, DcmDataset *pRspDataset);
 
 class DicomSCUBase
 {

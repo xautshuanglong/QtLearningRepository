@@ -25,6 +25,7 @@ DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
     mpDicomClient->SetPeerAETitle("MGIUSDICOM");
     mpDicomClient->SetPeerHostName("localhost");
     mpDicomClient->SetPeerPort(5678);
+    mpDicomClient->SetMaxReceivePDULength(32768);
 }
 
 DicomServerBrowserWidget::~DicomServerBrowserWidget()
