@@ -49,14 +49,16 @@ public:
 
     OFCondition EchoUser();
     OFCondition FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
-                         T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pRsponse,
+                         T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pResponse,
                          DIMSE_FindUserCallback callback = Q_NULLPTR, void *callbackData = Q_NULLPTR);
     OFCondition GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
-                        T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
+                        T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pResponse,
                         DIMSE_GetUserCallbackEx callback, void *callbackData,
                         DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData);
     OFCondition MoveUser();
-    OFCondition StoreUser();
+    OFCondition StoreUser(DcmDataset *pStoreDataset,
+                          T_DIMSE_C_StoreRQ *pRequest, T_DIMSE_C_StoreRSP *pResponse,
+                          DIMSE_StoreUserCallback callback, void *callbackData);
 
 private:
     // DCMTK 中的 DIMSE_getUserEx 未经测试，存在缺陷，此处仿照 scu.cpp 重新实现 C-GET 操作。

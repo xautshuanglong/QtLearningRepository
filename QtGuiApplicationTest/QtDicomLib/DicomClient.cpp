@@ -183,10 +183,14 @@ void DicomClient::PerformStore()
     {
         transferSyntaxList.push_back(transferSyntaxes[i]);
     }
-    m_pDicomFind->ClearPresentationContex(); // 考虑使用已接收的表示上下文
-                                             //    m_pDicomFind->AddPresentationContext(UID_FINDStudyRootQueryRetrieveInformationModel, transferSyntaxList);
+    m_pDicomStore->ClearPresentationContex(); // 考虑使用已接收的表示上下文
+    for (int i = 0; i < numberOfDcmShortSCUStorageSOPClassUIDs; i++)
+    {
+        m_pDicomStore->AddPresentationContext(dcmShortSCUStorageSOPClassUIDs[i], transferSyntaxList);
+    }
 
-    OFCondition condition = m_pDicomStore->PerformStore();
+    OFString filename = "./image11.dcm";
+    OFCondition condition = m_pDicomStore->PerformStore(filename);
     if (condition.bad())
     {
         OFString errorString;

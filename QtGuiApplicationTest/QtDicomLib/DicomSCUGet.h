@@ -16,6 +16,7 @@ public:
     ~DicomSCUGet();
 
     OFCondition PerformGet(GetModel getModel);
+
     // 处理获取响应
     void HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount,
                            T_DIMSE_C_GetRSP *pResponse, OFBool &continueFlag);

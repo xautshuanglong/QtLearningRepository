@@ -371,11 +371,11 @@ OFCondition DicomSCUBase::FindUser(const char *abstractSyntax, OFList<OFString> 
 }
 
 OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
-                                   T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
-                                   DIMSE_GetUserCallbackEx callback, void *callbackData,
-                                   DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData)
+                                  T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
+                                  DIMSE_GetUserCallbackEx callback, void *callbackData,
+                                  DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData)
 {
-    T_ASC_PresentationContextID presId;
+    T_ASC_PresentationContextID presentationId;
     DcmFileFormat dcmFileFormat;
     OFString tempString;
     OFCondition condition;
@@ -398,8 +398,8 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
         keyPath++;
     }
 
-    presId = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
-    if (presId == 0)
+    presentationId = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
+    if (presentationId == 0)
     {
         DCMNET_ERROR("No presentation context");
         return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
@@ -410,16 +410,18 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->MessageID = m_pAssociation->nextMsgID++;
     DCMNET_INFO("Sending C-GET Request (MsgID " << pRequest->MessageID << ")");
-    DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_OUTGOING, NULL, presId));
+    DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_OUTGOING, NULL, presentationId));
     DCMNET_INFO("Request Identifiers:" << OFendl << DcmObject::PrintHelper(*requestIdentifiers));
 
     DcmDataset *statusDetail = NULL;
     DcmDataset *responseIdentifiers = NULL;
-    // TODO 回调处理
-    condition = DIMSE_getUserEx(m_pAssociation, presId, pRequest, requestIdentifiers, callback, callbackData,
-                              m_blockMode, m_dimseTimeoutSeconds,
-                              m_pNetwork, subOpCallback, subOpCallbackData,
-                              pRsponse, &statusDetail, &responseIdentifiers);
+    if (condition.good())
+    {
+        condition = DIMSE_getUserEx(m_pAssociation, presentationId, pRequest, requestIdentifiers, callback, callbackData,
+                                    m_blockMode, m_dimseTimeoutSeconds,
+                                    m_pNetwork, subOpCallback, subOpCallbackData,
+                                    pRsponse, &statusDetail, &responseIdentifiers);
+    }
     if (condition.good())
     {
         DCMNET_INFO("Received Final Find Response (" << DU_cfindStatusString(pRsponse->DimseStatus) << ")");
@@ -452,9 +454,68 @@ OFCondition DicomSCUBase::MoveUser()
     return condition;
 }
 
-OFCondition DicomSCUBase::StoreUser()
+OFCondition DicomSCUBase::StoreUser(DcmDataset *pStoreDataset,
+                                    T_DIMSE_C_StoreRQ *pRequest, T_DIMSE_C_StoreRSP *pResponse,
+                                    DIMSE_StoreUserCallback callback, void *callbackData)
 {
-    OFCondition condition;
+    OFString tempString;
+    OFCondition condition = EC_Normal;
+    DIC_UI sopClass;
+    DIC_UI sopInstance;
+    DcmDataset *pStatusDetail = NULL;
+    T_ASC_PresentationContextID presentationID;
+
+    if (!DU_findSOPClassAndInstanceInDataSet(pStoreDataset, sopClass, sopInstance, OFFalse))
+    {
+        DCMNET_ERROR("No SOP Class or Instance UID in store dataset");
+        condition = DIMSE_BADDATA;
+    }
+
+    DcmXfer datasetXfer(pStoreDataset->getOriginalXfer());
+    if (datasetXfer.getXfer() != EXS_Unknown)
+    {
+        presentationID = ASC_findAcceptedPresentationContextID(m_pAssociation, sopClass, datasetXfer.getXferID());
+    }
+    else
+    {
+        presentationID = ASC_findAcceptedPresentationContextID(m_pAssociation, sopClass);
+    }
+    if (presentationID == 0)
+    {
+        DCMNET_ERROR("No presentation context");
+        return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
+    }
+
+    strcpy(pRequest->AffectedSOPClassUID, sopClass);
+    strcpy(pRequest->AffectedSOPInstanceUID, sopInstance);
+    pRequest->DataSetType = DIMSE_DATASET_PRESENT;
+    pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
+    pRequest->MessageID = m_pAssociation->nextMsgID++;
+    DCMNET_INFO("Sending C-STORE Request (MsgID " << pRequest->MessageID << ")");
+
+    if (condition.good())
+    {
+        condition = DIMSE_storeUser(m_pAssociation, presentationID, pRequest, NULL, pStoreDataset,
+                                    callback, callbackData,
+                                    m_blockMode, m_dimseTimeoutSeconds, pResponse, &pStatusDetail);
+    }
+
+    if (condition == EC_Normal)
+    {
+        DCMNET_INFO("Received Store Response (" << DU_cstoreStatusString(pResponse->DimseStatus) << ")");
+        DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pResponse, DIMSE_INCOMING, NULL, presentationID));
+    }
+    else
+    {
+        DCMNET_ERROR("Store Failed:" << OFendl << DimseCondition::dump(tempString, condition));
+    }
+
+    if (pStatusDetail != NULL)
+    {
+        DCMNET_DEBUG("Status Detail:" << OFendl << DcmObject::PrintHelper(*pStatusDetail));
+        delete pStatusDetail;
+    }
+
     return condition;
 }
 

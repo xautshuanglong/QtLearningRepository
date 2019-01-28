@@ -16,6 +16,7 @@ static const char* gsGetModelUID[] =
 DicomSCUGet::DicomSCUGet()
     : DicomSCUBase()
 {
+    bzero(OFreinterpret_cast(char*, &m_request), sizeof(m_request));
 }
 
 DicomSCUGet::~DicomSCUGet()
@@ -43,7 +44,6 @@ OFCondition DicomSCUGet::PerformGet(GetModel getModel)
             OFString errorString;
             LogUtil::Error(CODE_LOCATION, "DicomSCUBase::GetUser --> %s", DimseCondition::dump(errorString, condition).c_str());
         }
-        // TODO 处理响应消息
     }
 
     condition = this->DropNetwork();
