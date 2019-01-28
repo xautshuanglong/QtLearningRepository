@@ -317,56 +317,56 @@ void DicomSCUMove::StoreProviderCallback(void *pCallbackData, T_DIMSE_StoreProgr
         break;
     }
 
-    if (pProgress->state == DIMSE_StoreEnd)
-    {
-        *ppStatusDetail = NULL;
+    //if (pProgress->state == DIMSE_StoreEnd)
+    //{
+    //    *ppStatusDetail = NULL;
 
-        if ((ppImageDataSet != NULL) && (*ppImageDataSet != NULL))
-        {
-            StoreCallbackData *cbdata = OFstatic_cast(StoreCallbackData*, callbackData);
-            OFString filename;
-            OFStandard::combineDirAndFilename(filename, "./", pImageFilename, OFTrue);
-            if (OFStandard::fileExists(filename))
-            {
-                DCMNET_WARN("DICOM file already exists, overwriting: " << filename);
-            }
+    //    if ((ppImageDataSet != NULL) && (*ppImageDataSet != NULL))
+    //    {
+    //        StoreCallbackData *cbdata = OFstatic_cast(StoreCallbackData*, callbackData);
+    //        OFString filename;
+    //        OFStandard::combineDirAndFilename(filename, "./", pImageFilename, OFTrue);
+    //        if (OFStandard::fileExists(filename))
+    //        {
+    //            DCMNET_WARN("DICOM file already exists, overwriting: " << filename);
+    //        }
 
-            E_TransferSyntax xfer = opt_writeTransferSyntax;
-            if (xfer == EXS_Unknown) xfer = (*imageDataSet)->getOriginalXfer();
+    //        E_TransferSyntax xfer = opt_writeTransferSyntax;
+    //        if (xfer == EXS_Unknown) xfer = (*imageDataSet)->getOriginalXfer();
 
-            OFCondition cond = cbdata->dcmff->saveFile(ofname.c_str(), xfer, opt_sequenceType, opt_groupLength,
-                                                       opt_paddingType, OFstatic_cast(Uint32, opt_filepad), OFstatic_cast(Uint32, opt_itempad),
-                                                       (opt_useMetaheader) ? EWM_fileformat : EWM_dataset);
-            if (cond.bad())
-            {
-                OFLOG_ERROR(movescuLogger, "cannot write DICOM file: " << ofname);
-                rsp->DimseStatus = STATUS_STORE_Refused_OutOfResources;
+    //        OFCondition cond = cbdata->dcmff->saveFile(ofname.c_str(), xfer, opt_sequenceType, opt_groupLength,
+    //                                                   opt_paddingType, OFstatic_cast(Uint32, opt_filepad), OFstatic_cast(Uint32, opt_itempad),
+    //                                                   (opt_useMetaheader) ? EWM_fileformat : EWM_dataset);
+    //        if (cond.bad())
+    //        {
+    //            OFLOG_ERROR(movescuLogger, "cannot write DICOM file: " << ofname);
+    //            rsp->DimseStatus = STATUS_STORE_Refused_OutOfResources;
 
-                // delete incomplete file
-                OFStandard::deleteFile(ofname);
-            }
+    //            // delete incomplete file
+    //            OFStandard::deleteFile(ofname);
+    //        }
 
-            /* should really check the image to make sure it is consistent,
-            * that its sopClass and sopInstance correspond with those in
-            * the request.
-            */
-            if ((rsp->DimseStatus == STATUS_Success) && !opt_ignore)
-            {
-                /* which SOP class and SOP instance ? */
-                if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, opt_correctUIDPadding))
-                {
-                    OFLOG_FATAL(movescuLogger, "bad DICOM file: " << imageFileName);
-                    rsp->DimseStatus = STATUS_STORE_Error_CannotUnderstand;
-                }
-                else if (strcmp(sopClass, req->AffectedSOPClassUID) != 0)
-                {
-                    rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
-                }
-                else if (strcmp(sopInstance, req->AffectedSOPInstanceUID) != 0)
-                {
-                    rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
-                }
-            }
-        }
-    }
+    //        /* should really check the image to make sure it is consistent,
+    //        * that its sopClass and sopInstance correspond with those in
+    //        * the request.
+    //        */
+    //        if ((rsp->DimseStatus == STATUS_Success) && !opt_ignore)
+    //        {
+    //            /* which SOP class and SOP instance ? */
+    //            if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, opt_correctUIDPadding))
+    //            {
+    //                OFLOG_FATAL(movescuLogger, "bad DICOM file: " << imageFileName);
+    //                rsp->DimseStatus = STATUS_STORE_Error_CannotUnderstand;
+    //            }
+    //            else if (strcmp(sopClass, req->AffectedSOPClassUID) != 0)
+    //            {
+    //                rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
+    //            }
+    //            else if (strcmp(sopInstance, req->AffectedSOPInstanceUID) != 0)
+    //            {
+    //                rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
+    //            }
+    //        }
+    //    }
+    //}
 }
