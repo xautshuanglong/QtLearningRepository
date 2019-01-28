@@ -2,12 +2,12 @@
 
 #include "DicomSCUBase.h"
 
-enum GetModel
+typedef enum
 {
     GetModel_PatientRoot,
     GetModel_StudyRoot,
     GetModel_PatientStudyOnly
-};
+}GetModel;
 
 class QTDICOMLIB_EXPORT DicomSCUGet : public DicomSCUBase
 {

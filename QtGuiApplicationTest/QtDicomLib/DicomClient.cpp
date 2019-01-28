@@ -166,7 +166,24 @@ void DicomClient::PerformGet()
 
 void DicomClient::PerformMove()
 {
-    OFCondition condition = m_pDicomMove->PerformMove();
+    OFList<OFString> transferSyntaxList;
+    Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
+    for (Uint32 i = 0; i < maxSyntaxes; ++i)
+    {
+        transferSyntaxList.push_back(transferSyntaxes[i]);
+    }
+    m_pDicomGet->SetMaxReceivePDU(m_maxReceivePDU);
+    m_pDicomGet->ClearPresentationContex(); // 考虑使用已接收的表示上下文
+    m_pDicomGet->AddPresentationContext(UID_MOVEPatientRootQueryRetrieveInformationModel, transferSyntaxList);
+    for (Uint16 j = 0; j < numberOfDcmLongSCUStorageSOPClassUIDs; j++)
+    {
+        m_pDicomGet->AddPresentationContext(dcmLongSCUStorageSOPClassUIDs[j], transferSyntaxList, ASC_SC_ROLE_SCP);
+    }
+
+    //m_pDicomGet->AddQueryKey("PatientName=HEAD EXP2");
+    m_pDicomGet->AddQueryKey("PatientName=GAMAGE^MARY");
+
+    OFCondition condition = m_pDicomMove->PerformMove(MoveModel_PatientRoot);
     if (condition.bad())
     {
         OFString errorString;

@@ -304,8 +304,8 @@ OFCondition DicomSCUBase::EchoUser()
 }
 
 OFCondition DicomSCUBase::FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
-                                    T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pRsponse,
-                                    DIMSE_FindUserCallback callback, void *callbackData)
+                                   T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pRsponse,
+                                   DIMSE_FindUserCallback callback, void *callbackData)
 {
     T_ASC_PresentationContextID presId;
     DcmFileFormat dcmFileFormat;
@@ -336,6 +336,7 @@ OFCondition DicomSCUBase::FindUser(const char *abstractSyntax, OFList<OFString> 
         return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
     }
 
+    bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_FindRQ));
     strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
@@ -376,9 +377,9 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
                                   DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData)
 {
     T_ASC_PresentationContextID presentationId;
-    DcmFileFormat dcmFileFormat;
-    OFString tempString;
-    OFCondition condition;
+    DcmFileFormat               dcmFileFormat;
+    OFString                    tempString;
+    OFCondition                 condition;
 
     DcmDataset* requestIdentifiers = dcmFileFormat.getDataset();
     DcmPathProcessor dcmPathProcessor;
@@ -405,6 +406,7 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
         return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
     }
 
+    bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_GetRQ));
     strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
@@ -448,9 +450,82 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
     return condition;
 }
 
-OFCondition DicomSCUBase::MoveUser()
+OFCondition DicomSCUBase::MoveUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
+                                   T_DIMSE_C_MoveRQ *pRequest, T_DIMSE_C_MoveRSP *pResponse,
+                                   DIMSE_MoveUserCallback callback, void *callbackData,
+                                   DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData)
 {
-    OFCondition condition;
+    T_ASC_PresentationContextID  presentationID = 0;
+    DcmFileFormat                dcmFileFormat;
+    DcmDataset                  *pResponseIdentifiers = NULL;
+    DcmDataset                  *pStatusDetail = NULL;
+    OFString                     tempString;
+    OFCondition                  condition = EC_Normal;
+
+    DcmDataset* requestIdentifiers = dcmFileFormat.getDataset();
+    DcmPathProcessor dcmPathProcessor;
+    dcmPathProcessor.setItemWildcardSupport(OFFalse);
+    dcmPathProcessor.checkPrivateReservations(OFFalse);
+
+    OFListConstIterator(OFString) keyPath = pOverrideKeys->begin();
+    OFListConstIterator(OFString) lastKey = pOverrideKeys->end();
+    while (keyPath != lastKey)
+    {
+        condition = dcmPathProcessor.applyPathWithValue(requestIdentifiers, *keyPath);
+        if (condition.bad())
+        {
+            DCMNET_ERROR("Bad override key/path: " << *keyPath << ": " << condition.text());
+            return condition;
+        }
+        keyPath++;
+    }
+
+    presentationID = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
+    if (presentationID == 0)
+    {
+        return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
+    }
+
+    bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_MoveRQ));
+    pRequest->MessageID = m_pAssociation->nextMsgID++;
+    strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
+    pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
+    pRequest->DataSetType = DIMSE_DATASET_PRESENT;
+    DCMNET_DEBUG("Sending Move Request (MsgID " << pRequest->MessageID << ")");
+    DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_OUTGOING, NULL, presentationID));
+
+    if (condition.good())
+    {
+        condition = DIMSE_moveUser(m_pAssociation, presentationID, pRequest, requestIdentifiers,
+                                   callback, callbackData, m_blockMode, m_dimseTimeoutSeconds, m_pNetwork,
+                                   subOpCallback, subOpCallbackData,
+                                   pResponse, &pStatusDetail, &pResponseIdentifiers);
+    }
+
+    if (condition.good())
+    {
+        DCMNET_INFO("Received Final Move Response (" << DU_cmoveStatusString(pResponse->DimseStatus) << ")");
+        DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pResponse, DIMSE_INCOMING));
+        if (pResponseIdentifiers != NULL)
+        {
+            DCMNET_DEBUG("Response Identifiers:" << OFendl << DcmObject::PrintHelper(*pResponseIdentifiers));
+        }
+    }
+    else
+    {
+        DCMNET_ERROR("Move Request Failed: " << DimseCondition::dump(tempString, condition));
+    }
+    if (pStatusDetail != NULL)
+    {
+        DCMNET_DEBUG("Status Detail:" << OFendl << DcmObject::PrintHelper(*pStatusDetail));
+        delete pStatusDetail;
+    }
+
+    if (pResponseIdentifiers != NULL)
+    {
+        delete pResponseIdentifiers;
+    }
+
     return condition;
 }
 
@@ -486,6 +561,7 @@ OFCondition DicomSCUBase::StoreUser(DcmDataset *pStoreDataset,
         return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
     }
 
+    bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_StoreRQ));
     strcpy(pRequest->AffectedSOPClassUID, sopClass);
     strcpy(pRequest->AffectedSOPInstanceUID, sopInstance);
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;

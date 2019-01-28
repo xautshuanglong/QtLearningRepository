@@ -107,8 +107,8 @@ void DicomSCUStore::HandleStoreCallback(T_DIMSE_StoreProgress *pProgress, T_DIMS
         DCMNET_DEBUG("StoreBegin ========================");
         break;
     case DIMSE_StoreProgressing:
-        DCMNET_DEBUG("StoreProgressing (" << pProgress->callbackCount << ") : "
-                     << pProgress->progressBytes << "/" << pProgress->totalBytes);
+        //DCMNET_DEBUG("StoreProgressing (" << pProgress->callbackCount << ") : "
+        //             << pProgress->progressBytes << "/" << pProgress->totalBytes);
         break;
     case DIMSE_StoreEnd:
         DCMNET_DEBUG("StoreEnd ========================");

@@ -55,7 +55,10 @@ public:
                         T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pResponse,
                         DIMSE_GetUserCallbackEx callback, void *callbackData,
                         DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData);
-    OFCondition MoveUser();
+    OFCondition MoveUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
+                         T_DIMSE_C_MoveRQ *pRequest, T_DIMSE_C_MoveRSP *pResponse,
+                         DIMSE_MoveUserCallback callback, void *callbackData,
+                         DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData);
     OFCondition StoreUser(DcmDataset *pStoreDataset,
                           T_DIMSE_C_StoreRQ *pRequest, T_DIMSE_C_StoreRSP *pResponse,
                           DIMSE_StoreUserCallback callback, void *callbackData);
