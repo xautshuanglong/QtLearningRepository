@@ -38,6 +38,7 @@ public:
     void SetPeerHostname(const OFString& peerHostname) { m_peerHostName = peerHostname; }
     void SetAppTitle(const OFString& appTitle) { m_appAETitle = appTitle; }
     void SetPeerTitle(const OFString& peerTitle) { m_peerAETitle = peerTitle; }
+    void SetDestinationTitle(const OFString& destTitle) { m_destAETitle = destTitle; }
 
     OFCondition InitNetwork();
     OFCondition UseSecureConnection(DcmTransportLayer *transLayer);
@@ -88,4 +89,5 @@ protected:
     OFString           m_peerHostName;
     OFString           m_peerAETitle;
     OFString           m_appAETitle;
+    OFString           m_destAETitle;
 };

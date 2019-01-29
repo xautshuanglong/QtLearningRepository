@@ -23,6 +23,7 @@ public:
     void SetPeerPort(const unsigned short peerPort) { m_peerPort = peerPort; }
     void SetPeerAETitle(const QString& peerAETitle) { m_peerAETitle = peerAETitle; }
     void SetAppAETitle(const QString& appAETitle) { m_appAETitle = appAETitle; }
+    void SetDestinationTitle(const QString& destAETitle) { m_destAETitle = destAETitle; }
     void SetMaxReceivePDULength(const unsigned int& maxPDU) { m_maxReceivePDU = maxPDU; }
     void SetDIMSEBlockingMode(const bool blockFlag) { m_blockFlag = blockFlag; }
 
@@ -60,8 +61,9 @@ private:
     unsigned short  m_peerPort;
     unsigned int    m_maxReceivePDU;       // 最大接收协议数据单元
     QString         m_peerHostName;
-    QString         m_peerAETitle;
-    QString         m_appAETitle;
+    QString         m_peerAETitle;         // 服务端（被请求端）Title
+    QString         m_appAETitle;          // 当前应用的 Title
+    QString         m_destAETitle;         // 目的端 Title， C-MOVE 可以转储给自己或其他应用实体。
     DicomSCUEcho   *m_pDicomEcho;
     DicomSCUFind   *m_pDicomFind;
     DicomSCUGet    *m_pDicomGet;

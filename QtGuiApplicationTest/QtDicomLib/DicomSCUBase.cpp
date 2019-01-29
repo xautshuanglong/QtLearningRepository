@@ -19,10 +19,11 @@ DicomSCUBase::DicomSCUBase()
     , m_dimseTimeoutSeconds(10)
     , m_acseTimeoutSeconds(30)
     , m_peerPort(5678)
-    , m_maxReceivePDU(16384)
+    , m_maxReceivePDU(32768)
     , m_peerHostName("localhost")
     , m_peerAETitle("MGIUSDICOM")
     , m_appAETitle("MGIUSDOCTOR")
+    , m_destAETitle("MGIUSDOCTOR")
 {
 }
 

@@ -56,6 +56,13 @@ static const char* transferSyntaxes[] =
     UID_HEVCMain10ProfileLevel5_1TransferSyntax,
 };
 
+struct StoreCallbackData
+{
+    char              *pImageFilename;
+    DcmFileFormat     *pDcmFileFormat;
+    T_ASC_Association *pAssociation;
+};
+
 DicomSCUMove::DicomSCUMove()
     : DicomSCUBase()
 {
@@ -100,7 +107,11 @@ OFCondition DicomSCUMove::PerformMove(MoveModel moveModel)
 
 void DicomSCUMove::HandleMoveCallback(T_DIMSE_C_MoveRQ *pRequest, int responseCount, T_DIMSE_C_MoveRSP *pResponse)
 {
-    ;
+    OFCondition condition = EC_Normal;
+    OFString tempString;
+    DCMNET_INFO("Received Move Response " << responseCount
+                << " (" << DU_cmoveStatusString(pResponse->DimseStatus) << ")");
+    DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pResponse, DIMSE_INCOMING));
 }
 
 void DicomSCUMove::MoveUserCallback(void *pCallbackData, T_DIMSE_C_MoveRQ *pRequest, int responseCount, T_DIMSE_C_MoveRSP *pResponse)
@@ -239,7 +250,7 @@ void DicomSCUMove::SubOperation_SCP(T_ASC_Association **ppSubOpAssoc)
     }
 }
 
-OFCondition DicomSCUMove::SubOperation_EchoSCP(T_ASC_Association *ppSubOpAssocm, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID)
+OFCondition DicomSCUMove::SubOperation_EchoSCP(T_ASC_Association *pSubOpAssociation, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID)
 {
     OFString tempString;
     T_DIMSE_C_EchoRQ *pRequest = &pReceivedMsg->msg.CEchoRQ;
@@ -247,7 +258,7 @@ OFCondition DicomSCUMove::SubOperation_EchoSCP(T_ASC_Association *ppSubOpAssocm,
     DCMNET_INFO("Received Echo Request (MsgID " << pRequest->MessageID << ")");
     DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_INCOMING, NULL, presentationID));
 
-    OFCondition condition = DIMSE_sendEchoResponse(ppSubOpAssocm, presentationID, pRequest, STATUS_Success, NULL);
+    OFCondition condition = DIMSE_sendEchoResponse(pSubOpAssociation, presentationID, pRequest, STATUS_Success, NULL);
     if (condition.bad())
     {
         DCMNET_ERROR("Echo SCP Failed: " << DimseCondition::dump(tempString, condition));
@@ -255,7 +266,7 @@ OFCondition DicomSCUMove::SubOperation_EchoSCP(T_ASC_Association *ppSubOpAssocm,
     return condition;
 }
 
-OFCondition DicomSCUMove::SubOperation_StoreSCP(T_ASC_Association *ppSubOpAssocm, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID)
+OFCondition DicomSCUMove::SubOperation_StoreSCP(T_ASC_Association *pSubOpAssociation, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID)
 {
     OFString tempString;
     OFCondition condition = EC_Normal;
@@ -271,21 +282,21 @@ OFCondition DicomSCUMove::SubOperation_StoreSCP(T_ASC_Association *ppSubOpAssocm
     DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRequest, DIMSE_INCOMING, NULL, presentationID));
 
     DcmFileFormat dcmFormatFile;
-    //StoreCallbackData callbackData;
-    //callbackData.assoc = assoc;
-    //callbackData.imageFileName = imageFileName;
-    //callbackData.dcmff = &dcmFormatFile;
+    StoreCallbackData callbackData;
+    callbackData.pAssociation = pSubOpAssociation;
+    callbackData.pImageFilename = imageFileName;
+    callbackData.pDcmFileFormat = &dcmFormatFile;
 
     // store SourceApplicationEntityTitle in metaheader
-    if (ppSubOpAssocm && ppSubOpAssocm->params)
+    if (pSubOpAssociation && pSubOpAssociation ->params)
     {
-        const char *aet = ppSubOpAssocm->params->DULparams.callingAPTitle;
+        const char *aet = pSubOpAssociation ->params->DULparams.callingAPTitle;
         if (aet) dcmFormatFile.getMetaInfo()->putAndInsertString(DCM_SourceApplicationEntityTitle, aet);
     }
 
     DcmDataset *pDataset = dcmFormatFile.getDataset();
-    condition = DIMSE_storeProvider(ppSubOpAssocm, presentationID, pRequest, NULL, OFTrue,
-                                    &pDataset, DicomSCUMove::StoreProviderCallback, this,
+    condition = DIMSE_storeProvider(pSubOpAssociation, presentationID, pRequest, NULL, OFTrue,
+                                    &pDataset, DicomSCUMove::StoreProviderCallback, OFreinterpret_cast(void*, &callbackData),
                                     m_blockMode, m_dimseTimeoutSeconds);
 
     if (condition.bad())
@@ -310,63 +321,62 @@ void DicomSCUMove::StoreProviderCallback(void *pCallbackData, T_DIMSE_StoreProgr
     switch (pProgress->state)
     {
     case DIMSE_StoreBegin:
+        DCMNET_DEBUG("DIMSE_StoreBegin ========================");
+        break;
+    case DIMSE_StoreProgressing:
+        DCMNET_DEBUG("DIMSE_StoreProgressing ========================");
         break;
     case DIMSE_StoreEnd:
+        DCMNET_DEBUG("DIMSE_StoreEnd ========================");
         break;
     default:
         break;
     }
 
-    //if (pProgress->state == DIMSE_StoreEnd)
-    //{
-    //    *ppStatusDetail = NULL;
+    if (pProgress->state == DIMSE_StoreEnd)
+    {
+        *ppStatusDetail = NULL;
 
-    //    if ((ppImageDataSet != NULL) && (*ppImageDataSet != NULL))
-    //    {
-    //        StoreCallbackData *cbdata = OFstatic_cast(StoreCallbackData*, callbackData);
-    //        OFString filename;
-    //        OFStandard::combineDirAndFilename(filename, "./", pImageFilename, OFTrue);
-    //        if (OFStandard::fileExists(filename))
-    //        {
-    //            DCMNET_WARN("DICOM file already exists, overwriting: " << filename);
-    //        }
+        if ((ppImageDataSet != NULL) && (*ppImageDataSet != NULL))
+        {
+            StoreCallbackData *cbdata = OFstatic_cast(StoreCallbackData*, pCallbackData);
+            OFString filename;
+            OFStandard::combineDirAndFilename(filename, "./", pImageFilename, OFTrue);
+            if (OFStandard::fileExists(filename))
+            {
+                DCMNET_WARN("DICOM file already exists, overwriting: " << filename);
+            }
 
-    //        E_TransferSyntax xfer = opt_writeTransferSyntax;
-    //        if (xfer == EXS_Unknown) xfer = (*imageDataSet)->getOriginalXfer();
+            E_TransferSyntax xfer = (*ppImageDataSet)->getOriginalXfer();
+            OFCondition condition = cbdata->pDcmFileFormat->saveFile(filename.c_str(), xfer,
+                                                                EET_ExplicitLength, EGL_recalcGL,
+                                                                EPD_withoutPadding,
+                                                                OFstatic_cast(Uint32, 0),
+                                                                OFstatic_cast(Uint32, 0),
+                                                                EWM_fileformat);
+            if (condition.bad())
+            {
+                DCMNET_ERROR("cannot write DICOM file: " << filename);
+                pResponse->DimseStatus = STATUS_STORE_Refused_OutOfResources;
+                OFStandard::deleteFile(filename);
+            }
 
-    //        OFCondition cond = cbdata->dcmff->saveFile(ofname.c_str(), xfer, opt_sequenceType, opt_groupLength,
-    //                                                   opt_paddingType, OFstatic_cast(Uint32, opt_filepad), OFstatic_cast(Uint32, opt_itempad),
-    //                                                   (opt_useMetaheader) ? EWM_fileformat : EWM_dataset);
-    //        if (cond.bad())
-    //        {
-    //            OFLOG_ERROR(movescuLogger, "cannot write DICOM file: " << ofname);
-    //            rsp->DimseStatus = STATUS_STORE_Refused_OutOfResources;
-
-    //            // delete incomplete file
-    //            OFStandard::deleteFile(ofname);
-    //        }
-
-    //        /* should really check the image to make sure it is consistent,
-    //        * that its sopClass and sopInstance correspond with those in
-    //        * the request.
-    //        */
-    //        if ((rsp->DimseStatus == STATUS_Success) && !opt_ignore)
-    //        {
-    //            /* which SOP class and SOP instance ? */
-    //            if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, opt_correctUIDPadding))
-    //            {
-    //                OFLOG_FATAL(movescuLogger, "bad DICOM file: " << imageFileName);
-    //                rsp->DimseStatus = STATUS_STORE_Error_CannotUnderstand;
-    //            }
-    //            else if (strcmp(sopClass, req->AffectedSOPClassUID) != 0)
-    //            {
-    //                rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
-    //            }
-    //            else if (strcmp(sopInstance, req->AffectedSOPInstanceUID) != 0)
-    //            {
-    //                rsp->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
-    //            }
-    //        }
-    //    }
-    //}
+            if ((pResponse->DimseStatus == STATUS_Success))
+            {
+                if (!DU_findSOPClassAndInstanceInDataSet(*ppImageDataSet, sopClass, sopInstance, OFTrue))
+                {
+                    DCMNET_FATAL("bad DICOM file: " << pImageFilename);
+                    pResponse->DimseStatus = STATUS_STORE_Error_CannotUnderstand;
+                }
+                else if (strcmp(sopClass, pRequest->AffectedSOPClassUID) != 0)
+                {
+                    pResponse->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
+                }
+                else if (strcmp(sopInstance, pRequest->AffectedSOPInstanceUID) != 0)
+                {
+                    pResponse->DimseStatus = STATUS_STORE_Error_DataSetDoesNotMatchSOPClass;
+                }
+            }
+        }
+    }
 }
