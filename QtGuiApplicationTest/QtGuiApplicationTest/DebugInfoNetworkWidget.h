@@ -15,6 +15,11 @@ public:
     DebugInfoNetworkWidget(QWidget *parent = Q_NULLPTR);
     ~DebugInfoNetworkWidget();
 
+private:
+    void InitializeNetworkEnvironment();
+    void UninitializeNetworkEnvironment();
+    void PingTest(const QString& serverIP, const QString& serverPort);
+
 protected:
     virtual bool OnDebugMenuEvent(DebugMenuEvent *event) override;
     virtual void OnUpdateDebugInfo() override;
