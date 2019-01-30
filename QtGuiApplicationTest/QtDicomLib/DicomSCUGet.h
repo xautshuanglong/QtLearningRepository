@@ -9,7 +9,7 @@ typedef enum
     GetModel_PatientStudyOnly
 }GetModel;
 
-class QTDICOMLIB_EXPORT DicomSCUGet : public DicomSCUBase
+class DicomSCUGet : public DicomSCUBase
 {
 public:
     DicomSCUGet();

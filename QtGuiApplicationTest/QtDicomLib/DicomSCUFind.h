@@ -10,7 +10,7 @@ enum FindModel
     FindModel_PatientStudyOnly
 };
 
-class QTDICOMLIB_EXPORT DicomSCUFind : public DicomSCUBase
+class DicomSCUFind : public DicomSCUBase
 {
 public:
     DicomSCUFind();

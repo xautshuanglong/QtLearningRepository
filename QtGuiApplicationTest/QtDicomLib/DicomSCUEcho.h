@@ -2,7 +2,7 @@
 
 #include "DicomSCUBase.h"
 
-class QTDICOMLIB_EXPORT DicomSCUEcho : public DicomSCUBase
+class DicomSCUEcho : public DicomSCUBase
 {
 public:
     DicomSCUEcho();

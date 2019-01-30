@@ -2,7 +2,7 @@
 
 #include "qtdicomlib_global.h"
 
-class QTDICOMLIB_EXPORT IDicomSCUObserver
+class IDicomSCUObserver
 {
 public:
     IDicomSCUObserver() {}
