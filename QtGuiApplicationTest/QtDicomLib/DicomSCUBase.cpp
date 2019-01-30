@@ -427,12 +427,12 @@ OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *
     }
     if (condition.good())
     {
-        DCMNET_INFO("Received Final Find Response (" << DU_cfindStatusString(pRsponse->DimseStatus) << ")");
+        DCMNET_INFO("Received Final Get Response (" << DU_cfindStatusString(pRsponse->DimseStatus) << ")");
         DCMNET_DEBUG(DIMSE_dumpMessage(tempString, *pRsponse, DIMSE_INCOMING));
     }
     else
     {
-        DCMNET_ERROR("Find Failed, query keys:");
+        DCMNET_ERROR("Get Failed, query keys:");
         DCMNET_ERROR(DcmObject::PrintHelper(dcmFileFormat));
         DCMNET_ERROR(DimseCondition::dump(tempString, condition));
     }
