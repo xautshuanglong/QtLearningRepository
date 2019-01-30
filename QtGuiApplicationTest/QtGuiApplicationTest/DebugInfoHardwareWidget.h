@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QChartGlobal>
-#include <DebugInfoBaseWidget.h>
+#include "DebugInfoBaseWidget.h"
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;

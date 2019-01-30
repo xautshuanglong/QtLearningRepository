@@ -25,6 +25,7 @@
 #include "MainTabPageDicom.h"
 #include "DebugPanel.h"
 #include "DebugInfoHardwareWidget.h"
+#include "DebugInfoNetworkWidget.h"
 #include "DebugInfoTestWidget.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
@@ -42,6 +43,8 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     DebugPanel::GetInstance()->ListenKeyboard(this);
     mpCpuUsageWidget = new DebugInfoHardwareWidget(this);
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("硬件信息"), mpCpuUsageWidget);
+    mpNetworkWidget = new DebugInfoNetworkWidget(this);
+    DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("网络测试"), mpNetworkWidget);
     mpDebugTestWidget = new DebugInfoTestWidget(this);
     DebugPanel::GetInstance()->AddDebugInfoWidget(QString::fromLocal8Bit("调试测试"), mpDebugTestWidget);
 

@@ -165,6 +165,9 @@
     <ClCompile Include="DicomServerBrowserWidget.cpp">
       <Filter>DICOM</Filter>
     </ClCompile>
+    <ClCompile Include="DebugInfoNetworkWidget.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -205,6 +208,9 @@
     </QtUic>
     <QtUic Include="DicomServerBrowserWidget.ui">
       <Filter>DICOM</Filter>
+    </QtUic>
+    <QtUic Include="DebugInfoNetworkWidget.ui">
+      <Filter>Debugger</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +323,9 @@
     </QtMoc>
     <QtMoc Include="DicomServerBrowserWidget.h">
       <Filter>DICOM</Filter>
+    </QtMoc>
+    <QtMoc Include="DebugInfoNetworkWidget.h">
+      <Filter>Debugger</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

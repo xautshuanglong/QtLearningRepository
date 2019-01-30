@@ -9,6 +9,7 @@ class MainTabPageFirst;
 class MainTabPageDicom;
 class MainTabPageSetting;
 class DebugInfoHardwareWidget;
+class DebugInfoNetworkWidget;
 class DebugInfoTestWidget;
 class QMenu;
 class QAction;
@@ -28,6 +29,7 @@ private:
     MainTabPageDicom                *mpPageDicom;
     MainTabPageSetting              *mpPageSetting;
     DebugInfoHardwareWidget         *mpCpuUsageWidget;
+    DebugInfoNetworkWidget          *mpNetworkWidget;
     DebugInfoTestWidget             *mpDebugTestWidget;
     QSystemTrayIcon                 *mpSystemTray;
     QMenu                           *mpSystemTrayMenu;
