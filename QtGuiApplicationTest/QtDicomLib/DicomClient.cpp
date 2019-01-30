@@ -180,8 +180,8 @@ void DicomClient::PerformMove()
         m_pDicomMove->AddPresentationContext(dcmLongSCUStorageSOPClassUIDs[j], transferSyntaxList, ASC_SC_ROLE_SCP);
     }
 
-    //m_pDicomGet->AddQueryKey("PatientName=HEAD EXP2");
-    m_pDicomMove->AddQueryKey("PatientName=GAMAGE^MARY");
+    m_pDicomMove->AddQueryKey("PatientName=HEAD EXP2");
+    //m_pDicomMove->AddQueryKey("PatientName=GAMAGE^MARY");
 
     OFCondition condition = m_pDicomMove->PerformMove(MoveModel_PatientRoot);
     if (condition.bad())

@@ -22,8 +22,8 @@ DicomSCUBase::DicomSCUBase()
     , m_maxReceivePDU(32768)
     , m_peerHostName("localhost")
     , m_peerAETitle("MGIUSDICOM")
-    , m_appAETitle("MGIUSDOCTOR")
-    , m_destAETitle("MGIUSDOCTOR")
+    , m_appAETitle("DebugTest")
+    , m_destAETitle("DebugTest")
 {
 }
 
@@ -490,6 +490,7 @@ OFCondition DicomSCUBase::MoveUser(const char *abstractSyntax, OFList<OFString> 
     bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_MoveRQ));
     pRequest->MessageID = m_pAssociation->nextMsgID++;
     strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
+    strcpy(pRequest->MoveDestination, m_destAETitle.c_str());
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     DCMNET_DEBUG("Sending Move Request (MsgID " << pRequest->MessageID << ")");
