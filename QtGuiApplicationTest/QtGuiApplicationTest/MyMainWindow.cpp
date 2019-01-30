@@ -12,10 +12,10 @@
 #include <QAction>
 #include <QKeySequence>
 
-#ifdef Q_OS_WIN
-#include <qt_windows.h>
-#include <windowsx.h>
-#endif
+//#ifdef Q_OS_WIN
+//#include <qt_windows.h>
+//#include <windowsx.h>
+//#endif
 
 #include <LogUtil.h>
 

@@ -4,9 +4,6 @@
 // QT Headers
 #include <QMetaEnum>
 
-// Windows Headers
-#include <WinSock2.h>
-
 // Self Headers
 #include <LogUtil.h>
 #include "DebugMenuEvent.h"
@@ -193,6 +190,30 @@ void DebugInfoNetworkWidget::PingTest(const QString& serverIP, const QString& se
         LogUtil::Error(CODE_LOCATION, "Close client socket failed: errorCode = %d", errorCode);
         return;
     }
+}
+
+UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen)
+{
+    UINT32 sum = 0;
+    UINT16 *tempBuffer;
+
+    tempBuffer = (UINT16 *)InBuffer;
+
+    while (BufferLen> 1)
+    {
+        sum += *tempBuffer++;
+        BufferLen -= 2;
+    }
+
+    if (BufferLen)
+    {
+        sum += *(UINT8 *)tempBuffer;
+    }
+
+    sum = (sum >> 16) + (sum & 0xffff);
+    sum += (sum >> 16);
+
+    return ~sum;
 }
 
 bool DebugInfoNetworkWidget::OnDebugMenuEvent(DebugMenuEvent *event)

@@ -2,6 +2,9 @@
 
 #include "DebugInfoBaseWidget.h"
 
+// Windows Headers
+#include <WinSock2.h>
+
 namespace Ui
 {
     class DebugInfoNetworkWidget;
@@ -19,6 +22,7 @@ private:
     void InitializeNetworkEnvironment();
     void UninitializeNetworkEnvironment();
     void PingTest(const QString& serverIP, const QString& serverPort);
+    UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
 
 protected:
     virtual bool OnDebugMenuEvent(DebugMenuEvent *event) override;

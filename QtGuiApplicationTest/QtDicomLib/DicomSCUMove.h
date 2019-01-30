@@ -30,8 +30,8 @@ private:
     OFCondition SubOperation_EchoSCP(T_ASC_Association *pSubOpAssociation, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID);
     OFCondition SubOperation_StoreSCP(T_ASC_Association *pSubOpAssociation, T_DIMSE_Message *pReceivedMsg, T_ASC_PresentationContextID presentationID);
     static void StoreProviderCallback(void *pCallbackData, T_DIMSE_StoreProgress *pProgress, T_DIMSE_C_StoreRQ *pRequest,
-                               char *pImageFilename, DcmDataset **ppImageDataSet, T_DIMSE_C_StoreRSP *pResponse,
-                               DcmDataset **ppStatusDetail);
+                                      char *pImageFilename, DcmDataset **ppImageDataSet, T_DIMSE_C_StoreRSP *pResponse,
+                                      DcmDataset **ppStatusDetail);
 
 private:
     T_DIMSE_C_MoveRQ  m_request;
