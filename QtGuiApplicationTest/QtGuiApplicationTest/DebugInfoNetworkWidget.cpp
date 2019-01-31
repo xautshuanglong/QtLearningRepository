@@ -66,7 +66,6 @@
 //    18    |  Address Mask Reply(回應子網路 mask 查詢訊息的)
 //---------------------------------------------------------------------------------------------------------------------------------
 
-
 /***************************************************************************
             请求回显或回显应答(Echo or Echo Reply Message)
     -----------------------------------------------------------------
@@ -81,7 +80,123 @@
 
 ***************************************************************************/
 
+/***************************************************************************
+                                IP 头部协议格式
+    -----------------------------------------------------------------
+     0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |  Ver  | HdLen | TypeOfService |         Total Length          |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |            Identifier         |  F  |     Fragment Offset     |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |      TTL      |    Protocol   |        Header Checksum        |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                      Source IP Address                        |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                    Destination IP Address                     |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                      Option And Padding                       |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+***************************************************************************/
+
+//                       IP 头部协议说明
+//  Version (协议版本)
+//      占 4 比特，表名 IP 协议版本。IPv4->0100，IPv6->0110。
+//
+//  Header Length （报文头部长度）
+//      占 4 比特，表示占 多少个 32 比特，包括变长可选项。
+//      普通 IP 数据包无可选项，改值为 5， 即 5 个 32 比特, 160比特 = 4字节 x 5 = 20字节。
+//      IP 头部长度范围 20 ~ 60 字节，可选项长度 0 ~ 40 字节。
+//
+//  Type of Service （服务类型）
+//      占 8 比特，指示服务类型。
+//      第 1~3 比特为优先权，现已忽略。
+//            000 普通 (Routine)
+//            001 优先的(Priority)
+//            010 立即的发送(Immediate)
+//            011 闪电式的(Flash)
+//            100 超闪电式的(Flash Override)
+//            101 CRI/TIC/ECP
+//            110 网间控制(Internetwork Control)
+//            111 网络控制(Network Control)
+//      第 4~7 比特分别表示：延迟、吞吐量、可靠性、花费。
+//            值为 1 时代表：最小时延、最大吞吐量、最高可靠性、最小费用。
+//            互斥，只能置其中 1 比特为 1，可以全为 0，表示一般服务。
+//      第 8 比特保留，恒为 0。
+//      eg: TELNET->最小延时(D)、FTP->最大吞吐量(T)、SNMP->最高可靠性(R)、NNTP->最小费用(M)、ICMP->无特殊需求（全为0）。
+//
+//  Total Length （报文总长度）
+//      占 16 比特，指明整个数据包的长度，以字节为单位。 <= 65535 字节
+//
+//  Identifier
+//      占 16 比特，唯一标识主机发送的每一分数据报。通常每发一份报文，其值加 1。
+//      与 Flags 和 Fragment Offset 联合使用，所有拆分开的小包标记相同的值，以便目的端区分小包属于哪个大包。
+//
+//  Flags (标志位)
+//      占 3 比特，标识数据报是否要分段。
+//      第 1 比特，不使用。
+//      第 2 比特，DF（Don't Fragment）位，为 1 时，表明路由器不能对该上层数据包分段。
+//                如果上层数据包无法在不分段的情况下转发，则丢弃该上层数据包并返回一条错误信息。
+//      第 3 比特，MF(More Fragment)位，路由器对上层数据包分段时，除最后一个分段外其余分段的该标记位都设为 1。
+//
+//  Fragment Offset （段偏移）
+//      占 13 比特，如果数据报需要分段，该字段指明该段报文距原始数据报开始位置的偏移量。
+//
+//  Time To Live （生存期）
+//      占 8 比特，设置报文最多可以经过的路由器数。
+//      由发送数据的源主机设置，通常为 32、64、128 等。
+//      没经过一个路由器，其值减 1，直到为 0 时数据包被丢弃。
+//
+//  Protocol （协议）
+//      占 8 比特，指明所封装的上层协议类型。
+//      如：ICMP（1）、IGMP（2）、TCP（6）、UDP（17）、IGRP（88）、OSPF（89）等。
+//
+//  Header Checksum （头部校验和）
+//      占 16 比特，注意仅对 IP 头部数据进行校验。
+//      对头部中每个 16 比特进行二进制反码求和。
+//
+//  Source Address （源 IP 地址）
+//      占 32 比特，注意网络字节序。
+//
+//  Destination Address （目的 IP 地址）
+//      占 32 比特，注意网络字节序。
+//
+//  Option and Padding （可选项）
+//      占 32 比特，定义一些人选项：如记录路径、时间戳等。并非所有主机和路由器都支持这些选项。
+//      可选项长度必需是 32 比特的整数倍，如果不足，用 0 填充。
+//      可选项包含以下内容：
+//          松散源路由（Loose Source Routing）：给出一连串路由器地址。数据包必须沿着这些 IP 地址传递，允许跳过多个路由器。
+//          严格源路由（Strict Source Routing）：给出一连串路由器地址。数据包必须沿着这些 IP 地址传送，下一跳不在 IP 地址表中则发生错误。
+//          路由记录（Record Route）：当数据包离开每个路由器的时候记录路由器出站 IP 地址。
+//          时间戳（Timestamps）：当数据包离开每个路由器的时候记录时间。
+
+
 // ICMP 协议包定义
+struct ICMP_HEADER
+{
+    unsigned char  Type;
+    unsigned char  Code;
+    unsigned short Checksum;
+    unsigned short Identifier;
+    unsigned short Sequence;
+    unsigned long  OptinalData;
+};
+
+struct IP_HEADER
+{
+    unsigned char  HeaderLength:4;    //length of header
+    unsigned char  Version:4;         //Version of IP
+    unsigned char  TypeOfService;     //Type of service
+    unsigned short PacketLength;      //total length of the packet
+    unsigned short PacketID;          //unique identifier
+    unsigned short SliceInfo;         //flags
+    unsigned char  TimeToLive;        //ttl
+    unsigned char  TypeOfProtocol;    //protocol(TCP ,UDP etc)
+    unsigned short Checksum;          //IP checksum
+    unsigned int   SourceIP;
+    unsigned int   DestinationIP;
+};
 
 DebugInfoNetworkWidget::DebugInfoNetworkWidget(QWidget *parent)
     : DebugInfoBaseWidget(parent)
@@ -125,18 +240,38 @@ void DebugInfoNetworkWidget::UninitializeNetworkEnvironment()
     ::WSACleanup();
 }
 
-void DebugInfoNetworkWidget::PingTest(const QString& serverIP, const QString& serverPort)
+void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
 {
-    struct sockaddr_in addr = { 0 };
-    struct sockaddr_in saddr = { 0 };
+    struct sockaddr_in sendAddress = { 0 };
+    struct sockaddr_in recvAddress = { 0 };
     char sendBuffer[64] = { 0 };
     char recvBuffer[512] = { 0 };
     int retValue;
     int addressLength = 0;
     int repeatCount = 5;
-    int i = 1;
+    int sequence = 1;
 
-    SOCKET client = ::socket(PF_INET, SOCK_RAW, IPPROTO_ICMP);
+    hostent *pHost = gethostbyname(destinationAddress.toStdString().c_str());
+    if (pHost == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "Bad destination address.");
+        return;
+    }
+    
+    LogUtil::Debug(CODE_LOCATION, "Destination info:");
+    LogUtil::Debug(CODE_LOCATION, "            Type: %u", pHost->h_addrtype);
+    LogUtil::Debug(CODE_LOCATION, "          Length: %u", pHost->h_length);
+    LogUtil::Debug(CODE_LOCATION, "            name: %s", pHost->h_name);
+    LogUtil::Debug(CODE_LOCATION, "         IP Addr: %s", inet_ntoa(*((struct in_addr*)pHost->h_addr)));
+
+    char **pptr = NULL;
+    int index = 1;
+    for (pptr = pHost->h_aliases; *pptr != NULL; pptr++, index++)
+    {
+        LogUtil::Debug(CODE_LOCATION, "       Alias[%d]: %s", index, *pptr);
+    }
+
+    SOCKET client = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     if (client == INVALID_SOCKET)
     {
         int errorCode = WSAGetLastError();
@@ -144,18 +279,27 @@ void DebugInfoNetworkWidget::PingTest(const QString& serverIP, const QString& se
         return;
     }
 
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = inet_addr("192.168.13.148");
+    sendAddress.sin_family = AF_INET;
+    //sendAddress.sin_addr.s_addr = inet_addr("10.225.12.64");
+    sendAddress.sin_addr = *((struct in_addr*)pHost->h_addr);
+    //sendAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     while (repeatCount > 0)
     {
-        --repeatCount;
-
         memset(sendBuffer, 0, sizeof(sendBuffer));
-        //icmp_packet(sendBuffer, 64, getpid(), i);
-        i++;
+        ICMP_HEADER *pSendICMP = (ICMP_HEADER*)sendBuffer;
+        pSendICMP->Type = 8; // Echo Request
+        pSendICMP->Code = 0;
+        pSendICMP->Checksum = 0;
+        pSendICMP->Identifier = GetCurrentProcessId();
+        pSendICMP->Sequence = sequence;
+        pSendICMP->OptinalData = GetTickCount();
+        pSendICMP->Checksum = this->CaculateChecksum((UINT8*)sendBuffer, sizeof(ICMP_HEADER));
 
-        retValue = ::sendto(client, sendBuffer, 64, 0, (struct sockaddr *)&addr, sizeof(addr));
+        --repeatCount;
+        sequence++;
+
+        retValue = sendto(client, sendBuffer, 64, 0, (struct sockaddr *)&sendAddress, sizeof(sendAddress));
         if (retValue <= 0)
         {
             LogUtil::Error(CODE_LOCATION, "Sent ICMP data failed!");
@@ -163,13 +307,13 @@ void DebugInfoNetworkWidget::PingTest(const QString& serverIP, const QString& se
         }
         else
         {
-            LogUtil::Info(CODE_LOCATION, "Send %d bytes ...", retValue);
+            //LogUtil::Debug(CODE_LOCATION, "Send %d bytes ...", retValue);
         }
 
         memset(recvBuffer, 0, sizeof(recvBuffer));
-        memset(&saddr, 0, sizeof(saddr));
-        addressLength = sizeof(saddr);
-        retValue = recvfrom(client, recvBuffer, sizeof(recvBuffer), 0, (struct sockaddr *)&saddr, &addressLength);
+        memset(&recvAddress, 0, sizeof(recvAddress));
+        addressLength = sizeof(recvAddress);
+        retValue = recvfrom(client, recvBuffer, sizeof(recvBuffer), 0, (struct sockaddr *)&recvAddress, &addressLength);
         if (retValue <= 0)
         {
             LogUtil::Error(CODE_LOCATION, "Send ICMP data failed!");
@@ -177,13 +321,28 @@ void DebugInfoNetworkWidget::PingTest(const QString& serverIP, const QString& se
         }
         else
         {
-            LogUtil::Info(CODE_LOCATION, "Receive %d bytes ...", retValue);
+            //LogUtil::Debug(CODE_LOCATION, "Receive %d bytes ...", retValue);
+            IP_HEADER *pRecvIP = (IP_HEADER*)recvBuffer;
+            ICMP_HEADER *pRecvICMP = (ICMP_HEADER*)(pRecvIP + 1);
+            unsigned long timeDiff = GetTickCount() - pRecvICMP->OptinalData;
+            LogUtil::Debug(CODE_LOCATION, "Receive ICMP Type:%u Code:%u", pRecvICMP->Type, pRecvICMP->Code);
+
+            UINT16 checksum = this->CaculateChecksum((UINT8*)pRecvICMP, sizeof(ICMP_HEADER));
+            if (checksum == 0)
+            {
+                LogUtil::Info(CODE_LOCATION, "Reply From %s: bytes=%d time=%ums TTL=%u",
+                              inet_ntoa(recvAddress.sin_addr),
+                              retValue, timeDiff, pRecvIP->TimeToLive);
+            }
+            else
+            {
+                LogUtil::Error(CODE_LOCATION, "Checksum Error");
+            }
         }
-        //parse_packet(recvBuffer, retValue);
-        ::Sleep(1);
+        Sleep(1);
     }
 
-    int errorCode = ::closesocket(client);
+    int errorCode = closesocket(client);
     if (errorCode != ERROR_SUCCESS)
     {
         int errorCode = WSAGetLastError();
@@ -232,10 +391,11 @@ void DebugInfoNetworkWidget::OnUpdateDebugInfo()
 
 void DebugInfoNetworkWidget::resizeEvent(QResizeEvent *event)
 {
-    ;
+    int i = 0;
 }
 
 void DebugInfoNetworkWidget::on_btnPingTest_clicked()
 {
-    int i = 0;
+    QString serverAddress = ui->leDestinationAddress->text();
+    this->PingTest(serverAddress);
 }

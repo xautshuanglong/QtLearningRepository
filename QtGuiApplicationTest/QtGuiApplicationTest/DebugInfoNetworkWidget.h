@@ -21,7 +21,7 @@ public:
 private:
     void InitializeNetworkEnvironment();
     void UninitializeNetworkEnvironment();
-    void PingTest(const QString& serverIP, const QString& serverPort);
+    void PingTest(const QString& destinationAddress);
     UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
 
 protected:
