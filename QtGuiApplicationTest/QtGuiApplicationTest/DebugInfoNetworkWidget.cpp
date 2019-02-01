@@ -278,6 +278,18 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         LogUtil::Error(CODE_LOCATION, "Create ICMP client socket failed: errorCode = %d", errorCode);
         return;
     }
+    unsigned long sendTimeout = 10000;
+    retValue = setsockopt(client, SOL_SOCKET, SO_SNDTIMEO, (char*)&sendTimeout, sizeof(unsigned long));
+    if (retValue != ERROR_SUCCESS)
+    {
+        LogUtil::Error(CODE_LOCATION, "Failed setsockopt SO_SNDTIMEO: ErrorCode = %d", WSAGetLastError());
+    }
+    unsigned long receiveTimeout = 5000;
+    retValue = setsockopt(client, SOL_SOCKET, SO_RCVTIMEO, (char*)&receiveTimeout, sizeof(unsigned long));
+    if (retValue != ERROR_SUCCESS)
+    {
+        LogUtil::Error(CODE_LOCATION, "Failed setsockopt SO_RCVTIMEO: ErrorCode = %d", WSAGetLastError());
+    }
 
     sendAddress.sin_family = AF_INET;
     //sendAddress.sin_addr.s_addr = inet_addr("10.225.12.64");
@@ -313,7 +325,15 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         retValue = recvfrom(client, recvBuffer, sizeof(recvBuffer), 0, (struct sockaddr *)&recvAddress, &addressLength);
         if (retValue <= 0)
         {
-            LogUtil::Error(CODE_LOCATION, "Send ICMP data failed!");
+            int errorCode = WSAGetLastError();
+            switch (errorCode)
+            {
+            case WSAETIMEDOUT:
+                LogUtil::Error(CODE_LOCATION, "Receive ICMP data failed! ErrorCode: WSAETIMEDOUT");
+            default:
+                LogUtil::Error(CODE_LOCATION, "Receive ICMP data failed! ErrorCode: %d", errorCode);
+                break;
+            }
             break;
         }
         else
@@ -322,18 +342,24 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
             IP_HEADER *pRecvIP = (IP_HEADER*)recvBuffer;
             ICMP_HEADER *pRecvICMP = (ICMP_HEADER*)(pRecvIP + 1);
             unsigned long timeDiff = GetTickCount() - pRecvICMP->OptinalData;
-            LogUtil::Debug(CODE_LOCATION, "Receive ICMP Type:%u Code:%u", pRecvICMP->Type, pRecvICMP->Code);
-
-            UINT16 checksum = this->CaculateChecksum((UINT8*)pRecvICMP, sizeof(ICMP_HEADER));
-            if (checksum == 0)
+            if (pRecvICMP->Type==0 && pRecvICMP->Code==0)
             {
-                LogUtil::Info(CODE_LOCATION, "Reply From %s: bytes=%d time=%ums TTL=%u",
-                              inet_ntoa(recvAddress.sin_addr),
-                              retValue, timeDiff, pRecvIP->TimeToLive);
+                UINT16 checksum = this->CaculateChecksum((UINT8*)pRecvICMP, sizeof(ICMP_HEADER));
+                if (checksum == 0)
+                {
+                    LogUtil::Info(CODE_LOCATION, "Reply From %s: bytes=%d time=%ums TTL=%u",
+                                  inet_ntoa(recvAddress.sin_addr),
+                                  retValue, timeDiff, pRecvIP->TimeToLive);
+                }
+                else
+                {
+                    LogUtil::Error(CODE_LOCATION, "Checksum Error");
+                    break;
+                }
             }
             else
             {
-                LogUtil::Error(CODE_LOCATION, "Checksum Error");
+                LogUtil::Debug(CODE_LOCATION, "Receive ICMP Data: Type=%u Code=%u", pRecvICMP->Type, pRecvICMP->Code);
             }
         }
 
@@ -341,11 +367,11 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         Sleep(1);
     }
 
-    int errorCode = closesocket(client);
-    if (errorCode != ERROR_SUCCESS)
+    retValue = closesocket(client);
+    if (retValue != ERROR_SUCCESS)
     {
         int errorCode = WSAGetLastError();
-        LogUtil::Error(CODE_LOCATION, "Close client socket failed: errorCode = %d", errorCode);
+        LogUtil::Error(CODE_LOCATION, "Close client socket failed: ErrorCode = %d", errorCode);
         return;
     }
 }
