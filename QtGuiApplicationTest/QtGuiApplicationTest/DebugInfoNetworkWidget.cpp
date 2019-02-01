@@ -251,25 +251,28 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
     int repeatCount = 5;
     int sequence = 1;
 
-    hostent *pHost = gethostbyname(destinationAddress.toStdString().c_str());
+    // ½öÊÊÓÃÓÚ IPv4
+    struct hostent *pHost = gethostbyname(destinationAddress.toStdString().c_str());
     if (pHost == NULL)
     {
-        LogUtil::Error(CODE_LOCATION, "Bad destination address.");
+        int errorCode = WSAGetLastError();
+        switch (errorCode)
+        {
+        case WSAHOST_NOT_FOUND:
+            LogUtil::Error(CODE_LOCATION, "Host not found ...");
+            break;
+        case WSANO_DATA:
+            LogUtil::Error(CODE_LOCATION, "No data record found ...");
+            break;
+        default:
+            LogUtil::Error(CODE_LOCATION, "Bad destination address. ErrorCode: %d", errorCode);
+            break;
+        }
         return;
     }
-    
-    LogUtil::Debug(CODE_LOCATION, "Destination info:");
-    LogUtil::Debug(CODE_LOCATION, "            Type: %u", pHost->h_addrtype);
-    LogUtil::Debug(CODE_LOCATION, "          Length: %u", pHost->h_length);
-    LogUtil::Debug(CODE_LOCATION, "            name: %s", pHost->h_name);
-    LogUtil::Debug(CODE_LOCATION, "         IP Addr: %s", inet_ntoa(*((struct in_addr*)pHost->h_addr)));
 
-    char **pptr = NULL;
-    int index = 1;
-    for (pptr = pHost->h_aliases; *pptr != NULL; pptr++, index++)
-    {
-        LogUtil::Debug(CODE_LOCATION, "       Alias[%d]: %s", index, *pptr);
-    }
+    //struct hostent *pHost = gethostbyname2()
+    this->ParseHostInfo(pHost);
 
     SOCKET client = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     if (client == INVALID_SOCKET)
@@ -398,6 +401,47 @@ UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen
     sum += (sum >> 16);
 
     return ~sum;
+}
+
+void DebugInfoNetworkWidget::ParseHostInfo(struct hostent *pHostInfo)
+{
+    if (pHostInfo == NULL) return;
+
+    int index = 0;
+    struct in_addr hostAddress = { 0 };
+
+    LogUtil::Debug(CODE_LOCATION, "Destination info:");
+    LogUtil::Debug(CODE_LOCATION, "            name: %s", pHostInfo->h_name);
+    //LogUtil::Debug(CODE_LOCATION, "         IP Addr: %s", inet_ntoa(*((struct in_addr*)pHostInfo->h_addr)));
+    while (pHostInfo->h_addr_list[index] != 0)
+    {
+        hostAddress.s_addr = *(u_long *)pHostInfo->h_addr_list[index];
+        LogUtil::Debug(CODE_LOCATION, "      IP Addr[%d]: %s", index, inet_ntoa(hostAddress));
+        ++index;
+    }
+    LogUtil::Debug(CODE_LOCATION, "          Length: %d bytes", pHostInfo->h_length);
+    //LogUtil::Debug(CODE_LOCATION, "            Type: %u", pHostInfo->h_addrtype);
+    switch (pHostInfo->h_addrtype)
+    {
+    case AF_INET:
+        LogUtil::Debug(CODE_LOCATION, "            Type: %s", "AF_INET");
+        break;
+    case AF_INET6:
+        LogUtil::Debug(CODE_LOCATION, "            Type: %s", "AF_INET6");
+        break;
+    case AF_NETBIOS:
+        LogUtil::Debug(CODE_LOCATION, "            Type: %s", "AF_NETBIOS");
+        break;
+    default:
+        LogUtil::Debug(CODE_LOCATION, "            Type: %u", pHostInfo->h_addrtype);
+        break;
+    }
+    char **pptr = NULL;
+    index = 1;
+    for (pptr = pHostInfo->h_aliases; *pptr != NULL; pptr++, index++)
+    {
+        LogUtil::Debug(CODE_LOCATION, "       Alias[%d]: %s", index, *pptr);
+    }
 }
 
 bool DebugInfoNetworkWidget::OnDebugMenuEvent(DebugMenuEvent *event)

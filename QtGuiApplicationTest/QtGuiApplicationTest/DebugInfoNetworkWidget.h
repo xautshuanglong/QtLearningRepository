@@ -23,6 +23,7 @@ private:
     void UninitializeNetworkEnvironment();
     void PingTest(const QString& destinationAddress);
     UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
+    void ParseHostInfo(struct hostent *pHostInfo);
 
 protected:
     virtual bool OnDebugMenuEvent(DebugMenuEvent *event) override;
