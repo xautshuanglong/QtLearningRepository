@@ -292,12 +292,9 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         pSendICMP->Code = 0;
         pSendICMP->Checksum = 0;
         pSendICMP->Identifier = GetCurrentProcessId();
-        pSendICMP->Sequence = sequence;
+        pSendICMP->Sequence = sequence++;
         pSendICMP->OptinalData = GetTickCount();
         pSendICMP->Checksum = this->CaculateChecksum((UINT8*)sendBuffer, sizeof(ICMP_HEADER));
-
-        --repeatCount;
-        sequence++;
 
         retValue = sendto(client, sendBuffer, 64, 0, (struct sockaddr *)&sendAddress, sizeof(sendAddress));
         if (retValue <= 0)
@@ -307,7 +304,7 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         }
         else
         {
-            //LogUtil::Debug(CODE_LOCATION, "Send %d bytes ...", retValue);
+            LogUtil::Debug(CODE_LOCATION, "Send %d bytes ...", retValue);
         }
 
         memset(recvBuffer, 0, sizeof(recvBuffer));
@@ -339,6 +336,8 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
                 LogUtil::Error(CODE_LOCATION, "Checksum Error");
             }
         }
+
+        --repeatCount;
         Sleep(1);
     }
 
