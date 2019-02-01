@@ -429,15 +429,10 @@ void DebugInfoNetworkWidget::WinAPIGetAddrInfoTest(const QString& destinationAdd
             break;
         case AF_INET6:
             LogUtil::Debug(CODE_LOCATION, "AF_INET6 (IPv6)");
-            // the InetNtop function is available on Windows Vista and later
             sockaddr_ipv6 = (struct sockaddr_in6 *) ptr->ai_addr;
             LogUtil::Debug(CODE_LOCATION, "\tIPv6 address %s",
                            InetNtop(AF_INET6, &sockaddr_ipv6->sin6_addr, ipstringbuffer, 46) );
-
-            // We use WSAAddressToString since it is supported on Windows XP and later
             sockaddr_ip = (LPSOCKADDR)ptr->ai_addr;
-            // The buffer length is changed by each call to WSAAddresstoString
-            // So we need to set it for each iteration through the loop for safety
             ipbufferlength = 46;
             iRetval = WSAAddressToString(sockaddr_ip, (DWORD)ptr->ai_addrlen, NULL,
                                          ipstringbuffer, &ipbufferlength);
@@ -601,6 +596,36 @@ void DebugInfoNetworkWidget::WinAPIGetHostByAddrTest(const QString &destinationA
     }
 }
 
+void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAddress)
+{
+    int iResult = 0;
+    DWORD dwRetval;
+
+    struct sockaddr_in saGNI;
+    char hostname[NI_MAXHOST];
+    char servInfo[NI_MAXSERV];
+    u_short port = 80;
+
+    saGNI.sin_family = AF_INET;
+    saGNI.sin_addr.s_addr = inet_addr(destinationAddress.toStdString().c_str());
+    saGNI.sin_port = htons(port);
+
+    //-----------------------------------------
+    // Call getnameinfo
+    dwRetval = getnameinfo((struct sockaddr *) &saGNI, sizeof(struct sockaddr), hostname,
+                           NI_MAXHOST, servInfo, NI_MAXSERV, NI_NUMERICSERV);
+    if (dwRetval != 0)
+    {
+        int errorCode = WSAGetLastError();
+        LogUtil::Error(CODE_LOCATION, "getnameinfo failed with error: %d", errorCode);
+    }
+    else
+    {
+        LogUtil::Debug(CODE_LOCATION, "Hostname: %s", hostname);
+        LogUtil::Debug(CODE_LOCATION, "ServerInfo: %s", servInfo);
+    }
+}
+
 UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen)
 {
     UINT32 sum = 0;
@@ -690,5 +715,6 @@ void DebugInfoNetworkWidget::on_btnPingTest_clicked()
     QString serverAddress = ui->leDestinationAddress->text();
     //this->PingTest(serverAddress);
     //this->WinAPIGetAddrInfoTest(serverAddress);
-    this->WinAPIGetHostByAddrTest(serverAddress);
+    //this->WinAPIGetHostByAddrTest(serverAddress);
+    this->WinAPIGetNameInfoTest(serverAddress);
 }
