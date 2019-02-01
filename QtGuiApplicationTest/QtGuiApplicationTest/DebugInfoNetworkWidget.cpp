@@ -499,6 +499,108 @@ void DebugInfoNetworkWidget::WinAPIGetAddrInfoTest(const QString& destinationAdd
     freeaddrinfo(result);
 }
 
+void DebugInfoNetworkWidget::WinAPIGetHostByAddrTest(const QString &destinationAddress)
+{
+    int i = 0;
+    int bIpv6 = 0;
+    int iResult;
+
+    struct hostent *remoteHost = NULL;
+    struct in_addr addr4 = { 0 };
+    IN6_ADDR addr6;
+    char **pAlias;
+    char ipv6AddrString[64] = { 0 };
+
+    std::string hostAddrStr = destinationAddress.toStdString();
+    const char *host_addr = hostAddrStr.c_str();
+
+    LogUtil::Info(CODE_LOCATION, "Calling gethostbyaddr with: %s", host_addr);
+    iResult = inet_pton(AF_INET6, host_addr, &addr6);
+    if (iResult == 1) // returns a value of 1 and the buffer pointed to by the pAddrBuf parameter contains the binary numeric IP address in network byte order.
+    {
+        remoteHost = gethostbyaddr((char *)&addr6, 16, AF_INET6);
+    }
+    else if (iResult == 0) // returns a value of 0 if the pAddrBuf parameter points to a string that is not a valid IPv4 dotted-decimal string or a valid IPv6 address string. 
+    {
+        addr4.s_addr = inet_addr(host_addr);
+        if (addr4.s_addr == INADDR_NONE)
+        {
+            LogUtil::Error(CODE_LOCATION, "The address entered is not legal address");
+        }
+        else
+        {
+            remoteHost = gethostbyaddr((char *)&addr4, 4, AF_INET);
+        }
+    }
+    else // Otherwise, a value of -1 is returned
+    {
+        int errorCode = WSAGetLastError();
+        LogUtil::Error(CODE_LOCATION, "inet_pton failed: ErrorCode = %d", errorCode);
+        return;
+    }
+
+    if (remoteHost == NULL)
+    {
+        int errorCode = WSAGetLastError();
+        switch (errorCode)
+        {
+        case WSAHOST_NOT_FOUND:
+            LogUtil::Error(CODE_LOCATION, "Host not found");
+            break;
+        case WSANO_DATA:
+            LogUtil::Error(CODE_LOCATION, "No data record found");
+            break;
+        default:
+            LogUtil::Error(CODE_LOCATION, "Function failed with error: %d", errorCode);
+            break;
+        }
+    }
+    else
+    {
+        LogUtil::Info(CODE_LOCATION, "Function returned:                  ");
+        LogUtil::Info(CODE_LOCATION, "\tOfficial name: %s", remoteHost->h_name);
+        for (pAlias = remoteHost->h_aliases; *pAlias != 0; pAlias++)
+        {
+            LogUtil::Info(CODE_LOCATION, "\tAlternate name #%d: %s", ++i, *pAlias);
+        }
+        LogUtil::Info(CODE_LOCATION, "\tAddress type:                    ");
+        switch (remoteHost->h_addrtype)
+        {
+        case AF_INET:
+            LogUtil::Info(CODE_LOCATION, "AF_INET");
+            break;
+        case AF_INET6:
+            LogUtil::Info(CODE_LOCATION, "AF_INET6");
+            break;
+        case AF_NETBIOS:
+            LogUtil::Info(CODE_LOCATION, "AF_NETBIOS");
+            break;
+        default:
+            LogUtil::Info(CODE_LOCATION, "Unknown address type£º %d", remoteHost->h_addrtype);
+            break;
+        }
+        LogUtil::Info(CODE_LOCATION, "\tAddress length: %d", remoteHost->h_length);
+
+        if (remoteHost->h_addrtype == AF_INET)
+        {
+            i = 0;
+            while (remoteHost->h_addr_list[i] != 0)
+            {
+                addr4.s_addr = *(u_long *)remoteHost->h_addr_list[i++];
+                LogUtil::Info(CODE_LOCATION, "\tIPv4 Address #%d: %s", i, inet_ntoa(addr4));
+            }
+        }
+        else if (remoteHost->h_addrtype == AF_INET6)
+        {
+            i = 0;
+            while (remoteHost->h_addr_list[i] != 0)
+            {
+                LogUtil::Info(CODE_LOCATION, "\tIPv6 Address #%d: %s", i, inet_ntop(AF_INET6, remoteHost->h_addr_list[i++], ipv6AddrString, sizeof(ipv6AddrString)));
+            }
+        }
+    }
+}
+
 UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen)
 {
     UINT32 sum = 0;
@@ -587,5 +689,6 @@ void DebugInfoNetworkWidget::on_btnPingTest_clicked()
 {
     QString serverAddress = ui->leDestinationAddress->text();
     //this->PingTest(serverAddress);
-    this->WinAPIGetAddrInfoTest(serverAddress);
+    //this->WinAPIGetAddrInfoTest(serverAddress);
+    this->WinAPIGetHostByAddrTest(serverAddress);
 }

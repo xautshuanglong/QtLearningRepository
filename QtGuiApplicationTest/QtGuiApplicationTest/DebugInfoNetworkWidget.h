@@ -21,8 +21,9 @@ public:
 private:
     void InitializeNetworkEnvironment();
     void UninitializeNetworkEnvironment();
-    void PingTest(const QString& destinationAddress);
-    void WinAPIGetAddrInfoTest(const QString& destinationAddress);
+    void PingTest(const QString &destinationAddress);
+    void WinAPIGetAddrInfoTest(const QString &destinationAddress);
+    void WinAPIGetHostByAddrTest(const QString &destinationAddress);
     UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
     void ParseHostInfo(struct hostent *pHostInfo);
 
