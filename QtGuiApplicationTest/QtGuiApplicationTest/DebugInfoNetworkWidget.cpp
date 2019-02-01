@@ -4,6 +4,9 @@
 // QT Headers
 #include <QMetaEnum>
 
+// Windows Headers
+#include <WS2tcpip.h>
+
 // Self Headers
 #include <LogUtil.h>
 #include "DebugMenuEvent.h"
@@ -379,6 +382,123 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
     }
 }
 
+void DebugInfoNetworkWidget::WinAPIGetAddrInfoTest(const QString& destinationAddress)
+{
+    DWORD dwRetval;
+    INT iRetval;
+    int iResult;
+    int i = 1;
+
+    struct addrinfo *result = NULL;
+    struct addrinfo *ptr = NULL;
+    struct addrinfo hints;
+
+    struct sockaddr_in  *sockaddr_ipv4;
+    struct sockaddr_in6 *sockaddr_ipv6;
+    LPSOCKADDR sockaddr_ip;
+
+    char ipstringbuffer[46];
+    DWORD ipbufferlength = 46;
+
+    ZeroMemory(&hints, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    dwRetval = getaddrinfo(destinationAddress.toStdString().c_str(), "", &hints, &result); // 10.225.12.64
+    if (dwRetval != ERROR_SUCCESS)
+    {
+        int errorCode = WSAGetLastError();
+        LogUtil::Error(CODE_LOCATION, "getaddrinfo failed with error[%d]: %s", errorCode, gai_strerror(dwRetval)); // WSA_INVALID_HANDLE
+        return;
+    }
+    for (ptr = result; ptr != NULL; ptr = ptr->ai_next)
+    {
+        LogUtil::Debug(CODE_LOCATION, "getaddrinfo response %d", i++);
+        LogUtil::Debug(CODE_LOCATION, "\tFlags: 0x%x", ptr->ai_flags);
+        LogUtil::Debug(CODE_LOCATION, "\tFamily: ");
+        switch (ptr->ai_family) {
+        case AF_UNSPEC:
+            LogUtil::Debug(CODE_LOCATION, "Unspecified");
+            break;
+        case AF_INET:
+            LogUtil::Debug(CODE_LOCATION, "AF_INET (IPv4)");
+            sockaddr_ipv4 = (struct sockaddr_in *) ptr->ai_addr;
+            LogUtil::Debug(CODE_LOCATION, "\tIPv4 address %s",
+                   inet_ntoa(sockaddr_ipv4->sin_addr));
+            break;
+        case AF_INET6:
+            LogUtil::Debug(CODE_LOCATION, "AF_INET6 (IPv6)");
+            // the InetNtop function is available on Windows Vista and later
+            sockaddr_ipv6 = (struct sockaddr_in6 *) ptr->ai_addr;
+            LogUtil::Debug(CODE_LOCATION, "\tIPv6 address %s",
+                           InetNtop(AF_INET6, &sockaddr_ipv6->sin6_addr, ipstringbuffer, 46) );
+
+            // We use WSAAddressToString since it is supported on Windows XP and later
+            sockaddr_ip = (LPSOCKADDR)ptr->ai_addr;
+            // The buffer length is changed by each call to WSAAddresstoString
+            // So we need to set it for each iteration through the loop for safety
+            ipbufferlength = 46;
+            iRetval = WSAAddressToString(sockaddr_ip, (DWORD)ptr->ai_addrlen, NULL,
+                                         ipstringbuffer, &ipbufferlength);
+            if (iRetval)
+                LogUtil::Debug(CODE_LOCATION, "WSAAddressToString failed with %u", WSAGetLastError());
+            else
+                LogUtil::Debug(CODE_LOCATION, "\tIPv6 address %s", ipstringbuffer);
+            break;
+        case AF_NETBIOS:
+            LogUtil::Debug(CODE_LOCATION, "AF_NETBIOS (NetBIOS)");
+            break;
+        default:
+            LogUtil::Debug(CODE_LOCATION, "Other %ld", ptr->ai_family);
+            break;
+        }
+        LogUtil::Debug(CODE_LOCATION, "\tSocket type: ");
+        switch (ptr->ai_socktype) {
+        case 0:
+            LogUtil::Debug(CODE_LOCATION, "Unspecified");
+            break;
+        case SOCK_STREAM:
+            LogUtil::Debug(CODE_LOCATION, "SOCK_STREAM (stream)");
+            break;
+        case SOCK_DGRAM:
+            LogUtil::Debug(CODE_LOCATION, "SOCK_DGRAM (datagram) ");
+            break;
+        case SOCK_RAW:
+            LogUtil::Debug(CODE_LOCATION, "SOCK_RAW (raw) ");
+            break;
+        case SOCK_RDM:
+            LogUtil::Debug(CODE_LOCATION, "SOCK_RDM (reliable message datagram)");
+            break;
+        case SOCK_SEQPACKET:
+            LogUtil::Debug(CODE_LOCATION, "SOCK_SEQPACKET (pseudo-stream packet)");
+            break;
+        default:
+            LogUtil::Debug(CODE_LOCATION, "Other %ld", ptr->ai_socktype);
+            break;
+        }
+        LogUtil::Debug(CODE_LOCATION, "\tProtocol: ");
+        switch (ptr->ai_protocol) {
+        case 0:
+            LogUtil::Debug(CODE_LOCATION, "Unspecified");
+            break;
+        case IPPROTO_TCP:
+            LogUtil::Debug(CODE_LOCATION, "IPPROTO_TCP (TCP)");
+            break;
+        case IPPROTO_UDP:
+            LogUtil::Debug(CODE_LOCATION, "IPPROTO_UDP (UDP) ");
+            break;
+        default:
+            LogUtil::Debug(CODE_LOCATION, "Other %ld", ptr->ai_protocol);
+            break;
+        }
+        LogUtil::Debug(CODE_LOCATION, "\tLength of this sockaddr: %d", ptr->ai_addrlen);
+        LogUtil::Debug(CODE_LOCATION, "\tCanonical name: %s", ptr->ai_canonname);
+    }
+
+    freeaddrinfo(result);
+}
+
 UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen)
 {
     UINT32 sum = 0;
@@ -466,5 +586,6 @@ void DebugInfoNetworkWidget::resizeEvent(QResizeEvent *event)
 void DebugInfoNetworkWidget::on_btnPingTest_clicked()
 {
     QString serverAddress = ui->leDestinationAddress->text();
-    this->PingTest(serverAddress);
+    //this->PingTest(serverAddress);
+    this->WinAPIGetAddrInfoTest(serverAddress);
 }
