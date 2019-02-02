@@ -24,7 +24,7 @@ private:
     void PingTest(const QString &destinationAddress);
     void WinAPIGetAddrInfoTest(const QString &destinationAddress);
     void WinAPIGetHostByAddrTest(const QString &destinationAddress);
-    void WinAPIGetNameInfoTest(const QString &destinationAddress);
+    void WinAPIGetNameInfoTest(const QString &destinationAddress, const int &destinationPort);
     UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
     void ParseHostInfo(struct hostent *pHostInfo);
 

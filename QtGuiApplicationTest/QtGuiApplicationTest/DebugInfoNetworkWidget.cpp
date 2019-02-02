@@ -596,7 +596,7 @@ void DebugInfoNetworkWidget::WinAPIGetHostByAddrTest(const QString &destinationA
     }
 }
 
-void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAddress)
+void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAddress, const int &destinationPort)
 {
     int iResult = 0;
     DWORD dwRetval;
@@ -604,16 +604,40 @@ void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAdd
     struct sockaddr_in saGNI;
     char hostname[NI_MAXHOST];
     char servInfo[NI_MAXSERV];
-    u_short port = 80;
+    u_short port = destinationPort;
 
     saGNI.sin_family = AF_INET;
     saGNI.sin_addr.s_addr = inet_addr(destinationAddress.toStdString().c_str());
     saGNI.sin_port = htons(port);
 
-    //-----------------------------------------
-    // Call getnameinfo
-    dwRetval = getnameinfo((struct sockaddr *) &saGNI, sizeof(struct sockaddr), hostname,
-                           NI_MAXHOST, servInfo, NI_MAXSERV, NI_NUMERICSERV);
+    // NI_NOFQDN       0x01  /* Only return nodename portion for local hosts */
+    // NI_NUMERICHOST  0x02  /* Return numeric form of the host's address */
+    // NI_NAMEREQD     0x04  /* Error if the host's name not in DNS */
+    // NI_NUMERICSERV  0x08  /* Return numeric form of the service (port #) */
+    // NI_DGRAM        0x10  /* Service is a datagram service */
+
+    const int flags[5] =
+    {
+        NI_NAMEREQD,
+        NI_NOFQDN,
+        NI_NUMERICHOST,
+        NI_NUMERICSERV,
+        NI_DGRAM
+    };
+    int flagIndex = 0;
+
+    do 
+    {
+        dwRetval = getnameinfo((struct sockaddr *) &saGNI, sizeof(struct sockaddr), hostname,
+                               NI_MAXHOST, servInfo, NI_MAXSERV, flags[flagIndex]);
+        if (dwRetval != 0)
+        {
+            int errorCode = WSAGetLastError();
+            LogUtil::Error(CODE_LOCATION, "Failed with error[%d]: %d", flagIndex, errorCode);
+        }
+        ++flagIndex;
+    } while (dwRetval!=0 && flagIndex<5);
+
     if (dwRetval != 0)
     {
         int errorCode = WSAGetLastError();
@@ -621,8 +645,7 @@ void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAdd
     }
     else
     {
-        LogUtil::Debug(CODE_LOCATION, "Hostname: %s", hostname);
-        LogUtil::Debug(CODE_LOCATION, "ServerInfo: %s", servInfo);
+        LogUtil::Debug(CODE_LOCATION, "Hostname: %s | %s", hostname, servInfo);
     }
 }
 
@@ -716,5 +739,5 @@ void DebugInfoNetworkWidget::on_btnPingTest_clicked()
     //this->PingTest(serverAddress);
     //this->WinAPIGetAddrInfoTest(serverAddress);
     //this->WinAPIGetHostByAddrTest(serverAddress);
-    this->WinAPIGetNameInfoTest(serverAddress);
+    this->WinAPIGetNameInfoTest(serverAddress, 80);
 }
