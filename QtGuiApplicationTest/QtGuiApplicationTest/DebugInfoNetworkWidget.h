@@ -2,9 +2,6 @@
 
 #include "DebugInfoBaseWidget.h"
 
-// Windows Headers
-#include <WinSock2.h>
-
 namespace Ui
 {
     class DebugInfoNetworkWidget;
@@ -25,7 +22,8 @@ private:
     void WinAPIGetAddrInfoTest(const QString &destinationAddress);
     void WinAPIGetHostByAddrTest(const QString &destinationAddress);
     void WinAPIGetNameInfoTest(const QString &destinationAddress, const int &destinationPort);
-    UINT16 CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen);
+    void WinAPIIcmpSendEchoTest(const QString &destinationAddress);
+    ushort CaculateChecksum(uchar *InBuffer, uint BufferLen);
     void ParseHostInfo(struct hostent *pHostInfo);
 
 protected:

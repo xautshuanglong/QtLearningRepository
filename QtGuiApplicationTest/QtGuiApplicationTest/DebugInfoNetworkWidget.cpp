@@ -5,7 +5,10 @@
 #include <QMetaEnum>
 
 // Windows Headers
+#include <WinSock2.h>
 #include <WS2tcpip.h>
+#include <IPHlpApi.h>
+#include <IcmpAPI.h>
 
 // Self Headers
 #include <LogUtil.h>
@@ -274,7 +277,6 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         return;
     }
 
-    //struct hostent *pHost = gethostbyname2()
     this->ParseHostInfo(pHost);
 
     SOCKET client = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
@@ -329,6 +331,7 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
         memset(&recvAddress, 0, sizeof(recvAddress));
         addressLength = sizeof(recvAddress);
         retValue = recvfrom(client, recvBuffer, sizeof(recvBuffer), 0, (struct sockaddr *)&recvAddress, &addressLength);
+        unsigned long recvTime = GetTickCount();
         if (retValue <= 0)
         {
             int errorCode = WSAGetLastError();
@@ -347,7 +350,7 @@ void DebugInfoNetworkWidget::PingTest(const QString& destinationAddress)
             //LogUtil::Debug(CODE_LOCATION, "Receive %d bytes ...", retValue);
             IP_HEADER *pRecvIP = (IP_HEADER*)recvBuffer;
             ICMP_HEADER *pRecvICMP = (ICMP_HEADER*)(pRecvIP + 1);
-            unsigned long timeDiff = GetTickCount() - pRecvICMP->OptinalData;
+            unsigned long timeDiff = recvTime - pRecvICMP->OptinalData;
             if (pRecvICMP->Type==0 && pRecvICMP->Code==0)
             {
                 UINT16 checksum = this->CaculateChecksum((UINT8*)pRecvICMP, sizeof(ICMP_HEADER));
@@ -649,12 +652,70 @@ void DebugInfoNetworkWidget::WinAPIGetNameInfoTest(const QString &destinationAdd
     }
 }
 
-UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen)
+void DebugInfoNetworkWidget::WinAPIIcmpSendEchoTest(const QString &destinationAddress)
 {
-    UINT32 sum = 0;
-    UINT16 *tempBuffer;
+    HANDLE hIcmpFile = INVALID_HANDLE_VALUE;
+    IPAddr ipaddr = INADDR_NONE;
+    DWORD dwRetVal = 0;
+    char SendData[32] = "Data Buffer";
+    LPVOID ReplyBuffer = NULL;
+    DWORD ReplySize = 0;
+    DWORD errorCode = ERROR_SUCCESS;
 
-    tempBuffer = (UINT16 *)InBuffer;
+    hIcmpFile = IcmpCreateFile();
+    if (hIcmpFile == INVALID_HANDLE_VALUE)
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Unable to open handle. ErrorCode: %u", errorCode);
+        return;
+    }
+
+    ReplySize = sizeof(ICMP_ECHO_REPLY) + sizeof(SendData);
+    ReplyBuffer = (void*)malloc(ReplySize);
+    if (ReplyBuffer == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "Unable to allocate memory");
+        return;
+    }
+
+    ipaddr = inet_addr(destinationAddress.toStdString().c_str());
+    dwRetVal = IcmpSendEcho(hIcmpFile, ipaddr, SendData, sizeof(SendData),
+                            NULL, ReplyBuffer, ReplySize, 1000);
+    if (dwRetVal != 0)
+    {
+        PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY)ReplyBuffer;
+        struct in_addr ReplyAddr;
+        ReplyAddr.S_un.S_addr = pEchoReply->Address;
+
+        LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
+        LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
+        LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(ReplyAddr));
+        LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
+        LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
+        if (pEchoReply->Status == IP_SUCCESS)
+        {
+            LogUtil::Info(CODE_LOCATION, "\t  Status = %ld (IP_SUCCESS) %s", pEchoReply->Status, pEchoReply->Data);
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "\t  Failed with status code: %lu", pEchoReply->Status);
+        }
+    }
+    else
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Call to IcmpSendEcho failed. ErrorCode: %u", errorCode);
+    }
+
+    IcmpCloseHandle(hIcmpFile);
+}
+
+ushort DebugInfoNetworkWidget::CaculateChecksum(uchar *InBuffer, uint BufferLen)
+{
+    uint sum = 0;
+    ushort *tempBuffer;
+
+    tempBuffer = (ushort *)InBuffer;
 
     while (BufferLen> 1)
     {
@@ -664,7 +725,7 @@ UINT16 DebugInfoNetworkWidget::CaculateChecksum(UINT8 *InBuffer, INT32 BufferLen
 
     if (BufferLen)
     {
-        sum += *(UINT8 *)tempBuffer;
+        sum += *(uchar *)tempBuffer;
     }
 
     sum = (sum >> 16) + (sum & 0xffff);
@@ -739,5 +800,6 @@ void DebugInfoNetworkWidget::on_btnPingTest_clicked()
     //this->PingTest(serverAddress);
     //this->WinAPIGetAddrInfoTest(serverAddress);
     //this->WinAPIGetHostByAddrTest(serverAddress);
-    this->WinAPIGetNameInfoTest(serverAddress, 80);
+    //this->WinAPIGetNameInfoTest(serverAddress, 80);
+    this->WinAPIIcmpSendEchoTest(serverAddress);
 }
