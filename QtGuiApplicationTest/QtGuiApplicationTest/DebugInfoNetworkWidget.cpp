@@ -774,6 +774,38 @@ void DebugInfoNetworkWidget::WinAPIIcmpSendEcho2Test(const QString &destinationA
 
 void DebugInfoNetworkWidget::WinAPIIcmp6SendEcho2Test(const QString &destinationAddress)
 {
+    // IPv4 和 IPv6 各自对应的转换测试
+    std::string ipString = destinationAddress.toStdString();
+    IN_ADDR   ipv4Address = { 0 };
+    IN6_ADDR  ipv6Address = { 0 };
+    int iResult = inet_pton(AF_INET6, ipString.c_str(), &ipv6Address);
+    if (iResult == 1) // 转换成功
+    {
+        LogUtil::Info(CODE_LOCATION, "The input IPv6 ( %s ) convert successfully. %04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x",
+                      ipString.c_str(),
+                      ipv6Address.u.Word[0], ipv6Address.u.Word[1], ipv6Address.u.Word[2], ipv6Address.u.Word[3],
+                      ipv6Address.u.Word[4], ipv6Address.u.Word[5], ipv6Address.u.Word[6], ipv6Address.u.Word[7]);
+        char ipv6StringBuffer[46] = { 0 };
+        const char* pIPv6String = inet_ntop(AF_INET6, &ipv6Address, ipv6StringBuffer, sizeof(ipv6StringBuffer));
+        if (pIPv6String != NULL)
+        {
+            LogUtil::Info(CODE_LOCATION, "IPv6 : %s", pIPv6String);
+        }
+    }
+    iResult = inet_pton(AF_INET, ipString.c_str(), &ipv4Address);
+    if (iResult == 1) // 转换成功
+    {
+        LogUtil::Info(CODE_LOCATION, "The input IPv4 ( %s ) convert successfully. 0x%08x", ipString.c_str(), ipv4Address.s_addr);
+        char ipv4StringBuffer[16] = { 0 };
+        const char* pIPv4String = inet_ntop(AF_INET, &ipv4Address, ipv4StringBuffer, sizeof(ipv4StringBuffer));
+        if (pIPv4String != NULL)
+        {
+            LogUtil::Info(CODE_LOCATION, "IPv4 : %s", pIPv4String);
+        }
+    }
+
+    return;
+
     HANDLE hIcmp6File = INVALID_HANDLE_VALUE;
     struct sockaddr_in6 ipv6Addr = { 0 };
     DWORD dwRetVal = 0;
@@ -790,7 +822,7 @@ void DebugInfoNetworkWidget::WinAPIIcmp6SendEcho2Test(const QString &destination
         return;
     }
 
-    ReplySize = sizeof(ICMP_ECHO_REPLY) + sizeof(SendData);
+    ReplySize = sizeof(ICMPV6_ECHO_REPLY) + sizeof(SendData);
     ReplyBuffer = (void*)malloc(ReplySize);
     if (ReplyBuffer == NULL)
     {
@@ -798,36 +830,36 @@ void DebugInfoNetworkWidget::WinAPIIcmp6SendEcho2Test(const QString &destination
         return;
     }
 
-    ////ipv6Addr = inet_addr(destinationAddress.toStdString().c_str());
-    //dwRetVal = Icmp6SendEcho2(hIcmp6File, NULL, NULL, NULL, NULL,
-    //                          &ipv6Addr, SendData, sizeof(SendData),
-    //                          NULL, ReplyBuffer, ReplySize, 1000);
-    //if (dwRetVal != 0)
-    //{
-    //    PICMPV6_ECHO_REPLY pEchoReply = (PICMPV6_ECHO_REPLY)ReplyBuffer;
-    //    IPV6_ADDRESS_EX replyAddr = pEchoReply->Address;
+    //ipv6Addr = inet_addr(destinationAddress.toStdString().c_str());
+    dwRetVal = Icmp6SendEcho2(hIcmp6File, NULL, NULL, NULL, NULL,
+                              &ipv6Addr, SendData, sizeof(SendData),
+                              NULL, ReplyBuffer, ReplySize, 1000);
+    if (dwRetVal != 0)
+    {
+        PICMPV6_ECHO_REPLY pEchoReply = (PICMPV6_ECHO_REPLY)ReplyBuffer;
+        IPV6_ADDRESS_EX replyAddr = pEchoReply->Address;
 
-    //    LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
-    //    LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
-    //    LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(replyAddr));
-    //    LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
-    //    LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
-    //    if (pEchoReply->Status == IP_SUCCESS)
-    //    {
-    //        LogUtil::Info(CODE_LOCATION, "\t  Status = %ld (IP_SUCCESS) %s", pEchoReply->Status, pEchoReply->Data);
-    //    }
-    //    else
-    //    {
-    //        LogUtil::Error(CODE_LOCATION, "\t  Failed with status code: %lu", pEchoReply->Status);
-    //    }
-    //}
-    //else
-    //{
-    //    errorCode = GetLastError();
-    //    LogUtil::Error(CODE_LOCATION, "Call to IcmpSendEcho failed. ErrorCode: %u", errorCode);
-    //}
+        LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
+        LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
+        //LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(replyAddr));
+        //LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
+        //LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
+        if (pEchoReply->Status == IP_SUCCESS)
+        {
+            LogUtil::Info(CODE_LOCATION, "\t  Status = %ld (IP_SUCCESS)", pEchoReply->Status);
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "\t  Failed with status code: %lu", pEchoReply->Status);
+        }
+    }
+    else
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Call to IcmpSendEcho failed. ErrorCode: %u", errorCode);
+    }
 
-    //IcmpCloseHandle(hIcmp6File);
+    IcmpCloseHandle(hIcmp6File);
 }
 
 ushort DebugInfoNetworkWidget::CaculateChecksum(uchar *InBuffer, uint BufferLen)
@@ -917,11 +949,11 @@ void DebugInfoNetworkWidget::resizeEvent(QResizeEvent *event)
 void DebugInfoNetworkWidget::on_btnPingTest_clicked()
 {
     QString serverAddress = ui->leDestinationAddress->text();
-    //this->PingTest(serverAddress);
-    //this->WinAPIGetAddrInfoTest(serverAddress);
-    //this->WinAPIGetHostByAddrTest(serverAddress);
-    //this->WinAPIGetNameInfoTest(serverAddress, 80);
-    //this->WinAPIIcmpSendEchoTest(serverAddress);
-    //this->WinAPIIcmpSendEcho2Test(serverAddress);
+    this->PingTest(serverAddress);
+    this->WinAPIGetAddrInfoTest(serverAddress);
+    this->WinAPIGetHostByAddrTest(serverAddress);
+    this->WinAPIGetNameInfoTest(serverAddress, 80);
+    this->WinAPIIcmpSendEchoTest(serverAddress);
+    this->WinAPIIcmpSendEcho2Test(serverAddress);
     this->WinAPIIcmp6SendEcho2Test(serverAddress);
 }
