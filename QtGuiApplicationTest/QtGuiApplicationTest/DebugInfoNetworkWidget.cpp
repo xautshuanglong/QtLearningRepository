@@ -710,6 +710,126 @@ void DebugInfoNetworkWidget::WinAPIIcmpSendEchoTest(const QString &destinationAd
     IcmpCloseHandle(hIcmpFile);
 }
 
+void DebugInfoNetworkWidget::WinAPIIcmpSendEcho2Test(const QString &destinationAddress)
+{
+    HANDLE hIcmpFile = INVALID_HANDLE_VALUE;
+    IPAddr ipaddr = INADDR_NONE;
+    DWORD dwRetVal = 0;
+    char SendData[32] = "Data Buffer";
+    LPVOID ReplyBuffer = NULL;
+    DWORD ReplySize = 0;
+    DWORD errorCode = ERROR_SUCCESS;
+
+    hIcmpFile = IcmpCreateFile();
+    if (hIcmpFile == INVALID_HANDLE_VALUE)
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Unable to open handle. ErrorCode: %u", errorCode);
+        return;
+    }
+
+    ReplySize = sizeof(ICMP_ECHO_REPLY) + sizeof(SendData) + 8; // +8 ???
+    ReplyBuffer = (void*)malloc(ReplySize);
+    if (ReplyBuffer == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "Unable to allocate memory");
+        return;
+    }
+
+    ipaddr = inet_addr(destinationAddress.toStdString().c_str());
+    dwRetVal = IcmpSendEcho2(hIcmpFile, NULL, NULL, NULL,
+                             ipaddr, SendData, sizeof(SendData), NULL,
+                             ReplyBuffer, ReplySize, 1000);
+    if (dwRetVal != 0)
+    {
+        PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY)ReplyBuffer;
+        struct in_addr ReplyAddr;
+        ReplyAddr.S_un.S_addr = pEchoReply->Address;
+
+        LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
+        LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
+        LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(ReplyAddr));
+        LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
+        LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
+        if (pEchoReply->Status == IP_SUCCESS)
+        {
+            LogUtil::Info(CODE_LOCATION, "\t  Status = %ld (IP_SUCCESS) %s", pEchoReply->Status, pEchoReply->Data);
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "\t  Failed with status code: %lu", pEchoReply->Status);
+        }
+    }
+    else
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Call to IcmpSendEcho failed. ErrorCode: %u", errorCode);
+    }
+    if (ReplyBuffer != NULL)
+    {
+        free(ReplyBuffer);
+    }
+    IcmpCloseHandle(hIcmpFile);
+}
+
+void DebugInfoNetworkWidget::WinAPIIcmp6SendEcho2Test(const QString &destinationAddress)
+{
+    HANDLE hIcmp6File = INVALID_HANDLE_VALUE;
+    struct sockaddr_in6 ipv6Addr = { 0 };
+    DWORD dwRetVal = 0;
+    char SendData[32] = "Data Buffer";
+    LPVOID ReplyBuffer = NULL;
+    DWORD ReplySize = 0;
+    DWORD errorCode = ERROR_SUCCESS;
+
+    hIcmp6File = Icmp6CreateFile();
+    if (hIcmp6File == INVALID_HANDLE_VALUE)
+    {
+        errorCode = GetLastError();
+        LogUtil::Error(CODE_LOCATION, "Unable to open handle. ErrorCode: %u", errorCode);
+        return;
+    }
+
+    ReplySize = sizeof(ICMP_ECHO_REPLY) + sizeof(SendData);
+    ReplyBuffer = (void*)malloc(ReplySize);
+    if (ReplyBuffer == NULL)
+    {
+        LogUtil::Error(CODE_LOCATION, "Unable to allocate memory");
+        return;
+    }
+
+    ////ipv6Addr = inet_addr(destinationAddress.toStdString().c_str());
+    //dwRetVal = Icmp6SendEcho2(hIcmp6File, NULL, NULL, NULL, NULL,
+    //                          &ipv6Addr, SendData, sizeof(SendData),
+    //                          NULL, ReplyBuffer, ReplySize, 1000);
+    //if (dwRetVal != 0)
+    //{
+    //    PICMPV6_ECHO_REPLY pEchoReply = (PICMPV6_ECHO_REPLY)ReplyBuffer;
+    //    IPV6_ADDRESS_EX replyAddr = pEchoReply->Address;
+
+    //    LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
+    //    LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
+    //    LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(replyAddr));
+    //    LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
+    //    LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
+    //    if (pEchoReply->Status == IP_SUCCESS)
+    //    {
+    //        LogUtil::Info(CODE_LOCATION, "\t  Status = %ld (IP_SUCCESS) %s", pEchoReply->Status, pEchoReply->Data);
+    //    }
+    //    else
+    //    {
+    //        LogUtil::Error(CODE_LOCATION, "\t  Failed with status code: %lu", pEchoReply->Status);
+    //    }
+    //}
+    //else
+    //{
+    //    errorCode = GetLastError();
+    //    LogUtil::Error(CODE_LOCATION, "Call to IcmpSendEcho failed. ErrorCode: %u", errorCode);
+    //}
+
+    //IcmpCloseHandle(hIcmp6File);
+}
+
 ushort DebugInfoNetworkWidget::CaculateChecksum(uchar *InBuffer, uint BufferLen)
 {
     uint sum = 0;
@@ -801,5 +921,7 @@ void DebugInfoNetworkWidget::on_btnPingTest_clicked()
     //this->WinAPIGetAddrInfoTest(serverAddress);
     //this->WinAPIGetHostByAddrTest(serverAddress);
     //this->WinAPIGetNameInfoTest(serverAddress, 80);
-    this->WinAPIIcmpSendEchoTest(serverAddress);
+    //this->WinAPIIcmpSendEchoTest(serverAddress);
+    //this->WinAPIIcmpSendEcho2Test(serverAddress);
+    this->WinAPIIcmp6SendEcho2Test(serverAddress);
 }
