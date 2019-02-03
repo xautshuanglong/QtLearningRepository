@@ -543,10 +543,10 @@ void DebugInfoNetworkWidget::WinAPIGetHostByAddrTest(const QString &destinationA
         switch (errorCode)
         {
         case WSAHOST_NOT_FOUND:
-            LogUtil::Error(CODE_LOCATION, "Host not found");
+            LogUtil::Warn(CODE_LOCATION, "Host not found");
             break;
         case WSANO_DATA:
-            LogUtil::Error(CODE_LOCATION, "No data record found");
+            LogUtil::Warn(CODE_LOCATION, "No data record found");
             break;
         default:
             LogUtil::Error(CODE_LOCATION, "Function failed with error: %d", errorCode);
@@ -949,11 +949,18 @@ void DebugInfoNetworkWidget::resizeEvent(QResizeEvent *event)
 void DebugInfoNetworkWidget::on_btnPingTest_clicked()
 {
     QString serverAddress = ui->leDestinationAddress->text();
+    LogUtil::Info(CODE_LOCATION, "---------------------- PingTest ----------------------");
     this->PingTest(serverAddress);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIGetAddrInfoTest ----------------------");
     this->WinAPIGetAddrInfoTest(serverAddress);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIGetHostByAddrTest ----------------------");
     this->WinAPIGetHostByAddrTest(serverAddress);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIGetNameInfoTest ----------------------");
     this->WinAPIGetNameInfoTest(serverAddress, 80);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIIcmpSendEchoTest ----------------------");
     this->WinAPIIcmpSendEchoTest(serverAddress);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIIcmpSendEcho2Test ----------------------");
     this->WinAPIIcmpSendEcho2Test(serverAddress);
+    LogUtil::Info(CODE_LOCATION, "---------------------- WinAPIIcmp6SendEcho2Test ----------------------");
     this->WinAPIIcmp6SendEcho2Test(serverAddress);
 }
