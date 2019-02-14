@@ -195,6 +195,7 @@ QImage MuPDF::PageNext()
 
 QImage MuPDF::PageRotate(float degree)
 {
+    mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
     return mCurPageImage;
 }
 

@@ -345,6 +345,14 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
     //mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
     QImage firstPage = mPdfPreview.PageFirst();
     //this->ShowPdfImage(firstPage);
+
+    if (!firstPage.isNull())
+    {
+        ui->lbPdfPreview->setPixmap(
+            QPixmap::fromImage(
+                firstPage.scaled(ui->lbPdfPreview->width(), ui->lbPdfPreview->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            ));
+    }
 }
 
 void WinReportTesting::on_btnMuPdfWrapPre_clicked()
