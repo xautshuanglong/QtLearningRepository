@@ -31,7 +31,7 @@ private:
     fz_context  *mPdfContext;         // MuPDF 上下文
     fz_document *mPdfDocument;        // MuPDF 文档
     fz_rect      mViewPort;           // 视口大小，预览控件大小
-    fz_matrix    mTranslateMatrix;    // 记录转矩阵：旋转、缩放、平移等，后续更改在此基础上累加
+    fz_matrix    mTranslateMatrix;    // 记录转矩阵：旋转、缩放、平移等
 
 public:
     MuPDF();

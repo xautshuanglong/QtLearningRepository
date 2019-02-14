@@ -176,7 +176,7 @@ void MainTabPageFirst::InitAppListWidget()
     QSize gridSize = ui.lwAppList->gridSize();
 
     ui.lwAppList->clear();
-    for (int i = 0; i < 80; ++i)
+    for (int i = 0; i < 40; ++i)
     {
         pAppItem = new QListWidgetItem(ui.lwAppList);
         pAppItem->setSizeHint(gridSize);

@@ -56,7 +56,10 @@ void SuspendedScrollBar::HandleEventResize(QObject *obj, QResizeEvent *event)
 
 void SuspendedScrollBar::HandleMouseEnter(QObject *obj, QMouseEvent *event)
 {
-    this->show();
+    if (this->maximum() > 0)
+    {
+        this->show();
+    }
 }
 
 void SuspendedScrollBar::HandleMouseLeave(QObject *obj, QMouseEvent *event)
