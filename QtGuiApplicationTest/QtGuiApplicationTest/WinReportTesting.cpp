@@ -38,6 +38,9 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     , mpFramelessHelper(Q_NULLPTR)
 {
     ui->setupUi(this);
+
+    //ui->lbPdfPreview->setVisible(false);
+
     mpFramelessHelper = new FramelessWindowHelper(this);
     mpSocketClient1 = new QTcpSocket();
     mpSocketClient2 = new QTcpSocket();
@@ -347,9 +350,17 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
     QImage firstPage = mPdfPreview.PageFirst();
     //this->ShowPdfImage(firstPage);
 
+    //if (!firstPage.isNull())
+    //{
+    //    ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
+    //}
+
     if (!firstPage.isNull())
     {
-        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
+        QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
+        imageLabel->setText("TestString");
+        //imageLabel->setPixmap(QPixmap::fromImage(firstPage));
+        imageLabel->move(0, 0);
     }
 }
 
@@ -393,7 +404,7 @@ void WinReportTesting::on_btnMuPdfRotate_clicked()
 void WinReportTesting::on_btnMuPdfTranslate_clicked()
 {
     static float translate = 0;
-    translate += 10;
+    translate -= 10;
     mPdfPreview.PageTranslate(translate, translate);
 
     QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());

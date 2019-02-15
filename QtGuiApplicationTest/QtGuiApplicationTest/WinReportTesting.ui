@@ -257,6 +257,92 @@
             <string/>
            </property>
           </widget>
+          <widget class="QScrollArea" name="saPdfPreview">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>411</width>
+             <height>531</height>
+            </rect>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <widget class="QWidget" name="pdfContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>409</width>
+              <height>1000</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>409</width>
+              <height>1000</height>
+             </size>
+            </property>
+            <widget class="QPushButton" name="pushButton">
+             <property name="geometry">
+              <rect>
+               <x>120</x>
+               <y>40</y>
+               <width>91</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>PushButton 1</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="geometry">
+              <rect>
+               <x>120</x>
+               <y>490</y>
+               <width>91</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>PushButton 2</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="geometry">
+              <rect>
+               <x>130</x>
+               <y>800</y>
+               <width>101</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>PushButton 3</string>
+             </property>
+            </widget>
+           </widget>
+          </widget>
          </widget>
         </item>
        </layout>
