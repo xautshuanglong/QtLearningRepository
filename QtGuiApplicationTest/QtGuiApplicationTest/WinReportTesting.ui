@@ -387,6 +387,19 @@ QWidget
           <string>MuPdfWrapNext</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="btnMuPdfRotate">
+         <property name="geometry">
+          <rect>
+           <x>705</x>
+           <y>10</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfRotate</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>

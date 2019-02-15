@@ -46,9 +46,9 @@ public:
     QImage PageLast();
     QImage PagePrevious();
     QImage PageNext();
-    QImage PageRotate(float degree);
-    QImage PageTranslate(float translateX, float translateY);
-    QImage PageScale(float scaleX, float scaleY);
+    void PageRotate(float degree);
+    void PageTranslate(float translateX, float translateY);
+    void PageScale(float scaleX, float scaleY);
     void ResetMatrix(); // 重置为单位阵 【不旋转、不平移、不缩放】
     int PageNumberCurrent();
     int PageNumberTotal();

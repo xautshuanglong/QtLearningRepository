@@ -367,6 +367,21 @@ void WinReportTesting::on_btnMuPdfWrapNext_clicked()
     //this->ShowPdfImage(pdfImage);
 }
 
+void WinReportTesting::on_btnMuPdfRotate_clicked()
+{
+    static float angleDegree = 0;
+    mPdfPreview.PageRotate(angleDegree += 90);
+    
+    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    if (!firstPage.isNull())
+    {
+        ui->lbPdfPreview->setPixmap(
+            QPixmap::fromImage(
+                firstPage.scaled(ui->lbPdfPreview->width(), ui->lbPdfPreview->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            ));
+    }
+}
+
 void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString)
 {
     QMetaEnum muPdfErrorEnum = QMetaEnum::fromType<MuPDF::ErrorCode>();

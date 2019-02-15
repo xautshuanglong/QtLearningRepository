@@ -155,8 +155,9 @@ void MuPDF::Print()
 
 QImage MuPDF::GetPage(int pageNumber)
 {
-    QImage retVlue(mPageSize, QImage::Format_RGB888);
-    return retVlue;
+    mPageNumberCurrent = pageNumber;
+    mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
+    return mCurPageImage;
 }
 
 QImage MuPDF::PageFirst()
@@ -193,21 +194,17 @@ QImage MuPDF::PageNext()
     return mCurPageImage;
 }
 
-QImage MuPDF::PageRotate(float degree)
+void MuPDF::PageRotate(float degree)
 {
-    mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
-    return mCurPageImage;
+    mTranslateMatrix = ::fz_rotate(degree);
 }
 
-QImage MuPDF::PageTranslate(float translateX, float translateY)
+void MuPDF::PageTranslate(float translateX, float translateY)
 {
-    return mCurPageImage;
 }
 
-QImage MuPDF::PageScale(float scaleX, float scaleY)
+void MuPDF::PageScale(float scaleX, float scaleY)
 {
-    QImage retValue(100, 100, QImage::Format_RGB888);
-    return retValue;
 }
 
 int MuPDF::PageNumberCurrent()
@@ -231,7 +228,7 @@ QImage MuPDF::GetPageImageByIndex(int index)
             //mTranslateMatrix = ::fz_transform_page(mViewPort, 96, 0);
             //fz_matrix newMatrix = ::fz_post_scale(mTranslateMatrix, 0.62f, 0.62f);
             //::fz_pre_rotate(ctm, rotate);
-            fz_pixmap *pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, mPageNumberCurrent, mTranslateMatrix, ::fz_device_rgb(mPdfContext), 0);
+            fz_pixmap *pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, index, mTranslateMatrix, ::fz_device_rgb(mPdfContext), 0);
 
             unsigned char *samples = pixmap->samples;
             int width = ::fz_pixmap_width(mPdfContext, pixmap);
