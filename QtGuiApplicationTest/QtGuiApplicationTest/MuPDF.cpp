@@ -20,10 +20,10 @@ MuPDF::MuPDF()
     , mPageNumberTotal(0)
     , mPageNumberCurrent(0)
     , mViewPort{ 0.0f, 0.0f, 100.0f, 100.0f }            // 默认大小 100x100 没有偏移
-    , mTranslateMatrix{ 1.0f,0.0f,0.0f,1.0f,0.0f,0.0f }  // 单位阵 【不旋转、不平移、不缩放】
 {
     mCurPageImage = QImage(mPageSize, QImage::Format_RGB888);
     mCurPageImage.fill(Qt::gray);
+    this->ResetMatrix();
 }
 
 MuPDF::MuPDF(QSize pageSize)
@@ -32,12 +32,12 @@ MuPDF::MuPDF(QSize pageSize)
     , mPdfDocument(NULL)
     , mPageNumberTotal(0)
     , mPageNumberCurrent(0)
-    , mTranslateMatrix{ 1.0f,0.0f,0.0f,1.0f,0.0f,0.0f }  // 单位阵 【不旋转、不平移、不缩放】
 {
     mPageSize = pageSize;
     mViewPort = ::fz_make_rect(0.0f, 0.0f, pageSize.width(), pageSize.height());
     mCurPageImage = QImage(mPageSize, QImage::Format_RGB888);
     mCurPageImage.fill(Qt::gray);
+    this->ResetMatrix();
 }
 
 MuPDF::~MuPDF()
@@ -196,15 +196,17 @@ QImage MuPDF::PageNext()
 
 void MuPDF::PageRotate(float degree)
 {
-    mTranslateMatrix = ::fz_rotate(degree);
+    mMatrixRotate = ::fz_rotate(degree);
 }
 
 void MuPDF::PageTranslate(float translateX, float translateY)
 {
+    mMatrixTranslate = ::fz_translate(translateX, translateY);
 }
 
 void MuPDF::PageScale(float scaleX, float scaleY)
 {
+    mMatrixScale = ::fz_scale(scaleX, scaleY);
 }
 
 int MuPDF::PageNumberCurrent()
@@ -224,11 +226,8 @@ QImage MuPDF::GetPageImageByIndex(int index)
         QImage retValue;
         fz_try(mPdfContext)
         {
-            //pageBox = ::fz_make_rect(0, 0, 100, 100);
-            //mTranslateMatrix = ::fz_transform_page(mViewPort, 96, 0);
-            //fz_matrix newMatrix = ::fz_post_scale(mTranslateMatrix, 0.62f, 0.62f);
-            //::fz_pre_rotate(ctm, rotate);
-            fz_pixmap *pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, index, mTranslateMatrix, ::fz_device_rgb(mPdfContext), 0);
+            mMatrixComposition = ::fz_concat(mMatrixScale, fz_concat(mMatrixRotate, mMatrixTranslate));
+            fz_pixmap *pixmap = ::fz_new_pixmap_from_page_number(mPdfContext, mPdfDocument, index, mMatrixComposition, ::fz_device_rgb(mPdfContext), 0);
 
             unsigned char *samples = pixmap->samples;
             int width = ::fz_pixmap_width(mPdfContext, pixmap);
@@ -270,5 +269,8 @@ QImage MuPDF::MakeQImageFromData(unsigned char* pImgData, int width, int height,
 
 void MuPDF::ResetMatrix()
 {
-    mTranslateMatrix = ::fz_make_matrix(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+    mMatrixScale = ::fz_scale(1, 1);
+    mMatrixRotate = ::fz_rotate(0);
+    mMatrixTranslate = ::fz_translate(0, 0);
+    mMatrixComposition = ::fz_concat(mMatrixScale, ::fz_concat(mMatrixRotate, mMatrixTranslate));
 }

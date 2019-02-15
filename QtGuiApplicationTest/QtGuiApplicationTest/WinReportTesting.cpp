@@ -343,15 +343,13 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
 {
     mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
     //mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
+    mPdfPreview.ResetMatrix();
     QImage firstPage = mPdfPreview.PageFirst();
     //this->ShowPdfImage(firstPage);
 
     if (!firstPage.isNull())
     {
-        ui->lbPdfPreview->setPixmap(
-            QPixmap::fromImage(
-                firstPage.scaled(ui->lbPdfPreview->width(), ui->lbPdfPreview->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-            ));
+        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
     }
 }
 
@@ -367,6 +365,19 @@ void WinReportTesting::on_btnMuPdfWrapNext_clicked()
     //this->ShowPdfImage(pdfImage);
 }
 
+void WinReportTesting::on_btnMuPdfScale_clicked()
+{
+    static float scale = 0.0;
+    scale += 1.0;
+    mPdfPreview.PageScale(scale, scale);
+
+    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    if (!firstPage.isNull())
+    {
+        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
+    }
+}
+
 void WinReportTesting::on_btnMuPdfRotate_clicked()
 {
     static float angleDegree = 0;
@@ -375,10 +386,20 @@ void WinReportTesting::on_btnMuPdfRotate_clicked()
     QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
     if (!firstPage.isNull())
     {
-        ui->lbPdfPreview->setPixmap(
-            QPixmap::fromImage(
-                firstPage.scaled(ui->lbPdfPreview->width(), ui->lbPdfPreview->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-            ));
+        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
+    }
+}
+
+void WinReportTesting::on_btnMuPdfTranslate_clicked()
+{
+    static float translate = 0;
+    translate += 10;
+    mPdfPreview.PageTranslate(translate, translate);
+
+    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    if (!firstPage.isNull())
+    {
+        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
     }
 }
 

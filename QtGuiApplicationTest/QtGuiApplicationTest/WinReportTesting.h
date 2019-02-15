@@ -37,7 +37,9 @@ private slots:
     void on_btnMuPdfWrap_clicked();
     void on_btnMuPdfWrapPre_clicked();
     void on_btnMuPdfWrapNext_clicked();
+    void on_btnMuPdfScale_clicked();
     void on_btnMuPdfRotate_clicked();
+    void on_btnMuPdfTranslate_clicked();
     void SlotMuPdfError(MuPDF::ErrorCode code, QString errorString);
     void SlotSaveCompletely();
 };

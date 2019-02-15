@@ -390,14 +390,40 @@ QWidget
         <widget class="QPushButton" name="btnMuPdfRotate">
          <property name="geometry">
           <rect>
-           <x>705</x>
-           <y>10</y>
+           <x>260</x>
+           <y>40</y>
            <width>91</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
           <string>MuPdfRotate</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnMuPdfTranslate">
+         <property name="geometry">
+          <rect>
+           <x>360</x>
+           <y>40</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfTranslate</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnMuPdfScale">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>40</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MuPdfScale</string>
          </property>
         </widget>
        </widget>
