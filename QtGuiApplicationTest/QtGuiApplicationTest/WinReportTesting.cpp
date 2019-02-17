@@ -39,11 +39,6 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 {
     ui->setupUi(this);
 
-    QLabel *pTestLabel = new QLabel(ui->regionLeftEdit);
-    pTestLabel->setText("Test Label added in constructor");
-
-    //ui->lbPdfPreview->setVisible(false);
-
     mpFramelessHelper = new FramelessWindowHelper(this);
     mpSocketClient1 = new QTcpSocket();
     mpSocketClient2 = new QTcpSocket();
@@ -358,17 +353,21 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
     //    ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
     //}
 
+    QWidget *pScrollContent = ui->saPdfPreview->widget();
+    int newSizeWidth = pScrollContent->width();
+    static int newSizeHeight = 0;
+    static int count = 0;
+    newSizeHeight += 100;
     if (!firstPage.isNull())
     {
         QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
         imageLabel->setText("TestString");
         imageLabel->move(0, 0);
         imageLabel->show();
-        //ui->saPdfPreview->adjustSize();
-        ui->saPdfPreview->widget()->resize(300, 1100);
-        QLabel *pTestLabel = new QLabel(ui->saPdfPreview->widget());
-        pTestLabel->setText("Test Label added");
-        pTestLabel->move(0, 1000);
+        pScrollContent->resize(newSizeWidth, newSizeHeight);
+        QLabel *pTestLabel = new QLabel(pScrollContent);
+        pTestLabel->setText(QString("Test Label added %1").arg(count));
+        pTestLabel->move(0, 10 + 100 * count++);
         pTestLabel->show();
     }
 }
