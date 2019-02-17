@@ -39,6 +39,9 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
 {
     ui->setupUi(this);
 
+    QLabel *pTestLabel = new QLabel(ui->regionLeftEdit);
+    pTestLabel->setText("Test Label added in constructor");
+
     //ui->lbPdfPreview->setVisible(false);
 
     mpFramelessHelper = new FramelessWindowHelper(this);
@@ -359,8 +362,14 @@ void WinReportTesting::on_btnMuPdfWrap_clicked()
     {
         QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
         imageLabel->setText("TestString");
-        //imageLabel->setPixmap(QPixmap::fromImage(firstPage));
         imageLabel->move(0, 0);
+        imageLabel->show();
+        //ui->saPdfPreview->adjustSize();
+        ui->saPdfPreview->widget()->resize(300, 1100);
+        QLabel *pTestLabel = new QLabel(ui->saPdfPreview->widget());
+        pTestLabel->setText("Test Label added");
+        pTestLabel->move(0, 1000);
+        pTestLabel->show();
     }
 }
 
