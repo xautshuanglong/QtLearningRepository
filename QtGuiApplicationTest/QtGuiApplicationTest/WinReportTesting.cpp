@@ -28,6 +28,7 @@
 #include "XmlReportGenerator.h"
 #include "ReportXmlData.h"
 #include "FopReportProtocol.h"
+#include "SuspendedScrollBar.h"
 
 using namespace SL::Util;
 using namespace com::genomics::protobuf;
@@ -42,6 +43,11 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     mpFramelessHelper = new FramelessWindowHelper(this);
     mpSocketClient1 = new QTcpSocket();
     mpSocketClient2 = new QTcpSocket();
+
+    ui->saPdfPreview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->saPdfPreview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    SuspendedScrollBar *pScrollBarVertical = new SuspendedScrollBar(ui->saPdfPreview->verticalScrollBar(), ui->saPdfPreview);
+    SuspendedScrollBar *pScrollBarHorizontal = new SuspendedScrollBar(ui->saPdfPreview->horizontalScrollBar(), ui->saPdfPreview);
 
     this->connect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
     this->connect(&mFopClient, SIGNAL(SignalSaveCompletely()), SLOT(SlotSaveCompletely()));
@@ -65,6 +71,19 @@ WinReportTesting::~WinReportTesting()
         mpSocketClient2->close();
     }
     delete mpSocketClient2;
+}
+
+void WinReportTesting::ShowPdfImage(QImage pdfPage)
+{
+    if (!pdfPage.isNull())
+    {
+        QWidget *pScrollContent = ui->saPdfPreview->widget();
+        QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
+        imageLabel->setPixmap(QPixmap::fromImage(pdfPage));
+        imageLabel->setGeometry(0, 0, pdfPage.width(), pdfPage.height());
+        imageLabel->show();
+        pScrollContent->resize(pdfPage.width(), pdfPage.height());
+    }
 }
 
 void WinReportTesting::on_btnSavePDF_clicked()
@@ -342,46 +361,23 @@ void WinReportTesting::on_btnPrintImgPDF_clicked()
 
 void WinReportTesting::on_btnMuPdfWrap_clicked()
 {
-    mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
     //mPdfPreview.Open(QString("E:\\Temp\\FopTest\\mupdf_explored.pdf"));
+    mPdfPreview.Open(QString("E:/Temp/FopTest/QtReportTest.pdf"));
     mPdfPreview.ResetMatrix();
-    QImage firstPage = mPdfPreview.PageFirst();
-    //this->ShowPdfImage(firstPage);
-
-    //if (!firstPage.isNull())
-    //{
-    //    ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
-    //}
-
-    QWidget *pScrollContent = ui->saPdfPreview->widget();
-    int newSizeWidth = pScrollContent->width();
-    static int newSizeHeight = 0;
-    static int count = 0;
-    newSizeHeight += 100;
-    if (!firstPage.isNull())
-    {
-        QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
-        imageLabel->setText("TestString");
-        imageLabel->move(0, 0);
-        imageLabel->show();
-        pScrollContent->resize(newSizeWidth, newSizeHeight);
-        QLabel *pTestLabel = new QLabel(pScrollContent);
-        pTestLabel->setText(QString("Test Label added %1").arg(count));
-        pTestLabel->move(0, 10 + 100 * count++);
-        pTestLabel->show();
-    }
+    QImage firstPage = mPdfPreview.GetPageFirst();
+    this->ShowPdfImage(firstPage);
 }
 
 void WinReportTesting::on_btnMuPdfWrapPre_clicked()
 {
-    QImage pdfImage = mPdfPreview.PagePrevious();
-    //this->ShowPdfImage(pdfImage);
+    QImage pdfImage = mPdfPreview.GetPagePrevious();
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::on_btnMuPdfWrapNext_clicked()
 {
-    QImage pdfImage = mPdfPreview.PageNext();
-    //this->ShowPdfImage(pdfImage);
+    QImage pdfImage = mPdfPreview.GetPageNext();
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::on_btnMuPdfScale_clicked()
@@ -390,11 +386,8 @@ void WinReportTesting::on_btnMuPdfScale_clicked()
     scale += 1.0;
     mPdfPreview.PageScale(scale, scale);
 
-    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
-    if (!firstPage.isNull())
-    {
-        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
-    }
+    QImage pdfImage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::on_btnMuPdfRotate_clicked()
@@ -402,11 +395,8 @@ void WinReportTesting::on_btnMuPdfRotate_clicked()
     static float angleDegree = 0;
     mPdfPreview.PageRotate(angleDegree += 90);
     
-    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
-    if (!firstPage.isNull())
-    {
-        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
-    }
+    QImage pdfImage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::on_btnMuPdfTranslate_clicked()
@@ -415,11 +405,8 @@ void WinReportTesting::on_btnMuPdfTranslate_clicked()
     translate -= 10;
     mPdfPreview.PageTranslate(translate, translate);
 
-    QImage firstPage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
-    if (!firstPage.isNull())
-    {
-        ui->lbPdfPreview->setPixmap(QPixmap::fromImage(firstPage));
-    }
+    QImage pdfImage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
+    this->ShowPdfImage(pdfImage);
 }
 
 void WinReportTesting::SlotMuPdfError(MuPDF::ErrorCode code, QString errorString)

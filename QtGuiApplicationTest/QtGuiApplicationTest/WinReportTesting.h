@@ -28,6 +28,7 @@ public:
     ~WinReportTesting();
 
 private:
+    void ShowPdfImage(QImage pdfPage);
 
 private slots:
     void on_btnSavePDF_clicked();

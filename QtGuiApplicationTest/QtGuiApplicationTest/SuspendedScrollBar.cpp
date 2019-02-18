@@ -44,13 +44,19 @@ SuspendedScrollBar::~SuspendedScrollBar()
 
 void SuspendedScrollBar::HandleEventResize(QObject *obj, QResizeEvent *event)
 {
-    //QRect shadowRect = mpScrollBarShadow->geometry();
-    //this->setGeometry(mpScrollBarShadow->geometry());
-
     QRect scrollBarRect(0, 0, 0, 0);
-    scrollBarRect.setHeight(event->size().height());
-    scrollBarRect.setLeft(event->size().width() - 20);
-    scrollBarRect.setWidth(20);
+    if (mpScrollBarShadow->orientation() == Qt::Vertical)
+    {
+        scrollBarRect.setHeight(event->size().height());
+        scrollBarRect.setLeft(event->size().width() - 20);
+        scrollBarRect.setWidth(20);
+    }
+    else
+    {
+        scrollBarRect.setTop(event->size().height() - 20);
+        scrollBarRect.setHeight(20);
+        scrollBarRect.setWidth(event->size().width());
+    }
     this->setGeometry(scrollBarRect);
 }
 

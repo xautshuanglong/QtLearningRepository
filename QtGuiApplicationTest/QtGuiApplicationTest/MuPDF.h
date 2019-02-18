@@ -45,10 +45,10 @@ public:
     void Close();
     void Print();
     QImage GetPage(int pageNumber);
-    QImage PageFirst();
-    QImage PageLast();
-    QImage PagePrevious();
-    QImage PageNext();
+    QImage GetPageFirst();
+    QImage GetPageLast();
+    QImage GetPagePrevious();
+    QImage GetPageNext();
     void PageRotate(float degree);
     void PageTranslate(float translateX, float translateY);
     void PageScale(float scaleX, float scaleY);

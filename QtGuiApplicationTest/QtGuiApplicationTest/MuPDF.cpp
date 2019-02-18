@@ -6,12 +6,6 @@
 
 #include <LogUtil.h>
 
-/*
-*    / a b 0 \
-*    | c d 0 | normally represented as[a b c d e f].
-*    \ e f 1 /
-*/
-
 MuPDF::MuPDF()
     : mPageSize(100, 100)
     , mIsOpened(false)
@@ -160,21 +154,21 @@ QImage MuPDF::GetPage(int pageNumber)
     return mCurPageImage;
 }
 
-QImage MuPDF::PageFirst()
+QImage MuPDF::GetPageFirst()
 {
     mPageNumberCurrent = 0;
     mCurPageImage = this->GetPageImageByIndex(0);
     return mCurPageImage;
 }
 
-QImage MuPDF::PageLast()
+QImage MuPDF::GetPageLast()
 {
     mPageNumberCurrent = mPageNumberTotal - 1;
     mCurPageImage = this->GetPageImageByIndex(mPageNumberCurrent);
     return mCurPageImage;
 }
 
-QImage MuPDF::PagePrevious()
+QImage MuPDF::GetPagePrevious()
 {
     if (mPageNumberCurrent > 0)
     {
@@ -184,7 +178,7 @@ QImage MuPDF::PagePrevious()
     return mCurPageImage;
 }
 
-QImage MuPDF::PageNext()
+QImage MuPDF::GetPageNext()
 {
     if (mPageNumberCurrent < mPageNumberTotal - 1)
     {
