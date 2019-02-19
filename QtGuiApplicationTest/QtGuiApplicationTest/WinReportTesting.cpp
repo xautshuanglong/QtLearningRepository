@@ -44,12 +44,14 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     mpSocketClient1 = new QTcpSocket();
     mpSocketClient2 = new QTcpSocket();
 
-    ui->saPdfPreview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->saPdfPreview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    SuspendedScrollBar *pScrollBarVertical = new SuspendedScrollBar(ui->saPdfPreview->verticalScrollBar(), ui->saPdfPreview);
-    SuspendedScrollBar *pScrollBarHorizontal = new SuspendedScrollBar(ui->saPdfPreview->horizontalScrollBar(), ui->saPdfPreview);
-    pScrollBarVertical->SetSibling(pScrollBarHorizontal);
-    pScrollBarHorizontal->SetSibling(pScrollBarVertical);
+    //ui->saPdfPreview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //ui->saPdfPreview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //SuspendedScrollBar *pScrollBarVertical = new SuspendedScrollBar(ui->saPdfPreview->verticalScrollBar(), ui->saPdfPreview);
+    //SuspendedScrollBar *pScrollBarHorizontal = new SuspendedScrollBar(ui->saPdfPreview->horizontalScrollBar(), ui->saPdfPreview);
+    //pScrollBarVertical->SetSibling(pScrollBarHorizontal);
+    //pScrollBarHorizontal->SetSibling(pScrollBarVertical);
+
+    ui->saPdfPreview->setBackgroundRole(QPalette::Dark);
 
     this->connect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
     this->connect(&mFopClient, SIGNAL(SignalSaveCompletely()), SLOT(SlotSaveCompletely()));
@@ -80,7 +82,14 @@ void WinReportTesting::ShowPdfImage(QImage pdfPage)
     if (!pdfPage.isNull())
     {
         QWidget *pScrollContent = ui->saPdfPreview->widget();
-        QLabel *imageLabel = new QLabel(ui->saPdfPreview->widget());
+
+        int pageIndex = mPdfPreview.PageNumberCurrent();
+        QLabel *imageLabel = mMapPageNumImage[pageIndex];
+        if (imageLabel == Q_NULLPTR)
+        {
+            imageLabel = new QLabel(ui->saPdfPreview->widget());
+            mMapPageNumImage[pageIndex] = imageLabel;
+        }
         imageLabel->setPixmap(QPixmap::fromImage(pdfPage));
         imageLabel->setGeometry(0, 0, pdfPage.width(), pdfPage.height());
         imageLabel->show();
@@ -384,9 +393,22 @@ void WinReportTesting::on_btnMuPdfWrapNext_clicked()
 
 void WinReportTesting::on_btnMuPdfScale_clicked()
 {
-    static float scale = 0.0;
-    scale += 1.0;
-    mPdfPreview.PageScale(scale, scale);
+    //static float scale = 0.0;
+    //scale += 1.0;
+    //mPdfPreview.PageScale(scale, scale);
+
+    static bool originalSize = false;
+    if (originalSize)
+    {
+        originalSize = false;
+        mPdfPreview.PageOrigionalSize();
+    }
+    else
+    {
+        originalSize = true;
+        QSize pdfConentSize = ui->saPdfPreview->size();
+        mPdfPreview.PageFitWindowWidth(pdfConentSize.width() - 21);
+    }
 
     QImage pdfImage = mPdfPreview.GetPage(mPdfPreview.PageNumberCurrent());
     this->ShowPdfImage(pdfImage);
@@ -403,6 +425,12 @@ void WinReportTesting::on_btnMuPdfRotate_clicked()
 
 void WinReportTesting::on_btnMuPdfTranslate_clicked()
 {
+    int width1 = ui->saPdfPreview->width();
+    int width2 = ui->saPdfPreview->widget()->width();
+    int i = 0;
+
+    return;
+
     static float translate = 0;
     translate -= 10;
     mPdfPreview.PageTranslate(translate, translate);

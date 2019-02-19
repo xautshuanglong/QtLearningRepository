@@ -35,6 +35,8 @@ private:
     fz_matrix    mMatrixScale;        // 缩放变换
     fz_matrix    mMatrixRotate;       // 旋转变换
     fz_matrix    mMatrixTranslate;    // 平移变换
+    float        mResolutionScaleX;   // 根据分辨率 DPI 在 X 方向缩放
+    float        mResolutionScaleY;   // 根据分辨率 DPI 在 Y 方向缩放
 
 public:
     MuPDF();
@@ -52,6 +54,8 @@ public:
     void PageRotate(float degree);
     void PageTranslate(float translateX, float translateY);
     void PageScale(float scaleX, float scaleY);
+    void PageOrigionalSize();
+    void PageFitWindowWidth(const int& winWidth);
     void ResetMatrix(); // 重置为单位阵 【不旋转、不平移、不缩放】
     int PageNumberCurrent();
     int PageNumberTotal();

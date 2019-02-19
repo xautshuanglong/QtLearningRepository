@@ -6,6 +6,7 @@
 
 class FramelessWindowHelper;
 class QTcpSocket;
+class QLabel;
 
 namespace Ui
 {
@@ -22,6 +23,7 @@ private:
     QTcpSocket             *mpSocketClient2;
     MuPDF                   mPdfPreview;
     FopReportClient         mFopClient;
+    QMap<int, QLabel*>      mMapPageNumImage;
 
 public:
     explicit WinReportTesting(QWidget *parent = Q_NULLPTR);

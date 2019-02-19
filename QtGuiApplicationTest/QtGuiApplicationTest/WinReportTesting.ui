@@ -273,7 +273,7 @@
             <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
            <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustIgnored</enum>
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
            </property>
            <property name="widgetResizable">
             <bool>false</bool>
@@ -286,20 +286,20 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>392</width>
-              <height>520</height>
+              <width>385</width>
+              <height>503</height>
              </rect>
             </property>
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>392</width>
-              <height>520</height>
+              <width>0</width>
+              <height>0</height>
              </size>
             </property>
             <widget class="QPushButton" name="pushButton">

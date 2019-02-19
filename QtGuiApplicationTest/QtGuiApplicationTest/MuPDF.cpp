@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QPainter>
 #include <QPrinter>
+#include <QApplication>
+#include <QScreen>
 
 #include <LogUtil.h>
 
@@ -17,6 +19,10 @@ MuPDF::MuPDF()
 {
     mCurPageImage = QImage(mPageSize, QImage::Format_RGB888);
     mCurPageImage.fill(Qt::gray);
+
+    mResolutionScaleX = QApplication::primaryScreen()->logicalDotsPerInchX() / 72; // MuPDF 默认 DPI 772
+    mResolutionScaleY = QApplication::primaryScreen()->logicalDotsPerInchY() / 72; // MuPDF 默认 DPI 772
+
     this->ResetMatrix();
 }
 
@@ -31,6 +37,10 @@ MuPDF::MuPDF(QSize pageSize)
     mViewPort = ::fz_make_rect(0.0f, 0.0f, pageSize.width(), pageSize.height());
     mCurPageImage = QImage(mPageSize, QImage::Format_RGB888);
     mCurPageImage.fill(Qt::gray);
+
+    mResolutionScaleX = QApplication::primaryScreen()->logicalDotsPerInchX() / 72; // MuPDF 默认 DPI 772
+    mResolutionScaleY = QApplication::primaryScreen()->logicalDotsPerInchY() / 72; // MuPDF 默认 DPI 772
+
     this->ResetMatrix();
 }
 
@@ -200,7 +210,49 @@ void MuPDF::PageTranslate(float translateX, float translateY)
 
 void MuPDF::PageScale(float scaleX, float scaleY)
 {
-    mMatrixScale = ::fz_scale(scaleX, scaleY);
+    fz_matrix resolutionScale = ::fz_scale(mResolutionScaleX, mResolutionScaleY);
+    mMatrixScale = ::fz_pre_scale(resolutionScale, scaleX, scaleY);
+}
+
+void MuPDF::PageOrigionalSize()
+{
+    mMatrixScale = ::fz_scale(mResolutionScaleX, mResolutionScaleY);
+}
+
+void MuPDF::PageFitWindowWidth(const int& winWidth)
+{
+
+    //pageBox = ::fz_make_rect(0, 0, 100, 100);
+    //mTranslateMatrix = ::fz_transform_page(mViewPort, 96, 0);
+    //fz_matrix newMatrix = ::fz_post_scale(mTranslateMatrix, 0.62f, 0.62f);
+    //::fz_pre_rotate(ctm, rotate);
+
+    //QDesktopWidget* pDesktopWidget = QApplication::desktop();
+    //int primaryIndex = pDesktopWidget->primaryScreen();
+    //QRect deskRect = QApplication::desktop()->availableGeometry();
+    //QRect screenRect = QApplication::desktop()->screenGeometry();
+    //int nScreenCount = QApplication::desktop()->screenCount();
+
+    //QScreen *pPrimaryScreen = QApplication::primaryScreen();
+    //int screenWidth = pPrimaryScreen->geometry().width();
+    //int screenHeight = pPrimaryScreen->geometry().height();
+    //int physicsX = pPrimaryScreen->physicalSize().width();
+    //int physicsY = pPrimaryScreen->physicalSize().height();
+    //qreal dotsPerInch = pPrimaryScreen->physicalDotsPerInch();
+    //qreal dotsPerInchX = pPrimaryScreen->physicalDotsPerInchX();
+    //qreal dotsPerInchY = pPrimaryScreen->physicalDotsPerInchY();
+    //qreal logicalDPI = pPrimaryScreen->logicalDotsPerInch();
+
+    fz_page *pCurPage = ::fz_load_page(mPdfContext, mPdfDocument, mPageNumberCurrent);
+    fz_rect pageRect = ::fz_bound_page(mPdfContext, pCurPage);
+
+    float pageWidth = pageRect.x1 - pageRect.x0;
+    float scale = winWidth / pageWidth;
+    //fz_matrix tempScale = ::fz_scale(mResolutionScaleX, mResolutionScaleY);
+    //mMatrixScale = ::fz_pre_scale(tempScale, scaleX, scaleY);
+    mMatrixScale = ::fz_scale(scale, scale); // 此处在原始大小（72dpi）基础上缩放，基于像素做运算，忽略当前屏幕 与 MuPDF 默认 DPI 差异。
+
+    ::fz_drop_page(mPdfContext, pCurPage);
 }
 
 int MuPDF::PageNumberCurrent()
@@ -263,7 +315,7 @@ QImage MuPDF::MakeQImageFromData(unsigned char* pImgData, int width, int height,
 
 void MuPDF::ResetMatrix()
 {
-    mMatrixScale = ::fz_scale(1, 1);
+    mMatrixScale = ::fz_scale(mResolutionScaleX, mResolutionScaleY);
     mMatrixRotate = ::fz_rotate(0);
     mMatrixTranslate = ::fz_translate(0, 0);
     mMatrixComposition = ::fz_concat(mMatrixScale, ::fz_concat(mMatrixRotate, mMatrixTranslate));
