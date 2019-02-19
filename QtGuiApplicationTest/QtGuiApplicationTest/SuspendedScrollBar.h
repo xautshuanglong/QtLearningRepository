@@ -9,10 +9,15 @@ public:
     explicit SuspendedScrollBar(QScrollBar *pShadowScrollBar, QWidget *parent = Q_NULLPTR);
     ~SuspendedScrollBar();
 
+    void SetCustomWidth(int customWidth) { mCustomWidth = customWidth; }
+    void SetCustomHeight(int customHeigt) { mCustomHeight = customHeigt; }
+    void SetSibling(SuspendedScrollBar* sibling) { mpScrollBarSibling = sibling; }
+
 private:
     void HandleEventResize(QObject *obj, QResizeEvent *event);
     void HandleMouseEnter(QObject *obj, QMouseEvent *event);
     void HandleMouseLeave(QObject *obj, QMouseEvent *event);
+    void ResizeSibling();
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
@@ -23,5 +28,10 @@ private slots:
     void SlotScrollBarRangeChanged(int minValue, int maxValue);
 
 private:
-    QScrollBar   *mpScrollBarShadow;
+    SuspendedScrollBar *mpScrollBarSibling;
+    QScrollBar         *mpScrollBarShadow;
+    QWidget            *mpScrollBarParent;
+    QSize               mScrollBarSize;
+    int                 mCustomWidth;
+    int                 mCustomHeight;
 };

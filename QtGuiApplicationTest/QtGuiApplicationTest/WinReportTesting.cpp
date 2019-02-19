@@ -48,6 +48,8 @@ WinReportTesting::WinReportTesting(QWidget *parent /* = Q_NULLPTR */)
     ui->saPdfPreview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     SuspendedScrollBar *pScrollBarVertical = new SuspendedScrollBar(ui->saPdfPreview->verticalScrollBar(), ui->saPdfPreview);
     SuspendedScrollBar *pScrollBarHorizontal = new SuspendedScrollBar(ui->saPdfPreview->horizontalScrollBar(), ui->saPdfPreview);
+    pScrollBarVertical->SetSibling(pScrollBarHorizontal);
+    pScrollBarHorizontal->SetSibling(pScrollBarVertical);
 
     this->connect(&mPdfPreview, SIGNAL(SignalErrorOccurred(MuPDF::ErrorCode, QString)), SLOT(SlotMuPdfError(MuPDF::ErrorCode, QString)));
     this->connect(&mFopClient, SIGNAL(SignalSaveCompletely()), SLOT(SlotSaveCompletely()));
