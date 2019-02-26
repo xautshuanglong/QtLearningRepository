@@ -35,12 +35,6 @@
     <ClCompile Include="DicomEnv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DicomFindSCU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DicomEchoSCU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DicomClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,12 +92,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="DicomFindSCU.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="DicomEchoSCU.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="DicomClient.h">
       <Filter>Header Files</Filter>
     </QtMoc>

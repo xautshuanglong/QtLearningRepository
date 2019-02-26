@@ -5,8 +5,6 @@
 #include <LogUtil.h>
 #include <DicomTest.h>
 #include <DicomClient.h>
-#include <DicomEchoSCU.h>
-#include <DicomFindSCU.h>
 
 #include "TitleBarWidget.h"
 

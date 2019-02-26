@@ -66,11 +66,11 @@ public:
 
 private:
     // DCMTK 中的 DIMSE_getUserEx 未经测试，存在缺陷，此处仿照 scu.cpp 重新实现 C-GET 操作。
-    OFCondition DIMSE_getUserEx( T_ASC_Association *pAssociation, T_ASC_PresentationContextID presentationID, T_DIMSE_C_GetRQ *pRequest,
-                              DcmDataset *pRequestIdentifiers, DIMSE_GetUserCallbackEx callback, void *callbackData,
-                              T_DIMSE_BlockingMode blockMode, int timeout, T_ASC_Network *pNetwork,
-                              DIMSE_SubOpProviderCallbackEx subOpCallback, void *pSubOpCallbackData,
-                              T_DIMSE_C_GetRSP *pResponse, DcmDataset **ppStatusDetail, DcmDataset **ppResponseIdentifers);
+    OFCondition DIMSE_getUserEx(T_ASC_Association *pAssociation, T_ASC_PresentationContextID presentationID, T_DIMSE_C_GetRQ *pRequest,
+                                DcmDataset *pRequestIdentifiers, DIMSE_GetUserCallbackEx callback, void *callbackData,
+                                T_DIMSE_BlockingMode blockMode, int timeout, T_ASC_Network *pNetwork,
+                                DIMSE_SubOpProviderCallbackEx subOpCallback, void *pSubOpCallbackData,
+                                T_DIMSE_C_GetRSP *pResponse, DcmDataset **ppStatusDetail, DcmDataset **ppResponseIdentifers);
 
 protected:
     T_ASC_Association               *m_pAssociation;

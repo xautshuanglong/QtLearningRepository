@@ -5,12 +5,12 @@
 class QTDICOMLIB_EXPORT DicomEnv
 {
 public:
-    DicomEnv();
     ~DicomEnv();
     static void Initialize();
     static void Uninitialize();
 
 private:
+    DicomEnv();
     static void InitializeNetwork();
     static void UninitializeNetwork();
     static void InitializeLog4Cplus();

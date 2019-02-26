@@ -101,9 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DicomClient.cpp" />
-    <ClCompile Include="DicomEchoSCU.cpp" />
     <ClCompile Include="DicomEnv.cpp" />
-    <ClCompile Include="DicomFindSCU.cpp" />
     <ClCompile Include="DicomSCUBase.cpp" />
     <ClCompile Include="DicomSCUEcho.cpp" />
     <ClCompile Include="DicomSCUFind.cpp" />
@@ -114,10 +112,8 @@
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="DicomEchoSCU.h" />
     <QtMoc Include="DicomClient.h" />
     <ClInclude Include="DicomEnv.h" />
-    <QtMoc Include="DicomFindSCU.h" />
     <ClInclude Include="DicomSCUBase.h" />
     <ClInclude Include="DicomSCUEcho.h" />
     <ClInclude Include="DicomSCUFind.h" />
