@@ -21,8 +21,9 @@ bool DicomEnv::isNetworkInitialized = false;
 bool DicomEnv::isLog4CplusInitialized = false;
 
 // SSL 证书验证
-OFString DicomEnv::mgDicomClientPrivateKey;       // DICOM 客户端秘钥路径
-OFString DicomEnv::mgDicomClientCertificate;      // DICOM 客户端证书路径
+OFString DicomEnv::mgDicomPrivateKeyPasswd;       // DICOM 客户端秘钥短语
+OFString DicomEnv::mgDicomPrivateKeyFile;       // DICOM 客户端秘钥路径
+OFString DicomEnv::mgDicomCertificateFile;      // DICOM 客户端证书路径
 OFList<OFString> DicomEnv::mgTrustedCertificates; // DICOM 客户端信任证书列表
 
 DicomEnv::DicomEnv()
@@ -158,18 +159,23 @@ void DicomEnv::ConfigureLog4CplusFormCode()
 #endif
 }
 
+void DicomEnv::SetPrivateKeyPasswd(const QString& privateKeyPasswd)
+{
+    mgDicomPrivateKeyPasswd.assign(privateKeyPasswd.toStdString().c_str());
+}
+
 void DicomEnv::SetPrivateKeyFile(const QString& privateKeyFile)
 {
     QString appDirPath = QCoreApplication::applicationDirPath();
     QDir filePath(privateKeyFile);
     if (filePath.isAbsolute())
     {
-        mgDicomClientPrivateKey.assign(privateKeyFile.toStdString().c_str());
+        mgDicomPrivateKeyFile.assign(privateKeyFile.toStdString().c_str());
     }
     else
     {
         QString absoluteFile = appDirPath + "\\" + privateKeyFile;
-        mgDicomClientPrivateKey.assign(absoluteFile.toStdString().c_str());
+        mgDicomPrivateKeyFile.assign(absoluteFile.toStdString().c_str());
     }
 
 }
@@ -180,12 +186,12 @@ void DicomEnv::SetCertificateFile(const QString& certificate)
     QDir filePath(certificate);
     if (filePath.isAbsolute())
     {
-        mgDicomClientCertificate.assign(certificate.toStdString().c_str());
+        mgDicomCertificateFile.assign(certificate.toStdString().c_str());
     }
     else
     {
         QString absoluteFile = appDirPath + "\\" + certificate;
-        mgDicomClientCertificate.assign(absoluteFile.toStdString().c_str());
+        mgDicomCertificateFile.assign(absoluteFile.toStdString().c_str());
     }
 }
 

@@ -14,11 +14,13 @@ public:
     static void Uninitialize();
 
     // SSL 证书验证所需参数
+    static void SetPrivateKeyPasswd(const QString& privateKeyPasswd);
     static void SetPrivateKeyFile(const QString& privateKeyFile);
     static void SetCertificateFile(const QString& certificate);
     static void AddTrustedCertificateFile(const QString& trustedCertificate);
-    static const OFString& GetPrivateKeyFile() { return mgDicomClientPrivateKey; }
-    static const OFString& GetCertificateFile() { return mgDicomClientCertificate; }
+    static const OFString& GetPrivateKeyPasswd() { return mgDicomPrivateKeyPasswd; }
+    static const OFString& GetPrivateKeyFile() { return mgDicomPrivateKeyFile; }
+    static const OFString& GetCertificateFile() { return mgDicomCertificateFile; }
     static OFList<OFString> GetTrustedCertificateList() { return mgTrustedCertificates; };
 
 private:
@@ -32,7 +34,8 @@ private:
 private:
     static bool isNetworkInitialized;
     static bool isLog4CplusInitialized;
-    static OFString mgDicomClientPrivateKey;
-    static OFString mgDicomClientCertificate;
+    static OFString mgDicomPrivateKeyPasswd;
+    static OFString mgDicomPrivateKeyFile;
+    static OFString mgDicomCertificateFile;
     static OFList<OFString> mgTrustedCertificates;
 };
