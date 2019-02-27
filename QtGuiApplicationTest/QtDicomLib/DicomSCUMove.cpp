@@ -80,6 +80,10 @@ OFCondition DicomSCUMove::PerformMove(MoveModel moveModel)
     condition = this->InitNetwork();
     if (condition.good())
     {
+        this->UseSecureConnection();
+    }
+    if (condition.good())
+    {
         condition = this->NegotiateAssociation();
     }
     if (condition.good())

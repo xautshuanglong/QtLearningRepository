@@ -68,6 +68,10 @@ OFCondition DicomSCUStore::PerformStore(DcmDataset *pStoreDataset)
     condition = this->InitNetwork();
     if (condition.good())
     {
+        this->UseSecureConnection();
+    }
+    if (condition.good())
+    {
         condition = this->NegotiateAssociation();
         // TODO 处理关联协商结果
     }

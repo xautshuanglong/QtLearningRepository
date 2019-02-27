@@ -18,6 +18,10 @@ OFCondition DicomSCUEcho::PerformEcho()
     condition = this->InitNetwork();
     if (condition.good())
     {
+        condition = this->UseSecureConnection();
+    }
+    if (condition.good())
+    {
         condition = this->NegotiateAssociation();
         // TODO 处理关联协商结果
     }
@@ -49,4 +53,3 @@ OFCondition DicomSCUEcho::PerformEcho()
 
     return condition;
 }
-
