@@ -22,8 +22,8 @@ bool DicomEnv::isLog4CplusInitialized = false;
 
 // SSL 证书验证
 OFString DicomEnv::mgDicomPrivateKeyPasswd;       // DICOM 客户端秘钥短语
-OFString DicomEnv::mgDicomPrivateKeyFile;       // DICOM 客户端秘钥路径
-OFString DicomEnv::mgDicomCertificateFile;      // DICOM 客户端证书路径
+OFString DicomEnv::mgDicomPrivateKeyFile;         // DICOM 客户端秘钥路径
+OFString DicomEnv::mgDicomCertificateFile;        // DICOM 客户端证书路径
 OFList<OFString> DicomEnv::mgTrustedCertificates; // DICOM 客户端信任证书列表
 
 DicomEnv::DicomEnv()
