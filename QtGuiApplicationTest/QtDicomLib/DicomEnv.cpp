@@ -161,15 +161,45 @@ void DicomEnv::ConfigureLog4CplusFormCode()
 void DicomEnv::SetPrivateKeyFile(const QString& privateKeyFile)
 {
     QString appDirPath = QCoreApplication::applicationDirPath();
-    mgDicomClientPrivateKey.assign(privateKeyFile.toStdString().c_str());
+    QDir filePath(privateKeyFile);
+    if (filePath.isAbsolute())
+    {
+        mgDicomClientPrivateKey.assign(privateKeyFile.toStdString().c_str());
+    }
+    else
+    {
+        QString absoluteFile = appDirPath + "\\" + privateKeyFile;
+        mgDicomClientPrivateKey.assign(absoluteFile.toStdString().c_str());
+    }
+
 }
 
 void DicomEnv::SetCertificateFile(const QString& certificate)
 {
-    mgDicomClientCertificate.assign(certificate.toStdString().c_str());
+    QString appDirPath = QCoreApplication::applicationDirPath();
+    QDir filePath(certificate);
+    if (filePath.isAbsolute())
+    {
+        mgDicomClientCertificate.assign(certificate.toStdString().c_str());
+    }
+    else
+    {
+        QString absoluteFile = appDirPath + "\\" + certificate;
+        mgDicomClientCertificate.assign(absoluteFile.toStdString().c_str());
+    }
 }
 
 void DicomEnv::AddTrustedCertificateFile(const QString& trustedCertificate)
 {
-    mgTrustedCertificates.push_back(trustedCertificate.toStdString().c_str());
+    QString appDirPath = QCoreApplication::applicationDirPath();
+    QDir filePath(trustedCertificate);
+    if (filePath.isAbsolute())
+    {
+        mgTrustedCertificates.push_back(trustedCertificate.toStdString().c_str());
+    }
+    else
+    {
+        QString absoluteFile = appDirPath + "\\" + trustedCertificate;
+        mgTrustedCertificates.push_back(absoluteFile.toStdString().c_str());
+    }
 }

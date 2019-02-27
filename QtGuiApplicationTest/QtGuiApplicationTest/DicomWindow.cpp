@@ -27,9 +27,9 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     this->InitToolBar();
     DebugPanel::GetInstance()->ListenKeyboard(this); // 用于打开调试面板
     DicomEnv::Initialize();
-    DicomEnv::SetPrivateKeyFile("./dicom_client_pri.key");
-    DicomEnv::SetCertificateFile("./dicom_client.crt");
-    DicomEnv::AddTrustedCertificateFile("./cert.crt");
+    DicomEnv::SetPrivateKeyFile(".\\certs\\dicom_client_pri.key");
+    DicomEnv::SetCertificateFile(".\\certs\\dicom_client.crt");
+    DicomEnv::AddTrustedCertificateFile(".\\certs\\cert.crt");
 }
 
 DicomWindow::~DicomWindow()
