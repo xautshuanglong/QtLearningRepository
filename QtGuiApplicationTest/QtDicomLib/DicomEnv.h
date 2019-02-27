@@ -21,7 +21,7 @@ public:
     static const OFString& GetPrivateKeyPasswd() { return mgDicomPrivateKeyPasswd; }
     static const OFString& GetPrivateKeyFile() { return mgDicomPrivateKeyFile; }
     static const OFString& GetCertificateFile() { return mgDicomCertificateFile; }
-    static OFList<OFString> GetTrustedCertificateList() { return mgTrustedCertificates; };
+    static OFList<OFString> GetTrustedCertificateList() { return mgTrustedCertificates; }
 
 private:
     DicomEnv();
