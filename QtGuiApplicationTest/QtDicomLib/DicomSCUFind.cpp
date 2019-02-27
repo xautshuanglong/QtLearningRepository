@@ -37,7 +37,15 @@ OFCondition DicomSCUFind::PerformFind(FindModel findModel)
         condition = this->FindUser(gsFindModelUID[findModel], &m_overrideKeys,
                                    &m_request, &m_response,
                                    DicomSCUFind::FindUserCallback, this);
-        if (condition.bad())
+        if (condition.good())
+        {
+            condition = this->ReleaseAssociation();
+        }
+        else if (condition == DUL_PEERREQUESTEDRELEASE)
+        {
+            condition = this->AbortAssociation();
+        }
+        else
         {
             OFString errorString;
             LogUtil::Error(CODE_LOCATION, "DicomSCUBase::FindUser --> %s", DimseCondition::dump(errorString, condition).c_str());

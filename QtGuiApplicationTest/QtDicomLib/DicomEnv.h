@@ -2,12 +2,24 @@
 
 #include "qtdicomlib_global.h"
 
+// DCMTK Headers
+#include <dcmtk/ofstd/ofstring.h>
+#include <dcmtk/ofstd/oflist.h>
+
 class QTDICOMLIB_EXPORT DicomEnv
 {
 public:
     ~DicomEnv();
     static void Initialize();
     static void Uninitialize();
+
+    // SSL 证书验证所需参数
+    static void SetPrivateKeyFile(const QString& privateKeyFile);
+    static void SetCertificateFile(const QString& certificate);
+    static void AddTrustedCertificateFile(const QString& trustedCertificate);
+    static const OFString& GetPrivateKeyFile() { return mgDicomClientPrivateKey; }
+    static const OFString& GetCertificateFile() { return mgDicomClientCertificate; }
+    static OFList<OFString> GetTrustedCertificateList() { return mgTrustedCertificates; };
 
 private:
     DicomEnv();
@@ -20,4 +32,7 @@ private:
 private:
     static bool isNetworkInitialized;
     static bool isLog4CplusInitialized;
+    static OFString mgDicomClientPrivateKey;
+    static OFString mgDicomClientCertificate;
+    static OFList<OFString> mgTrustedCertificates;
 };

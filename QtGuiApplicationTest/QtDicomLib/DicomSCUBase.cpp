@@ -1,6 +1,7 @@
 #include "DicomSCUBase.h"
 
 #include "IDicomSCUObserver.h"
+#include "DicomEnv.h"
 
 // DCMTK Headers
 #include <dcmtk/oflog/oflog.h>
@@ -8,6 +9,7 @@
 #include <dcmtk/dcmdata/dcpath.h>
 #include <dcmtk/dcmnet/diutil.h>
 #include <dcmtk/dcmnet/cond.h>
+#include <dcmtk/dcmtls/tlslayer.h>
 
 DicomSCUBase::DicomSCUBase()
     : m_pAssociation(Q_NULLPTR)
@@ -186,10 +188,45 @@ OFCondition DicomSCUBase::DropNetwork()
     return condition;
 }
 
-OFCondition DicomSCUBase::UseSecureConnection(DcmTransportLayer *transLayer)
+OFCondition DicomSCUBase::UseSecureConnection()
 {
     OFString errorString;
-    OFCondition condition = ASC_setTransportLayer(m_pNetwork, transLayer, OFFalse);
+    DcmTransportLayerStatus tlsStatus = TCS_ok;
+    DcmTLSTransportLayer *pTlsTransport = new DcmTLSTransportLayer(); // 不需要自己管理 DcmTLSTransportLayer 资源释放
+
+    tlsStatus = pTlsTransport->setPrivateKeyFile(DicomEnv::GetPrivateKeyFile().c_str(), SSL_FILETYPE_PEM);
+    if (tlsStatus != TCS_ok)
+    {
+        DCMNET_ERROR("DicomSCUBase::UseSecureConnection() set private key failed!");
+        return makeDcmnetCondition(DULC_TLSERROR, OF_error, "set private key failed.");
+    }
+    tlsStatus = pTlsTransport->setCertificateFile(DicomEnv::GetCertificateFile().c_str(), SSL_FILETYPE_PEM);
+    if (tlsStatus != TCS_ok)
+    {
+        DCMNET_ERROR("DicomSCUBase::UseSecureConnection() set certificate failed!");
+        return makeDcmnetCondition(DULC_TLSERROR, OF_error, "set certificate failed.");
+    }
+    if (!pTlsTransport->checkPrivateKeyMatchesCertificate())
+    {
+        DCMNET_ERROR("DicomSCUBase::UseSecureConnection() check private key match certificate failed!");
+        return makeDcmnetCondition(DULC_TLSERROR, OF_error, "check private key match certificate failed.");
+    }
+
+    OFList<OFString> trustedCerts = DicomEnv::GetTrustedCertificateList();
+    OFListIterator(OFString) beginIt = trustedCerts.begin();
+    OFListIterator(OFString) endIt = trustedCerts.end();
+    while (beginIt != endIt)
+    {
+        tlsStatus = pTlsTransport->addTrustedCertificateFile(beginIt->c_str(), SSL_FILETYPE_PEM);
+        if (tlsStatus != TCS_ok)
+        {
+            DCMNET_WARN("Add trusted certificate failed: " << *beginIt);
+        }
+        beginIt++;
+    }
+    pTlsTransport->setCertificateVerification(DCV_requireCertificate);
+
+    OFCondition condition = ASC_setTransportLayer(m_pNetwork, pTlsTransport, 1); // 1 表示保持依赖关系，不需要自己管理 DcmTLSTransportLayer 资源释放
     if (condition.good())
     {
         condition = ASC_setTransportLayerType(m_pParameters, OFTrue);

@@ -41,7 +41,7 @@ public:
     void SetDestinationTitle(const OFString& destTitle) { m_destAETitle = destTitle; }
 
     OFCondition InitNetwork();
-    OFCondition UseSecureConnection(DcmTransportLayer *transLayer);
+    OFCondition UseSecureConnection();
     OFCondition NegotiateAssociation();
     OFCondition ReleaseAssociation();
     OFCondition AbortAssociation();

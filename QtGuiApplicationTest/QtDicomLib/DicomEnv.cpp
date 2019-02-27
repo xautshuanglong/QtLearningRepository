@@ -20,6 +20,11 @@
 bool DicomEnv::isNetworkInitialized = false;
 bool DicomEnv::isLog4CplusInitialized = false;
 
+// SSL 证书验证
+OFString DicomEnv::mgDicomClientPrivateKey;       // DICOM 客户端秘钥路径
+OFString DicomEnv::mgDicomClientCertificate;      // DICOM 客户端证书路径
+OFList<OFString> DicomEnv::mgTrustedCertificates; // DICOM 客户端信任证书列表
+
 DicomEnv::DicomEnv()
 {
 }
@@ -111,8 +116,6 @@ void DicomEnv::ConfigureLog4CplusFormFile()
 
 void DicomEnv::ConfigureLog4CplusFormCode()
 {
-    QString appDirPath = QCoreApplication::applicationDirPath();
-    QString curDirPath = QCoreApplication::applicationDirPath();
     QString logsDirPath = "./logs"; // appDirPath.append("/logs");
     QDir logsDir(logsDirPath);
     if (!logsDir.exists())
@@ -153,4 +156,20 @@ void DicomEnv::ConfigureLog4CplusFormCode()
 #else
     rootLogget.setLogLevel(OFLogger::INFO_LOG_LEVEL);
 #endif
+}
+
+void DicomEnv::SetPrivateKeyFile(const QString& privateKeyFile)
+{
+    QString appDirPath = QCoreApplication::applicationDirPath();
+    mgDicomClientPrivateKey.assign(privateKeyFile.toStdString().c_str());
+}
+
+void DicomEnv::SetCertificateFile(const QString& certificate)
+{
+    mgDicomClientCertificate.assign(certificate.toStdString().c_str());
+}
+
+void DicomEnv::AddTrustedCertificateFile(const QString& trustedCertificate)
+{
+    mgTrustedCertificates.push_back(trustedCertificate.toStdString().c_str());
 }

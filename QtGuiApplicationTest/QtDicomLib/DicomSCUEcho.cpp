@@ -24,7 +24,15 @@ OFCondition DicomSCUEcho::PerformEcho()
     if (condition.good())
     {
         condition = this->EchoUser();
-        if (condition.bad())
+        if (condition.good())
+        {
+            condition = this->ReleaseAssociation();
+        }
+        else if (condition == DUL_PEERREQUESTEDRELEASE)
+        {
+            condition = this->AbortAssociation();
+        } 
+        else
         {
             OFString errorString;
             LogUtil::Error(CODE_LOCATION, "DicomSCUBase::EchoUser --> %s", DimseCondition::dump(errorString, condition).c_str());

@@ -88,7 +88,15 @@ OFCondition DicomSCUMove::PerformMove(MoveModel moveModel)
                                   &m_request, &m_response,
                                   DicomSCUMove::MoveUserCallback, this,
                                   DicomSCUMove::SubOpProviderCallback, this);
-        if (condition.bad())
+        if (condition.good())
+        {
+            condition = this->ReleaseAssociation();
+        }
+        else if (condition == DUL_PEERREQUESTEDRELEASE)
+        {
+            condition = this->AbortAssociation();
+        }
+        else
         {
             OFString errorString;
             DCMNET_ERROR("Failed peforming this->GetUser --> %s" << DimseCondition::dump(errorString, condition));

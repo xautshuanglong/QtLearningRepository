@@ -39,7 +39,15 @@ OFCondition DicomSCUGet::PerformGet(GetModel getModel)
                                   &m_request, &m_response,
                                   DicomSCUGet::GetUserCallback, this,
                                   DicomSCUGet::SubOperationCallbackEx, this);
-        if (condition.bad())
+        if (condition.good())
+        {
+            condition = this->ReleaseAssociation();
+        }
+        else if (condition == DUL_PEERREQUESTEDRELEASE)
+        {
+            condition = this->AbortAssociation();
+        }
+        else
         {
             OFString errorString;
             LogUtil::Error(CODE_LOCATION, "DicomSCUBase::GetUser --> %s", DimseCondition::dump(errorString, condition).c_str());

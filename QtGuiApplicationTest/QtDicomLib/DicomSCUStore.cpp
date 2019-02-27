@@ -75,7 +75,15 @@ OFCondition DicomSCUStore::PerformStore(DcmDataset *pStoreDataset)
     {
         condition = this->StoreUser(pStoreDataset, &m_request, &m_response,
                                     DicomSCUStore::StoreUserCallback, this);
-        if (condition.bad())
+        if (condition.good())
+        {
+            condition = this->ReleaseAssociation();
+        }
+        else if (condition == DUL_PEERREQUESTEDRELEASE)
+        {
+            condition = this->AbortAssociation();
+        }
+        else
         {
             OFString errorString;
             LogUtil::Error(CODE_LOCATION, "DicomSCUBase::StoreUser --> %s", DimseCondition::dump(errorString, condition).c_str());
