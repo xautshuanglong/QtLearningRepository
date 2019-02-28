@@ -48,7 +48,7 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
 
 private slots:
-    void on_btnPingTest_clicked();
+    void on_btnPing_clicked();
 
 private:
     Ui::DebugInfoNetworkWidget *ui;

@@ -842,7 +842,7 @@ void DebugInfoNetworkWidget::WinAPIIcmp6SendEcho2Test(const QString &destination
         LogUtil::Info(CODE_LOCATION, "Sent icmp message to %s", destinationAddress.toStdString().c_str());
         LogUtil::Info(CODE_LOCATION, "Received %ld icmp message responses", dwRetVal);
         //LogUtil::Info(CODE_LOCATION, "\t  Received from %s", inet_ntoa(replyAddr));
-        //LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
+        LogUtil::Info(CODE_LOCATION, "\t  Roundtrip time = %lu milliseconds", pEchoReply->RoundTripTime);
         //LogUtil::Info(CODE_LOCATION, "\t  Time to live = %u", pEchoReply->Options.Ttl);
         if (pEchoReply->Status == IP_SUCCESS)
         {
@@ -946,7 +946,7 @@ void DebugInfoNetworkWidget::resizeEvent(QResizeEvent *event)
     int i = 0;
 }
 
-void DebugInfoNetworkWidget::on_btnPingTest_clicked()
+void DebugInfoNetworkWidget::on_btnPing_clicked()
 {
     QString serverAddress = ui->leDestinationAddress->text();
     LogUtil::Info(CODE_LOCATION, "---------------------- PingTest ----------------------");

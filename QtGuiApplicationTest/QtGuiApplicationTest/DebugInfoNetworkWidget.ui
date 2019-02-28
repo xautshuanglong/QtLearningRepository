@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>DebugInfoNetworkWidget</string>
   </property>
-  <widget class="QPushButton" name="btnPingTest">
+  <widget class="QPushButton" name="btnPing">
    <property name="geometry">
     <rect>
      <x>330</x>
@@ -23,15 +23,15 @@
     </rect>
    </property>
    <property name="text">
-    <string>PingTest</string>
+    <string>Ping</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="leDestinationAddress">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>120</x>
      <y>40</y>
-     <width>161</width>
+     <width>201</width>
      <height>20</height>
     </rect>
    </property>
@@ -44,12 +44,25 @@
     <rect>
      <x>20</x>
      <y>40</y>
-     <width>141</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Destination Adrees :</string>
+    <string>Destination:</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="tePintRspContent">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>70</y>
+     <width>381</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
