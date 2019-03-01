@@ -48,6 +48,7 @@ public:
     OFCondition DropNetwork();
     OFBool IsConnected();
 
+protected:
     OFCondition EchoUser();
     OFCondition FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                          T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pResponse,

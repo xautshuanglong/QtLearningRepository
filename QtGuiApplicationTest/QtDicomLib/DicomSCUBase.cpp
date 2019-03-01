@@ -192,7 +192,7 @@ OFCondition DicomSCUBase::UseSecureConnection()
 {
     OFString errorString;
     DcmTransportLayerStatus tlsStatus = TCS_ok;
-    DcmTLSTransportLayer *pTlsTransport = new DcmTLSTransportLayer(DICOM_APPLICATION_REQUESTOR, NULL, false); // 不需要自己管理 DcmTLSTransportLayer 资源释放
+    DcmTLSTransportLayer *pTlsTransport = new DcmTLSTransportLayer(DICOM_APPLICATION_REQUESTOR, NULL, OFFalse); // 不需要自己管理 DcmTLSTransportLayer 资源释放
 
     pTlsTransport->setPrivateKeyPasswd(DicomEnv::GetPrivateKeyPasswd().c_str());
     tlsStatus = pTlsTransport->setPrivateKeyFile(DicomEnv::GetPrivateKeyFile().c_str(), SSL_FILETYPE_PEM);

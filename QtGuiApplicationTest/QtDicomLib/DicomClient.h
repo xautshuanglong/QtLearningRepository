@@ -33,7 +33,7 @@ public:
     void PerformMove();   // 移动/转储
     void PerformStore();  // 存储/上传
 
-                          // DICOM 响应处理（实现回调接口）
+    // DICOM 响应处理（实现回调接口）
     virtual void HandleResponseEcho() override;
     virtual void HandleResponseFind() override;
     virtual void HandleResponseGet() override;
