@@ -8,5 +8,5 @@ public:
     DicomSCUEcho();
     ~DicomSCUEcho();
 
-    OFCondition PerformEcho();
+    virtual OFCondition PerformEcho() override;
 };

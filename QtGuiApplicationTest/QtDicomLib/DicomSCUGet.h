@@ -2,20 +2,13 @@
 
 #include "DicomSCUBase.h"
 
-typedef enum
-{
-    GetModel_PatientRoot,
-    GetModel_StudyRoot,
-    GetModel_PatientStudyOnly
-}GetModel;
-
 class DicomSCUGet : public DicomSCUBase
 {
 public:
     DicomSCUGet();
     ~DicomSCUGet();
 
-    OFCondition PerformGet(GetModel getModel);
+    virtual OFCondition PerformGet(EnumGetModel getModel) override;
 
     // 处理获取响应
     void HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount,

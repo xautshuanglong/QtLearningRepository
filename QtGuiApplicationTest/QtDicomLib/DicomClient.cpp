@@ -1,5 +1,8 @@
 #include "DicomClient.h"
 
+// QT Headers
+#include <QThread>
+
 #include <LogUtil.h>
 #include "DicomSCUEcho.h"
 #include "DicomSCUFind.h"
@@ -67,6 +70,8 @@ DicomClient::DicomClient(QObject *parent)
     m_pDicomGet = new DicomSCUGet();
     m_pDicomMove = new DicomSCUMove();
     m_pDicomStore = new DicomSCUStore();
+
+    m_pDicomWorkThread = new QThread(this);
 }
 
 DicomClient::~DicomClient()

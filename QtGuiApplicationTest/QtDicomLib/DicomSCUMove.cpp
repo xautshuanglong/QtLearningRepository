@@ -73,7 +73,7 @@ DicomSCUMove::~DicomSCUMove()
 {
 }
 
-OFCondition DicomSCUMove::PerformMove(MoveModel moveModel)
+OFCondition DicomSCUMove::PerformMove(EnumMoveModel moveModel)
 {
     OFCondition condition;
 

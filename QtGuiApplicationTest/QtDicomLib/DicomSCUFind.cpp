@@ -22,7 +22,7 @@ DicomSCUFind::~DicomSCUFind()
 {
 }
 
-OFCondition DicomSCUFind::PerformFind(FindModel findModel)
+OFCondition DicomSCUFind::PerformFind(EnumFindModel findModel)
 {
     OFCondition condition;
 

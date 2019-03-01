@@ -104,6 +104,7 @@
     <ClCompile Include="DicomEnv.cpp" />
     <ClCompile Include="DicomSCUBase.cpp" />
     <ClCompile Include="DicomSCUEcho.cpp" />
+    <ClCompile Include="DicomSCUExecutor.cpp" />
     <ClCompile Include="DicomSCUFind.cpp" />
     <ClCompile Include="DicomSCUGet.cpp" />
     <ClCompile Include="DicomSCUMove.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="DicomEnv.h" />
     <ClInclude Include="DicomSCUBase.h" />
     <ClInclude Include="DicomSCUEcho.h" />
+    <ClInclude Include="DicomSCUExecutor.h" />
     <ClInclude Include="DicomSCUFind.h" />
     <ClInclude Include="DicomSCUGet.h" />
     <ClInclude Include="DicomSCUMove.h" />

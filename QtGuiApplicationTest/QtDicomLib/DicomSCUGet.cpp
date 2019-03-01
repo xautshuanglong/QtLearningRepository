@@ -23,7 +23,7 @@ DicomSCUGet::~DicomSCUGet()
 {
 }
 
-OFCondition DicomSCUGet::PerformGet(GetModel getModel)
+OFCondition DicomSCUGet::PerformGet(EnumGetModel getModel)
 {
     OFCondition condition;
 

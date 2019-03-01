@@ -69,4 +69,5 @@ private:
     DicomSCUGet    *m_pDicomGet;
     DicomSCUMove   *m_pDicomMove;
     DicomSCUStore  *m_pDicomStore;
+    QThread        *m_pDicomWorkThread;
 };

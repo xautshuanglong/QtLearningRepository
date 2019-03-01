@@ -8,6 +8,28 @@
 
 class IDicomSCUObserver;
 
+enum EnumGetModel
+{
+    GetModel_PatientRoot,
+    GetModel_StudyRoot,
+    GetModel_PatientStudyOnly
+};
+
+enum EnumFindModel
+{
+    FindModel_Worklist,
+    FindModel_PatientRoot,
+    FindModel_StudyRoot,
+    FindModel_PatientStudyOnly
+};
+
+enum EnumMoveModel
+{
+    MoveModel_PatientRoot,
+    MoveModel_StudyRoot,
+    MoveModel_PatientStudyOnly,
+};
+
 struct DicomPresentationContext
 {
     OFString abstractSyntaxName;
@@ -47,6 +69,12 @@ public:
     OFCondition AbortAssociation();
     OFCondition DropNetwork();
     OFBool IsConnected();
+
+    virtual OFCondition PerformEcho() { return EC_IllegalCall; }
+    virtual OFCondition PerformGet(EnumGetModel getModel) { return EC_IllegalCall; }
+    virtual OFCondition PerformFind(EnumFindModel findModel) { return EC_IllegalCall; }
+    virtual OFCondition PerformMove(EnumMoveModel moveModel) { return EC_IllegalCall; }
+    virtual OFCondition PerformStore(DcmDataset *pStoreDataset) {return EC_IllegalCall; }
 
 protected:
     OFCondition EchoUser();
