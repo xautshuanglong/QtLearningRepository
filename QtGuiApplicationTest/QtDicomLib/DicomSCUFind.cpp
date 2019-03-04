@@ -22,6 +22,11 @@ DicomSCUFind::~DicomSCUFind()
 {
 }
 
+OFCondition DicomSCUFind::ExcuteOperation()
+{
+    return EC_NotYetImplemented;
+}
+
 OFCondition DicomSCUFind::PerformFind(EnumFindModel findModel)
 {
     OFCondition condition;

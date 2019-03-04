@@ -11,6 +11,11 @@ DicomSCUEcho::~DicomSCUEcho()
 {
 }
 
+OFCondition DicomSCUEcho::ExcuteOperation()
+{
+    return EC_NotYetImplemented;
+}
+
 OFCondition DicomSCUEcho::PerformEcho()
 {
     OFCondition condition;

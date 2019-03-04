@@ -23,6 +23,11 @@ DicomSCUGet::~DicomSCUGet()
 {
 }
 
+OFCondition DicomSCUGet::ExcuteOperation()
+{
+    return EC_NotYetImplemented;
+}
+
 OFCondition DicomSCUGet::PerformGet(EnumGetModel getModel)
 {
     OFCondition condition;

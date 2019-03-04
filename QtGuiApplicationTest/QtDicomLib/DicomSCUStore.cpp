@@ -18,6 +18,11 @@ DicomSCUStore::~DicomSCUStore()
 {
 }
 
+OFCondition DicomSCUStore::ExcuteOperation()
+{
+    return EC_NotYetImplemented;
+}
+
 OFCondition DicomSCUStore::PerformStore(OFString& filename)
 {
     OFCondition condition = EC_Normal;

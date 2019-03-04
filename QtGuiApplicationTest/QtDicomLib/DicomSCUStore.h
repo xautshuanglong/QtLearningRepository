@@ -10,6 +10,7 @@ public:
     DicomSCUStore();
     ~DicomSCUStore();
 
+    virtual OFCondition ExcuteOperation() override;
     virtual OFCondition PerformStore(DcmDataset *pStoreDataset) override;
     OFCondition PerformStore(OFString& filename);
 

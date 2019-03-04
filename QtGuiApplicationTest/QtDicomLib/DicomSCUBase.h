@@ -70,6 +70,7 @@ public:
     OFCondition DropNetwork();
     OFBool IsConnected();
 
+    virtual OFCondition ExcuteOperation() = 0;
     virtual OFCondition PerformEcho() { return EC_IllegalCall; }
     virtual OFCondition PerformGet(EnumGetModel getModel) { return EC_IllegalCall; }
     virtual OFCondition PerformFind(EnumFindModel findModel) { return EC_IllegalCall; }

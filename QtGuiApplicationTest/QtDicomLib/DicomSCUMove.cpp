@@ -73,6 +73,11 @@ DicomSCUMove::~DicomSCUMove()
 {
 }
 
+OFCondition DicomSCUMove::ExcuteOperation()
+{
+    return EC_NotYetImplemented;
+}
+
 OFCondition DicomSCUMove::PerformMove(EnumMoveModel moveModel)
 {
     OFCondition condition;
