@@ -3,15 +3,6 @@
 #include <LogUtil.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-static const char* gsFindModelUID[] =
-{
-    UID_FINDModalityWorklistInformationModel,
-    UID_FINDPatientRootQueryRetrieveInformationModel,
-    UID_FINDStudyRootQueryRetrieveInformationModel,
-    UID_RETIRED_FINDPatientStudyOnlyQueryRetrieveInformationModel,
-};
-
-
 DicomSCUFind::DicomSCUFind()
     : DicomSCUBase()
 {
@@ -43,7 +34,7 @@ OFCondition DicomSCUFind::PerformFind(EnumFindModel findModel)
     }
     if (condition.good())
     {
-        condition = this->FindUser(gsFindModelUID[findModel], &m_overrideKeys,
+        condition = this->FindUser(findModel, &m_overrideKeys,
                                    &m_request, &m_response,
                                    DicomSCUFind::FindUserCallback, this);
         if (condition.good())

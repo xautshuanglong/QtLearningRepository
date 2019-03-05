@@ -79,14 +79,14 @@ public:
 
 protected:
     OFCondition EchoUser();
-    OFCondition FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
+    OFCondition FindUser(EnumFindModel findModel, OFList<OFString> *pOverrideKeys,
                          T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pResponse,
                          DIMSE_FindUserCallback callback = Q_NULLPTR, void *callbackData = Q_NULLPTR);
-    OFCondition GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
+    OFCondition GetUser(EnumGetModel getModel, OFList<OFString> *pOverrideKeys,
                         T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pResponse,
                         DIMSE_GetUserCallbackEx callback, void *callbackData,
                         DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData);
-    OFCondition MoveUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
+    OFCondition MoveUser(EnumMoveModel moveModel, OFList<OFString> *pOverrideKeys,
                          T_DIMSE_C_MoveRQ *pRequest, T_DIMSE_C_MoveRSP *pResponse,
                          DIMSE_MoveUserCallback callback, void *callbackData,
                          DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData);

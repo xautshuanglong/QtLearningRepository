@@ -10,6 +10,9 @@
 #include "DicomSCUMove.h"
 #include "DicomSCUStore.h"
 
+//#include "DicomTaskData.h"
+#include "DicomExecutor.h"
+
 /* DICOM standard transfer syntaxes */
 static const char* transferSyntaxes[] =
 {

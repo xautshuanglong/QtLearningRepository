@@ -56,7 +56,10 @@
     <ClCompile Include="DicomSCUStore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DicomSCUExecutor.cpp">
+    <ClCompile Include="DicomExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DicomTaskData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,7 +91,10 @@
     <ClInclude Include="IDicomSCUObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DicomSCUExecutor.h">
+    <ClInclude Include="DicomExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DicomTaskData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

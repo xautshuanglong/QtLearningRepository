@@ -6,13 +6,6 @@
 #include <dcmtk/dcmdata/dcmetinf.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-static const char* gsMoveModelUID[] =
-{
-    UID_MOVEPatientRootQueryRetrieveInformationModel,
-    UID_MOVEStudyRootQueryRetrieveInformationModel,
-    UID_RETIRED_MOVEPatientStudyOnlyQueryRetrieveInformationModel,
-};
-
 /* DICOM standard transfer syntaxes */
 static const char* transferSyntaxes[] =
 {
@@ -93,7 +86,7 @@ OFCondition DicomSCUMove::PerformMove(EnumMoveModel moveModel)
     }
     if (condition.good())
     {
-        condition = this->MoveUser(gsMoveModelUID[moveModel], &m_overrideKeys,
+        condition = this->MoveUser(moveModel, &m_overrideKeys,
                                   &m_request, &m_response,
                                   DicomSCUMove::MoveUserCallback, this,
                                   DicomSCUMove::SubOpProviderCallback, this);
