@@ -9,6 +9,8 @@
 #include "DicomSCUBase.h"
 #include "DicomTaskData.h"
 
+class DicomExecutor;
+
 class WorkerThread : public QThread
 {
 public:
