@@ -6,11 +6,14 @@
 #include <dcmtk/ofstd/ofstring.h>
 #include <dcmtk/ofstd/oflist.h>
 
+// Self Headers
+#include <LogUtil.h>
+
 class QTDICOMLIB_EXPORT DicomEnv
 {
 public:
     ~DicomEnv();
-    static void Initialize();
+    static void Initialize(LogCallback pLogCallback = nullptr);
     static void Uninitialize();
 
     // SSL 证书验证所需参数

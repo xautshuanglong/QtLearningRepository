@@ -34,12 +34,12 @@ DicomEnv::~DicomEnv()
 {
 }
 
-void DicomEnv::Initialize()
+void DicomEnv::Initialize(LogCallback pLogCallback /* = nullptr */)
 {
 #ifdef _DEBUG
-    LogUtil::Init(LOG_LEVEL_DEBUG);
+    LogUtil::Init(LOG_LEVEL_DEBUG, pLogCallback);
 #else
-    LogUtil::Init(LOG_LEVEL_INFO);
+    LogUtil::Init(LOG_LEVEL_INFO, pLogCallback);
 #endif
 
     DicomEnv::InitializeLog4Cplus();

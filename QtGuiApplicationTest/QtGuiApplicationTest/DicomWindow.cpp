@@ -26,7 +26,7 @@ DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
 
     this->InitToolBar();
     DebugPanel::GetInstance()->ListenKeyboard(this); // 用于打开调试面板
-    DicomEnv::Initialize();
+    DicomEnv::Initialize(LogUtil::DefaultLogHandler);
     DicomEnv::SetPrivateKeyPasswd("mgius");
     DicomEnv::SetPrivateKeyFile(".\\certs\\dicom_client_pw.key");
     DicomEnv::SetCertificateFile(".\\certs\\dicom_client_pw.crt");

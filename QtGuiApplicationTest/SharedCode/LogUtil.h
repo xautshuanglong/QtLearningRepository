@@ -73,7 +73,7 @@ public:
     std::string ToString();
 };
 
-typedef void(*ZLogCallback)(LogLevelType level, CodeLocation *pLocation, std::string& msg);
+typedef void(*LogCallback)(LogLevelType level, CodeLocation *pLocation, std::string& msg);
 
 /*!
     * \class LogUtil
@@ -90,12 +90,12 @@ private:
     static int              mLoggerID;
     static int              mLogCollections[LOG_COLLECTION_TYPE_MAX];
     static LogLevelType     mLevel;
-    static ZLogCallback     mpLogCallback;
+    static LogCallback      mpLogCallback;
 
 public:
     ~LogUtil();
 
-    static void Init(LogLevelType level, ZLogCallback zlogHandler = nullptr);
+    static void Init(LogLevelType level, LogCallback zlogHandler = nullptr);
 
     static void Debug(const char *fmt, ...);
     static void Debug(CodeLocation location, const char *fmt, ...);
@@ -114,13 +114,13 @@ public:
 
     static void CollectData(CodeLocation location, LogCollectionType collectType, const char* format, ...);
 
+    static void DefaultLogHandler(LogLevelType level, CodeLocation *pLocation, std::string& msg);
     static std::string ConvertToString(std::wstring wstring);
 private:
     static std::string GetSystemTimeString();
     static std::string GetLevelString(LogLevelType logLevel);
     static void Log(LogLevelType level, std::string timestamp, std::string message);
     static void Log(LogLevelType level, std::string timestamp, CodeLocation location, std::string message);
-    static void DefaultLogHandler(LogLevelType level, CodeLocation *pLocation, std::string& msg);
 };
 
 #endif //MGI_LOG_UTIL_H

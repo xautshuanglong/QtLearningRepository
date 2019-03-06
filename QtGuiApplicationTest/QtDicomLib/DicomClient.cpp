@@ -97,6 +97,15 @@ void DicomClient::RegisterObserver()
 
 void DicomClient::PerformEcho()
 {
+    DicomExecutor test;
+    QSharedPointer<DicomTaskBase> pTask;
+    if (pTask == nullptr)
+    {
+        int i = 0;
+    }
+    test.GetTask(pTask);
+    return;
+
     OFList<OFString> transferSyntaxList;
     Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
     for (Uint32 i = 0; i < maxSyntaxes; ++i)

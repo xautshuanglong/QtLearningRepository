@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include <QThread>
+#include <QThreadPool>
 #include <QMap>
 #include <QMutex>
 #include <QSharedPointer>
@@ -11,14 +11,7 @@
 
 class DicomExecutor;
 
-class WorkerThread : public QThread
-{
-public:
-    WorkerThread(DicomExecutor *pExecutor, QObject *parent = Q_NULLPTR);
-    ~WorkerThread();
-};
-
-class DicomExecutor : public QObject
+class DicomExecutor : public QObject, public QRunnable
 {
 public:
     DicomExecutor(QObject *parent=Q_NULLPTR);
@@ -30,10 +23,11 @@ public:
     void AddTask(QSharedPointer<DicomTaskBase> pTask);
     void GetTask(QSharedPointer<DicomTaskBase>& pTask);
 
-    void DoTask();
+    virtual void run() override; // QRunnable
 
 private:
     QList<QSharedPointer<DicomTaskBase>>  m_TaskList;
     QMap<int, DicomSCUBase*>              m_MapExecutors;
     QMutex                                m_MutexTaskList;
+    QThreadPool                           m_DicomThreadPool;
 };

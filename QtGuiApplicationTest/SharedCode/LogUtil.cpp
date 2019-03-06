@@ -15,7 +15,7 @@
 
 int                LogUtil::mLoggerID = 0;
 int                LogUtil::mLogCollections[LOG_COLLECTION_TYPE_MAX] = { 0 };
-ZLogCallback       LogUtil::mpLogCallback = nullptr;
+LogCallback       LogUtil::mpLogCallback = nullptr;
 LogLevelType       LogUtil::mLevel = LOG_LEVEL_NONE;
 
 LogUtil::LogUtil()
@@ -27,17 +27,16 @@ LogUtil::~LogUtil()
 {
 }
 
-void LogUtil::Init(LogLevelType level, ZLogCallback zlogHandler/* =/* =nullptr */)
+void LogUtil::Init(LogLevelType level, LogCallback zlogHandler/* =/* =nullptr */)
 {
     mLevel = level;
     if (zlogHandler != nullptr)
     {
         mpLogCallback = zlogHandler;
+        return;
     }
-    else
-    {
-        mpLogCallback = DefaultLogHandler;
-    }
+
+    mpLogCallback = DefaultLogHandler;
 
     // zlog ≥ı ºªØ…Ë÷√
     if (mLoggerID == 0)
@@ -240,6 +239,8 @@ void LogUtil::Log(LogLevelType level, std::string timestamp, CodeLocation locati
 
 void LogUtil::DefaultLogHandler(LogLevelType level, CodeLocation *pLocation, std::string& msg)
 {
+    if (mLoggerID == 0) return;
+
     std::string tempMsg = msg;
     std::string filename;
     int lineNum = -1;
