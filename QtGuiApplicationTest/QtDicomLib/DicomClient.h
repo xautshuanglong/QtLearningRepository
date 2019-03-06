@@ -17,16 +17,15 @@ public:
     explicit DicomClient(QObject *parent = 0);
     ~DicomClient();
 
-    void SetConnectionTimeout(int timeoutSeconds) { m_connectTimeoutSec = timeoutSeconds; }
-    void SetDIMSETimeout(int timeoutSeconds) { m_dimseTimeoutSeconds = timeoutSeconds; }
-    void SetACSETimeout(int timeoutSeconds) { m_acseTimeoutSeconds = timeoutSeconds; }
-    void SetPeerHostName(const QString& peerHostName) { m_peerHostName = peerHostName; }
-    void SetPeerPort(const unsigned short peerPort) { m_peerPort = peerPort; }
-    void SetPeerAETitle(const QString& peerAETitle) { m_peerAETitle = peerAETitle; }
-    void SetAppAETitle(const QString& appAETitle) { m_appAETitle = appAETitle; }
-    void SetDestinationTitle(const QString& destAETitle) { m_destAETitle = destAETitle; }
-    void SetMaxReceivePDULength(const unsigned int& maxPDU) { m_maxReceivePDU = maxPDU; }
-    void SetDIMSEBlockingMode(const bool blockFlag) { m_blockFlag = blockFlag; }
+    void SetConnectionTimeout(int timeoutSeconds);
+    void SetDIMSETimeout(int timeoutSeconds);
+    void SetACSETimeout(int timeoutSeconds);
+    void SetPeerHostName(const QString& peerHostName);
+    void SetPeerPort(const unsigned short peerPort);
+    void SetPeerAETitle(const QString& peerAETitle);
+    void SetAppAETitle(const QString& appAETitle);
+    void SetMaxReceivePDULength(const unsigned int& maxPDU);
+    void SetDIMSEBlockingMode(const bool blockFlag);
 
     void PerformEcho();   // 回显/确认
     void PerformFind();   // 查询/检索

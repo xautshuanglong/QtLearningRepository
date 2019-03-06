@@ -88,6 +88,91 @@ DicomClient::~DicomClient()
     delete m_pDicomStore; m_pDicomStore = Q_NULLPTR;
 }
 
+void DicomClient::SetConnectionTimeout(int timeoutSeconds)
+{
+    m_connectTimeoutSec = timeoutSeconds;
+    m_pDicomEcho->SetTimeoutConnection(timeoutSeconds);
+    m_pDicomFind->SetTimeoutConnection(timeoutSeconds);
+    m_pDicomGet->SetTimeoutConnection(timeoutSeconds);
+    m_pDicomMove->SetTimeoutConnection(timeoutSeconds);
+    m_pDicomStore->SetTimeoutConnection(timeoutSeconds);
+}
+
+void DicomClient::SetDIMSETimeout(int timeoutSeconds)
+{
+    m_dimseTimeoutSeconds = timeoutSeconds;
+    m_pDicomEcho->SetTimeoutDimse(timeoutSeconds);
+    m_pDicomFind->SetTimeoutDimse(timeoutSeconds);
+    m_pDicomGet->SetTimeoutDimse(timeoutSeconds);
+    m_pDicomMove->SetTimeoutDimse(timeoutSeconds);
+    m_pDicomStore->SetTimeoutDimse(timeoutSeconds);
+}
+
+void DicomClient::SetACSETimeout(int timeoutSeconds)
+{
+    m_acseTimeoutSeconds = timeoutSeconds;
+    m_pDicomEcho->SetTimeoutAcse(timeoutSeconds);
+    m_pDicomFind->SetTimeoutAcse(timeoutSeconds);
+    m_pDicomGet->SetTimeoutAcse(timeoutSeconds);
+    m_pDicomMove->SetTimeoutAcse(timeoutSeconds);
+    m_pDicomStore->SetTimeoutAcse(timeoutSeconds);
+}
+
+void DicomClient::SetPeerHostName(const QString& peerHostName)
+{
+    m_peerHostName = peerHostName;
+    m_pDicomEcho->SetPeerHostname(peerHostName.toStdString().c_str());
+    m_pDicomFind->SetPeerHostname(peerHostName.toStdString().c_str());
+    m_pDicomGet->SetPeerHostname(peerHostName.toStdString().c_str());
+    m_pDicomMove->SetPeerHostname(peerHostName.toStdString().c_str());
+    m_pDicomStore->SetPeerHostname(peerHostName.toStdString().c_str());
+}
+
+void DicomClient::SetPeerPort(const unsigned short peerPort)
+{
+    m_peerPort = peerPort;
+    m_pDicomEcho->SetPeerPort(peerPort);
+    m_pDicomFind->SetPeerPort(peerPort);
+    m_pDicomGet->SetPeerPort(peerPort);
+    m_pDicomMove->SetPeerPort(peerPort);
+    m_pDicomStore->SetPeerPort(peerPort);
+}
+
+void DicomClient::SetPeerAETitle(const QString& peerAETitle)
+{
+    m_peerAETitle = peerAETitle;
+    m_pDicomEcho->SetPeerTitle(OFString(peerAETitle.toStdString().c_str()));
+    m_pDicomFind->SetPeerTitle(OFString(peerAETitle.toStdString().c_str()));
+    m_pDicomGet->SetPeerTitle(OFString(peerAETitle.toStdString().c_str()));
+    m_pDicomMove->SetPeerTitle(OFString(peerAETitle.toStdString().c_str()));
+    m_pDicomStore->SetPeerTitle(OFString(peerAETitle.toStdString().c_str()));
+}
+
+void DicomClient::SetAppAETitle(const QString& appAETitle)
+{
+    m_appAETitle = appAETitle;
+    m_pDicomEcho->SetAppTitle(OFString(appAETitle.toStdString().c_str()));
+    m_pDicomFind->SetAppTitle(OFString(appAETitle.toStdString().c_str()));
+    m_pDicomGet->SetAppTitle(OFString(appAETitle.toStdString().c_str()));
+    m_pDicomMove->SetAppTitle(OFString(appAETitle.toStdString().c_str()));
+    m_pDicomStore->SetAppTitle(OFString(appAETitle.toStdString().c_str()));
+}
+
+void DicomClient::SetMaxReceivePDULength(const unsigned int& maxPDU)
+{
+    m_maxReceivePDU = maxPDU;
+    m_pDicomEcho->SetMaxReceivePDU(maxPDU);
+    m_pDicomFind->SetMaxReceivePDU(maxPDU);
+    m_pDicomGet->SetMaxReceivePDU(maxPDU);
+    m_pDicomMove->SetMaxReceivePDU(maxPDU);
+    m_pDicomStore->SetMaxReceivePDU(maxPDU);
+}
+
+void DicomClient::SetDIMSEBlockingMode(const bool blockFlag)
+{
+    m_blockFlag = blockFlag;
+}
+
 void DicomClient::RegisterObserver()
 {
     m_pDicomEcho->RegisterObserver(this);
@@ -101,31 +186,10 @@ void DicomClient::PerformEcho()
 {
     QSharedPointer<DicomTaskBase> pEchoTask(DicomTaskHelper::NewTask<DicomTaskEcho>());
     m_pDicomExecutor->AddTask(pEchoTask);
-    return;
-    OFList<OFString> transferSyntaxList;
-    Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
-    for (Uint32 i = 0; i < maxSyntaxes; ++i)
-    {
-        transferSyntaxList.push_back(transferSyntaxes[i]);
-    }
-
-    m_pDicomEcho->ClearPresentationContex(); // 考虑使用已接收的表示上下文
-    m_pDicomEcho->AddPresentationContext(UID_VerificationSOPClass, transferSyntaxList);
-
-    OFCondition condition = m_pDicomEcho->PerformEcho();
-    if (condition.bad())
-    {
-        OFString errorString;
-        LogUtil::Error(CODE_LOCATION, "PerformEcho Error: %s", DimseCondition::dump(errorString, condition).c_str());
-        // TODO 向业务层报告错误
-    }
 }
 
 void DicomClient::PerformFind()
 {
-    m_pDicomExecutor->Stop();
-    return;
-
     OFList<OFString> transferSyntaxList;
     Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
     for (Uint32 i = 0; i < maxSyntaxes; ++i)

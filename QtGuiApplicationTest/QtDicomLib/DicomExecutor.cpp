@@ -48,7 +48,6 @@ void DicomExecutor::Start()
     if (m_AtomicRuning.testAndSetOrdered(0, 1))
     {
         m_DicomThreadPool.start(this, QThread::LowPriority);
-        m_DicomThreadPool.start(this, QThread::LowPriority);
     }
 }
 
