@@ -1,16 +1,11 @@
 #include "DicomClient.h"
 
-// QT Headers
-#include <QThread>
-
 #include <LogUtil.h>
 #include "DicomSCUEcho.h"
 #include "DicomSCUFind.h"
 #include "DicomSCUGet.h"
 #include "DicomSCUMove.h"
 #include "DicomSCUStore.h"
-
-//#include "DicomTaskData.h"
 #include "DicomExecutor.h"
 
 /* DICOM standard transfer syntaxes */
@@ -74,11 +69,18 @@ DicomClient::DicomClient(QObject *parent)
     m_pDicomMove = new DicomSCUMove();
     m_pDicomStore = new DicomSCUStore();
 
-    m_pDicomWorkThread = new QThread(this);
+    m_pDicomExecutor = new DicomExecutor(this);
+    m_pDicomExecutor->SetExecutor(EexcutorType_ECHO, m_pDicomEcho);
+    m_pDicomExecutor->SetExecutor(EexcutorType_FIND, m_pDicomFind);
+    m_pDicomExecutor->SetExecutor(EexcutorType_GET, m_pDicomGet);
+    m_pDicomExecutor->SetExecutor(EexcutorType_MOVE, m_pDicomMove);
+    m_pDicomExecutor->SetExecutor(EexcutorType_SOTRE, m_pDicomStore);
+    m_pDicomExecutor->Start();
 }
 
 DicomClient::~DicomClient()
 {
+    m_pDicomExecutor->Stop();
     delete m_pDicomEcho; m_pDicomEcho = Q_NULLPTR;
     delete m_pDicomFind; m_pDicomFind = Q_NULLPTR;
     delete m_pDicomGet;  m_pDicomGet = Q_NULLPTR;
@@ -97,15 +99,9 @@ void DicomClient::RegisterObserver()
 
 void DicomClient::PerformEcho()
 {
-    DicomExecutor test;
-    QSharedPointer<DicomTaskBase> pTask;
-    if (pTask == nullptr)
-    {
-        int i = 0;
-    }
-    test.GetTask(pTask);
+    QSharedPointer<DicomTaskBase> pEchoTask(DicomTaskHelper::NewTask<DicomTaskEcho>());
+    m_pDicomExecutor->AddTask(pEchoTask);
     return;
-
     OFList<OFString> transferSyntaxList;
     Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
     for (Uint32 i = 0; i < maxSyntaxes; ++i)
@@ -127,6 +123,9 @@ void DicomClient::PerformEcho()
 
 void DicomClient::PerformFind()
 {
+    m_pDicomExecutor->Stop();
+    return;
+
     OFList<OFString> transferSyntaxList;
     Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
     for (Uint32 i = 0; i < maxSyntaxes; ++i)

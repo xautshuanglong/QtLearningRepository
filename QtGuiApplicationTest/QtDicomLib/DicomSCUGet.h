@@ -8,7 +8,7 @@ public:
     DicomSCUGet();
     ~DicomSCUGet();
 
-    virtual OFCondition ExcuteOperation() override;
+    virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
     virtual OFCondition PerformGet(EnumGetModel getModel) override;
 
     // 处理获取响应

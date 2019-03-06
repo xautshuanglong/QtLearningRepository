@@ -44,9 +44,6 @@ void DicomServerBrowserWidget::on_btnEchoTest_clicked()
 
 void DicomServerBrowserWidget::on_btnFindTest_clicked()
 {
-
-    return;
-
     mpDicomClient->PerformFind();
 
     //DicomTest dcmTest;

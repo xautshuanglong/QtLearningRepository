@@ -13,7 +13,7 @@ DicomSCUFind::~DicomSCUFind()
 {
 }
 
-OFCondition DicomSCUFind::ExcuteOperation()
+OFCondition DicomSCUFind::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
     return EC_NotYetImplemented;
 }

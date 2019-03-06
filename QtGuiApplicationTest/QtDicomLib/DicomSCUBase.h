@@ -2,9 +2,15 @@
 
 #include "qtdicomlib_global.h"
 
+// QT Headers
+#include <QSharedPointer>
+
 // DCMTK Headers
 #include <dcmtk/ofstd/ofstring.h>
 #include <dcmtk/dcmnet/dimse.h>
+
+// Self Headers
+#include "DicomTaskData.h"
 
 class IDicomSCUObserver;
 
@@ -70,7 +76,7 @@ public:
     OFCondition DropNetwork();
     OFBool IsConnected();
 
-    virtual OFCondition ExcuteOperation() = 0;
+    virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) = 0;
     virtual OFCondition PerformEcho() { return EC_IllegalCall; }
     virtual OFCondition PerformGet(EnumGetModel getModel) { return EC_IllegalCall; }
     virtual OFCondition PerformFind(EnumFindModel findModel) { return EC_IllegalCall; }

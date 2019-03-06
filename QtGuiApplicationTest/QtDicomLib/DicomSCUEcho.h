@@ -8,6 +8,6 @@ public:
     DicomSCUEcho();
     ~DicomSCUEcho();
 
-    virtual OFCondition ExcuteOperation() override;
+    virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
     virtual OFCondition PerformEcho() override;
 };

@@ -18,7 +18,7 @@ DicomSCUStore::~DicomSCUStore()
 {
 }
 
-OFCondition DicomSCUStore::ExcuteOperation()
+OFCondition DicomSCUStore::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
     return EC_NotYetImplemented;
 }

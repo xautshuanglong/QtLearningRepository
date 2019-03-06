@@ -8,7 +8,7 @@ public:
     DicomSCUFind();
     ~DicomSCUFind();
 
-    virtual OFCondition ExcuteOperation() override;
+    virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
     virtual OFCondition PerformFind(EnumFindModel findModel) override;
 
     // 处理查询响应

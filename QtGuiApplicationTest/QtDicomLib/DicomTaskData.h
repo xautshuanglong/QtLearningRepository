@@ -21,6 +21,13 @@ protected:
     EnumExecutorType executorType;
 };
 
+class DicomTaskEcho : public DicomTaskBase
+{
+    friend class DicomTaskHelper;
+private:
+    DicomTaskEcho() { executorType = EexcutorType_ECHO; }
+};
+
 class DicomTaskFind : public DicomTaskBase
 {
     friend class DicomTaskHelper;

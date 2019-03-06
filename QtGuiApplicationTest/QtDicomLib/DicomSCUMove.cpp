@@ -66,7 +66,7 @@ DicomSCUMove::~DicomSCUMove()
 {
 }
 
-OFCondition DicomSCUMove::ExcuteOperation()
+OFCondition DicomSCUMove::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
     return EC_NotYetImplemented;
 }

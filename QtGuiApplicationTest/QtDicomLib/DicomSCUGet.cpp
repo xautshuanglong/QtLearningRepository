@@ -16,7 +16,7 @@ DicomSCUGet::~DicomSCUGet()
 {
 }
 
-OFCondition DicomSCUGet::ExcuteOperation()
+OFCondition DicomSCUGet::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
     return EC_NotYetImplemented;
 }

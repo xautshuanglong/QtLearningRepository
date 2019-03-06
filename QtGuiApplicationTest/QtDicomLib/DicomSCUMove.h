@@ -8,7 +8,7 @@ public:
     DicomSCUMove();
     ~DicomSCUMove();
 
-    virtual OFCondition ExcuteOperation() override;
+    virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
     virtual OFCondition PerformMove(EnumMoveModel moveModel) override;
 
     // 处理转储响应
