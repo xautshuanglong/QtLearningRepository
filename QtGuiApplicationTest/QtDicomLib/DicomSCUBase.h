@@ -14,28 +14,6 @@
 
 class IDicomSCUObserver;
 
-enum EnumGetModel
-{
-    GetModel_PatientRoot,
-    GetModel_StudyRoot,
-    GetModel_PatientStudyOnly
-};
-
-enum EnumFindModel
-{
-    FindModel_Worklist,
-    FindModel_PatientRoot,
-    FindModel_StudyRoot,
-    FindModel_PatientStudyOnly
-};
-
-enum EnumMoveModel
-{
-    MoveModel_PatientRoot,
-    MoveModel_StudyRoot,
-    MoveModel_PatientStudyOnly,
-};
-
 struct DicomPresentationContext
 {
     OFString abstractSyntaxName;
@@ -77,22 +55,17 @@ public:
     OFBool IsConnected();
 
     virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) = 0;
-    virtual OFCondition PerformEcho() { return EC_IllegalCall; }
-    virtual OFCondition PerformGet(EnumGetModel getModel) { return EC_IllegalCall; }
-    virtual OFCondition PerformFind(EnumFindModel findModel) { return EC_IllegalCall; }
-    virtual OFCondition PerformMove(EnumMoveModel moveModel) { return EC_IllegalCall; }
-    virtual OFCondition PerformStore(DcmDataset *pStoreDataset) {return EC_IllegalCall; }
 
 protected:
     OFCondition EchoUser();
-    OFCondition FindUser(EnumFindModel findModel, OFList<OFString> *pOverrideKeys,
+    OFCondition FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                          T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pResponse,
                          DIMSE_FindUserCallback callback = Q_NULLPTR, void *callbackData = Q_NULLPTR);
-    OFCondition GetUser(EnumGetModel getModel, OFList<OFString> *pOverrideKeys,
+    OFCondition GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                         T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pResponse,
                         DIMSE_GetUserCallbackEx callback, void *callbackData,
                         DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData);
-    OFCondition MoveUser(EnumMoveModel moveModel, OFList<OFString> *pOverrideKeys,
+    OFCondition MoveUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                          T_DIMSE_C_MoveRQ *pRequest, T_DIMSE_C_MoveRSP *pResponse,
                          DIMSE_MoveUserCallback callback, void *callbackData,
                          DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData);

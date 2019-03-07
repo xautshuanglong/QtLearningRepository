@@ -6,6 +6,13 @@
 #include <dcmtk/dcmdata/dcuid.h>
 #include <dcmtk/dcmnet/diutil.h>
 
+static const char* gsGetModelUID[] =
+{
+    UID_GETPatientRootQueryRetrieveInformationModel,
+    UID_GETStudyRootQueryRetrieveInformationModel,
+    UID_RETIRED_GETPatientStudyOnlyQueryRetrieveInformationModel,
+};
+
 DicomSCUGet::DicomSCUGet()
     : DicomSCUBase()
 {
@@ -37,7 +44,7 @@ OFCondition DicomSCUGet::PerformGet(EnumGetModel getModel)
     }
     if (condition.good())
     {
-        condition = this->GetUser(getModel, &m_overrideKeys,
+        condition = this->GetUser(gsGetModelUID[getModel], &m_overrideKeys,
                                   &m_request, &m_response,
                                   DicomSCUGet::GetUserCallback, this,
                                   DicomSCUGet::SubOperationCallbackEx, this);

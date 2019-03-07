@@ -2,14 +2,21 @@
 
 #include "DicomSCUBase.h"
 
+enum EnumMoveModel
+{
+    MoveModel_PatientRoot,
+    MoveModel_StudyRoot,
+    MoveModel_PatientStudyOnly,
+};
+
 class DicomSCUMove : public DicomSCUBase
 {
 public:
     DicomSCUMove();
     ~DicomSCUMove();
 
+    OFCondition PerformMove(EnumMoveModel moveModel);
     virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
-    virtual OFCondition PerformMove(EnumMoveModel moveModel) override;
 
     // 处理转储响应
     static void MoveUserCallback(void *pCallbackData, T_DIMSE_C_MoveRQ *pRequest, int responseCount, T_DIMSE_C_MoveRSP *pResponse);

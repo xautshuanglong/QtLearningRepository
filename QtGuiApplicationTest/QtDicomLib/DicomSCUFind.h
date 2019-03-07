@@ -2,14 +2,22 @@
 
 #include "DicomSCUBase.h"
 
+enum EnumFindModel
+{
+    FindModel_Worklist,
+    FindModel_PatientRoot,
+    FindModel_StudyRoot,
+    FindModel_PatientStudyOnly
+};
+
 class DicomSCUFind : public DicomSCUBase
 {
 public:
     DicomSCUFind();
     ~DicomSCUFind();
 
+    OFCondition PerformFind(EnumFindModel findModel);
     virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
-    virtual OFCondition PerformFind(EnumFindModel findModel) override;
 
     // 处理查询响应
     void HandleFindCallback(T_DIMSE_C_FindRQ *pRequest, int responseCount,

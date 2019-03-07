@@ -186,6 +186,19 @@ void DicomClient::PerformEcho()
 {
     QSharedPointer<DicomTaskBase> pEchoTask(DicomTaskHelper::NewTask<DicomTaskEcho>());
     m_pDicomExecutor->AddTask(pEchoTask);
+
+    return;
+
+    OFList<OFString> transferSyntaxList;
+    Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
+    for (Uint32 i = 0; i < maxSyntaxes; ++i)
+    {
+        transferSyntaxList.push_back(transferSyntaxes[i]);
+    }
+
+    m_pDicomEcho->ClearPresentationContex(); // 考虑使用已接收的表示上下文
+    m_pDicomEcho->AddPresentationContext(UID_VerificationSOPClass, transferSyntaxList);
+    m_pDicomEcho->PerformEcho();
 }
 
 void DicomClient::PerformFind()

@@ -2,14 +2,21 @@
 
 #include "DicomSCUBase.h"
 
+enum EnumGetModel
+{
+    GetModel_PatientRoot,
+    GetModel_StudyRoot,
+    GetModel_PatientStudyOnly
+};
+
 class DicomSCUGet : public DicomSCUBase
 {
 public:
     DicomSCUGet();
     ~DicomSCUGet();
 
+    OFCondition PerformGet(EnumGetModel getModel);
     virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
-    virtual OFCondition PerformGet(EnumGetModel getModel) override;
 
     // 处理获取响应
     void HandleGetCallback(T_DIMSE_C_GetRQ *pRequest, int responseCount,

@@ -10,8 +10,8 @@ public:
     DicomSCUStore();
     ~DicomSCUStore();
 
+    OFCondition PerformStore(DcmDataset *pStoreDataset);
     virtual OFCondition ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask) override;
-    virtual OFCondition PerformStore(DcmDataset *pStoreDataset) override;
     OFCondition PerformStore(OFString& filename);
 
     // ¥¶¿Ì¥Ê¥¢œÏ”¶

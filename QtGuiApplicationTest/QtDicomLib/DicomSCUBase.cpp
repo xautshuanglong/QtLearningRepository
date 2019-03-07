@@ -11,28 +11,6 @@
 #include <dcmtk/dcmnet/cond.h>
 #include <dcmtk/dcmtls/tlslayer.h>
 
-static const char* gsFindModelUID[] =
-{
-    UID_FINDModalityWorklistInformationModel,
-    UID_FINDPatientRootQueryRetrieveInformationModel,
-    UID_FINDStudyRootQueryRetrieveInformationModel,
-    UID_RETIRED_FINDPatientStudyOnlyQueryRetrieveInformationModel,
-};
-
-static const char* gsGetModelUID[] =
-{
-    UID_GETPatientRootQueryRetrieveInformationModel,
-    UID_GETStudyRootQueryRetrieveInformationModel,
-    UID_RETIRED_GETPatientStudyOnlyQueryRetrieveInformationModel,
-};
-
-static const char* gsMoveModelUID[] =
-{
-    UID_MOVEPatientRootQueryRetrieveInformationModel,
-    UID_MOVEStudyRootQueryRetrieveInformationModel,
-    UID_RETIRED_MOVEPatientStudyOnlyQueryRetrieveInformationModel,
-};
-
 DicomSCUBase::DicomSCUBase()
     : m_pAssociation(Q_NULLPTR)
     , m_pNetwork(Q_NULLPTR)
@@ -364,7 +342,7 @@ OFCondition DicomSCUBase::EchoUser()
     return condition;
 }
 
-OFCondition DicomSCUBase::FindUser(EnumFindModel findModel, OFList<OFString> *pOverrideKeys,
+OFCondition DicomSCUBase::FindUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                                    T_DIMSE_C_FindRQ *pRequest, T_DIMSE_C_FindRSP *pRsponse,
                                    DIMSE_FindUserCallback callback, void *callbackData)
 {
@@ -390,7 +368,7 @@ OFCondition DicomSCUBase::FindUser(EnumFindModel findModel, OFList<OFString> *pO
         keyPath++;
     }
 
-    presId = ASC_findAcceptedPresentationContextID(m_pAssociation, gsFindModelUID[findModel]);
+    presId = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
     if (presId == 0)
     {
         DCMNET_ERROR("No presentation context");
@@ -398,7 +376,7 @@ OFCondition DicomSCUBase::FindUser(EnumFindModel findModel, OFList<OFString> *pO
     }
 
     bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_FindRQ));
-    strcpy(pRequest->AffectedSOPClassUID, gsFindModelUID[findModel]);
+    strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->MessageID = m_pAssociation->nextMsgID++;
@@ -432,7 +410,7 @@ OFCondition DicomSCUBase::FindUser(EnumFindModel findModel, OFList<OFString> *pO
     return condition;
 }
 
-OFCondition DicomSCUBase::GetUser(EnumGetModel getModel, OFList<OFString> *pOverrideKeys,
+OFCondition DicomSCUBase::GetUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                                   T_DIMSE_C_GetRQ *pRequest, T_DIMSE_C_GetRSP *pRsponse,
                                   DIMSE_GetUserCallbackEx callback, void *callbackData,
                                   DIMSE_SubOpProviderCallbackEx subOpCallback, void *subOpCallbackData)
@@ -460,7 +438,7 @@ OFCondition DicomSCUBase::GetUser(EnumGetModel getModel, OFList<OFString> *pOver
         keyPath++;
     }
 
-    presentationId = ASC_findAcceptedPresentationContextID(m_pAssociation, gsGetModelUID[getModel]);
+    presentationId = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
     if (presentationId == 0)
     {
         DCMNET_ERROR("No presentation context");
@@ -468,7 +446,7 @@ OFCondition DicomSCUBase::GetUser(EnumGetModel getModel, OFList<OFString> *pOver
     }
 
     bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_GetRQ));
-    strcpy(pRequest->AffectedSOPClassUID, gsGetModelUID[getModel]);
+    strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->MessageID = m_pAssociation->nextMsgID++;
@@ -511,7 +489,7 @@ OFCondition DicomSCUBase::GetUser(EnumGetModel getModel, OFList<OFString> *pOver
     return condition;
 }
 
-OFCondition DicomSCUBase::MoveUser(EnumMoveModel moveModel, OFList<OFString> *pOverrideKeys,
+OFCondition DicomSCUBase::MoveUser(const char *abstractSyntax, OFList<OFString> *pOverrideKeys,
                                    T_DIMSE_C_MoveRQ *pRequest, T_DIMSE_C_MoveRSP *pResponse,
                                    DIMSE_MoveUserCallback callback, void *callbackData,
                                    DIMSE_SubOpProviderCallback subOpCallback, void *subOpCallbackData)
@@ -541,7 +519,7 @@ OFCondition DicomSCUBase::MoveUser(EnumMoveModel moveModel, OFList<OFString> *pO
         keyPath++;
     }
 
-    presentationID = ASC_findAcceptedPresentationContextID(m_pAssociation, gsMoveModelUID[moveModel]);
+    presentationID = ASC_findAcceptedPresentationContextID(m_pAssociation, abstractSyntax);
     if (presentationID == 0)
     {
         return DIMSE_NOVALIDPRESENTATIONCONTEXTID;
@@ -549,7 +527,7 @@ OFCondition DicomSCUBase::MoveUser(EnumMoveModel moveModel, OFList<OFString> *pO
 
     bzero(OFreinterpret_cast(char*, pRequest), sizeof(T_DIMSE_C_MoveRQ));
     pRequest->MessageID = m_pAssociation->nextMsgID++;
-    strcpy(pRequest->AffectedSOPClassUID, gsMoveModelUID[moveModel]);
+    strcpy(pRequest->AffectedSOPClassUID, abstractSyntax);
     strcpy(pRequest->MoveDestination, m_destAETitle.c_str());
     pRequest->Priority = DIMSE_PRIORITY_MEDIUM;
     pRequest->DataSetType = DIMSE_DATASET_PRESENT;
