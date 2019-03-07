@@ -49,6 +49,7 @@ void DicomEnv::Initialize(LogCallback pLogCallback /* = nullptr */)
 void DicomEnv::Uninitialize()
 {
     DicomEnv::UninitializeNetwork();
+    DicomEnv::UninitializeLog4Cplus();
 }
 
 void DicomEnv::InitializeNetwork()
@@ -76,6 +77,11 @@ void DicomEnv::InitializeLog4Cplus()
 
     //DicomEnv::ConfigureLog4CplusFormFile();
     DicomEnv::ConfigureLog4CplusFormCode();
+}
+
+void DicomEnv::UninitializeLog4Cplus()
+{
+    dcmtk::log4cplus::Logger::shutdown();
 }
 
 // 模拟 DCMTK 命令行工具参数设置配置文件路径，进而配置日志输出策略。

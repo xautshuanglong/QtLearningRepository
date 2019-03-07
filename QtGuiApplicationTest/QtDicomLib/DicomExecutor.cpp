@@ -111,5 +111,6 @@ void DicomExecutor::run()
             this->Wait();
         }
     }
-    LogUtil::Debug(CODE_LOCATION, "Thread(%d) %d will exiting.", QThread::currentThreadId());
+    LogUtil::Debug(CODE_LOCATION, "Thread(%d) %d will exiting. Cleanup log4cplus threadlocal data ...", QThread::currentThreadId());
+    dcmtk::log4cplus::threadCleanup();
 }
