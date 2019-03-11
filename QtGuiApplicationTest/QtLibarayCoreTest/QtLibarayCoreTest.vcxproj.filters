@@ -30,6 +30,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{c21784c5-7df5-484d-9043-d896e953df35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logger">
+      <UniqueIdentifier>{f969a3e9-0eac-477d-abfa-182e28087385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtlibaraycoretest_global.h">
@@ -47,6 +50,12 @@
     <ClInclude Include="BackgroundWorkerTest.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="LogUtil.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="zlog.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DllMain.cpp">
@@ -60,6 +69,12 @@
     </ClCompile>
     <ClCompile Include="BackgroundWorkerTest.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="LogUtil.cpp">
+      <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="zlog.cpp">
+      <Filter>Logger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
