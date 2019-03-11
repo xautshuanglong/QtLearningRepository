@@ -31,7 +31,8 @@ public:
     void PerformFind();   // 查询/检索
     void PerformGet();    // 获取/下载
     void PerformMove();   // 移动/转储
-    void PerformStore();  // 存储/上传
+    //void PerformStore();  // 存储/上传
+    void MakeStoreTask(const QString &filename);
 
     // DICOM 响应处理（实现回调接口）
     virtual void HandleResponseEcho() override;

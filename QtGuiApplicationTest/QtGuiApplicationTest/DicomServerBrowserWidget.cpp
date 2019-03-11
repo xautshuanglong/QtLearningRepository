@@ -76,8 +76,13 @@ void DicomServerBrowserWidget::on_btnMoveTest_clicked()
 
 void DicomServerBrowserWidget::on_btnStoreTest_clicked()
 {
-    mpDicomClient->PerformStore();
-
-    //DicomTest dcmTest;
-    //dcmTest.DcmtkTestStore();
+    QString dcmFilename = ui->leDcmFilename->text();
+    if (!dcmFilename.isEmpty())
+    {
+        mpDicomClient->MakeStoreTask(dcmFilename);
+    }
+    else
+    {
+        // TODO: UI ÊäÈë´íÎó
+    }
 }

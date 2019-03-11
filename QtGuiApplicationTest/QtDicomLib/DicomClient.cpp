@@ -286,7 +286,43 @@ void DicomClient::PerformMove()
     }
 }
 
-void DicomClient::PerformStore()
+//void DicomClient::PerformStore()
+//{
+//    OFList<OFString> transferSyntaxList;
+//    Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
+//    for (Uint32 i = 0; i < maxSyntaxes; ++i)
+//    {
+//        transferSyntaxList.push_back(transferSyntaxes[i]);
+//    }
+//    m_pDicomStore->ClearPresentationContex(); // 考虑使用已接收的表示上下文
+//    for (int i = 0; i < numberOfDcmShortSCUStorageSOPClassUIDs; i++)
+//    {
+//        m_pDicomStore->AddPresentationContext(dcmShortSCUStorageSOPClassUIDs[i], transferSyntaxList);
+//    }
+//
+//    QString filename = "E:\\Temp\\DicomTesting\\DcmtkBin\\image11.dcm";
+//    QString filename1 = "E:\\Temp\\DicomTesting\\DcmtkBin\\image18.dcm";
+//
+//    DicomTaskStore *pStoreTask = DicomTaskHelper::NewTask<DicomTaskStore>();
+//    pStoreTask->SetFilename(filename);
+//    QSharedPointer<DicomTaskBase> pStoreTaskPointer(pStoreTask);
+//    m_pDicomExecutor->AddTask(pStoreTaskPointer);
+//
+//    pStoreTask = DicomTaskHelper::NewTask<DicomTaskStore>();
+//    pStoreTask->SetFilename(filename1);
+//    QSharedPointer<DicomTaskBase> pStoreTaskPointer1(pStoreTask);
+//    m_pDicomExecutor->AddTask(pStoreTaskPointer1);
+//
+//    //OFCondition condition = m_pDicomStore->PerformStore(filename);
+//    //if (condition.bad())
+//    //{
+//    //    OFString errorString;
+//    //    LogUtil::Error(CODE_LOCATION, "PerformStore Error: %s", DimseCondition::dump(errorString, condition).c_str());
+//    //    // TODO 向业务层报告错误
+//    //}
+//}
+
+void DicomClient::MakeStoreTask(const QString &filename)
 {
     OFList<OFString> transferSyntaxList;
     Uint32 maxSyntaxes = OFstatic_cast(Uint32, (DIM_OF(transferSyntaxes)));
@@ -300,14 +336,10 @@ void DicomClient::PerformStore()
         m_pDicomStore->AddPresentationContext(dcmShortSCUStorageSOPClassUIDs[i], transferSyntaxList);
     }
 
-    OFString filename = "./image11.dcm";
-    OFCondition condition = m_pDicomStore->PerformStore(filename);
-    if (condition.bad())
-    {
-        OFString errorString;
-        LogUtil::Error(CODE_LOCATION, "PerformStore Error: %s", DimseCondition::dump(errorString, condition).c_str());
-        // TODO 向业务层报告错误
-    }
+    DicomTaskStore *pStoreTask = DicomTaskHelper::NewTask<DicomTaskStore>();
+    pStoreTask->SetFilename(filename);
+    QSharedPointer<DicomTaskBase> pStoreTaskPointer(pStoreTask);
+    m_pDicomExecutor->AddTask(pStoreTaskPointer);
 }
 
 void DicomClient::HandleResponseEcho()

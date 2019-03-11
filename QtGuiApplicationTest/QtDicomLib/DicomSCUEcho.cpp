@@ -13,14 +13,18 @@ DicomSCUEcho::~DicomSCUEcho()
 
 OFCondition DicomSCUEcho::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
-    OFCondition condition = this->PerformEcho();
-    if (condition.bad())
+    OFCondition condition = EC_IllegalCall;
+    DicomTaskEcho *pTaskEcho = DicomTaskHelper::Convert<DicomTaskEcho>(pDicomTask.data());
+    if (pTaskEcho !=Q_NULLPTR)
     {
-        OFString errorString;
-        LogUtil::Error(CODE_LOCATION, "PerformEcho Error: %s", DimseCondition::dump(errorString, condition).c_str());
-        // TODO 向业务层报告错误
+        condition = this->PerformEcho();
+        if (condition.bad())
+        {
+            OFString errorString;
+            LogUtil::Error(CODE_LOCATION, "PerformEcho Error: %s", DimseCondition::dump(errorString, condition).c_str());
+            // TODO 向业务层报告错误
+        }
     }
-
     return condition;
 }
 

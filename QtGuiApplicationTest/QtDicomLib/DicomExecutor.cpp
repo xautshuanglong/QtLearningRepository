@@ -3,6 +3,9 @@
 // QT Headers
 #include <QMutexLocker>
 
+// DCMTK Headers
+#include <dcmtk/ofstd/ofcond.h>
+
 // Self Headers
 #include <LogUtil.h>
 
@@ -103,7 +106,11 @@ void DicomExecutor::run()
             }
             else
             {
-                pScuBase->ExcuteOperation(pTask);
+                OFCondition executRes = pScuBase->ExcuteOperation(pTask);
+                if (executRes.bad())
+                {
+                    // TODO： 失败任务列表
+                }
             }
         }
         else

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <QString>
+#include <dcmtk/ofstd/ofstring.h>
+
+class DcmDataset;
+
 enum EnumExecutorType
 {
     EexcutorType_UNKNOW,
@@ -23,37 +28,70 @@ protected:
 
 class DicomTaskEcho : public DicomTaskBase
 {
+public:
+    ~DicomTaskEcho();
     friend class DicomTaskHelper;
+
 private:
-    DicomTaskEcho() { executorType = EexcutorType_ECHO; }
+    DicomTaskEcho();
 };
 
 class DicomTaskFind : public DicomTaskBase
 {
+public:
+    ~DicomTaskFind();
     friend class DicomTaskHelper;
+
 private:
-    DicomTaskFind() { executorType = EexcutorType_FIND; }
+    DicomTaskFind();
 };
 
 class DicomTaskGet : public DicomTaskBase
 {
+public:
+    ~DicomTaskGet();
     friend class DicomTaskHelper;
+
 private:
-    DicomTaskGet() { executorType = EexcutorType_GET; }
+    DicomTaskGet();
 };
 
 class DicomTaskMove : public DicomTaskBase
 {
+public:
+    ~DicomTaskMove();
     friend class DicomTaskHelper;
+
 private:
-    DicomTaskMove() { executorType = EexcutorType_MOVE; }
+    DicomTaskMove();
 };
 
 class DicomTaskStore : public DicomTaskBase
 {
+public:
+    enum StoreType
+    {
+        STORE_DCMFILE,  // 上传 DICOM 文件
+        STORE_DATASET,  // 上传 DICOM 数据集
+    };
+
     friend class DicomTaskHelper;
+    ~DicomTaskStore();
+
+    StoreType GetStoryType() { return m_dcmStoreType; }
+
+    void SetFilename(const QString &filename);
+    OFString& GetFilename() { return m_dcmFilename; }
+
+    void NewDataset();
+    void ClearDataset();
+    DcmDataset* GetDataset() { return m_pDataset; }
+
 private:
-    DicomTaskStore() { executorType = EexcutorType_SOTRE; }
+    DicomTaskStore();
+    OFString    m_dcmFilename;
+    StoreType   m_dcmStoreType;
+    DcmDataset *m_pDataset;
 };
 
 class DicomTaskHelper
@@ -63,5 +101,5 @@ public:
     static DicomTask* NewTask() { return new DicomTask(); }
 
     template <typename TaskType>
-    static TaskType* ConvertTo() { return dynamic_cast<TaskType *>(this); }
+    static TaskType* Convert(DicomTaskBase* pTask) { return dynamic_cast<TaskType *>(pTask); }
 };

@@ -20,6 +20,30 @@ DicomSCUStore::~DicomSCUStore()
 
 OFCondition DicomSCUStore::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicomTask)
 {
+    OFCondition condition = EC_IllegalCall;
+    DicomTaskStore *pTaskStore = DicomTaskHelper::Convert<DicomTaskStore>(pDicomTask.data());
+    if (pTaskStore != Q_NULLPTR)
+    {
+        switch (pTaskStore->GetStoryType())
+        {
+        case DicomTaskStore::STORE_DCMFILE:
+            this->PerformStore(pTaskStore->GetFilename());
+            break;
+        case DicomTaskStore::STORE_DATASET:
+            this->PerformStore(pTaskStore->GetDataset());
+            break;
+        default:
+            break;
+        }
+    }
+    return condition;
+    //OFCondition condition = m_pDicomStore->PerformStore(filename);
+    //if (condition.bad())
+    //{
+    //    OFString errorString;
+    //    LogUtil::Error(CODE_LOCATION, "PerformStore Error: %s", DimseCondition::dump(errorString, condition).c_str());
+    //    // TODO 向业务层报告错误
+    //}
     return EC_NotYetImplemented;
 }
 
