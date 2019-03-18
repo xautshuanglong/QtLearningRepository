@@ -8,7 +8,6 @@ class DicomSCUFind;
 class DicomSCUGet;
 class DicomSCUMove;
 class DicomSCUStore;
-class DicomExecutor;
 
 class QTDICOMLIB_EXPORT DicomClient : public QObject, IDicomSCUObserver
 {
@@ -70,5 +69,4 @@ private:
     DicomSCUGet    *m_pDicomGet;
     DicomSCUMove   *m_pDicomMove;
     DicomSCUStore  *m_pDicomStore;
-    DicomExecutor  *m_pDicomExecutor;
 };

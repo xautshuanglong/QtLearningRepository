@@ -292,8 +292,8 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
-    //this->BackgroundWorkerTest();
-    //this->QThreadPoolTest();
+    this->BackgroundWorkerTest();
+    this->QThreadPoolTest();
     //this->MyThradPoolTest();
 }
 
@@ -1410,42 +1410,42 @@ void MainTabPageFirst::SlotDicomWindowClosed()
 //    }
 //}
 
-//void MainTabPageFirst::BackgroundWorkerTest()
-//{
-//    std::shared_ptr<SL::Core::TaskBase> p = std::shared_ptr<SL::Core::TaskBase>(new SL::Core::TaskBase());
-//    mpBackgroundWorker->AddTask(p);
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
-//    mpBackgroundWorker->Start();
-//}
+void MainTabPageFirst::BackgroundWorkerTest()
+{
+    std::shared_ptr<SL::Core::TaskBase> p = std::shared_ptr<SL::Core::TaskBase>(new SL::Core::TaskBase());
+    mpBackgroundWorker->AddTask(p);
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->AddTask(std::make_shared<SL::Core::TaskBase>());
+    mpBackgroundWorker->Start();
+}
 
-//void MainTabPageFirst::QThreadPoolTest()
-//{
-//    MyBackgroundWorker *pTestWorker = new MyBackgroundWorker();
-//    pTestWorker->setAutoDelete(true);
-//
-//    QThreadPool::globalInstance()->start(pTestWorker);
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
-//
-//    int numOfCpuCore = QThread::idealThreadCount();
-//    int maxThreadCount = QThreadPool::globalInstance()->maxThreadCount();
-//    int activeThreadCount = QThreadPool::globalInstance()->activeThreadCount();
-//
-//    LogUtil::Debug(CODE_LOCATION, "CpuNum:%d MaxThread:%d ActiveThread:%d",
-//                   numOfCpuCore, maxThreadCount, activeThreadCount);
-//}
+void MainTabPageFirst::QThreadPoolTest()
+{
+    MyBackgroundWorker *pTestWorker = new MyBackgroundWorker();
+    pTestWorker->setAutoDelete(true);
+
+    QThreadPool::globalInstance()->start(pTestWorker);
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+    QThreadPool::globalInstance()->start(new MyBackgroundWorker());
+
+    int numOfCpuCore = QThread::idealThreadCount();
+    int maxThreadCount = QThreadPool::globalInstance()->maxThreadCount();
+    int activeThreadCount = QThreadPool::globalInstance()->activeThreadCount();
+
+    LogUtil::Debug(CODE_LOCATION, "CpuNum:%d MaxThread:%d ActiveThread:%d",
+                   numOfCpuCore, maxThreadCount, activeThreadCount);
+}
 
 //void MainTabPageFirst::MyThradPoolTest()
 //{

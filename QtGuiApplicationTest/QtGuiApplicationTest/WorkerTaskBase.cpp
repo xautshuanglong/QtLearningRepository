@@ -21,6 +21,6 @@ void WorkerTaskBase::DoWorkerTask()
     {
         ++nCount;
         LogUtil::Debug(CODE_LOCATION, "this: 0x%08X  count=%d", this, nCount);
-        QThread::msleep(100);
+        QThread::msleep(10);
     }
 }

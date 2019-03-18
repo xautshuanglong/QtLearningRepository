@@ -69,18 +69,18 @@ DicomClient::DicomClient(QObject *parent)
     m_pDicomMove = new DicomSCUMove();
     m_pDicomStore = new DicomSCUStore();
 
-    m_pDicomExecutor = new DicomExecutor(this);
-    m_pDicomExecutor->SetExecutor(EexcutorType_ECHO, m_pDicomEcho);
-    m_pDicomExecutor->SetExecutor(EexcutorType_FIND, m_pDicomFind);
-    m_pDicomExecutor->SetExecutor(EexcutorType_GET, m_pDicomGet);
-    m_pDicomExecutor->SetExecutor(EexcutorType_MOVE, m_pDicomMove);
-    m_pDicomExecutor->SetExecutor(EexcutorType_SOTRE, m_pDicomStore);
-    m_pDicomExecutor->Start();
+    DicomExecutor *pDicomExecutor = DicomExecutor::GetInstance();
+    pDicomExecutor->SetExecutor(EexcutorType_ECHO, m_pDicomEcho);
+    pDicomExecutor->SetExecutor(EexcutorType_FIND, m_pDicomFind);
+    pDicomExecutor->SetExecutor(EexcutorType_GET, m_pDicomGet);
+    pDicomExecutor->SetExecutor(EexcutorType_MOVE, m_pDicomMove);
+    pDicomExecutor->SetExecutor(EexcutorType_SOTRE, m_pDicomStore);
+    pDicomExecutor->Start();
 }
 
 DicomClient::~DicomClient()
 {
-    m_pDicomExecutor->Stop();
+    DicomExecutor::GetInstance()->Stop();
     delete m_pDicomEcho; m_pDicomEcho = Q_NULLPTR;
     delete m_pDicomFind; m_pDicomFind = Q_NULLPTR;
     delete m_pDicomGet;  m_pDicomGet = Q_NULLPTR;
@@ -195,7 +195,7 @@ void DicomClient::PerformEcho()
     m_pDicomEcho->AddPresentationContext(UID_VerificationSOPClass, transferSyntaxList);
 
     QSharedPointer<DicomTaskBase> pEchoTask(DicomTaskHelper::NewTask<DicomTaskEcho>());
-    m_pDicomExecutor->AddTask(pEchoTask);
+    DicomExecutor::GetInstance()->AddTask(pEchoTask);
 
     return;
 
@@ -339,7 +339,7 @@ void DicomClient::MakeStoreTask(const QString &filename)
     DicomTaskStore *pStoreTask = DicomTaskHelper::NewTask<DicomTaskStore>();
     pStoreTask->SetFilename(filename);
     QSharedPointer<DicomTaskBase> pStoreTaskPointer(pStoreTask);
-    m_pDicomExecutor->AddTask(pStoreTaskPointer);
+    DicomExecutor::GetInstance()->AddTask(pStoreTaskPointer);
 }
 
 void DicomClient::HandleResponseEcho()

@@ -2,6 +2,8 @@
 #define MY_BACKGROUND_WORKER_H
 
 #include <QRunnable>
+#include <QThreadStorage>
+#include <QCache>
 
 /************************************************************************/
 /*  后台工作者，配合 QThreadPool 完成后台任务执行。                       */
@@ -19,6 +21,9 @@ public:
 
     /* QRunnable */
     virtual void run() override; // 线程函数
+
+private:
+    static QThreadStorage<QCache<int, int>>  m_ThreadLocalTest;
 };
 
 #endif // MY_BACKGROUND_WORKER_H

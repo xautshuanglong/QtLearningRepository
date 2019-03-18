@@ -27,24 +27,24 @@ OFCondition DicomSCUStore::ExcuteOperation(QSharedPointer<DicomTaskBase> &pDicom
         switch (pTaskStore->GetStoryType())
         {
         case DicomTaskStore::STORE_DCMFILE:
-            this->PerformStore(pTaskStore->GetFilename());
+            condition = this->PerformStore(pTaskStore->GetFilename());
             break;
         case DicomTaskStore::STORE_DATASET:
-            this->PerformStore(pTaskStore->GetDataset());
+            condition = this->PerformStore(pTaskStore->GetDataset());
             break;
         default:
             break;
         }
     }
+    
+    if (condition.bad())
+    {
+        OFString errorString;
+        LogUtil::Error(CODE_LOCATION, "PerformStore Error: %s", DimseCondition::dump(errorString, condition).c_str());
+        // TODO 向业务层报告错误
+    }
+
     return condition;
-    //OFCondition condition = m_pDicomStore->PerformStore(filename);
-    //if (condition.bad())
-    //{
-    //    OFString errorString;
-    //    LogUtil::Error(CODE_LOCATION, "PerformStore Error: %s", DimseCondition::dump(errorString, condition).c_str());
-    //    // TODO 向业务层报告错误
-    //}
-    return EC_NotYetImplemented;
 }
 
 OFCondition DicomSCUStore::PerformStore(OFString& filename)

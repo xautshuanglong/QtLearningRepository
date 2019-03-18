@@ -51,8 +51,8 @@ private:
     //void ReadJpegAndCopyToDicom();
     //void BackupFunction();
     //void SelfPaintImage8Bit();
-    //void BackgroundWorkerTest();
-    //void QThreadPoolTest();
+    void BackgroundWorkerTest();
+    void QThreadPoolTest();
     //void MyThradPoolTest();
 
 private slots:

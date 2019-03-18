@@ -15,14 +15,17 @@ DicomExecutor::DicomExecutor(QObject *parent/* =Q_NULLPTR */)
 {
     this->setAutoDelete(false);
     m_DicomThreadPool.setExpiryTimeout(-1); // ÓÀ²»¹ýÆÚ
-
-    LogUtil::Debug(CODE_LOCATION, " Constructed ...");
 }
 
 DicomExecutor::~DicomExecutor()
 {
-    LogUtil::Debug(CODE_LOCATION, " Destructed ...");
     this->Stop();
+}
+
+DicomExecutor* DicomExecutor::GetInstance()
+{
+    static DicomExecutor dicomExecutor;
+    return &dicomExecutor;
 }
 
 void DicomExecutor::AddTask(QSharedPointer<DicomTaskBase> pTask)

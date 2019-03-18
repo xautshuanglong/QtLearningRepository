@@ -90,6 +90,5 @@ namespace SL::Core
             //LogUtil::Debug(CODE_LOCATION, "tid: %d is running", std::this_thread::get_id());
         }
         std::unique_lock<std::mutex> conditionLock(mConditionMutex);
-
     }
 }

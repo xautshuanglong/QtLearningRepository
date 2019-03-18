@@ -7,6 +7,8 @@
 
 namespace SL::Core
 {
+    thread_local static int gsThreadLocalTest = 0;
+
     TaskBase::TaskBase()
         : mnCount(0)
     {
@@ -21,7 +23,7 @@ namespace SL::Core
         while (mnCount < 100)
         {
             ++mnCount;
-            LogUtil::Debug(CODE_LOCATION, "this: 0x%08X  count=%d", this, mnCount);
+            LogUtil::Debug(CODE_LOCATION, "this: 0x%08X  count=%d threadlocal=%d", this, mnCount, gsThreadLocalTest++);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
