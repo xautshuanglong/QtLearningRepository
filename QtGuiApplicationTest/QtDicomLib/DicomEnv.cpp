@@ -123,9 +123,9 @@ void DicomEnv::ConfigureLog4CplusFormFile()
 
 void DicomEnv::ConfigureLog4CplusFormCode()
 {
-    QString logsDirPath = "./logs"; // appDirPath.append("/logs");
-    QDir logsDir(logsDirPath);
-    if (!logsDir.exists())
+    QString logsDirPath = "./logs/";
+    QDir logsDir("./");
+    if (!logsDir.exists(logsDirPath))
     {
         logsDir.mkpath(logsDirPath);
     }
