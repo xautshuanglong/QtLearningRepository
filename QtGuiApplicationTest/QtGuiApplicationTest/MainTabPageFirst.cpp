@@ -292,9 +292,17 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
-    this->BackgroundWorkerTest();
-    this->QThreadPoolTest();
+    //this->BackgroundWorkerTest();
+    //this->QThreadPoolTest();
     //this->MyThradPoolTest();
+
+    QWidget *pWidget = new QWidget(this);
+    QPalette pal(pWidget->palette());
+    pal.setColor(QPalette::Window, Qt::black);
+    pWidget->setAutoFillBackground(true);
+    pWidget->setPalette(pal);
+    pWidget->resize(QSize(500, 500));
+    pWidget->show();
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()
