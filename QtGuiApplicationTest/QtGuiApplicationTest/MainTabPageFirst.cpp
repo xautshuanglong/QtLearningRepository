@@ -307,33 +307,35 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //pWidget->show();
 
     // Í¨¹ý QGraphicsOpacityEffect ÉèÖÃ±³¾°°ëÍ¸Ã÷
-    //QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(this);
-    //opacityEffect->setOpacity(0.5);
-    //QWidget *pWidget = new QWidget(this);
-    //pWidget->resize(QSize(1920, 1080));
-    //pWidget->setStyleSheet("background-color: black;");
-    //pWidget->setGraphicsEffect(opacityEffect);
-    //pWidget->show();
+    QWidget *pWidget = new QWidget(this);
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(pWidget);
+    opacityEffect->setOpacity(0.5);
+    pWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    pWidget->setWindowOpacity(0.5);
+    pWidget->resize(QSize(1920, 1080));
+    pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
+    pWidget->setGraphicsEffect(opacityEffect);
+    pWidget->show();
 
-    //QDialog *pDlg = new QDialog(this);
-    //pDlg->exec();
+    QDialog *pDlg = new QDialog(this);
+    pDlg->exec();
 
-    //pWidget->hide();
-    //delete pWidget;
+    pWidget->hide();
+    delete pWidget;
 
-    QDialog *pBackgroundDlg = new QDialog(this);
-    pBackgroundDlg->resize(QSize(1920,1000));
-    pBackgroundDlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-    pBackgroundDlg->setStyleSheet("background-color: black;");
-    pBackgroundDlg->setWindowOpacity(0.5);
-    //pBackgroundDlg->setStyleSheet("background-color: rgba(0,0,0,128);"); // Ê§°Ü
-    pBackgroundDlg->show();
+    //QDialog *pBackgroundDlg = new QDialog(this);
+    //pBackgroundDlg->resize(QSize(1920,1000));
+    //pBackgroundDlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    //pBackgroundDlg->setStyleSheet("background-color: black;");
+    //pBackgroundDlg->setWindowOpacity(0.5);
+    ////pBackgroundDlg->setStyleSheet("background-color: rgba(0,0,0,128);"); // Ê§°Ü
+    //pBackgroundDlg->show();
 
-    QDialog dlg(this);
-    dlg.exec();
+    //QDialog dlg(this);
+    //dlg.exec();
 
-    pBackgroundDlg->hide();
-    delete pBackgroundDlg;
+    //pBackgroundDlg->hide();
+    //delete pBackgroundDlg;
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()
