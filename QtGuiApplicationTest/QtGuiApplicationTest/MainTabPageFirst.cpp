@@ -17,6 +17,7 @@
 #include <QStandardItemModel>
 #include <QStringListModel>
 #include <QMetaType>
+#include <QGraphicsOpacityEffect>
 
 /* DCMTK 3.6.3 Headers */
 //#include <dcmtk/ofstd/offile.h>
@@ -296,13 +297,43 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->QThreadPoolTest();
     //this->MyThradPoolTest();
 
-    QWidget *pWidget = new QWidget(this);
-    QPalette pal(pWidget->palette());
-    pal.setColor(QPalette::Window, Qt::black);
-    pWidget->setAutoFillBackground(true);
-    pWidget->setPalette(pal);
-    pWidget->resize(QSize(500, 500));
-    pWidget->show();
+    // 通过 QPalette 设置背景半透明
+    //QWidget *pWidget = new QWidget(this);
+    //QPalette pal(pWidget->palette());
+    //pal.setColor(QPalette::Window, QColor(0,0,0,128));
+    //pWidget->setAutoFillBackground(true);
+    //pWidget->setPalette(pal);
+    //pWidget->resize(QSize(500, 500));
+    //pWidget->show();
+
+    // 通过 QGraphicsOpacityEffect 设置背景半透明
+    //QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(this);
+    //opacityEffect->setOpacity(0.5);
+    //QWidget *pWidget = new QWidget(this);
+    //pWidget->resize(QSize(1920, 1080));
+    //pWidget->setStyleSheet("background-color: black;");
+    //pWidget->setGraphicsEffect(opacityEffect);
+    //pWidget->show();
+
+    //QDialog *pDlg = new QDialog(this);
+    //pDlg->exec();
+
+    //pWidget->hide();
+    //delete pWidget;
+
+    QDialog *pBackgroundDlg = new QDialog(this);
+    pBackgroundDlg->resize(QSize(1920,1000));
+    pBackgroundDlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    pBackgroundDlg->setStyleSheet("background-color: black;");
+    pBackgroundDlg->setWindowOpacity(0.5);
+    //pBackgroundDlg->setStyleSheet("background-color: rgba(0,0,0,128);"); // 失败
+    pBackgroundDlg->show();
+
+    QDialog dlg(this);
+    dlg.exec();
+
+    pBackgroundDlg->hide();
+    delete pBackgroundDlg;
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()

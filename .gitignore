@@ -177,3 +177,4 @@ $RECYCLE.BIN/
 
 # VLD report
 **/memory_leak_report.txt
+/QtGuiApplicationTest/libs/include/vld/Microsoft.DTfW.DHL.manifest
