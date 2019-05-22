@@ -51,14 +51,20 @@
    <property name="text">
     <string/>
    </property>
+   <property name="pixmap">
+    <pixmap resource="QtGuiApplicationTest.qrc">:/AppImages/Resources/images/save.png</pixmap>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QWidget" name="maskWidget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>160</width>
-     <height>60</height>
+     <width>200</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -92,6 +98,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="QtGuiApplicationTest.qrc"/>
+ </resources>
  <connections/>
 </ui>

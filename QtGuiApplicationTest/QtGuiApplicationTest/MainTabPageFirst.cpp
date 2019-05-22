@@ -298,30 +298,32 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->MyThradPoolTest();
 
     // 通过 QPalette 设置背景半透明
-    //QWidget *pWidget = new QWidget(this);
-    //QPalette pal(pWidget->palette());
-    //pal.setColor(QPalette::Window, QColor(0,0,0,128));
-    //pWidget->setAutoFillBackground(true);
-    //pWidget->setPalette(pal);
-    //pWidget->resize(QSize(500, 500));
-    //pWidget->show();
-
-    // 通过 QGraphicsOpacityEffect 设置背景半透明
+    QPixmap backgroundImg("E:/WorkMGI/03_code/01_system/04_trunk/harddiskdata/DoctorSide/HospitalLogo/signature_test.png");
     QWidget *pWidget = new QWidget(this);
-    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(pWidget);
-    opacityEffect->setOpacity(0.5);
-    pWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-    pWidget->setWindowOpacity(0.5);
-    pWidget->resize(QSize(1920, 1080));
-    pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
-    pWidget->setGraphicsEffect(opacityEffect);
+    QPalette pal(pWidget->palette());
+    //pal.setColor(QPalette::Window, QColor(0,0,0,128));
+    pal.setBrush(this->backgroundRole(), QBrush(backgroundImg));
+    pWidget->setAutoFillBackground(true);
+    pWidget->setPalette(pal);
+    pWidget->resize(QSize(500, 500));
     pWidget->show();
 
-    QDialog *pDlg = new QDialog(this);
-    pDlg->exec();
+    // 通过 QGraphicsOpacityEffect 设置背景半透明
+    //QWidget *pWidget = new QWidget(this);
+    //QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(pWidget);
+    //opacityEffect->setOpacity(0.5);
+    //pWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    //pWidget->setWindowOpacity(0.5);
+    //pWidget->resize(QSize(1920, 1080));
+    //pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
+    //pWidget->setGraphicsEffect(opacityEffect);
+    //pWidget->show();
 
-    pWidget->hide();
-    delete pWidget;
+    //QDialog *pDlg = new QDialog(this);
+    //pDlg->exec();
+
+    //pWidget->hide();
+    //delete pWidget;
 
     //QDialog *pBackgroundDlg = new QDialog(this);
     //pBackgroundDlg->resize(QSize(1920,1000));
@@ -336,6 +338,8 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
 
     //pBackgroundDlg->hide();
     //delete pBackgroundDlg;
+
+    qDebug() << 1 << 123 << "abc";
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()
