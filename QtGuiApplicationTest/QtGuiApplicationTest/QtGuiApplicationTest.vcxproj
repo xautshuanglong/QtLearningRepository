@@ -163,6 +163,7 @@
     <ClCompile Include="MainTabPageFirst.cpp" />
     <ClCompile Include="MainTabPageSetting.cpp" />
     <ClCompile Include="MessageInfo.pb.cc" />
+    <ClCompile Include="MessageTest.pb.cc" />
     <ClCompile Include="MiscellaneousTesting.cpp" />
     <ClCompile Include="MuPDF.cpp" />
     <ClCompile Include="MyApplication.cpp" />
@@ -275,6 +276,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="FopReportProtocol.h" />
+    <ClInclude Include="MessageTest.pb.h" />
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
@@ -348,6 +350,8 @@
     <ClInclude Include="ThreadWaitCondition.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MessageInfo.proto" />
+    <None Include="MessageTest.proto" />
     <None Include="Resources\qss\black.qss" />
     <None Include="Resources\qss\dark_orange.qss" />
     <None Include="Resources\qss\mainTabWidget.qss" />

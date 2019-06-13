@@ -184,6 +184,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageFirst.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="MessageTest.pb.cc">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -272,6 +275,9 @@
     <ClInclude Include="DebugMenuEvent.h">
       <Filter>Debugger</Filter>
     </ClInclude>
+    <ClInclude Include="MessageTest.pb.h">
+      <Filter>ProtoBuf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -358,6 +364,12 @@
     </None>
     <None Include="Resources\qss\dark_orange.qss">
       <Filter>Resource Files\qss</Filter>
+    </None>
+    <None Include="MessageInfo.proto">
+      <Filter>ProtoBuf</Filter>
+    </None>
+    <None Include="MessageTest.proto">
+      <Filter>ProtoBuf</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
