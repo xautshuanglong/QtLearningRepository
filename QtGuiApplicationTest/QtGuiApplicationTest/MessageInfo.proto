@@ -1,0 +1,80 @@
+syntax = "proto3";
+package com.genomics.protobuf;
+
+option java_package = "com.genomics.protobuf";
+option java_outer_classname = "MessageInfoProto";
+
+enum MsgType
+{
+	MsgTypeUnknow   = 0;
+	MsgTypeRequest  = 100;
+	MsgTypeResponse = 101;
+	MsgTypePush     = 102;
+	MsgTypePull     = 103;
+	MsgTypeCommand  = 104;
+}
+
+enum RequestType
+{
+	ReqTypeUnknow  = 0;
+	ReqTypePdfFile = 200;
+	ReqTypePdfPage = 201;
+}
+
+enum ResponseType
+{
+	ResTypeSaveSuccess  = 0;
+	ResTypeFileNotFound = 1;
+}
+
+message MessageRequest
+{
+	uint32 requestID        = 1;
+	RequestType requestType = 2;
+	string description      = 3;
+}
+
+message MessageResponse
+{
+	uint32 responseID         = 1;
+	ResponseType responseType = 2;
+	string description        = 3;
+}
+
+message MessagePush
+{
+}
+
+message MessagePull
+{
+}
+
+message MessageCommand
+{
+	string cmd         = 1; // 命令字符串：Save Preview
+	string xmlFilename = 2; // xml 报告内容文件绝对路径
+	string xslFilename = 3; // xsl 样式表绝对路径
+	string outFilename = 4; // 输出文件绝对路径
+}
+
+message MessageHeader
+{
+	uint32    version = 1; // 协议版本
+	uint32    msgID   = 2; // 消息 ID，跟踪消息分发。
+	MsgType   msgType = 3; // 消息类型，对应不同的处理过程
+}
+
+message MessageBody
+{
+	MessageRequest    msgRequest  = 1; // 请求消息
+	MessageResponse   msgResponse = 2; // 响应消息
+	MessagePush       msgPush     = 3; // 推送消息
+	MessagePull       msgPull     = 4; // 拉取消息
+	MessageCommand    msgCommand  = 5; // 指令消息
+}
+
+message MessageInfo
+{
+	MessageHeader msgHeader = 1; // 消息头部
+	MessageBody   msgBody   = 2; // 消息主体
+}
