@@ -10,6 +10,10 @@ class MainTabPageSetting : public QWidget
 private:
     Ui::MainTabPageSetting ui;
 
+private slots:
+    void SlotListVScrollBarRangeChanged(int min, int max);
+    void SlotListVScrollBarValueChanged(int value);
+
 public:
     MainTabPageSetting(QWidget *parent = Q_NULLPTR);
     ~MainTabPageSetting();
