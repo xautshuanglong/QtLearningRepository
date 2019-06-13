@@ -48,6 +48,7 @@
 #include "WinReportTesting.h"
 #include "SuspendedScrollBar.h"
 #include "UrlUtil.h"
+#include "MessageTest.pb.h"
 
 //static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
@@ -298,15 +299,15 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->MyThradPoolTest();
 
     // 通过 QPalette 设置背景半透明
-    QPixmap backgroundImg("E:/WorkMGI/03_code/01_system/04_trunk/harddiskdata/DoctorSide/HospitalLogo/signature_test.png");
-    QWidget *pWidget = new QWidget(this);
-    QPalette pal(pWidget->palette());
-    //pal.setColor(QPalette::Window, QColor(0,0,0,128));
-    pal.setBrush(this->backgroundRole(), QBrush(backgroundImg));
-    pWidget->setAutoFillBackground(true);
-    pWidget->setPalette(pal);
-    pWidget->resize(QSize(500, 500));
-    pWidget->show();
+    //QPixmap backgroundImg("E:/WorkMGI/03_code/01_system/04_trunk/harddiskdata/DoctorSide/HospitalLogo/signature_test.png");
+    //QWidget *pWidget = new QWidget(this);
+    //QPalette pal(pWidget->palette());
+    ////pal.setColor(QPalette::Window, QColor(0,0,0,128));
+    //pal.setBrush(this->backgroundRole(), QBrush(backgroundImg));
+    //pWidget->setAutoFillBackground(true);
+    //pWidget->setPalette(pal);
+    //pWidget->resize(QSize(500, 500));
+    //pWidget->show();
 
     // 通过 QGraphicsOpacityEffect 设置背景半透明
     //QWidget *pWidget = new QWidget(this);
@@ -339,7 +340,25 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //pBackgroundDlg->hide();
     //delete pBackgroundDlg;
 
-    qDebug() << 1 << 123 << "abc";
+    // ProtoBuf 字节数组传递
+    MsgTest msgTest;
+    msgTest.set_inttest(0);
+    msgTest.set_uinttest(0);
+    std::string msgString = msgTest.SerializeAsString();
+    int msgSize = msgTest.ByteSize();
+    int msgStrLen = msgString.length();
+
+    char serializeBytes[128];
+    memset(serializeBytes, 0, sizeof(serializeBytes));
+    bool resFlag = msgTest.SerializeToArray(serializeBytes, 128);
+
+    MsgTest msgTest1;
+    msgTest1.set_inttest(1);
+    msgTest1.set_uinttest(1);
+    msgTest1.set_bytestest("hello");
+    msgTest1.set_stringtest("world");
+    std::string msgTest1String = msgTest1.SerializeAsString();
+    int len = msgTest1String.length();
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()
