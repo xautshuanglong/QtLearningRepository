@@ -347,10 +347,15 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     std::string msgString = msgTest.SerializeAsString();
     int msgSize = msgTest.ByteSize();
     int msgStrLen = msgString.length();
+    MsgTest deMsgTestString;
+    deMsgTestString.ParseFromString(msgString);
 
     char serializeBytes[128];
     memset(serializeBytes, 0, sizeof(serializeBytes));
     bool resFlag = msgTest.SerializeToArray(serializeBytes, 128);
+
+    MsgTest deMsgTestByte;
+    deMsgTestByte.ParseFromArray(serializeBytes, 128);
 
     MsgTest msgTest1;
     msgTest1.set_inttest(1);
@@ -358,7 +363,26 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     msgTest1.set_bytestest("hello");
     msgTest1.set_stringtest("world");
     std::string msgTest1String = msgTest1.SerializeAsString();
-    int len = msgTest1String.length();
+    int len1 = msgTest1String.length();
+    MsgTest deMsgTest1String;
+    deMsgTest1String.ParseFromString(msgTest1String);
+
+    char byteArr[9] = { 0,0,1,0,0,1,0,0,1 };
+    MsgTest msgTest2;
+    msgTest2.set_inttest(1);
+    msgTest2.set_uinttest(1);
+    msgTest2.set_bytestest(byteArr, 9);
+    msgTest2.set_stringtest("world");
+    std::string msgTest2String = msgTest2.SerializeAsString();
+    int len2 = msgTest2String.length();
+    MsgTest deMsgTest2String;
+    deMsgTest2String.ParseFromString(msgTest2String);
+    std::string bytesTest2 = deMsgTest2String.bytestest();
+    len2 = bytesTest2.length();
+    const char *pBytePointer = bytesTest2.data();
+    const char *pBytePointer2 = bytesTest2.c_str();
+
+    int i = 0;
 }
 
 void MainTabPageFirst::on_btnPrint_clicked()
