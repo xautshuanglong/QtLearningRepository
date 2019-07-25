@@ -13,6 +13,8 @@ private:
 private slots:
     void SlotListVScrollBarRangeChanged(int min, int max);
     void SlotListVScrollBarValueChanged(int value);
+    void on_btnGeneratePDF_clicked();
+    void on_btnParseDocument_clicked();
 
 public:
     MainTabPageSetting(QWidget *parent = Q_NULLPTR);
