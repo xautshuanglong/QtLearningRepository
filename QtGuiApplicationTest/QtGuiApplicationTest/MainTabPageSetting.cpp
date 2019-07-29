@@ -52,8 +52,12 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     }
 
     QTextCursor tempCursor = ui.tePdfTest->textCursor();
-    tempCursor.insertText("Insert Text Test");
+    tempCursor.insertText(QString("Insert Text Test %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzz"))); // 2019-07-06T17:52:02.017578
     tempCursor.insertBlock();
+
+    QString timeString("2019-07-06T17:52:02.987");
+    QDateTime timeTest = QDateTime::fromString(timeString, "yyyy-MM-dd'T'hh:mm:ss.zzz");
+    QString newTimeStr = timeTest.toString("yyyy-MM-ddThh:mm:ss.z");
 
     int i = 0;
 }
