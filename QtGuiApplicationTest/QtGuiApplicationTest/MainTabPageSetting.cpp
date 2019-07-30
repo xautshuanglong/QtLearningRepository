@@ -6,6 +6,55 @@
 
 #include <LogUtil.h>
 
+class Base
+{
+public:
+    Base()
+    {
+        int i = 0;
+    }
+
+    ~Base()
+    {
+        int i = 0;
+    }
+
+    void func()
+    {
+        int i = 0;
+    }
+
+    virtual void vfunc()
+    {
+        int i = 0;
+    }
+};
+
+class Derived : public Base
+{
+public:
+    Derived()
+    {
+        int i = 0;
+    }
+
+    ~Derived()
+    {
+        int i = 0;
+    }
+
+    void func()
+    {
+        int i = 0;
+    }
+
+    virtual void vfunc()
+    {
+        int i = 0;
+    }
+};
+
+
 MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
 {
@@ -40,6 +89,19 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
+    int c[4] = { 1,2,3,4 };
+
+    Base *pBase = new Derived();
+    pBase->func();
+    pBase->vfunc();
+
+    int testSize = sizeof(Base);
+    Base *ptr = (Base*)malloc(sizeof(Base));
+
+    ptr->Base::Base();
+    ptr->func();
+    ptr->vfunc();
+
     QTextDocument *pDocument = ui.tePdfTest->document();
     QTextFrame *pRootFrame = pDocument->rootFrame();
     int blockCount = pDocument->blockCount();
