@@ -24,6 +24,7 @@ private slots:
     void on_btnGetTest_clicked();
     void on_btnMoveTest_clicked();
     void on_btnStoreTest_clicked();
+    void on_btnSaveReport_clicked();
 
 private:
     Ui::DicomServerBrowserWidget *ui;

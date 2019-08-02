@@ -193,6 +193,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageSetting.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DicomServerBrowserWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DicomServerBrowserWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -343,9 +349,6 @@
     <QtMoc Include="DicomDownloadWigdet.h">
       <Filter>DICOM</Filter>
     </QtMoc>
-    <QtMoc Include="DicomServerBrowserWidget.h">
-      <Filter>DICOM</Filter>
-    </QtMoc>
     <QtMoc Include="DebugInfoNetworkWidget.h">
       <Filter>Debugger</Filter>
     </QtMoc>
@@ -389,6 +392,9 @@
     </CustomBuild>
     <CustomBuild Include="MainTabPageSetting.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DicomServerBrowserWidget.h">
+      <Filter>DICOM</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

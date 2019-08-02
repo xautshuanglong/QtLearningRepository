@@ -1,6 +1,15 @@
 #include "DicomServerBrowserWidget.h"
 #include "ui_DicomServerBrowserWidget.h"
 
+// QT Headers
+#include <QApplication>
+
+// DCMKT
+#include <dcmtk/dcmdata/dcdeftag.h>
+#include <dcmtk/dcmdata/dcfilefo.h>
+#include <dcmtk/dcmdata/dcuid.h>
+#include <dcmtk/dcmsr/dsrtypes.h>
+
 // Self Headers
 #include <LogUtil.h>
 #include <DicomTest.h>
@@ -85,4 +94,94 @@ void DicomServerBrowserWidget::on_btnStoreTest_clicked()
     {
         // TODO: UI 输入错误
     }
+}
+
+void DicomServerBrowserWidget::on_btnSaveReport_clicked()
+{
+    DcmFileFormat *pFileFormat = new DcmFileFormat();
+    DcmDataset *pDataSet = pFileFormat->getDataset();
+    OFCondition status = EC_Normal;
+
+    /* 防止中文乱码 */
+    pDataSet->putAndInsertString(DCM_SpecificCharacterSet, "ISO_IR 100");
+
+    /* 添加 Patient 信息 */
+    pDataSet->putAndInsertString(DCM_PatientName, "Shuanglong");
+    pDataSet->putAndInsertString(DCM_PatientID, "123456");
+    pDataSet->putAndInsertString(DCM_PatientBirthDate, "19901104");
+    pDataSet->putAndInsertString(DCM_PatientSex, "M");
+    pDataSet->putAndInsertString(DCM_BodyPartExamined, "Thyroid");
+
+    /* 添加 SOP class 信息 */
+    char uid[100];
+    dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+    pDataSet->putAndInsertString(DCM_SOPInstanceUID, uid);
+    pDataSet->putAndInsertString(DCM_SOPClassUID, UID_EnhancedSRStorage); // 结构化报告
+
+    /* 添加 Study 信息 */
+    pDataSet->putAndInsertString(DCM_StudyDate, "20190802");
+    pDataSet->putAndInsertString(DCM_ContentDate, "20190802");
+    pDataSet->putAndInsertString(DCM_StudyTime, "1359");
+    pDataSet->putAndInsertString(DCM_ContentTime, "1359");
+    pDataSet->putAndInsertString(DCM_StudyID, "123456789");
+    dcmGenerateUniqueIdentifier(uid, SITE_INSTANCE_UID_ROOT);
+    pDataSet->putAndInsertString(DCM_StudyInstanceUID, uid);
+
+    /* 添加 Series 信息 */
+    pDataSet->putAndInsertString(DCM_SeriesDate, "20190802");
+    pDataSet->putAndInsertString(DCM_SeriesTime, "1359");
+    memset(uid, 0, sizeof(char) * 100);
+    dcmGenerateUniqueIdentifier(uid, SITE_SERIES_UID_ROOT);
+    pDataSet->putAndInsertString(DCM_SeriesInstanceUID, uid);
+    pDataSet->putAndInsertString(DCM_SeriesNumber, "1");
+    pDataSet->putAndInsertString(DCM_InstanceNumber, "1");
+
+    /* 添加 厂商 信息 */
+    pDataSet->putAndInsertString(DCM_Manufacturer, "MGIUS-R3");
+
+    pDataSet->putAndInsertString(DCM_Modality, "SR");
+    pDataSet->insertSequenceItem(DCM_ReferencedPerformedProcedureStepSequence, new DcmItem());
+    pDataSet->insertSequenceItem(DCM_PerformedProcedureCodeSequence, new DcmItem());
+    pDataSet->putAndInsertString(DCM_AccessionNumber, "110");
+    pDataSet->putAndInsertString(DCM_ReferringPhysicianName, "Shuanglong");
+    pDataSet->putAndInsertString(DCM_ContinuityOfContent, "SEPARATE");
+
+    /* 报告内容序列 */
+    DcmItem *pConceptNameSequence = NULL;
+    DcmItem *pContentSequence = NULL;
+    DcmItem *pDcmItem = NULL;
+
+    pDataSet->putAndInsertString(DCM_ValueType, "CONTAINER");
+    pDataSet->putAndInsertString(DCM_CompletionFlag, "PARTIAL");
+    pDataSet->putAndInsertString(DCM_VerificationFlag, "UNVERIFIED");
+
+    pConceptNameSequence = new DcmItem();
+    pDataSet->insertSequenceItem(DCM_ConceptNameCodeSequence, pConceptNameSequence);
+    pConceptNameSequence->putAndInsertString(DCM_CodeValue, "DT.06");
+    pConceptNameSequence->putAndInsertString(DCM_CodingSchemeDesignator, OFFIS_CODING_SCHEME_DESIGNATOR);
+    pConceptNameSequence->putAndInsertString(DCM_CodeMeaning, "Consultation Report");
+    pConceptNameSequence->putAndInsertString(DCM_CodingSchemeUID, "1.2.276.0.7230010.3.0.0.1");
+
+    pContentSequence = new DcmItem();
+    pDataSet->insertSequenceItem(DCM_ContentSequence, pContentSequence);
+    pContentSequence->putAndInsertString(DCM_RelationshipType, "HAS OBS CONTEXT");
+    pContentSequence->putAndInsertString(DCM_ValueType, "PNAME");
+    pContentSequence->putAndInsertString(DCM_PersonName, "双龙");
+
+    pConceptNameSequence = new DcmItem();
+    pContentSequence->insertSequenceItem(DCM_ConceptNameCodeSequence, pConceptNameSequence);
+    pConceptNameSequence->putAndInsertString(DCM_CodeValue, "IHE.04");
+    pConceptNameSequence->putAndInsertString(DCM_CodingSchemeDesignator, OFFIS_CODING_SCHEME_DESIGNATOR);
+    pConceptNameSequence->putAndInsertString(DCM_CodeMeaning, "Observer Name");
+    pConceptNameSequence->putAndInsertString(DCM_CodingSchemeUID, "1.2.276.0.7230010.3.0.0.1");
+
+    QString filename = QApplication::applicationDirPath() + "/StructureReport.dcm";
+    OFFilename newSaveFilename = filename.toUtf8().data();
+    status = pFileFormat->saveFile(newSaveFilename, EXS_LittleEndianImplicit);
+    if (status.bad())
+    {
+        LogUtil::Error(CODE_LOCATION, "Error: %s", status.text());
+    }
+    pDataSet->clear();
+    delete pFileFormat;
 }
