@@ -3,6 +3,7 @@
 #include <QScrollBar>
 #include <QDateTime>
 #include <QTextBlock>
+#include <QBuffer>
 
 #include <LogUtil.h>
 
@@ -89,18 +90,40 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
-    int c[4] = { 1,2,3,4 };
+    QString hospitalLogoStr = QCoreApplication::applicationDirPath() + "/Test1.jpg";
+    QPixmap hospitalLogo(hospitalLogoStr);
+    QByteArray logoPixBytes;
+    QBuffer logoBuffer(&logoPixBytes);
+    logoBuffer.open(QIODevice::WriteOnly);
+    hospitalLogo.save(&logoBuffer, "png");
 
-    Base *pBase = new Derived();
-    pBase->func();
-    pBase->vfunc();
+    QFile file(hospitalLogoStr);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QByteArray fileBytes = file.readAll();
+        QPixmap pixmap;
+        pixmap.loadFromData(fileBytes);
+        pixmap.save(QCoreApplication::applicationDirPath() + "/Test1_copy.jpg");
+        file.close();
+    }
 
-    int testSize = sizeof(Base);
-    Base *ptr = (Base*)malloc(sizeof(Base));
 
-    ptr->Base::Base();
-    ptr->func();
-    ptr->vfunc();
+    return;
+
+    //int c[4] = { 1,2,3,4 };
+
+    //Base *pBase = new Derived();
+    //pBase->func();
+    //pBase->vfunc();
+
+    //int testSize = sizeof(Base);
+    //Base *ptr = (Base*)malloc(sizeof(Base));
+
+    //ptr->Base::Base();
+    //ptr->func();
+    //ptr->vfunc();
+
+    //return;
 
     QTextDocument *pDocument = ui.tePdfTest->document();
     QTextFrame *pRootFrame = pDocument->rootFrame();
