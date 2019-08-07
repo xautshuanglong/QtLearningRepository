@@ -3,6 +3,9 @@
 
 // QT Headers
 #include <QApplication>
+#include <QTime>
+#include <QFile>
+#include <QFileInfo>
 
 // DCMKT
 #include <dcmtk/dcmdata/dcdeftag.h>
@@ -184,4 +187,50 @@ void DicomServerBrowserWidget::on_btnSaveReport_clicked()
     }
     pDataSet->clear();
     delete pFileFormat;
+
+    // QT нд╪Ч╤ах║╡Бйт
+    QTime timeCost, timeTotalCost;
+    timeTotalCost.start();
+
+    for (int i = 0; i < 10000; ++i)
+    {
+        timeCost.start();
+        QByteArray bytes;
+        QFile pdfTestFile(QString("E:/Temp/DicomTesting/DcmtkBin/PDF_Reports/report_%1.pdf").arg(i % 100 + 1));
+        if (pdfTestFile.open(QIODevice::ReadOnly))
+        {
+            bytes.clear();
+            bytes = pdfTestFile.readAll();
+        }
+        pdfTestFile.close();
+        int sigleTimeCost = timeCost.elapsed();
+        LogUtil::Debug(CODE_LOCATION, "SingleTimeCost: %d Size: %d", timeCost.elapsed(), bytes.size());
+    }
+    int totalTimeCost = timeTotalCost.elapsed();
+    LogUtil::Debug(CODE_LOCATION, "TotalTimeCost: %d", totalTimeCost);
+
+
+    LogUtil::Debug("\n\n\n abcd");
+
+    timeTotalCost.start();
+    for (int i = 0; i < 10000; ++i)
+    {
+        timeCost.start();
+        QString filename = QString("E:/Temp/DicomTesting/DcmtkBin/PDF_Reports/report_%1.pdf").arg(i % 100 + 1);
+        QFileInfo fileInfo(filename);
+        QFile pdfTestFile(filename);
+        if (pdfTestFile.open(QIODevice::ReadOnly))
+        {
+            uchar *pBuffer = pdfTestFile.map(0, fileInfo.size());
+            if (pBuffer != Q_NULLPTR)
+            {
+                pdfTestFile.unmap(pBuffer);
+            }
+        }
+        pdfTestFile.close();
+        int sigleTimeCost = timeCost.elapsed();
+        LogUtil::Debug(CODE_LOCATION, "SingleTimeCost: %d Size: %lld", timeCost.elapsed(), fileInfo.size());
+    }
+    totalTimeCost = timeTotalCost.elapsed();
+    LogUtil::Debug(CODE_LOCATION, "TotalTimeCost: %d", totalTimeCost);
 }

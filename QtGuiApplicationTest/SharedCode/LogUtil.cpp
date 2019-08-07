@@ -243,7 +243,7 @@ void LogUtil::DefaultLogHandler(LogLevelType level, CodeLocation *pLocation, std
 
     std::string tempMsg = msg;
     std::string filename;
-    int lineNum = -1;
+    int lineNum = 0;
     if (pLocation != nullptr)
     {
         tempMsg.append("  <-- ").append(pLocation->GetFunctionNameFull());
