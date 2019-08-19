@@ -91,6 +91,12 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
+    QHostAddress loopback("127.0.0.1");
+    if (loopback.isLoopback())
+    {
+        int i = 0;
+    }
+
     QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();// 获取所有网络接口列表
     int nCnt = nets.count();
     QString strMacAddr = "";
