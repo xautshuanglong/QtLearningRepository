@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QTextBlock>
 #include <QBuffer>
+#include <QNetworkInterface>
 
 #include <LogUtil.h>
 
@@ -90,25 +91,48 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
-    QString hospitalLogoStr = QCoreApplication::applicationDirPath() + "/Test1.jpg";
-    QPixmap hospitalLogo(hospitalLogoStr);
-    QByteArray logoPixBytes;
-    QBuffer logoBuffer(&logoPixBytes);
-    logoBuffer.open(QIODevice::WriteOnly);
-    hospitalLogo.save(&logoBuffer, "png");
-
-    QFile file(hospitalLogoStr);
-    if (file.open(QIODevice::ReadOnly))
+    QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();// 获取所有网络接口列表
+    int nCnt = nets.count();
+    QString strMacAddr = "";
+    for (int i = 0; i < nCnt; i++)
     {
-        QByteArray fileBytes = file.readAll();
-        QPixmap pixmap;
-        pixmap.loadFromData(fileBytes);
-        pixmap.save(QCoreApplication::applicationDirPath() + "/Test1_copy.jpg");
-        file.close();
+        QString mac = nets[i].hardwareAddress();
+        QString readableName = nets[i].humanReadableName();
+        QString name = nets[i].name();
+        QNetworkInterface::InterfaceFlags flags = nets[i].flags();
+        LogUtil::Debug(CODE_LOCATION, "%s %s %s 0x%08X", mac.toUtf8().data(), readableName.toUtf8().data(), name.toUtf8().data(), flags);
+
+        if (nets[i].flags().testFlag(QNetworkInterface::IsUp)
+            && nets[i].flags().testFlag(QNetworkInterface::IsRunning)
+            && !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))
+        {
+            strMacAddr = nets[i].hardwareAddress();
+            break;
+        }
     }
 
-
+    int interfaceTest = 0;
     return;
+
+    //QString hospitalLogoStr = QCoreApplication::applicationDirPath() + "/Test1.jpg";
+    //QPixmap hospitalLogo(hospitalLogoStr);
+    //QByteArray logoPixBytes;
+    //QBuffer logoBuffer(&logoPixBytes);
+    //logoBuffer.open(QIODevice::WriteOnly);
+    //hospitalLogo.save(&logoBuffer, "png");
+
+    //QFile file(hospitalLogoStr);
+    //if (file.open(QIODevice::ReadOnly))
+    //{
+    //    QByteArray fileBytes = file.readAll();
+    //    QPixmap pixmap;
+    //    pixmap.loadFromData(fileBytes);
+    //    pixmap.save(QCoreApplication::applicationDirPath() + "/Test1_copy.jpg");
+    //    file.close();
+    //}
+
+
+    //return;
 
     //int c[4] = { 1,2,3,4 };
 
@@ -143,6 +167,10 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     QString timeString("2019-07-06T17:52:02.987");
     QDateTime timeTest = QDateTime::fromString(timeString, "yyyy-MM-dd'T'hh:mm:ss.zzz");
     QString newTimeStr = timeTest.toString("yyyy-MM-ddThh:mm:ss.z");
+
+    QString timeString2("2019-07-08 17:52:02.987");
+    QDateTime timeTest2 = QDateTime::fromString(timeString2, "yyyy-MM-dd hh:mm:ss.zzz");
+    QString newTimeStr2 = timeTest2.toString("yyyy-MM-dd hh:mm:ss.z");
 
     int i = 0;
 }
