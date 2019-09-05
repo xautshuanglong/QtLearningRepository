@@ -1,5 +1,7 @@
 #include "MainTabPageSetting.h"
 
+#include <QApplication>
+#include <QScreen>
 #include <QScrollBar>
 #include <QDateTime>
 #include <QTextBlock>
@@ -91,34 +93,51 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
-    QHostAddress loopback("127.0.0.1");
-    if (loopback.isLoopback())
+    QList<QScreen*> screenList = QApplication::screens();
+    foreach (QScreen *pScreen, screenList)
     {
-        int i = 0;
+        QRect availableGeometry = pScreen->availableGeometry();
+        QSize availableSize = pScreen->availableSize();
+        LogUtil::Debug(CODE_LOCATION, "AvailabeSize: %dx%d    AvaliableGeometry(x,y,width,height): %d,%d %dx%d",
+                       availableSize.width(), availableSize.height(),
+                       availableGeometry.x(), availableGeometry.y(), availableGeometry.width(), availableGeometry.height());
+
+        QRect virtualGeometry = pScreen->availableVirtualGeometry();
+        QSize virtualSize = pScreen->availableVirtualSize();
+        LogUtil::Debug(CODE_LOCATION, "VirtualSize: %dx%d    VirtualGeometry(x,y,width,height): %d,%d %dx%d",
+                       virtualSize.width(), virtualSize.height(),
+                       virtualGeometry.x(), virtualGeometry.y(), virtualGeometry.width(), virtualGeometry.height());
     }
-
-    QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();// 获取所有网络接口列表
-    int nCnt = nets.count();
-    QString strMacAddr = "";
-    for (int i = 0; i < nCnt; i++)
-    {
-        QString mac = nets[i].hardwareAddress();
-        QString readableName = nets[i].humanReadableName();
-        QString name = nets[i].name();
-        QNetworkInterface::InterfaceFlags flags = nets[i].flags();
-        LogUtil::Debug(CODE_LOCATION, "%s %s %s 0x%08X", mac.toUtf8().data(), readableName.toUtf8().data(), name.toUtf8().data(), flags);
-
-        if (nets[i].flags().testFlag(QNetworkInterface::IsUp)
-            && nets[i].flags().testFlag(QNetworkInterface::IsRunning)
-            && !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))
-        {
-            strMacAddr = nets[i].hardwareAddress();
-            break;
-        }
-    }
-
-    int interfaceTest = 0;
     return;
+
+    //QHostAddress loopback("127.0.0.1");
+    //if (loopback.isLoopback())
+    //{
+    //    int i = 0;
+    //}
+
+    //QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();// 获取所有网络接口列表
+    //int nCnt = nets.count();
+    //QString strMacAddr = "";
+    //for (int i = 0; i < nCnt; i++)
+    //{
+    //    QString mac = nets[i].hardwareAddress();
+    //    QString readableName = nets[i].humanReadableName();
+    //    QString name = nets[i].name();
+    //    QNetworkInterface::InterfaceFlags flags = nets[i].flags();
+    //    LogUtil::Debug(CODE_LOCATION, "%s %s %s 0x%08X", mac.toUtf8().data(), readableName.toUtf8().data(), name.toUtf8().data(), flags);
+
+    //    if (nets[i].flags().testFlag(QNetworkInterface::IsUp)
+    //        && nets[i].flags().testFlag(QNetworkInterface::IsRunning)
+    //        && !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))
+    //    {
+    //        strMacAddr = nets[i].hardwareAddress();
+    //        break;
+    //    }
+    //}
+
+    //int interfaceTest = 0;
+    //return;
 
     //QString hospitalLogoStr = QCoreApplication::applicationDirPath() + "/Test1.jpg";
     //QPixmap hospitalLogo(hospitalLogoStr);
