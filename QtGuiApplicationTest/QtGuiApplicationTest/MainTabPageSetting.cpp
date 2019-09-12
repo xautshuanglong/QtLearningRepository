@@ -10,6 +10,8 @@
 
 #include <LogUtil.h>
 
+#include "NotifyWidget.h"
+
 class Base
 {
 public:
@@ -93,6 +95,10 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
+    static int count = 0;
+    NotifyWidget::ShowInformation(QString("Hello world!\n%1").arg(++count));
+    return;
+
     QList<QScreen*> screenList = QApplication::screens();
     foreach (QScreen *pScreen, screenList)
     {

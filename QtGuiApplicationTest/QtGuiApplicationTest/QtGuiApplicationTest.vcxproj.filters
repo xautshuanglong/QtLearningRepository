@@ -199,6 +199,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DicomServerBrowserWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_NotifyWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_NotifyWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="NotifyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -289,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="MessageTest.pb.h">
       <Filter>ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_NotifyWidget.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +407,12 @@
     </CustomBuild>
     <CustomBuild Include="DicomServerBrowserWidget.h">
       <Filter>DICOM</Filter>
+    </CustomBuild>
+    <CustomBuild Include="NotifyWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="NotifyWidget.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
