@@ -260,6 +260,10 @@ void MyMainWindow::ShowAndActivateWindow()
     {
         this->show();
     }
+    if (this->isMinimized())
+    {
+        this->showNormal();
+    }
     if (!this->isActiveWindow())
     {
         this->activateWindow();

@@ -4,6 +4,7 @@
 #include <QString>
 #include <QImage>
 #include <QTime>
+#include <QTimer>
 #include <QDateTime>
 #include <QFileDialog>
 #include <QThread>
@@ -319,6 +320,22 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
     //pWidget->setGraphicsEffect(opacityEffect);
     //pWidget->show();
+
+    QWidget *pWidget = new QWidget();
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(pWidget);
+    opacityEffect->setOpacity(0.5);
+    pWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+    pWidget->setWindowOpacity(0.5);
+    pWidget->resize(QSize(1920, 1080));
+    pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
+    pWidget->setGraphicsEffect(opacityEffect);
+    pWidget->show();
+
+    QTimer::singleShot(3000, [pWidget]()
+    {
+        pWidget->hide();
+        delete pWidget;
+    });
 
     //QDialog *pDlg = new QDialog(this);
     //pDlg->exec();
