@@ -321,10 +321,10 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //pWidget->setGraphicsEffect(opacityEffect);
     //pWidget->show();
 
-    QWidget *pWidget = new QWidget();
+    QWidget *pWidget = new QWidget;
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(pWidget);
     opacityEffect->setOpacity(0.5);
-    pWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+    pWidget->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
     pWidget->setWindowOpacity(0.5);
     pWidget->resize(QSize(1920, 1080));
     pWidget->setStyleSheet("background-color: QColor(0,0,0,128);");
