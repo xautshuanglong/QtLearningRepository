@@ -15,6 +15,8 @@ private slots:
     void SlotListVScrollBarValueChanged(int value);
     void on_btnGeneratePDF_clicked();
     void on_btnParseDocument_clicked();
+    void on_btnChangeItemCount_clicked();
+    void on_btnShowVerticalScrollBar_clicked();
 
 public:
     MainTabPageSetting(QWidget *parent = Q_NULLPTR);

@@ -205,3 +205,76 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
 
     int i = 0;
 }
+
+void MainTabPageSetting::on_btnChangeItemCount_clicked()
+{
+    static int itemCount = 3;
+    if (itemCount == 3)
+    {
+        itemCount = 10;
+    }
+    else
+    {
+        itemCount = 3;
+    }
+
+    QSize listWidgetSize = ui.listWidget->size();
+    QSize listWidgetViewportSize = ui.listWidget->maximumViewportSize();
+    QRect visualItemRect1 = ui.listWidget->visualItemRect(ui.listWidget->item(0));
+    QRect visualItemRect2 = ui.listWidget->visualItemRect(ui.listWidget->item(1));
+
+    QSize itemSizeHit1 = ui.listWidget->item(0)->sizeHint();
+    QSize itemSizeHit2 = ui.listWidget->item(1)->sizeHint();
+
+    ui.listWidget->clear();
+    for (int i = 0; i < itemCount; ++i)
+    {
+        QWidget *pItemWidget = new QWidget(this);
+        if (i % 2 == 0)
+        {
+            pItemWidget->setStyleSheet("background-color: red;");
+        }
+        else
+        {
+            pItemWidget->setStyleSheet("background-color: blue;");
+        }
+        //pItemWidget->setGeometry(0, 0, listWidgetViewportSize.width(), 30);
+        //pItemWidget->resize(listWidgetViewportSize.width(), 30);
+        //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
+        //pItemWidget->resize(ui.listWidget->iconSize());
+        //pItemWidget->setMinimumSize(ui.listWidget->iconSize());
+
+        if (ui.listWidget->verticalScrollBar()->isVisible())
+        {
+            //pItemWidget->setMinimumWidth(listWidgetViewportSize.width() - ui.listWidget->verticalScrollBar()->width());
+        }
+        else
+        {
+            //pItemWidget->resize(listWidgetViewportSize.width(), 30);
+            //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
+            //pItemWidget->resize(ui.listWidget->iconSize());
+            //pItemWidget->setMinimumSize(ui.listWidget->iconSize());
+        }
+
+        QLabel *pItemLabel = new QLabel(pItemWidget);
+        pItemLabel->setText(QString("TestItem Label: %1 abcdefghijklmnopqrstuvwxyz").arg(i));
+        QListWidgetItem *pListItem = new QListWidgetItem(QString("TestItem %1").arg(i), ui.listWidget);
+        ui.listWidget->addItem(pListItem);
+        ui.listWidget->setItemWidget(pListItem, pItemWidget);
+    }
+}
+
+void MainTabPageSetting::on_btnShowVerticalScrollBar_clicked()
+{
+    static bool bShow = true;
+    if (bShow)
+    {
+        bShow = false;
+        ui.listWidget->verticalScrollBar()->setVisible(bShow);
+    }
+    else
+    {
+        bShow = true;
+        ui.listWidget->verticalScrollBar()->setVisible(bShow);
+    }
+}
