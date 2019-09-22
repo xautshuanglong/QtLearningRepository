@@ -230,14 +230,15 @@ void MainTabPageSetting::on_btnChangeItemCount_clicked()
     for (int i = 0; i < itemCount; ++i)
     {
         QWidget *pItemWidget = new QWidget(this);
-        if (i % 2 == 0)
-        {
-            pItemWidget->setStyleSheet("background-color: red;");
-        }
-        else
-        {
-            pItemWidget->setStyleSheet("background-color: blue;");
-        }
+        pItemWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        //if (i % 2 == 0)
+        //{
+        //    pItemWidget->setStyleSheet("background-color: red;");
+        //}
+        //else
+        //{
+        //    pItemWidget->setStyleSheet("background-color: blue;");
+        //}
         //pItemWidget->setGeometry(0, 0, listWidgetViewportSize.width(), 30);
         //pItemWidget->resize(listWidgetViewportSize.width(), 30);
         //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
@@ -247,9 +248,11 @@ void MainTabPageSetting::on_btnChangeItemCount_clicked()
         if (ui.listWidget->verticalScrollBar()->isVisible())
         {
             //pItemWidget->setMinimumWidth(listWidgetViewportSize.width() - ui.listWidget->verticalScrollBar()->width());
+            pItemWidget->resize(200, 30);
         }
         else
         {
+            pItemWidget->resize(100, 30);
             //pItemWidget->resize(listWidgetViewportSize.width(), 30);
             //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
             //pItemWidget->resize(ui.listWidget->iconSize());

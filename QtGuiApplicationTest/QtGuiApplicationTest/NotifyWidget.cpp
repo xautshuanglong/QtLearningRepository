@@ -30,10 +30,10 @@ NotifyWidget::NotifyWidget(QWidget *parent)
     QRect desktopRect = qApp->desktop()->screenGeometry(qApp->activeWindow());
     QPoint showPoint;
     showPoint.rx() = desktopRect.right() - this->width();
-    showPoint.ry() = desktopRect.bottom() - this->height() - 60;
+    showPoint.ry() = desktopRect.bottom() - this->height();
     QPoint hidePoint;
     hidePoint.rx() = desktopRect.right() - this->width();
-    hidePoint.ry() = desktopRect.bottom();
+    hidePoint.ry() = desktopRect.bottom() + 1;
     this->move(hidePoint.x(), hidePoint.y());
     //this->move(desktopRect.right() - this->width(), desktopRect.bottom() - this->height());
 
@@ -108,7 +108,7 @@ void NotifyWidget::on_btnNotifyClose_clicked()
 void NotifyWidget::SlotHideBoxTimeOut()
 {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-    if (m_showFlag && currentTime - m_startTime > 5000)
+    if (m_showFlag && currentTime - m_startTime > 3000)
     {
         m_showFlag = false;
         m_pTimerHide->stop();
