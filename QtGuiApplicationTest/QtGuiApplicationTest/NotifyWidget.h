@@ -16,11 +16,12 @@ class NotifyWidget : public QWidget
 
 public:
     ~NotifyWidget();
+    static void CreateInstance();
+    static void DestroyInstance();
     static void ShowInformation(const QString& information);
 
 private:
     NotifyWidget(QWidget *parent = 0);
-    static void CreateSingleInstance();
     void ShowBox();
     void SetMessage(const QString& message);
 
@@ -37,6 +38,7 @@ private:
     QTimer                             *m_pTimerHide;
     qint64                              m_startTime;
     bool                                m_showFlag;
+    bool                                m_initAnimationFlag;
 };
 
 #endif // NOTIFY_WIDGET_H

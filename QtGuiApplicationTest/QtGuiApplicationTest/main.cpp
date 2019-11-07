@@ -15,6 +15,8 @@
 // Self Headers
 #include <LogUtil.h>
 
+#include "NotifyWidget.h"
+
 int main(int argc, char *argv[])
 {
     MyApplication app(argc, argv);
@@ -25,12 +27,15 @@ int main(int argc, char *argv[])
     LogUtil::Init(LOG_LEVEL_INFO);
 #endif
 
-    MyMainWindow mainWindow;
-    mainWindow.show();
-
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");
 
+    MyMainWindow mainWindow;
+    mainWindow.show();
+    NotifyWidget::CreateInstance();
+
     int appRetValue = app.exec();
+
+    NotifyWidget::DestroyInstance();
     google::protobuf::ShutdownProtobufLibrary();
 
     return appRetValue;

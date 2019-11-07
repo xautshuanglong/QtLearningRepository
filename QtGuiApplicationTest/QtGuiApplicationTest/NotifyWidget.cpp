@@ -15,6 +15,7 @@ NotifyWidget::NotifyWidget(QWidget *parent)
     : QWidget(parent)
     , m_startTime(0)
     , m_showFlag(false)
+    , m_initAnimationFlag(false)
     , m_pAnimationShow(new QPropertyAnimation(this, "geometry", this))
     , m_pAnimationHide(new QPropertyAnimation(this, "geometry", this))
     , m_pTimerHide(new QTimer(this))
@@ -22,28 +23,10 @@ NotifyWidget::NotifyWidget(QWidget *parent)
     ui = new Ui::NotifyWidget();
     ui->setupUi(this);
     this->setWindowFlags(Qt::ToolTip);
-    this->setVisible(true);
+    this->setVisible(false);
     
     m_pTimerHide->setInterval(200);
     this->connect(m_pTimerHide, SIGNAL(timeout()), this, SLOT(SlotHideBoxTimeOut()));
-
-    QRect desktopRect = qApp->desktop()->screenGeometry(qApp->activeWindow());
-    QPoint showPoint;
-    showPoint.rx() = desktopRect.right() - this->width();
-    showPoint.ry() = desktopRect.bottom() - this->height();
-    QPoint hidePoint;
-    hidePoint.rx() = desktopRect.right() - this->width();
-    hidePoint.ry() = desktopRect.bottom() + 1;
-    this->move(hidePoint.x(), hidePoint.y());
-    //this->move(desktopRect.right() - this->width(), desktopRect.bottom() - this->height());
-
-    m_pAnimationShow->setDuration(500);
-    m_pAnimationShow->setStartValue(QRect(hidePoint.x(), hidePoint.y(), this->width(), this->height()));
-    m_pAnimationShow->setEndValue(QRect(showPoint.x(), showPoint.y(), this->width(), this->height()));
-
-    m_pAnimationHide->setDuration(500);
-    m_pAnimationHide->setStartValue(QRect(showPoint.x(), showPoint.y(), this->width(), this->height()));
-    m_pAnimationHide->setEndValue(QRect(hidePoint.x(), hidePoint.y(), this->width(), this->height()));
 }
 
 NotifyWidget::~NotifyWidget()
@@ -52,12 +35,11 @@ NotifyWidget::~NotifyWidget()
     delete ui;
 }
 
-void NotifyWidget::CreateSingleInstance()
+void NotifyWidget::CreateInstance()
 {
 #ifdef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
     if (m_gInstance.testAndSetOrdered(Q_NULLPTR, Q_NULLPTR))
     {
-        QMutexLocker locker(&m_instanceMutex);
         m_gInstance.testAndSetOrdered(Q_NULLPTR, new NotifyWidget());
     }
 #else
@@ -67,6 +49,31 @@ void NotifyWidget::CreateSingleInstance()
         if (m_gInstance == Q_NULLPTR)
         {
             m_gInstance = new NotifyWidget();
+            m_gInstance.load()->show();
+        }
+    }
+#endif
+}
+
+void NotifyWidget::DestroyInstance()
+{
+#ifdef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
+    NotifyWidget *pNotify = m_gInstance.loadAcquire();
+    if (pNotify != Q_NULLPTR)
+    {
+        if (m_gInstance.testAndSetOrdered(pNotify, Q_NULLPTR))
+        {
+            delete pNotify;
+        }
+    }
+#else
+    if (m_gInstance != Q_NULLPTR)
+    {
+        QMutexLocker locker(&m_instanceMutex);
+        if (m_gInstance != Q_NULLPTR)
+        {
+            delete m_gInstance;
+            m_gInstance = Q_NULLPTR;
         }
     }
 #endif
@@ -74,13 +81,34 @@ void NotifyWidget::CreateSingleInstance()
 
 void NotifyWidget::ShowInformation(const QString& information)
 {
-    NotifyWidget::CreateSingleInstance();
     m_gInstance.load()->SetMessage(information);
     m_gInstance.load()->ShowBox();
 }
 
 void NotifyWidget::ShowBox()
 {
+    if (!m_initAnimationFlag)
+    {
+        // 此处为了延迟 UI 坐标计算，在 main 函数中过早创建该类实例，qApp 没有主窗口，无法获取桌面尺寸。
+        m_initAnimationFlag = true;
+        this->setVisible(true);
+        QRect desktopRect = qApp->desktop()->screenGeometry(qApp->activeWindow());
+        QPoint showPoint;
+        showPoint.rx() = desktopRect.right() - this->width();
+        showPoint.ry() = desktopRect.bottom() - this->height();
+        QPoint hidePoint;
+        hidePoint.rx() = desktopRect.right() - this->width();
+        hidePoint.ry() = desktopRect.bottom() + 1;
+        this->move(hidePoint.x(), hidePoint.y());
+
+        m_pAnimationShow->setDuration(500);
+        m_pAnimationShow->setStartValue(QRect(hidePoint.x(), hidePoint.y(), this->width(), this->height()));
+        m_pAnimationShow->setEndValue(QRect(showPoint.x(), showPoint.y(), this->width(), this->height()));
+
+        m_pAnimationHide->setDuration(500);
+        m_pAnimationHide->setStartValue(QRect(showPoint.x(), showPoint.y(), this->width(), this->height()));
+        m_pAnimationHide->setEndValue(QRect(hidePoint.x(), hidePoint.y(), this->width(), this->height()));
+    }
     if (!m_showFlag)
     {
         m_showFlag = true;
