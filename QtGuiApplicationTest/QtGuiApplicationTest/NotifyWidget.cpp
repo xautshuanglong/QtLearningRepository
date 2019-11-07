@@ -14,6 +14,7 @@ QMutex                       NotifyWidget::m_instanceMutex;
 NotifyWidget::NotifyWidget(QWidget *parent)
     : QWidget(parent)
     , m_startTime(0)
+    , m_showDuration(5000)
     , m_showFlag(false)
     , m_initAnimationFlag(false)
     , m_pAnimationShow(new QPropertyAnimation(this, "geometry", this))
@@ -25,7 +26,7 @@ NotifyWidget::NotifyWidget(QWidget *parent)
     this->setWindowFlags(Qt::ToolTip);
     this->setVisible(false);
     
-    m_pTimerHide->setInterval(200);
+    m_pTimerHide->setInterval(100);
     this->connect(m_pTimerHide, SIGNAL(timeout()), this, SLOT(SlotHideBoxTimeOut()));
 }
 
@@ -79,8 +80,9 @@ void NotifyWidget::DestroyInstance()
 #endif
 }
 
-void NotifyWidget::ShowInformation(const QString& information)
+void NotifyWidget::ShowInformation(const QString& information, qint64 duration /* = 5000 */)
 {
+    m_gInstance.load()->SetDuration(duration);
     m_gInstance.load()->SetMessage(information);
     m_gInstance.load()->ShowBox();
 }
@@ -136,7 +138,7 @@ void NotifyWidget::on_btnNotifyClose_clicked()
 void NotifyWidget::SlotHideBoxTimeOut()
 {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-    if (m_showFlag && currentTime - m_startTime > 3000)
+    if (m_showFlag && currentTime - m_startTime > m_showDuration)
     {
         m_showFlag = false;
         m_pTimerHide->stop();

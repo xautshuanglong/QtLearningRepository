@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 {
     MyApplication app(argc, argv);
 
-#ifdef _DEBUG
+#ifdef QT_DEBUG
     LogUtil::Init(LOG_LEVEL_DEBUG);
 #else
     LogUtil::Init(LOG_LEVEL_INFO);

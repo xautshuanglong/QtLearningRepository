@@ -100,7 +100,7 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     return;
 
     QList<QScreen*> screenList = QApplication::screens();
-    foreach (QScreen *pScreen, screenList)
+    for each (QScreen *pScreen in screenList)
     {
         QRect availableGeometry = pScreen->availableGeometry();
         QSize availableSize = pScreen->availableSize();

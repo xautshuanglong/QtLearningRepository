@@ -18,12 +18,13 @@ public:
     ~NotifyWidget();
     static void CreateInstance();
     static void DestroyInstance();
-    static void ShowInformation(const QString& information);
+    static void ShowInformation(const QString& information, qint64 duration = 5000);
 
 private:
     NotifyWidget(QWidget *parent = 0);
     void ShowBox();
     void SetMessage(const QString& message);
+    void SetDuration(qint64 duration){ m_showDuration = duration; }
 
 private slots:
     void on_btnNotifyClose_clicked();
@@ -37,6 +38,7 @@ private:
     QPropertyAnimation                 *m_pAnimationHide;
     QTimer                             *m_pTimerHide;
     qint64                              m_startTime;
+    qint64                              m_showDuration;
     bool                                m_showFlag;
     bool                                m_initAnimationFlag;
 };
