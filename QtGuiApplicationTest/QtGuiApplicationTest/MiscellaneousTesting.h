@@ -19,4 +19,10 @@ private:
 public:
     explicit MiscellaneousTesting(QWidget *parent = Q_NULLPTR);
     ~MiscellaneousTesting();
+
+protected:
+    virtual void closeEvent(QCloseEvent *event) override;
+
+signals:
+    void SignalClosed();
 };

@@ -71,4 +71,5 @@ private slots:
     void on_btnPrint_clicked();
     // Custom Slots
     void SlotDicomWindowClosed();
+    void SlotMiscellaneousWindowClosed();
 };

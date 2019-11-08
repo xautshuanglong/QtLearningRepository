@@ -242,6 +242,15 @@ void MainTabPageFirst::SlotListWidgetItemClicked(QListWidgetItem *pItem)
         }
         mpDcmWidget->show();
     }
+    else if (2 == ui.lwAppList->row(pItem))
+    {
+        if (mpMiscellaneousTest == Q_NULLPTR)
+        {
+            mpMiscellaneousTest = new MiscellaneousTesting();
+            this->connect(mpMiscellaneousTest, SIGNAL(SignalClosed()), SLOT(SlotMiscellaneousWindowClosed()));
+        }
+        mpMiscellaneousTest->show();
+    }
 }
 
 void MainTabPageFirst::SlotListWidgetItemDoubleClicked(QListWidgetItem *pItem)
@@ -618,10 +627,18 @@ void MainTabPageFirst::SlotDicomWindowClosed()
     LogUtil::Debug(CODE_LOCATION, "Will delete DicomWindow pointer ...");
     if (mpDcmWidget)
     {
-        //delete pDcmWidget;
-        //pDcmWidget = Q_NULLPTR;
         mpDcmWidget->deleteLater();
         mpDcmWidget = Q_NULLPTR;
+    }
+}
+
+void MainTabPageFirst::SlotMiscellaneousWindowClosed()
+{
+    LogUtil::Debug(CODE_LOCATION, "Will delete MiscellaneousTesting pointer ...");
+    if (mpMiscellaneousTest)
+    {
+        mpMiscellaneousTest->deleteLater();
+        mpMiscellaneousTest = Q_NULLPTR;
     }
 }
 

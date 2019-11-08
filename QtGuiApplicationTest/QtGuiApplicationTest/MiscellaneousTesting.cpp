@@ -19,3 +19,8 @@ MiscellaneousTesting::~MiscellaneousTesting()
         delete mpFramelessHelper;
     }
 }
+
+void MiscellaneousTesting::closeEvent(QCloseEvent *event)
+{
+    emit SignalClosed();
+}

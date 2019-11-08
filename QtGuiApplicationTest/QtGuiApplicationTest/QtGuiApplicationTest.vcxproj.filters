@@ -208,6 +208,18 @@
     <ClCompile Include="NotifyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DicomWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DicomWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousTesting.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousTesting.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -319,9 +331,6 @@
     <QtMoc Include="FramelessWindowHelper.h">
       <Filter>Core</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousTesting.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="MuPDF.h">
       <Filter>Reports</Filter>
     </QtMoc>
@@ -351,9 +360,6 @@
     </QtMoc>
     <QtMoc Include="DebugPanel.h">
       <Filter>Debugger</Filter>
-    </QtMoc>
-    <QtMoc Include="DicomWindow.h">
-      <Filter>DICOM</Filter>
     </QtMoc>
     <QtMoc Include="WinReportTesting.h">
       <Filter>Reports</Filter>
@@ -413,6 +419,12 @@
     </CustomBuild>
     <CustomBuild Include="NotifyWidget.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DicomWindow.h">
+      <Filter>DICOM</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousTesting.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
