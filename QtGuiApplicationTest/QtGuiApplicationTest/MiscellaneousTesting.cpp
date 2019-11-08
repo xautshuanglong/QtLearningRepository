@@ -1,5 +1,8 @@
 #include "MiscellaneousTesting.h"
 
+#include <QPrinter>
+#include <QPainter>
+
 #include <windows.h>
 #include <process.h>
 
@@ -41,6 +44,26 @@ void MiscellaneousTesting::on_btnWinApiThreadStop_clicked()
     m_threadStopFlag = true;
     ::WaitForSingleObject((HANDLE)m_beginThreadHandle, INFINITE);
     int i = 0;
+}
+
+void MiscellaneousTesting::on_btnQPrinterTest_clicked()
+{
+    QPrinter::Margins margins = { 0.0f, 0.0f, 0.0f, 0.0f };
+    QPrinter imagePrinter(QPrinter::HighResolution);
+    imagePrinter.setPageSize(QPagedPaintDevice::A4);
+    imagePrinter.setMargins(margins);
+    imagePrinter.setPageMargins(0.0, 0.0, 0.0, 0.0, QPrinter::Millimeter);
+    //imagePrinter.setFullPage(true);
+    //imagePrinter.setOutputFormat(QPrinter::PdfFormat);
+    //imagePrinter.setOutputFileName("E:/Temp/FopTest/MGI_ReportTest_image_print.pdf");
+
+    int printerResolution = imagePrinter.resolution();
+
+    QPainter imagePainter;
+    imagePainter.begin(&imagePrinter);
+    QRect painterRect = imagePainter.viewport();
+    imagePainter.drawText(QPoint(10, 10), "Hello world!");
+    imagePainter.end();
 }
 
 void MiscellaneousTesting::run()

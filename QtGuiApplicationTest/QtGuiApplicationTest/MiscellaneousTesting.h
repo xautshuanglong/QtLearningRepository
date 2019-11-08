@@ -36,4 +36,5 @@ signals:
 private slots:
     void on_btnWinApiThreadStart_clicked();
     void on_btnWinApiThreadStop_clicked();
+    void on_btnQPrinterTest_clicked();
 };
