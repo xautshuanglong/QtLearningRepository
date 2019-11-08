@@ -27,6 +27,57 @@
      <string>CentralWidget (0, 0)</string>
     </property>
    </widget>
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>371</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string notr="true">1</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>140</y>
+      <width>351</width>
+      <height>431</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnWinApiThreadStart">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WinAPI_Thread_Start</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnWinApiThreadStop">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WinAPI_Thread_Stop</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
