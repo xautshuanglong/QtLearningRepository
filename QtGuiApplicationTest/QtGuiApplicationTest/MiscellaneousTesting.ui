@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QLineEdit" name="lineEditPosition">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>131</width>
+      <x>10</x>
+      <y>10</y>
+      <width>140</width>
       <height>20</height>
      </rect>
     </property>
@@ -30,9 +30,9 @@
    <widget class="QTreeWidget" name="twMiscellaneousTesting">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>140</y>
-      <width>371</width>
+      <width>251</width>
       <height>431</height>
      </rect>
     </property>
@@ -40,16 +40,13 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="editTriggers">
-     <set>QAbstractItemView::DoubleClicked</set>
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="showDropIndicator" stdset="0">
-     <bool>false</bool>
-    </property>
-    <property name="alternatingRowColors">
      <bool>true</bool>
     </property>
     <property name="indentation">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="rootIsDecorated">
      <bool>true</bool>
@@ -72,6 +69,16 @@
     <column>
      <property name="text">
       <string>测试项目分类</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
      </property>
     </column>
     <item>
@@ -153,9 +160,9 @@
    <widget class="QListWidget" name="listWidget">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>270</x>
       <y>140</y>
-      <width>351</width>
+      <width>471</width>
       <height>221</height>
      </rect>
     </property>
@@ -205,11 +212,14 @@
    <widget class="QTreeWidget" name="treeWidgetExample">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>270</x>
       <y>370</y>
-      <width>351</width>
+      <width>471</width>
       <height>201</height>
      </rect>
+    </property>
+    <property name="itemsExpandable">
+     <bool>true</bool>
     </property>
     <column>
      <property name="text">

@@ -71,8 +71,89 @@ QProgressIndicator {
 
 /*********** 测试项目杂集 ***********/
 QTreeWidget#twMiscellaneousTesting {
-    /* background-color: red; */
+    border: 1px solid rgb(111, 156, 207);
+    indentation: 0px;
 }
+
+QTreeWidget#twMiscellaneousTesting QHeaderView::section:horizontal {
+    border: none;
+    show-decoration-selected: 1;
+    border-bottom: 1px solid rgb(139,185,232);
+}
+
+QTreeWidget#twMiscellaneousTesting::item {
+    background-color: rgb(187,212,238);
+    border-bottom: 1px solid rgb(111, 156, 207);
+}
+
+QTreeWidget#twMiscellaneousTesting::item:has-children {
+    background-color: rgb(120,170,220);
+}
+
+/*
+QTreeWidget
+{
+    border: 2px solid rgb(57,57,57);
+    border-top: none;
+    show-decoration-selected: 1;
+    outline: none;
+}
+
+QTreeWidget::item
+{
+    height: 25px;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+QTreeWidget::item:hover
+{
+    color: white;
+    background: rgb(150,150,150);
+}
+
+QTreeWidget::item:selected
+{
+    background: rgb(80,80,80);
+}
+
+QTreeWidget::branch
+{
+    background: transparent;
+}
+
+QTreeWidget::branch:hover
+{
+    background: rgb(150,150,150);
+}
+
+QTreeWidget::branch:selected
+{
+    background: rgb(80,80,80);
+}
+
+QTreeWidget::branch:closed:has-children
+{
+    image: url(:/image/tree_branch_close.png);
+}
+
+QTreeWidget::branch:closed:selected:has-children
+{
+    image: url(:/image/tree_branch_close_selected.png);
+}
+
+QTreeWidget::branch:open:has-children
+{
+    image: url(:/image/tree_branch_open.png);
+}
+
+QTreeWidget::branch:open:selected:has-children
+{
+    image: url(:/image/tree_branch_open_selected.png);
+}
+*/
+
 
 /**********提示**********/
 QToolTip{
@@ -138,7 +219,7 @@ QMenu::icon {
 /**********状态栏**********/
 QStatusBar {
         background: rgb(187, 212, 238);
-        border: 1px solid rgb(0, 78, 161);
+        border: 1px solid rgb(111, 156, 207);
         border-top: none;
 }
 QStatusBar::item {
@@ -271,7 +352,7 @@ QHeaderView::section:horizontal {
         padding-left: 5px;
 }
 QHeaderView::section:horizontal:first {
-        border: 1px solid rgb(111, 156, 207);
+        border-left: 1px solid rgb(111, 156, 207);
 }
 QHeaderView::section:horizontal:hover {
         color: white;
@@ -409,15 +490,15 @@ QListWidget::item:selected:!active
 /********** 属性控件 **********/
 QTreeWidget
 {
-    border-top: none;
+    border: rgb(111, 156, 207);
     show-decoration-selected: 1;
     outline: none;
+    background-color: rgb(187,212,238);
 }
 
 QTreeWidget::item
 {
-    height: 25px;
-    border: none;
+    height: 28px;
     background: transparent;
     outline: none;
 }
@@ -425,12 +506,12 @@ QTreeWidget::item
 QTreeWidget::item:hover
 {
     color: white;
-    background: rgb(150,150,150);
+    background: rgb(187,212,238);
 }
 
 QTreeWidget::item:selected
 {
-    background: rgb(80,80,80);
+    background: rgb(167,200,220);
 }
 
 QTreeWidget::branch
@@ -440,12 +521,12 @@ QTreeWidget::branch
 
 QTreeWidget::branch:hover
 {
-    background: rgb(150,150,150);
+    background: rgb(187,212,238);
 }
 
 QTreeWidget::branch:selected
 {
-    background: rgb(80,80,80);
+    background: rgb(167,200,220);
 }
 
 /**********滚动条-水平**********/
