@@ -68,6 +68,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Miscellaneous">
+      <UniqueIdentifier>{164de837-644a-4fc6-9899-6e8b6eaca30a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,9 +108,6 @@
     </ClCompile>
     <ClCompile Include="FramelessWindowHelper.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="MiscellaneousTesting.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MessageInfo.pb.cc">
       <Filter>ProtoBuf</Filter>
@@ -220,6 +220,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousTesting.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousTesting.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousBase.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -229,9 +235,6 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MainTabPageDicom.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="MiscellaneousTesting.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MainTabPageSetting.ui">
@@ -263,6 +266,9 @@
     </QtUic>
     <QtUic Include="DebugInfoNetworkWidget.ui">
       <Filter>Debugger</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousTesting.ui">
+      <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_NotifyWidget.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiscellaneousBase.h">
+      <Filter>Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="MiscellaneousDefines.h">
+      <Filter>Miscellaneous</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -424,7 +436,7 @@
       <Filter>DICOM</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousTesting.h">
-      <Filter>Header Files</Filter>
+      <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

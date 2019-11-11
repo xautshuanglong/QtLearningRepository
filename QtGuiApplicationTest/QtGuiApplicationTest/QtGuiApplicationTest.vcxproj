@@ -194,6 +194,7 @@
     <ClCompile Include="MainTabPageSetting.cpp" />
     <ClCompile Include="MessageInfo.pb.cc" />
     <ClCompile Include="MessageTest.pb.cc" />
+    <ClCompile Include="MiscellaneousBase.cpp" />
     <ClCompile Include="MiscellaneousTesting.cpp" />
     <ClCompile Include="MuPDF.cpp" />
     <ClCompile Include="MyApplication.cpp" />
@@ -337,6 +338,8 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)libs\include" "-I$(SolutionDir)QtLibarayCoreTest"</Command>
     </CustomBuild>
+    <ClInclude Include="MiscellaneousBase.h" />
+    <ClInclude Include="MiscellaneousDefines.h" />
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
