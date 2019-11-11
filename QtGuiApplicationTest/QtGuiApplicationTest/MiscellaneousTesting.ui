@@ -27,7 +27,7 @@
      <string>CentralWidget (0, 0)</string>
     </property>
    </widget>
-   <widget class="QTreeWidget" name="treeWidget">
+   <widget class="QTreeWidget" name="twMiscellaneousTesting">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -36,19 +36,42 @@
       <height>431</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::DoubleClicked</set>
+    </property>
+    <property name="showDropIndicator" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="indentation">
+     <number>5</number>
+    </property>
+    <property name="rootIsDecorated">
+     <bool>true</bool>
+    </property>
+    <property name="itemsExpandable">
+     <bool>true</bool>
+    </property>
+    <property name="animated">
+     <bool>false</bool>
+    </property>
+    <property name="allColumnsShowFocus">
+     <bool>true</bool>
+    </property>
+    <property name="headerHidden">
+     <bool>false</bool>
+    </property>
+    <property name="expandsOnDoubleClick">
+     <bool>true</bool>
+    </property>
     <column>
      <property name="text">
-      <string>Col 1</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Col 2</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Col 3</string>
+      <string>测试项目分类</string>
      </property>
     </column>
     <item>
@@ -56,12 +79,6 @@
       <string>Row 1</string>
      </property>
      <item>
-      <property name="text">
-       <string>Row 1-1</string>
-      </property>
-      <property name="text">
-       <string>Row 1-1</string>
-      </property>
       <property name="text">
        <string>Row 1-1</string>
       </property>
@@ -74,9 +91,6 @@
      <item>
       <property name="text">
        <string>Row 1-3</string>
-      </property>
-      <property name="text">
-       <string/>
       </property>
      </item>
     </item>
@@ -142,8 +156,11 @@
       <x>380</x>
       <y>140</y>
       <width>351</width>
-      <height>431</height>
+      <height>221</height>
      </rect>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="btnWinApiThreadStart">
@@ -184,6 +201,64 @@
     <property name="text">
      <string>QPrinter Test</string>
     </property>
+   </widget>
+   <widget class="QTreeWidget" name="treeWidgetExample">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>370</y>
+      <width>351</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>1-1</string>
+     </property>
+     <property name="text">
+      <string>1-2</string>
+     </property>
+     <property name="text">
+      <string>1-3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>2-1</string>
+     </property>
+     <property name="text">
+      <string>2-2</string>
+     </property>
+     <property name="text">
+      <string>2-3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>3-1</string>
+     </property>
+     <property name="text">
+      <string>3-2</string>
+     </property>
+     <property name="text">
+      <string>3-3</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

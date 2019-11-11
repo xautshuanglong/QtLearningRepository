@@ -69,6 +69,11 @@ QProgressIndicator {
         qproperty-color: rgb(2, 65, 132);
 }
 
+/*********** 测试项目杂集 ***********/
+QTreeWidget#twMiscellaneousTesting {
+    /* background-color: red; */
+}
+
 /**********提示**********/
 QToolTip{
         border: 1px solid rgb(111, 156, 207);
@@ -399,6 +404,48 @@ QListWidget::item:selected
 
 QListWidget::item:selected:!active
 {
+}
+
+/********** 属性控件 **********/
+QTreeWidget
+{
+    border-top: none;
+    show-decoration-selected: 1;
+    outline: none;
+}
+
+QTreeWidget::item
+{
+    height: 25px;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+QTreeWidget::item:hover
+{
+    color: white;
+    background: rgb(150,150,150);
+}
+
+QTreeWidget::item:selected
+{
+    background: rgb(80,80,80);
+}
+
+QTreeWidget::branch
+{
+    background: transparent;
+}
+
+QTreeWidget::branch:hover
+{
+    background: rgb(150,150,150);
+}
+
+QTreeWidget::branch:selected
+{
+    background: rgb(80,80,80);
 }
 
 /**********滚动条-水平**********/
