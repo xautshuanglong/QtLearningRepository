@@ -1,10 +1,13 @@
 #include "MiscellaneousTesting.h"
 
 #include <QPrinter>
+#include <QPrinterInfo>
 #include <QPainter>
 
 #include <windows.h>
 #include <process.h>
+
+#include <LogUtil.h>
 
 #include "ui_MiscellaneousTesting.h"
 #include "FramelessWindowHelper.h"
@@ -48,6 +51,15 @@ void MiscellaneousTesting::on_btnWinApiThreadStop_clicked()
 
 void MiscellaneousTesting::on_btnQPrinterTest_clicked()
 {
+    QList<QPrinterInfo> printerList = QPrinterInfo::availablePrinters();
+    for each (QPrinterInfo printerInfo in printerList)
+    {
+        LogUtil::Debug(CODE_LOCATION, "Printer:%s IsRemote:%s IsDefault:%s",
+                       printerInfo.printerName().toUtf8().data(),
+                       printerInfo.isRemote() ? "true" : "false",
+                       printerInfo.isDefault() ? "true" : "false");
+    }
+
     QPrinter::Margins margins = { 0.0f, 0.0f, 0.0f, 0.0f };
     QPrinter imagePrinter(QPrinter::HighResolution);
     imagePrinter.setPageSize(QPagedPaintDevice::A4);
@@ -64,6 +76,11 @@ void MiscellaneousTesting::on_btnQPrinterTest_clicked()
     QRect painterRect = imagePainter.viewport();
     imagePainter.drawText(QPoint(10, 10), "Hello world!");
     imagePainter.end();
+}
+
+void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem *item, int column)
+{
+    int i = 0;
 }
 
 void MiscellaneousTesting::run()

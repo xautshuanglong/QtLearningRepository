@@ -3,6 +3,7 @@
 #include <QMainWindow>
 
 class FramelessWindowHelper;
+class QTreeWidgetItem;
 
 namespace Ui
 {
@@ -37,4 +38,5 @@ private slots:
     void on_btnWinApiThreadStart_clicked();
     void on_btnWinApiThreadStop_clicked();
     void on_btnQPrinterTest_clicked();
+    void on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem *item, int column);
 };

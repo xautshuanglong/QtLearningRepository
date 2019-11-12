@@ -83,77 +83,20 @@ QTreeWidget#twMiscellaneousTesting QHeaderView::section:horizontal {
 
 QTreeWidget#twMiscellaneousTesting::item {
     background-color: rgb(187,212,238);
-    border-bottom: 1px solid rgb(111, 156, 207);
+    border-bottom: 1px solid rgb(111,156,207);
+}
+
+QTreeWidget#twMiscellaneousTesting::item:hover {
+    background-color: rgb(137,216,250);
+}
+
+QTreeWidget#twMiscellaneousTesting::item:selected {
+    background-color: rgb(137,216,250);
 }
 
 QTreeWidget#twMiscellaneousTesting::item:has-children {
     background-color: rgb(120,170,220);
 }
-
-/*
-QTreeWidget
-{
-    border: 2px solid rgb(57,57,57);
-    border-top: none;
-    show-decoration-selected: 1;
-    outline: none;
-}
-
-QTreeWidget::item
-{
-    height: 25px;
-    border: none;
-    background: transparent;
-    outline: none;
-}
-
-QTreeWidget::item:hover
-{
-    color: white;
-    background: rgb(150,150,150);
-}
-
-QTreeWidget::item:selected
-{
-    background: rgb(80,80,80);
-}
-
-QTreeWidget::branch
-{
-    background: transparent;
-}
-
-QTreeWidget::branch:hover
-{
-    background: rgb(150,150,150);
-}
-
-QTreeWidget::branch:selected
-{
-    background: rgb(80,80,80);
-}
-
-QTreeWidget::branch:closed:has-children
-{
-    image: url(:/image/tree_branch_close.png);
-}
-
-QTreeWidget::branch:closed:selected:has-children
-{
-    image: url(:/image/tree_branch_close_selected.png);
-}
-
-QTreeWidget::branch:open:has-children
-{
-    image: url(:/image/tree_branch_open.png);
-}
-
-QTreeWidget::branch:open:selected:has-children
-{
-    image: url(:/image/tree_branch_open_selected.png);
-}
-*/
-
 
 /**********ÌבÊ¾**********/
 QToolTip{
@@ -494,6 +437,7 @@ QTreeWidget
     show-decoration-selected: 1;
     outline: none;
     background-color: rgb(187,212,238);
+    color: rgb(3,65,151);
 }
 
 QTreeWidget::item
@@ -505,7 +449,6 @@ QTreeWidget::item
 
 QTreeWidget::item:hover
 {
-    color: white;
     background: rgb(187,212,238);
 }
 
