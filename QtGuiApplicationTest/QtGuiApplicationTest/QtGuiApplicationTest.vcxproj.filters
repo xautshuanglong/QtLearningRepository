@@ -247,6 +247,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousBeginThreadEx.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousPrinterWidget.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -351,6 +360,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MiscellaneousBeginThreadEx.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterWidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -475,6 +487,12 @@
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousBeginThreadEx.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousPrinterWidget.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousPrinterWidget.ui">
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -13,6 +13,7 @@
 #include "FramelessWindowHelper.h"
 #include "MiscellaneousBeginThreadEx.h"
 #include "MiscellaneousPrinterPDF.h"
+#include "MiscellaneousPrinterWidget.h"
 
 enum TreeItemType
 {
@@ -59,6 +60,7 @@ void MiscellaneousTesting::InitializeUI()
 
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
+    this->AppendTestPage(new MiscellaneousPrinterWidget(this));
 }
 
 void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)
@@ -133,6 +135,21 @@ void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem
         if (mMapTestPageIndex.contains(itemID))
         {
             ui->swTestPageWidget->setCurrentIndex(mMapTestPageIndex[itemID]);
+        }
+    }
+    else if (item->type() == TYPE_GROUP)
+    {
+        QList<QTreeWidgetItem*> testGroupList = mMapTestGroup.values();
+        for each (QTreeWidgetItem* pItem in testGroupList)
+        {
+            if (pItem == item)
+            {
+                pItem->setExpanded(!pItem->isExpanded());
+            }
+            else
+            {
+                pItem->setExpanded(false);
+            }
         }
     }
 }
