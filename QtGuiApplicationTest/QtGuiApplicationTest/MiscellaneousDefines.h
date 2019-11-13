@@ -1,19 +1,24 @@
 #pragma once
 
 #include <QString>
+#include <QMetaType>
 
 enum class MiscellaneousTestGroup
 {
     WinAPI_Thread,
-    QT_Printer
+    QT_Printer,
+    Max_Size
 };
+Q_DECLARE_METATYPE(MiscellaneousTestGroup)
 
 enum class MiscellaneousTestItem
 {
     Thread_beginthreadex,
     Printer_PDF,
-    Printer_Widget
+    Printer_Widget,
+    Max_Size
 };
+Q_DECLARE_METATYPE(MiscellaneousTestItem)
 
 struct MiscellaneousGroupTitle
 {
@@ -21,8 +26,4 @@ struct MiscellaneousGroupTitle
     QString                groupTitle;
 };
 
-struct MiscellaneousItemTitle
-{
-    MiscellaneousTestItem itemID;
-    QString               itemTitle;
-};
+extern MiscellaneousGroupTitle gMiscellaneousGroupInfo[];

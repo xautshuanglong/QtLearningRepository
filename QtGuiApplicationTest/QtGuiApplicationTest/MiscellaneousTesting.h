@@ -1,9 +1,12 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QMap>
+#include "MiscellaneousDefines.h"
 
 class FramelessWindowHelper;
 class QTreeWidgetItem;
+class MiscellaneousBase;
 
 namespace Ui
 {
@@ -14,8 +17,10 @@ class MiscellaneousTesting : public QMainWindow
 {
     Q_OBJECT
 private:
-    Ui::MiscellaneousTesting   *ui;
-    FramelessWindowHelper      *mpFramelessHelper;
+    Ui::MiscellaneousTesting                        *ui;
+    FramelessWindowHelper                           *mpFramelessHelper;
+    QMap<MiscellaneousTestGroup, QTreeWidgetItem*>   mMapTestGroup;
+    QMap<MiscellaneousTestItem, int>                 mMapTestPageIndex;
     // WinAPI 线程测试
     unsigned long long          m_beginThreadHandle; // _beginthreadex 返回值，线程具备，用于 WaitForSingleObject
     bool                        m_threadStopFlag;
@@ -28,8 +33,10 @@ protected:
     virtual void closeEvent(QCloseEvent *event) override;
 
 private:
+    void InitializeUI();
+    void AppendTestPage(MiscellaneousBase* pWidgetPage);
+    void Run();
     static unsigned int _stdcall ThreadProc(void *pArg);
-    void run();
 
 signals:
     void SignalClosed();

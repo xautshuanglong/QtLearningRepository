@@ -157,19 +157,6 @@
      </property>
     </item>
    </widget>
-   <widget class="QListWidget" name="listWidget">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>140</y>
-      <width>471</width>
-      <height>221</height>
-     </rect>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnWinApiThreadStart">
     <property name="geometry">
      <rect>
@@ -209,66 +196,21 @@
      <string>QPrinter Test</string>
     </property>
    </widget>
-   <widget class="QTreeWidget" name="treeWidgetExample">
+   <widget class="QStackedWidget" name="swTestPageWidget">
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>370</y>
-      <width>471</width>
-      <height>201</height>
+      <y>140</y>
+      <width>521</width>
+      <height>431</height>
      </rect>
     </property>
-    <property name="itemsExpandable">
-     <bool>true</bool>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
-    <column>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </column>
-    <item>
-     <property name="text">
-      <string>1-1</string>
-     </property>
-     <property name="text">
-      <string>1-2</string>
-     </property>
-     <property name="text">
-      <string>1-3</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>2-1</string>
-     </property>
-     <property name="text">
-      <string>2-2</string>
-     </property>
-     <property name="text">
-      <string>2-3</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>3-1</string>
-     </property>
-     <property name="text">
-      <string>3-2</string>
-     </property>
-     <property name="text">
-      <string>3-3</string>
-     </property>
-    </item>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

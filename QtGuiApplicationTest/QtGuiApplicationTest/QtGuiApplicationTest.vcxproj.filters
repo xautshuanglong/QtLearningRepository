@@ -226,6 +226,27 @@
     <ClCompile Include="MiscellaneousBase.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousDefines.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterPDF.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterPDF.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousPrinterPDF.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousBeginThreadEx.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousBeginThreadEx.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousBeginThreadEx.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -325,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="MiscellaneousDefines.h">
       <Filter>Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterPDF.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousBeginThreadEx.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,6 +463,18 @@
       <Filter>DICOM</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousTesting.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousPrinterPDF.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousPrinterPDF.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousBeginThreadEx.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousBeginThreadEx.ui">
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>

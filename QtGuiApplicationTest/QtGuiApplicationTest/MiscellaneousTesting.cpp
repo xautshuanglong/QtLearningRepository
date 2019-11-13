@@ -11,6 +11,20 @@
 
 #include "ui_MiscellaneousTesting.h"
 #include "FramelessWindowHelper.h"
+#include "MiscellaneousBeginThreadEx.h"
+#include "MiscellaneousPrinterPDF.h"
+
+enum TreeItemType
+{
+    TYPE_GROUP,  // 组，可展开
+    TYPE_ITEM    // 项，不可展开
+};
+
+enum ItemDataRole
+{
+    USER_DATA_GROPU_ID = Qt::UserRole + 1,
+    USER_DATA_ITEM_ID  = Qt::UserRole + 2,
+};
 
 MiscellaneousTesting::MiscellaneousTesting(QWidget *parent /* = Q_NULLPTR */)
     : QMainWindow(parent)
@@ -21,6 +35,8 @@ MiscellaneousTesting::MiscellaneousTesting(QWidget *parent /* = Q_NULLPTR */)
 {
     ui->setupUi(this);
     mpFramelessHelper = new FramelessWindowHelper(this);
+
+    this->InitializeUI();
 }
 
 MiscellaneousTesting::~MiscellaneousTesting()
@@ -28,6 +44,37 @@ MiscellaneousTesting::~MiscellaneousTesting()
     if (mpFramelessHelper != Q_NULLPTR)
     {
         delete mpFramelessHelper;
+    }
+}
+
+void MiscellaneousTesting::InitializeUI()
+{
+    ui->twMiscellaneousTesting->clear();
+    for (int i=0; i<static_cast<int>(MiscellaneousTestGroup::Max_Size); ++i)
+    {
+        QTreeWidgetItem *pTreeWidgetItem = new QTreeWidgetItem(ui->twMiscellaneousTesting, TYPE_GROUP);
+        pTreeWidgetItem->setText(0, gMiscellaneousGroupInfo[i].groupTitle);
+        mMapTestGroup[gMiscellaneousGroupInfo[i].groupID] = pTreeWidgetItem;
+    }
+
+    this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
+    this->AppendTestPage(new MiscellaneousPrinterPDF(this));
+}
+
+void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)
+{
+    int pageIndex = static_cast<int>(pWidgetPage->GetItemID());
+    int realPageIndex = ui->swTestPageWidget->insertWidget(pageIndex, pWidgetPage);
+    MiscellaneousTestItem itemID = pWidgetPage->GetItemID();
+    mMapTestPageIndex[itemID] = realPageIndex;
+    MiscellaneousTestGroup groupID = pWidgetPage->GetGroupID();
+    if (mMapTestGroup.contains(groupID))
+    {
+        QTreeWidgetItem *pTreeWidgetItem = new QTreeWidgetItem(mMapTestGroup[groupID], TYPE_ITEM);
+        pTreeWidgetItem->setData(0, USER_DATA_GROPU_ID, QVariant::fromValue(groupID));
+        pTreeWidgetItem->setData(0, USER_DATA_ITEM_ID, QVariant::fromValue(itemID));
+        pTreeWidgetItem->setText(0, pWidgetPage->GetTitle());
+        pTreeWidgetItem->setToolTip(0, pWidgetPage->GetTitleTooltip());
     }
 }
 
@@ -80,10 +127,17 @@ void MiscellaneousTesting::on_btnQPrinterTest_clicked()
 
 void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem *item, int column)
 {
-    int i = 0;
+    if (item->type() == TYPE_ITEM)
+    {
+        MiscellaneousTestItem itemID = item->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>();
+        if (mMapTestPageIndex.contains(itemID))
+        {
+            ui->swTestPageWidget->setCurrentIndex(mMapTestPageIndex[itemID]);
+        }
+    }
 }
 
-void MiscellaneousTesting::run()
+void MiscellaneousTesting::Run()
 {
     int count = 0;
     while (count < 1000)
@@ -101,6 +155,6 @@ void MiscellaneousTesting::run()
 unsigned int _stdcall MiscellaneousTesting::ThreadProc(void *pArg)
 {
     MiscellaneousTesting *pMiscellaneous = (MiscellaneousTesting*)pArg;
-    pMiscellaneous->run();
+    pMiscellaneous->Run();
     return 0;
 }
