@@ -28,7 +28,7 @@ private slots:
 private:
     Ui::MiscellaneousBeginThreadEx ui;
     unsigned long long             m_beginThreadHandle; // _beginthreadex 返回值，线程具备，用于 WaitForSingleObject
-    bool                           m_threadStopFlag;
+    volatile bool                  m_threadStopFlag;
 };
 
 #endif // MISCELLANEOUS_WINAPI_MULTI_THREAD_H

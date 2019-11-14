@@ -5,12 +5,21 @@
 
 MiscellaneousBeginThreadEx::MiscellaneousBeginThreadEx(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
+    , m_threadStopFlag(true)
 {
     ui.setupUi(this);
 }
 
 MiscellaneousBeginThreadEx::~MiscellaneousBeginThreadEx()
 {
+    if (m_threadStopFlag)
+    {
+        int i = 0;
+    }
+    else
+    {
+        int i = 0;
+    }
 }
 
 QString MiscellaneousBeginThreadEx::GetTitle()
@@ -61,7 +70,7 @@ void MiscellaneousBeginThreadEx::Run()
             break;
         }
     }
-    int i = 0;
+    m_threadStopFlag = true;
 }
 
 unsigned int _stdcall MiscellaneousBeginThreadEx::ThreadProc(void *pArg)
