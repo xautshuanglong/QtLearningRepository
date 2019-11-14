@@ -17,8 +17,14 @@
 
 #include "NotifyWidget.h"
 
+void ExitCallback()
+{
+    int i = 0;
+}
+
 int main(int argc, char *argv[])
 {
+    atexit(ExitCallback);
     MyApplication app(argc, argv);
 
 #ifdef QT_DEBUG
