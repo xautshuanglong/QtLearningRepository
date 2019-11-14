@@ -21,9 +21,6 @@ private:
     FramelessWindowHelper                           *mpFramelessHelper;
     QMap<MiscellaneousTestGroup, QTreeWidgetItem*>   mMapTestGroup;
     QMap<MiscellaneousTestItem, int>                 mMapTestPageIndex;
-    // WinAPI 线程测试
-    unsigned long long          m_beginThreadHandle; // _beginthreadex 返回值，线程具备，用于 WaitForSingleObject
-    bool                        m_threadStopFlag;
 
 public:
     explicit MiscellaneousTesting(QWidget *parent = Q_NULLPTR);
@@ -35,15 +32,10 @@ protected:
 private:
     void InitializeUI();
     void AppendTestPage(MiscellaneousBase* pWidgetPage);
-    void Run();
-    static unsigned int _stdcall ThreadProc(void *pArg);
 
 signals:
     void SignalClosed();
 
 private slots:
-    void on_btnWinApiThreadStart_clicked();
-    void on_btnWinApiThreadStop_clicked();
-    void on_btnQPrinterTest_clicked();
     void on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem *item, int column);
 };

@@ -19,6 +19,9 @@ public:
 
 private:
     Ui::MiscellaneousPrinterPDF ui;
+
+private slots:
+    void on_btnQPrinterTest_clicked();
 };
 
 #endif // MISCELLANEOUS_QT_PRINTER_H
