@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MiscellaneousBeginThreadEx</class>
- <widget class="MiscellaneousBase" name="MiscellaneousBeginThreadEx">
+ <class>MiscellaneousWxSqlite3</class>
+ <widget class="MiscellaneousBase" name="MiscellaneousWxSqlite3">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,10 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MiscellaneousBeginThreadEx</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
+   <string>MiscellaneousWxSqlite3</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -47,7 +44,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Windows API Thread Testing</string>
+        <string>Secure Sqlite Testing</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -65,7 +62,7 @@
       <number>9</number>
      </property>
      <item row="0" column="0">
-      <widget class="QPushButton" name="btnWinApiThreadStart">
+      <widget class="QPushButton" name="btnUserAuthorization">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -79,18 +76,12 @@
         </size>
        </property>
        <property name="text">
-        <string>WinAPI_Thread_Start</string>
+        <string>Authorization</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QPushButton" name="btnWinApiThreadStop">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QPushButton" name="btnEncryptPassword">
        <property name="minimumSize">
         <size>
          <width>140</width>
@@ -98,7 +89,7 @@
         </size>
        </property>
        <property name="text">
-        <string>WinAPI_Thread_Stop</string>
+        <string>Encrypt Password</string>
        </property>
       </widget>
      </item>

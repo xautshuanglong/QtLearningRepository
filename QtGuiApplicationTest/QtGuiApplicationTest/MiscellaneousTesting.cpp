@@ -7,6 +7,7 @@
 #include "MiscellaneousBeginThreadEx.h"
 #include "MiscellaneousPrinterPDF.h"
 #include "MiscellaneousPrinterWidget.h"
+#include "MiscellaneousWxSqlite3.h"
 
 enum TreeItemType
 {
@@ -52,6 +53,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
+    this->AppendTestPage(new MiscellaneousWxSqlite3(this));
 }
 
 void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)

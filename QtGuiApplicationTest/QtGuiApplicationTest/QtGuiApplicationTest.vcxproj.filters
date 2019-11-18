@@ -256,6 +256,15 @@
     <ClCompile Include="MiscellaneousPrinterWidget.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousWxSqlite3.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousWxSqlite3.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousWxSqlite3.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -363,6 +372,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousWxSqlite3.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -493,6 +505,12 @@
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousPrinterWidget.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousWxSqlite3.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousWxSqlite3.ui">
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>
