@@ -44,7 +44,7 @@ MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 {
     wxString dbFileName(wxS("E:\\VS2015\\wxWidgets\\wxsqlite3-4.4.8\\samples\\NavicatSqlite3.db"));
-    wxString dbKey(wxS("test"));
+    wxString dbKey(wxS("test1"));
     wxSQLite3CipherAes128 sqlCipher;
     sqlCipher.InitializeFromGlobalDefault();
 
