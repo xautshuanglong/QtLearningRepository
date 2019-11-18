@@ -44,7 +44,7 @@ MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 {
     wxString dbFileName(wxS("E:\\VS2015\\wxWidgets\\wxsqlite3-4.4.8\\samples\\NavicatSqlite3.db"));
-    wxString dbKey(wxS("test1"));
+    wxString dbKey(wxS("test"));
     wxSQLite3CipherAes128 sqlCipher;
     sqlCipher.InitializeFromGlobalDefault();
 
@@ -55,6 +55,18 @@ void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
         wxString keySalt = db.GetKeySalt();
         //cout << "Cipher salt: " << (const char*)(keySalt.mb_str()) << endl;
         LogUtil::Debug(CODE_LOCATION, "Cipher salt: %s", keySalt.mb_str());
+
+        if (db.IsOpen())
+        {
+            int i = 0;
+        }
+        if (db.IsEncrypted())
+        {
+            int i = 0;
+        }
+
+        LogUtil::Debug(CODE_LOCATION, "Version: %s", db.GetVersion().mb_str());
+
         int numRows = db.ExecuteScalar("SELECT COUNT(*) FROM t1");
         LogUtil::Debug(CODE_LOCATION, "Total number of rows = %d", numRows);
         LogUtil::Debug(CODE_LOCATION, "Distinct tuples:");
