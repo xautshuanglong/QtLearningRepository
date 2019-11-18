@@ -170,6 +170,7 @@ $RECYCLE.BIN/
 **/libs/dcmtk-zlib-1.2.11/**
 **/libs/dcmtk-libtiff-4.0.9/**
 **/libs/dcmtk-openssl-1.1.0g/**
+**/libs/wxsqlite3/**
 
 # QT generated files
 **/GeneratedFiles/**

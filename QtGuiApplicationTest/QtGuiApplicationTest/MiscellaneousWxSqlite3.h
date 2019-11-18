@@ -17,6 +17,9 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private slots:
+    void on_btnEncryptPassword_clicked();
+    void on_btnUserAuthorization_clicked();
 
 private:
     Ui::MiscellaneousWxSqlite3 ui;

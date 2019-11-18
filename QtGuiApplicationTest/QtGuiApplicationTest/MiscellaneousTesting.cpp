@@ -54,6 +54,13 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
+
+    MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
+    MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();
+    if (mMapTestGroup.contains(groupID))
+    {
+        mMapTestGroup[groupID]->setExpanded(true);
+    }
 }
 
 void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)
