@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtGuiApplicationTest", "QtGuiApplicationTest\QtGuiApplicationTest.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
@@ -314,7 +314,6 @@ Global
 		SharedCode\SharedCode.vcxitems*{37b56bb3-5e9a-4170-9ef3-4c7433d10f76}*SharedItemsImports = 4
 		SharedCode\SharedCode.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
 		SharedCode\SharedCode.vcxitems*{b12702ad-abfb-343a-a199-8e24837244a3}*SharedItemsImports = 4
-		SharedCode\SharedCode.vcxitems*{dbe3666b-5bab-4d98-84e6-af03523b008c}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
