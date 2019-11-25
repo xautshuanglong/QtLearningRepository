@@ -265,6 +265,12 @@
     <ClCompile Include="MiscellaneousWxSqlite3.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MyMainWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MyMainWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -379,9 +385,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MyMainWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="MainTabPageDicom.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -512,6 +515,9 @@
     </CustomBuild>
     <CustomBuild Include="MiscellaneousWxSqlite3.ui">
       <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MyMainWindow.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

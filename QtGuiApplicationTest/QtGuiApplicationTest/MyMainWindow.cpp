@@ -11,6 +11,7 @@
 #include <QMetaEnum>
 #include <QAction>
 #include <QKeySequence>
+#include <QTimer>
 
 //#ifdef Q_OS_WIN
 //#include <qt_windows.h>
@@ -31,6 +32,7 @@
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , mpFramelessWindow(Q_NULLPTR)
+    , mbTrayIconVisible(true)
 {
     ui.setupUi(this);
 
@@ -38,6 +40,10 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     //Qt::WindowFlags oldFlags = windowFlags();
     //setWindowFlags(oldFlags | Qt::FramelessWindowHint);
     mpFramelessWindow = new FramelessWindowHelper(this);
+
+    mpTrayIconFlashTimer = new QTimer(this);
+    mpTrayIconFlashTimer->setInterval(500);
+    this->connect(mpTrayIconFlashTimer, SIGNAL(timeout()), SLOT(on_trayIconFlashTimeout()));
 
     // µ÷ÊÔÃæ°å
     DebugPanel::GetInstance()->ListenKeyboard(this);
@@ -60,10 +66,13 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     // ÍÐÅÌÓÒ¼ü²Ëµ¥À¸
     mpSystemTrayMenu = new QMenu(this);
     mpTrayActionShow = new QAction(QStringLiteral("ÏÔÊ¾"), this);
+    mpTrayActionHide = new QAction(QStringLiteral("Òþ²Ø"), this);
     mpTrayActionExit = new QAction(QStringLiteral("ÍË³ö"), this);
     mpSystemTrayMenu->addAction(mpTrayActionShow);
+    mpSystemTrayMenu->addAction(mpTrayActionHide);
     mpSystemTrayMenu->addAction(mpTrayActionExit);
     this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
+    this->connect(mpTrayActionHide, SIGNAL(triggered(bool)), SLOT(on_trayActionHide_triggered(bool)));
     this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(on_trayActionExit_triggered(bool)));
 
     // ÏµÍ³ÍÐÅÌ
@@ -270,6 +279,34 @@ void MyMainWindow::ShowAndActivateWindow()
     }
 }
 
+void MyMainWindow::EnableTrayIconFlash(bool flashFlag)
+{
+    if (flashFlag)
+    {
+        mpTrayIconFlashTimer->start();
+    }
+    else
+    {
+        mpTrayIconFlashTimer->stop();
+        mbTrayIconVisible = true;
+        mpSystemTray->setIcon(QIcon(":/AppImages/Resources/images/app.ico"));
+    }
+}
+
+void MyMainWindow::on_trayIconFlashTimeout()
+{
+    if (mbTrayIconVisible)
+    {
+        mbTrayIconVisible = false;
+        mpSystemTray->setIcon(QIcon());
+    }
+    else
+    {
+        mbTrayIconVisible = true;
+        mpSystemTray->setIcon(QIcon(":/AppImages/Resources/images/app.ico"));
+    }
+}
+
 void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
@@ -298,6 +335,11 @@ void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason 
 void MyMainWindow::on_trayActionShow_triggered(bool checked)
 {
     this->ShowAndActivateWindow();
+}
+
+void MyMainWindow::on_trayActionHide_triggered(bool checked)
+{
+    this->hide();
 }
 
 void MyMainWindow::on_trayActionExit_triggered(bool checked)

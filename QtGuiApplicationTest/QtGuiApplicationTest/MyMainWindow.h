@@ -34,7 +34,10 @@ private:
     QSystemTrayIcon                 *mpSystemTray;
     QMenu                           *mpSystemTrayMenu;
     QAction                         *mpTrayActionShow;
+    QAction                         *mpTrayActionHide;
     QAction                         *mpTrayActionExit;
+    QTimer                          *mpTrayIconFlashTimer;
+    bool                             mbTrayIconVisible;
 
 protected:
     virtual bool event(QEvent *event) override;
@@ -62,9 +65,12 @@ protected:
 
 private:
     void ShowAndActivateWindow();
+    void EnableTrayIconFlash(bool flashFlag);
 
 private slots:
+    void on_trayIconFlashTimeout();
     void on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void on_trayActionShow_triggered(bool checked);
+    void on_trayActionHide_triggered(bool checked);
     void on_trayActionExit_triggered(bool checked);
 };
