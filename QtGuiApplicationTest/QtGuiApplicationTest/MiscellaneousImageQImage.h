@@ -18,6 +18,14 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private slots:
+    void on_btnImgNoMemory_clicked();
+    void on_btnImgNoMemoryCopy_clicked();
+    void on_btnImgNoMemoryAssign_clicked();
+    void on_btnImgNewMemory_clicked();
+    void on_btnImgNewMemoryCopy_clicked();
+    void on_btnImgNewMemoryAssign_clicked();
+
 private:
     Ui::MiscellaneousImageQImage *ui;
 };
