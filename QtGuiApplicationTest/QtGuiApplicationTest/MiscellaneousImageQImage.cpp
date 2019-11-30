@@ -21,7 +21,7 @@ MiscellaneousImageQImage::~MiscellaneousImageQImage()
 
 void MiscellaneousImageQImage::on_btnImgNoMemory_clicked()
 {
-    QImage image(100, 80, QImage::Format_RGB888);
+    QImage image(100, 100, QImage::Format_RGB888);
     int imgWidth = image.width();
     int imgHeight = image.height();
     for (int row=0; row<imgHeight; ++row)
@@ -31,6 +31,10 @@ void MiscellaneousImageQImage::on_btnImgNoMemory_clicked()
             if (row == col)
             {
                 image.setPixel(row, col, qRgb(255, 0, 0));
+            }
+            if (row + col == imgWidth)
+            {
+                image.setPixel(row, col, qRgb(0, 0, 255));
             }
         }
     }
