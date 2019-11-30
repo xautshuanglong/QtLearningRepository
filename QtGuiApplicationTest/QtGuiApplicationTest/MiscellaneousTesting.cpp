@@ -4,9 +4,16 @@
 
 #include "ui_MiscellaneousTesting.h"
 #include "FramelessWindowHelper.h"
+#include "MiscellaneousBase.h"
+
+// WinAPI Test
 #include "MiscellaneousBeginThreadEx.h"
+// QT Test
 #include "MiscellaneousPrinterPDF.h"
 #include "MiscellaneousPrinterWidget.h"
+#include "MiscellaneousImageQImage.h"
+#include "MiscellaneousImageQPixmap.h"
+// Database
 #include "MiscellaneousWxSqlite3.h"
 
 enum TreeItemType
@@ -53,6 +60,8 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
+    this->AppendTestPage(new MiscellaneousImageQImage(this));
+    this->AppendTestPage(new MiscellaneousImageQPixmap(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());

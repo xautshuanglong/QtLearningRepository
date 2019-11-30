@@ -34,12 +34,12 @@ QString MiscellaneousBeginThreadEx::GetTitleTooltip()
 
 MiscellaneousTestGroup MiscellaneousBeginThreadEx::GetGroupID()
 {
-    return MiscellaneousTestGroup::WinAPI_Thread;
+    return MiscellaneousTestGroup::WinAPI_Test;
 }
 
 MiscellaneousTestItem MiscellaneousBeginThreadEx::GetItemID()
 {
-    return MiscellaneousTestItem::Thread_beginthreadex;
+    return MiscellaneousTestItem::WinAPI_Thread_beginthreadex;
 }
 
 void MiscellaneousBeginThreadEx::on_btnWinApiThreadStart_clicked()

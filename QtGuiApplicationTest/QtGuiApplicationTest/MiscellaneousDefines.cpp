@@ -4,7 +4,7 @@
 
 MiscellaneousGroupTitle gMiscellaneousGroupInfo[] =
 {
-    { MiscellaneousTestGroup::WinAPI_Thread, QObject::tr("WinAPI Thread") },
-    { MiscellaneousTestGroup::QT_Printer, QObject::tr("QT Printer") },
+    { MiscellaneousTestGroup::WinAPI_Test, QObject::tr("WinAPI Testing") },
+    { MiscellaneousTestGroup::QT_Test, QObject::tr("QT Testing") },
     { MiscellaneousTestGroup::Database, QObject::tr("Database") }
 };

@@ -271,6 +271,24 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MyMainWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQImage.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQImage.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQPixmap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQPixmap.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousImageQImage.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousImageQPixmap.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -381,6 +399,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MiscellaneousWxSqlite3.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQImage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQPixmap.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -518,6 +542,18 @@
     </CustomBuild>
     <CustomBuild Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousImageQImage.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousImageQPixmap.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousImageQImage.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousImageQPixmap.h">
+      <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

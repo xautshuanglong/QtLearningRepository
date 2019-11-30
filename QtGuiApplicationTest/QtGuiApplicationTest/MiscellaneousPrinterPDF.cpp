@@ -29,12 +29,12 @@ QString MiscellaneousPrinterPDF::GetTitleTooltip()
 
 MiscellaneousTestGroup MiscellaneousPrinterPDF::GetGroupID()
 {
-    return MiscellaneousTestGroup::QT_Printer;
+    return MiscellaneousTestGroup::QT_Test;
 }
 
 MiscellaneousTestItem MiscellaneousPrinterPDF::GetItemID()
 {
-    return MiscellaneousTestItem::Printer_PDF;
+    return MiscellaneousTestItem::QT_Printer_PDF;
 }
 
 void MiscellaneousPrinterPDF::on_btnQPrinterTest_clicked()

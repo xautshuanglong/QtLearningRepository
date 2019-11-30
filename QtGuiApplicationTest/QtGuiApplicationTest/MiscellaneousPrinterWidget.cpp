@@ -22,10 +22,10 @@ QString MiscellaneousPrinterWidget::GetTitleTooltip()
 
 MiscellaneousTestGroup MiscellaneousPrinterWidget::GetGroupID()
 {
-    return MiscellaneousTestGroup::QT_Printer;
+    return MiscellaneousTestGroup::QT_Test;
 }
 
 MiscellaneousTestItem MiscellaneousPrinterWidget::GetItemID()
 {
-    return MiscellaneousTestItem::Printer_Widget;
+    return MiscellaneousTestItem::QT_Printer_Widget;
 }

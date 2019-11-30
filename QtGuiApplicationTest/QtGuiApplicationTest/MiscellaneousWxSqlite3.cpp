@@ -38,7 +38,7 @@ MiscellaneousTestGroup MiscellaneousWxSqlite3::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 {
-    return MiscellaneousTestItem::Sqlite_wxSqlite3;
+    return MiscellaneousTestItem::Database_Sqlite_wxSqlite3;
 }
 
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
