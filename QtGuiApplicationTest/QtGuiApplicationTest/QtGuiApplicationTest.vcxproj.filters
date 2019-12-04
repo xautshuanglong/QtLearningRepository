@@ -289,6 +289,15 @@
     <ClCompile Include="MiscellaneousImageQPixmap.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousStdSharedPointer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousStdSharedPointer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousStdSharedPointer.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -405,6 +414,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQPixmap.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MiscellaneousStdSharedPointer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -553,6 +565,12 @@
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousImageQPixmap.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousStdSharedPointer.h">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousStdSharedPointer.ui">
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>
