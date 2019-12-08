@@ -18,7 +18,6 @@ MiscellaneousImageQImage::~MiscellaneousImageQImage()
     delete ui;
 }
 
-
 void MiscellaneousImageQImage::on_btnImgNoMemory_clicked()
 {
     QImage image(100, 100, QImage::Format_RGB888);
@@ -99,4 +98,3 @@ MiscellaneousTestItem MiscellaneousImageQImage::GetItemID()
 {
     return MiscellaneousTestItem::QT_Image_QImage;
 }
-
