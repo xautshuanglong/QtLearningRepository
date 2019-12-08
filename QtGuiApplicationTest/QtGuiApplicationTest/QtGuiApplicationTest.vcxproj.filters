@@ -298,6 +298,9 @@
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousSignalSlot.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -340,6 +343,9 @@
       <Filter>Debugger</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousTesting.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousSignalSlot.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -471,6 +477,9 @@
     </QtMoc>
     <QtMoc Include="DebugInfoNetworkWidget.h">
       <Filter>Debugger</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousSignalSlot.h">
+      <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

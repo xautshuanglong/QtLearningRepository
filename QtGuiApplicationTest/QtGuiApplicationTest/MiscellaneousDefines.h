@@ -18,6 +18,7 @@ enum class MiscellaneousTestItem
 {
     WinAPI_Thread_beginthreadex,      // Windows API 线程操作
     StdCpp_Shared_Pointer,            // 标准库 共享指针
+    QT_Signal_Slot,                   // QT 信号槽测试：传递自定义类型
     QT_Printer_PDF,                   // QT 输出 PDF
     QT_Printer_Widget,                // QT 将 QWidget 输出到 PDF
     QT_Image_QImage,                  // QT 图像操作 QImage

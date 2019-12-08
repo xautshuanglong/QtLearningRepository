@@ -11,6 +11,7 @@
 // QT Test
 #include "MiscellaneousPrinterPDF.h"
 #include "MiscellaneousStdSharedPointer.h"
+#include "MiscellaneousSignalSlot.h"
 #include "MiscellaneousPrinterWidget.h"
 #include "MiscellaneousImageQImage.h"
 #include "MiscellaneousImageQPixmap.h"
@@ -60,6 +61,7 @@ void MiscellaneousTesting::InitializeUI()
 
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
+    this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
     this->AppendTestPage(new MiscellaneousImageQImage(this));

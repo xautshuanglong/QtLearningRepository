@@ -51,7 +51,7 @@ void MiscellaneousImageQImage::on_btnImgNoMemoryCopy_clicked()
         {
             if (row == col)
             {
-                image.setColor(1, qRgb(255, 0, 0));
+                image.setPixel(row, col, qRgb(255, 0, 0));
             }
         }
     }
