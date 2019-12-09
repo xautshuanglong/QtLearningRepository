@@ -10,7 +10,6 @@ class SelfDefinedClass
 public:
     explicit SelfDefinedClass()
         : m_intValue(0)
-        , m_strName("")
     {}
     ~SelfDefinedClass(){}
 
@@ -26,6 +25,8 @@ private:
     int      m_intValue;
     QString  m_strName;
 };
+Q_DECLARE_METATYPE(SelfDefinedClass)
+Q_DECLARE_METATYPE(QSharedPointer<SelfDefinedClass>)
 
 class ExtendQObject : public QObject
 {
@@ -42,6 +43,7 @@ public:
 private:
     int m_intValue;
 };
+//Q_DECLARE_METATYPE(QSharedPointer<ExtendQObject>)  // 此处声明元类型，导致释放崩溃，同一个 QObject 不能属于两个线程
 
 class SignalTestWorker : public QObject
 {
@@ -54,6 +56,10 @@ public:
     ~SignalTestWorker() {}
 
 private slots :
+    // primitive data type testing
+    void SlotSubThreadVoid();
+    void SlotSubThreadInteger(int testInt);
+    void SlotSubThreadIntegerSharedPointer(QSharedPointer<int> pTestInt);
     // QObject Testing
     void SlotSubThreadQbject(const QObject& testObj);
     void SlotSubThreadQbjectPointer(QObject* pTestObj);
@@ -85,6 +91,7 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
+    // primitive data type testing
     void SlotMainThreadVoid();
     void SlotMainThreadInteger(int testInt);
     void SlotMainThreadIntegerSharedPointer(QSharedPointer<int> pTestInt);
@@ -107,6 +114,7 @@ private slots:
     void on_btnEmitSignalSubThreadCustomClass_clicked();
 
 signals:
+    // primitive data type testing
     void SignalMainThreadVoid();
     void SignalMainThreadInteger(int testInt);
     void SignalMainThreadIntegerSharedPointer(QSharedPointer<int> pTestInt);
@@ -122,6 +130,10 @@ signals:
     void SignalMainThreadSelfDefinedClass(const SelfDefinedClass& testObj);
     void SignalMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
     void SignalMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
+    // primitive data type testing
+    void SignalSubThreadVoid();
+    void SignalSubThreadInteger(int testInt);
+    void SignalSubThreadIntegerSharedPointer(QSharedPointer<int> pTestInt);
     // QObject Testing
     void SignalSubThreadQbject(const QObject& testObj);
     void SignalSubThreadQbjectPointer(QObject* pTestObj);
@@ -137,6 +149,7 @@ signals:
 
 private:
     Ui::MiscellaneousSignalSlot *ui;
+    QThread                     *pWorkerThread;
     QObject                     *pObjTestSignals;
     SelfDefinedClass            *pSelfDefinedClass;
 };

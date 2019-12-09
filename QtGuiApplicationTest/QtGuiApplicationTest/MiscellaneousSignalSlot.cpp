@@ -2,13 +2,19 @@
 #include "ui_MiscellaneousSignalSlot.h"
 
 #include <QThread>
+#include <QMetaType>
 
 MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousSignalSlot())
     , pObjTestSignals(new QObject(this))
+    , pWorkerThread(new QThread(this))
 {
     ui->setupUi(this);
+
+    int metaID = qRegisterMetaType<SelfDefinedClass>();
+    metaID = qRegisterMetaType<QSharedPointer<SelfDefinedClass>>();
+    //metaID = qRegisterMetaType<QSharedPointer<ExtendQObject>>(); // 此处声明元类型，导致释放崩溃，同一个 QObject 不能属于两个线程
 
     pObjTestSignals->setObjectName("test_signal_qobject_pointer");
     pObjTestSignals->setProperty("INT", 110);
@@ -19,6 +25,7 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     pSelfDefinedClass->SetName("test_signal_custom_class_pointer");
 
     bool resultFlag = false;
+    // primitive data type testing
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadVoid()), this, SLOT(SlotMainThreadVoid()));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadInteger(int)), this, SLOT(SlotMainThreadInteger(int)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadIntegerSharedPointer(QSharedPointer<int>)), this, SLOT(SlotMainThreadIntegerSharedPointer(QSharedPointer<int>)));
@@ -37,13 +44,16 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
 
     // 子线程信号槽测试（队列化连接方式）
     SignalTestWorker *pSignalWorker = new SignalTestWorker();
-    QThread *pWorkerThread = new QThread(this);
     pWorkerThread->setObjectName("TestSignalThread");
     QObject *parentBefore = pSignalWorker->parent();
     QString treadBefore = pSignalWorker->thread()->objectName();
     pSignalWorker->moveToThread(pWorkerThread);
     QObject *parentAfter = pSignalWorker->parent();
     QString threadAfter = pSignalWorker->thread()->objectName();
+    // primitive data type testing
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadVoid()), pSignalWorker, SLOT(SlotSubThreadVoid()));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadInteger(int)), pSignalWorker, SLOT(SlotSubThreadInteger(int)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadIntegerSharedPointer(QSharedPointer<int>)), pSignalWorker, SLOT(SlotSubThreadIntegerSharedPointer(QSharedPointer<int>)));
     // QObject Testing
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbject(const QObject&)), pSignalWorker, SLOT(SlotSubThreadQbject(const QObject&)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbjectPointer(QObject*)), pSignalWorker, SLOT(SlotSubThreadQbjectPointer(QObject*)));
@@ -56,15 +66,24 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClass(const SelfDefinedClass&)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClass(const SelfDefinedClass&)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClassPointer(SelfDefinedClass*)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClassPointer(SelfDefinedClass*)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)));
+    pWorkerThread->start();
 }
 
 MiscellaneousSignalSlot::~MiscellaneousSignalSlot()
 {
     delete ui;
 
+    if (pWorkerThread)
+    {
+        pWorkerThread->quit();
+        pWorkerThread->wait(5000);
+        delete pWorkerThread;
+        pWorkerThread = Q_NULLPTR;
+    }
     if (pSelfDefinedClass)
     {
         delete pSelfDefinedClass;
+        pSelfDefinedClass = Q_NULLPTR;
     }
 }
 
@@ -155,9 +174,10 @@ void MiscellaneousSignalSlot::SlotMainThreadSelfDefinedClassSharedPointer(QShare
 
 void MiscellaneousSignalSlot::on_btnEmitSignalMainThread_clicked()
 {
+    // primitive data type testing
     emit SignalMainThreadVoid();
     emit SignalMainThreadInteger(110);
-    emit SignalMainThreadIntegerSharedPointer(QSharedPointer<int>(new int(119)));
+    emit SignalMainThreadIntegerSharedPointer(QSharedPointer<int>(new int(110)));
 
     // QObject Testing
     QObject testObject;
@@ -192,6 +212,11 @@ void MiscellaneousSignalSlot::on_btnEmitSignalMainThread_clicked()
 
 void MiscellaneousSignalSlot::on_btnEmitSignalSubThread_clicked()
 {
+    // primitive data type testing
+    emit SignalSubThreadVoid();
+    emit SignalSubThreadInteger(110);
+    emit SignalSubThreadIntegerSharedPointer(QSharedPointer<int>(new int(110)));
+
     // QObject Testing
     QObject testObject;
     testObject.setObjectName("test_signal_qobject_sub_thread");
@@ -267,6 +292,22 @@ MiscellaneousTestGroup MiscellaneousSignalSlot::GetGroupID()
 MiscellaneousTestItem MiscellaneousSignalSlot::GetItemID()
 {
     return MiscellaneousTestItem::QT_Signal_Slot;
+}
+
+void SignalTestWorker::SlotSubThreadVoid()
+{
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadInteger(int testInt)
+{
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadIntegerSharedPointer(QSharedPointer<int> pTestInt)
+{
+    int testInt = *pTestInt;
+    int i = 0;
 }
 
 void SignalTestWorker::SlotSubThreadQbject(const QObject& testObj)
