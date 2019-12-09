@@ -28,6 +28,30 @@ private:
     int m_intValue;
 };
 
+class SignalTestWorker : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SignalTestWorker(QObject *parent = Q_NULLPTR)
+        : QObject(parent)
+        , m_intValue(0)
+    {}
+    ~SignalTestWorker() {}
+
+private slots :
+    // QObject Testing
+    void SlotSubThreadQbject(const QObject& testObj);
+    void SlotSubThreadQbjectPointer(QObject* pTestObj);
+    void SlotSubThreadQbjectSharedPointer(QSharedPointer<QObject> pTestObj);
+    // ExtendQObject Testing
+    void SlotSubThreadExtendQbject(const ExtendQObject& testObj);
+    void SlotSubThreadExtendQbjectPointer(ExtendQObject* pTestObj);
+    void SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+
+private:
+    int          m_intValue;
+};
+
 class MiscellaneousSignalSlot : public MiscellaneousBase
 {
     Q_OBJECT
@@ -69,6 +93,14 @@ signals:
     void SignalMainThreadExtendQbject(const ExtendQObject& testObj);
     void SignalMainThreadExtendQbjectPointer(ExtendQObject* pTestObj);
     void SignalMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+    // QObject Testing
+    void SignalSubThreadQbject(const QObject& testObj);
+    void SignalSubThreadQbjectPointer(QObject* pTestObj);
+    void SignalSubThreadQbjectSharedPointer(QSharedPointer<QObject> pTestObj);
+    // ExtendQObject Testing
+    void SignalSubThreadExtendQbject(const ExtendQObject& testObj);
+    void SignalSubThreadExtendQbjectPointer(ExtendQObject* pTestObj);
+    void SignalSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
 
 private:
     Ui::MiscellaneousSignalSlot *ui;

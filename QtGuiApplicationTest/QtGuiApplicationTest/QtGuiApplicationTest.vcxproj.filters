@@ -301,6 +301,12 @@
     <ClCompile Include="MiscellaneousSignalSlot.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousSignalSlot.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousSignalSlot.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -478,9 +484,6 @@
     <QtMoc Include="DebugInfoNetworkWidget.h">
       <Filter>Debugger</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousSignalSlot.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtGuiApplicationTest.qrc">
@@ -580,6 +583,9 @@
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
     <CustomBuild Include="MiscellaneousStdSharedPointer.ui">
+      <Filter>Miscellaneous</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MiscellaneousSignalSlot.h">
       <Filter>Miscellaneous</Filter>
     </CustomBuild>
   </ItemGroup>

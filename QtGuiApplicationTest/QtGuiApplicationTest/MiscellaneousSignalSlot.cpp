@@ -1,6 +1,8 @@
 #include "MiscellaneousSignalSlot.h"
 #include "ui_MiscellaneousSignalSlot.h"
 
+#include <QThread>
+
 MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousSignalSlot())
@@ -8,9 +10,9 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
 {
     ui->setupUi(this);
 
-    pObjTestSignals->setObjectName("test_signal_pointer");
+    pObjTestSignals->setObjectName("test_signal_qobject_pointer");
     pObjTestSignals->setProperty("INT", 110);
-    pObjTestSignals->setProperty("STRING", "Hello World.");
+    pObjTestSignals->setProperty("STRING", "Hello World. qobject_pointer");
 
     bool resultFlag = false;
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadVoid()), this, SLOT(SlotMainThreadVoid()));
@@ -24,6 +26,21 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbject(const ExtendQObject&)), this, SLOT(SlotMainThreadExtendQbject(const ExtendQObject&)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbjectPointer(ExtendQObject*)), this, SLOT(SlotMainThreadExtendQbjectPointer(ExtendQObject*)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)), this, SLOT(SlotMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)));
+
+    // 子线程信号槽测试（队列化连接方式）
+    SignalTestWorker *pSignalWorker = new SignalTestWorker(this);
+    QThread *pWorkerThread = new QThread(this);
+    QObject *parentBefore = pSignalWorker->parent();
+    pSignalWorker->moveToThread(pWorkerThread);
+    QObject *parentAfter = pSignalWorker->parent();
+    // QObject Testing
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbject(const QObject&)), pSignalWorker, SLOT(SlotSubThreadQbject(const QObject&)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbjectPointer(QObject*)), pSignalWorker, SLOT(SlotSubThreadQbjectPointer(QObject*)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbjectSharedPointer(QSharedPointer<QObject>)), pSignalWorker, SLOT(SlotSubThreadQbjectSharedPointer(QSharedPointer<QObject>)));
+    // ExtendQObject Testing
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbject(const ExtendQObject&)), pSignalWorker, SLOT(SlotSubThreadExtendQbject(const ExtendQObject&)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbjectPointer(ExtendQObject*)), pSignalWorker, SLOT(SlotSubThreadExtendQbjectPointer(ExtendQObject*)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)), pSignalWorker, SLOT(SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)));
 }
 
 MiscellaneousSignalSlot::~MiscellaneousSignalSlot()
@@ -103,38 +120,66 @@ void MiscellaneousSignalSlot::on_btnEmitSignalMainThread_clicked()
 
     // QObject Testing
     QObject testObject;
-    testObject.setObjectName("test_signal");
+    testObject.setObjectName("test_signal_qobject");
     testObject.setProperty("INT", 110);
-    testObject.setProperty("STRING", "Hello World.");
+    testObject.setProperty("STRING", "Hello World. qobject");
     emit SignalMainThreadQbject(testObject);
     emit SignalMainThreadQbjectPointer(pObjTestSignals);
     QSharedPointer<QObject> spTestObj(new QObject(this));
-    spTestObj->setObjectName("test_signal_pointer_shared");
+    spTestObj->setObjectName("test_signal_qobject_pointer_shared");
     spTestObj->setProperty("INT", 110);
-    spTestObj->setProperty("STRING", "Hello world, shared pointer!");
+    spTestObj->setProperty("STRING", "Hello world, qobject_shared_pointer!");
     emit SignalMainThreadQbjectSharedPointer(spTestObj);
 
     // ExtendQObject Testing
     ExtendQObject testExtendObject;
-    testExtendObject.setObjectName("test_extend_qobject_signal");
+    testExtendObject.setObjectName("test_signal_extend_qobject");
     testExtendObject.setProperty("INT", 110);
-    testExtendObject.setProperty("STRING", "Hello World. extend qobject");
+    testExtendObject.setProperty("STRING", "Hello World. extend_qobject");
     emit SignalMainThreadExtendQbject(testExtendObject);
     ExtendQObject *pExtendObject = new ExtendQObject(this);
-    pExtendObject->setObjectName("test_extend_qobject_pointer");
+    pExtendObject->setObjectName("test_signal_extend_qobject_pointer");
     pExtendObject->setProperty("INT", 110);
-    pExtendObject->setProperty("STRING", "Hello World. extend qobject pointer");
+    pExtendObject->setProperty("STRING", "Hello World. extend_qobject_pointer");
     emit SignalMainThreadExtendQbjectPointer(pExtendObject);
     QSharedPointer<ExtendQObject> spTestExtendObj(new ExtendQObject(this));
-    spTestExtendObj->setObjectName("test_extend_qobject_pointer_shared");
+    spTestExtendObj->setObjectName("test_signal_extend_qobject_pointer_shared");
     spTestExtendObj->setProperty("INT", 110);
-    spTestExtendObj->setProperty("STRING", "Hello world, extend qobject shared pointer!");
+    spTestExtendObj->setProperty("STRING", "Hello world, extend_qobject_shared_pointer!");
     emit SignalMainThreadExtendQbjectSharedPointer(spTestExtendObj);
 }
 
 void MiscellaneousSignalSlot::on_btnEmitSignalSubThread_clicked()
 {
-    int i = 0;
+    // QObject Testing
+    QObject testObject;
+    testObject.setObjectName("test_signal_qobject_sub_thread");
+    testObject.setProperty("INT", 110);
+    testObject.setProperty("STRING", "Hello World. qobject_sub_thread");
+    emit SignalSubThreadQbject(testObject);
+    emit SignalSubThreadQbjectPointer(pObjTestSignals);
+    QSharedPointer<QObject> spTestObj(new QObject(this));
+    spTestObj->setObjectName("test_signal_qobject_pointer_shared_sub_thread");
+    spTestObj->setProperty("INT", 110);
+    spTestObj->setProperty("STRING", "Hello world, qobject_pointer_shared_sub_thread!");
+    emit SignalSubThreadQbjectSharedPointer(spTestObj);
+
+    // ExtendQObject Testing
+    ExtendQObject testExtendObject;
+    testExtendObject.setObjectName("test_signal_extend_qobject_sub_thread");
+    testExtendObject.setProperty("INT", 110);
+    testExtendObject.setProperty("STRING", "Hello World. extend_qobject_sub_thread");
+    emit SignalSubThreadExtendQbject(testExtendObject);
+    ExtendQObject *pExtendObject = new ExtendQObject(this);
+    pExtendObject->setObjectName("test_signal_extend_qobject_pointer_sub_thread");
+    pExtendObject->setProperty("INT", 110);
+    pExtendObject->setProperty("STRING", "Hello World. extend_qobject_pointer_sub_thread");
+    emit SignalSubThreadExtendQbjectPointer(pExtendObject);
+    QSharedPointer<ExtendQObject> spTestExtendObj(new ExtendQObject(this));
+    spTestExtendObj->setObjectName("test_signal_extend_qobject_pointer_shared_sub_thread");
+    spTestExtendObj->setProperty("INT", 110);
+    spTestExtendObj->setProperty("STRING", "Hello world, extend_qobject_pointer_shared_sub_thread!");
+    emit SignalSubThreadExtendQbjectSharedPointer(spTestExtendObj);
 }
 
 QString MiscellaneousSignalSlot::GetTitle()
@@ -155,4 +200,52 @@ MiscellaneousTestGroup MiscellaneousSignalSlot::GetGroupID()
 MiscellaneousTestItem MiscellaneousSignalSlot::GetItemID()
 {
     return MiscellaneousTestItem::QT_Signal_Slot;
+}
+
+void SignalTestWorker::SlotSubThreadQbject(const QObject& testObj)
+{
+    int testInt = testObj.property("INT").toInt();
+    QString objName = testObj.objectName();
+    QString testString = testObj.property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadQbjectPointer(QObject* pTestObj)
+{
+    int testInt = pTestObj->property("INT").toInt();
+    QString objName = pTestObj->objectName();
+    QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadQbjectSharedPointer(QSharedPointer<QObject> pTestObj)
+{
+    int testInt = pTestObj->property("INT").toInt();
+    QString objName = pTestObj->objectName();
+    QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadExtendQbject(const ExtendQObject& testObj)
+{
+    int testInt = testObj.property("INT").toInt();
+    QString objName = testObj.objectName();
+    QString testString = testObj.property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadExtendQbjectPointer(ExtendQObject* pTestObj)
+{
+    int testInt = pTestObj->property("INT").toInt();
+    QString objName = pTestObj->objectName();
+    QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj)
+{
+    int testInt = pTestObj->property("INT").toInt();
+    QString objName = pTestObj->objectName();
+    QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
 }
