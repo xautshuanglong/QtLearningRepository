@@ -14,6 +14,10 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     pObjTestSignals->setProperty("INT", 110);
     pObjTestSignals->setProperty("STRING", "Hello World. qobject_pointer");
 
+    pSelfDefinedClass = new SelfDefinedClass();
+    pSelfDefinedClass->SetValue(119);
+    pSelfDefinedClass->SetName("test_signal_custom_class_pointer");
+
     bool resultFlag = false;
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadVoid()), this, SLOT(SlotMainThreadVoid()));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadInteger(int)), this, SLOT(SlotMainThreadInteger(int)));
@@ -26,13 +30,20 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbject(const ExtendQObject&)), this, SLOT(SlotMainThreadExtendQbject(const ExtendQObject&)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbjectPointer(ExtendQObject*)), this, SLOT(SlotMainThreadExtendQbjectPointer(ExtendQObject*)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)), this, SLOT(SlotMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)));
+    // SelfDefinedClass Testing
+    resultFlag = this->connect(this, SIGNAL(SignalMainThreadSelfDefinedClass(const SelfDefinedClass&)), this, SLOT(SlotMainThreadSelfDefinedClass(const SelfDefinedClass&)));
+    resultFlag = this->connect(this, SIGNAL(SignalMainThreadSelfDefinedClassPointer(SelfDefinedClass*)), this, SLOT(SlotMainThreadSelfDefinedClassPointer(SelfDefinedClass*)));
+    resultFlag = this->connect(this, SIGNAL(SignalMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)), this, SLOT(SlotMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)));
 
     // 子线程信号槽测试（队列化连接方式）
-    SignalTestWorker *pSignalWorker = new SignalTestWorker(this);
+    SignalTestWorker *pSignalWorker = new SignalTestWorker();
     QThread *pWorkerThread = new QThread(this);
+    pWorkerThread->setObjectName("TestSignalThread");
     QObject *parentBefore = pSignalWorker->parent();
+    QString treadBefore = pSignalWorker->thread()->objectName();
     pSignalWorker->moveToThread(pWorkerThread);
     QObject *parentAfter = pSignalWorker->parent();
+    QString threadAfter = pSignalWorker->thread()->objectName();
     // QObject Testing
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbject(const QObject&)), pSignalWorker, SLOT(SlotSubThreadQbject(const QObject&)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQbjectPointer(QObject*)), pSignalWorker, SLOT(SlotSubThreadQbjectPointer(QObject*)));
@@ -41,11 +52,20 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbject(const ExtendQObject&)), pSignalWorker, SLOT(SlotSubThreadExtendQbject(const ExtendQObject&)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbjectPointer(ExtendQObject*)), pSignalWorker, SLOT(SlotSubThreadExtendQbjectPointer(ExtendQObject*)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)), pSignalWorker, SLOT(SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject>)));
+    // SelfDefinedClass Testing
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClass(const SelfDefinedClass&)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClass(const SelfDefinedClass&)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClassPointer(SelfDefinedClass*)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClassPointer(SelfDefinedClass*)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)));
 }
 
 MiscellaneousSignalSlot::~MiscellaneousSignalSlot()
 {
     delete ui;
+
+    if (pSelfDefinedClass)
+    {
+        delete pSelfDefinedClass;
+    }
 }
 
 void MiscellaneousSignalSlot::SlotMainThreadVoid()
@@ -109,6 +129,27 @@ void MiscellaneousSignalSlot::SlotMainThreadExtendQbjectSharedPointer(QSharedPoi
     int testInt = pTestObj->property("INT").toInt();
     QString objName = pTestObj->objectName();
     QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
+}
+
+void MiscellaneousSignalSlot::SlotMainThreadSelfDefinedClass(const SelfDefinedClass& testObj)
+{
+    int testInt = testObj.GetValue();
+    QString objName = testObj.GetName();
+    int i = 0;
+}
+
+void MiscellaneousSignalSlot::SlotMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj)
+{
+    int testInt = pTestObj->GetValue();
+    QString objName = pTestObj->GetName();
+    int i = 0;
+}
+
+void MiscellaneousSignalSlot::SlotMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj)
+{
+    int testInt = pTestObj->GetValue();
+    QString objName = pTestObj->GetName();
     int i = 0;
 }
 
@@ -182,6 +223,32 @@ void MiscellaneousSignalSlot::on_btnEmitSignalSubThread_clicked()
     emit SignalSubThreadExtendQbjectSharedPointer(spTestExtendObj);
 }
 
+void MiscellaneousSignalSlot::on_btnEmitSignalMainThreadCustomClass_clicked()
+{
+    SelfDefinedClass testSelfDefinedClass;
+    testSelfDefinedClass.SetValue(119);
+    testSelfDefinedClass.SetName("test_signal_custom_class");
+    emit SignalMainThreadSelfDefinedClass(testSelfDefinedClass);
+    emit SignalMainThreadSelfDefinedClassPointer(pSelfDefinedClass);
+    QSharedPointer<SelfDefinedClass> spTestSelfDefinedClass(new SelfDefinedClass());
+    spTestSelfDefinedClass->SetValue(119);
+    spTestSelfDefinedClass->SetName("test_signal_custom_class_pointer_shared");
+    emit SignalMainThreadSelfDefinedClassSharedPointer(spTestSelfDefinedClass);
+}
+
+void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadCustomClass_clicked()
+{
+    SelfDefinedClass testSelfDefinedClass;
+    testSelfDefinedClass.SetValue(119);
+    testSelfDefinedClass.SetName("test_signal_custom_class");
+    emit SignalSubThreadSelfDefinedClass(testSelfDefinedClass);
+    emit SignalSubThreadSelfDefinedClassPointer(pSelfDefinedClass);
+    QSharedPointer<SelfDefinedClass> spTestSelfDefinedClass(new SelfDefinedClass());
+    spTestSelfDefinedClass->SetValue(119);
+    spTestSelfDefinedClass->SetName("test_signal_custom_class_pointer_shared");
+    emit SignalSubThreadSelfDefinedClassSharedPointer(spTestSelfDefinedClass);
+}
+
 QString MiscellaneousSignalSlot::GetTitle()
 {
     return QObject::tr("Signal Slot");
@@ -247,5 +314,26 @@ void SignalTestWorker::SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<Ext
     int testInt = pTestObj->property("INT").toInt();
     QString objName = pTestObj->objectName();
     QString testString = pTestObj->property("STRING").toString();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadSelfDefinedClass(const SelfDefinedClass& testObj)
+{
+    int testInt = testObj.GetValue();
+    QString objName = testObj.GetName();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj)
+{
+    int testInt = pTestObj->GetValue();
+    QString objName = pTestObj->GetName();
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj)
+{
+    int testInt = pTestObj->GetValue();
+    QString objName = pTestObj->GetName();
     int i = 0;
 }

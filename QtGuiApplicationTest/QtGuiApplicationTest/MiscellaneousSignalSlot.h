@@ -8,8 +8,23 @@ namespace Ui { class MiscellaneousSignalSlot; };
 class SelfDefinedClass
 {
 public:
-    SelfDefinedClass(){}
+    explicit SelfDefinedClass()
+        : m_intValue(0)
+        , m_strName("")
+    {}
     ~SelfDefinedClass(){}
+
+    void SetValue(const int value) { m_intValue = value; }
+    int GetValue() { return m_intValue; }
+    int GetValue() const { return m_intValue; }
+
+    void SetName(const QString& name) { m_strName = name; }
+    QString GetName() { return m_strName; }
+    QString GetName() const { return m_strName; }
+
+private:
+    int      m_intValue;
+    QString  m_strName;
 };
 
 class ExtendQObject : public QObject
@@ -47,6 +62,10 @@ private slots :
     void SlotSubThreadExtendQbject(const ExtendQObject& testObj);
     void SlotSubThreadExtendQbjectPointer(ExtendQObject* pTestObj);
     void SlotSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+    // SelfDefinedClass Testing
+    void SlotSubThreadSelfDefinedClass(const SelfDefinedClass& testObj);
+    void SlotSubThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
+    void SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
 
 private:
     int          m_intValue;
@@ -77,9 +96,15 @@ private slots:
     void SlotMainThreadExtendQbject(const ExtendQObject& testObj);
     void SlotMainThreadExtendQbjectPointer(ExtendQObject* pTestObj);
     void SlotMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+    // SelfDefinedClass Testing
+    void SlotMainThreadSelfDefinedClass(const SelfDefinedClass& testObj);
+    void SlotMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
+    void SlotMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
 
     void on_btnEmitSignalMainThread_clicked();
     void on_btnEmitSignalSubThread_clicked();
+    void on_btnEmitSignalMainThreadCustomClass_clicked();
+    void on_btnEmitSignalSubThreadCustomClass_clicked();
 
 signals:
     void SignalMainThreadVoid();
@@ -93,6 +118,10 @@ signals:
     void SignalMainThreadExtendQbject(const ExtendQObject& testObj);
     void SignalMainThreadExtendQbjectPointer(ExtendQObject* pTestObj);
     void SignalMainThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+    // SelfDefinedClass Testing
+    void SignalMainThreadSelfDefinedClass(const SelfDefinedClass& testObj);
+    void SignalMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
+    void SignalMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
     // QObject Testing
     void SignalSubThreadQbject(const QObject& testObj);
     void SignalSubThreadQbjectPointer(QObject* pTestObj);
@@ -101,10 +130,15 @@ signals:
     void SignalSubThreadExtendQbject(const ExtendQObject& testObj);
     void SignalSubThreadExtendQbjectPointer(ExtendQObject* pTestObj);
     void SignalSubThreadExtendQbjectSharedPointer(QSharedPointer<ExtendQObject> pTestObj);
+    // SelfDefinedClass Testing
+    void SignalSubThreadSelfDefinedClass(const SelfDefinedClass& testObj);
+    void SignalSubThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
+    void SignalSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
 
 private:
     Ui::MiscellaneousSignalSlot *ui;
     QObject                     *pObjTestSignals;
+    SelfDefinedClass            *pSelfDefinedClass;
 };
 
 #endif // MISCELLANEOUS_SIGNAL_SLOT_H
