@@ -21,6 +21,7 @@ MiscellaneousImageQImage::~MiscellaneousImageQImage()
 void MiscellaneousImageQImage::on_btnImgNoMemory_clicked()
 {
     QImage image(100, 100, QImage::Format_RGB888);
+    image.fill(Qt::white);
     int imgWidth = image.width();
     int imgHeight = image.height();
     for (int row=0; row<imgHeight; ++row)

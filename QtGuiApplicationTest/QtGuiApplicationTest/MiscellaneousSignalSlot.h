@@ -11,6 +11,10 @@ public:
     explicit SelfDefinedClass()
         : m_intValue(0)
     {}
+    SelfDefinedClass(const SelfDefinedClass& other)
+    {
+        int i = 0;
+    }
     ~SelfDefinedClass(){}
 
     void SetValue(const int value) { m_intValue = value; }

@@ -13,12 +13,4 @@
   <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)LogUtil.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)zlog.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)LogUtil.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)zlog.h" />
-  </ItemGroup>
 </Project>

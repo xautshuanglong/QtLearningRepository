@@ -2,7 +2,7 @@
 #define MGI_LOG_UTIL_H
 
 #include <QtCore/qglobal.h>
-#if defined(LOG_MODEL_LIBRARY)
+#if defined(QTLIBARAYCORETEST_LIB)
 #define LOG_UTIL_EXPORT Q_DECL_EXPORT
 #else
 #define LOG_UTIL_EXPORT Q_DECL_IMPORT
@@ -52,7 +52,7 @@ enum LogCollectionType
     LOG_COLLECTION_TYPE_MAX,
 };
 
-class CodeLocation
+class LOG_UTIL_EXPORT CodeLocation
 {
 private:
     std::string m_strFileName;       // 源文件名(含绝对路径)
@@ -83,7 +83,7 @@ typedef void(*LogCallback)(LogLevelType level, CodeLocation *pLocation, std::str
     * \author jiangchuanbiao
     * \date 六月 2018
     */
-class LogUtil
+class LOG_UTIL_EXPORT LogUtil
 {
 private:
     LogUtil();
