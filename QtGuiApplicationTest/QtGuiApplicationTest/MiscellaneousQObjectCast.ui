@@ -45,20 +45,6 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="btnDllQObjectExtra">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Cast across DLL
-extend extra</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="btnSameModule">
        <property name="sizePolicy">
@@ -74,11 +60,26 @@ extend extra</string>
         </size>
        </property>
        <property name="text">
-        <string>Cast insid same module</string>
+        <string>Cast inside same module
+Extend QObject</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
+      <widget class="QPushButton" name="btnSameModuleExtra">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Cast inside same module
+Extend Extra</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QPushButton" name="btnDllQObject">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -88,7 +89,21 @@ extend extra</string>
        </property>
        <property name="text">
         <string>Cast across DLL
-extend QObject</string>
+Extend QObject</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnDllQObjectExtra">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Cast across DLL
+Extend extra</string>
        </property>
       </widget>
      </item>

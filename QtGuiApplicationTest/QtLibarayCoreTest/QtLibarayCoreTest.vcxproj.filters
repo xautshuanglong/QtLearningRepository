@@ -33,6 +33,9 @@
     <Filter Include="Logger">
       <UniqueIdentifier>{f969a3e9-0eac-477d-abfa-182e28087385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MiscellaneousTest">
+      <UniqueIdentifier>{c79a2a9b-bac9-4f93-97cc-c1ca1c34a85e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtlibaraycoretest_global.h">
@@ -76,5 +79,13 @@
     <ClCompile Include="zlog.cpp">
       <Filter>Logger</Filter>
     </ClCompile>
+    <ClCompile Include="QObjectCastTest.cpp">
+      <Filter>MiscellaneousTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QObjectCastTest.h">
+      <Filter>MiscellaneousTest</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
