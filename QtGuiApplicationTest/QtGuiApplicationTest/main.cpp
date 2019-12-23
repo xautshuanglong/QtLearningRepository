@@ -2,7 +2,7 @@
 #include "MyMainWindow.h"
 
 // QT Headers
-#include <QtWidgets/QApplication>
+#include <QApplication>
 #include <QDebug>
 
 // Google ProtoBuf

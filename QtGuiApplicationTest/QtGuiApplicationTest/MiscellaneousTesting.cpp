@@ -15,6 +15,7 @@
 #include "MiscellaneousPrinterWidget.h"
 #include "MiscellaneousImageQImage.h"
 #include "MiscellaneousImageQPixmap.h"
+#include "MiscellaneousQObjectCast.h"
 // Database
 #include "MiscellaneousWxSqlite3.h"
 
@@ -66,6 +67,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
     this->AppendTestPage(new MiscellaneousImageQImage(this));
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
+	this->AppendTestPage(new MiscellaneousQObjectCast(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
