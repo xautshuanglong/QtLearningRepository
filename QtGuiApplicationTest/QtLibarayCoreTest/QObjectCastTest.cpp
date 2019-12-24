@@ -41,3 +41,8 @@ DllCastDeriveQObjectExtra::DllCastDeriveQObjectExtra()
 DllCastDeriveQObjectExtra::~DllCastDeriveQObjectExtra()
 {
 }
+
+void DllCastDeriveQObjectExtra::TestFunc()
+{
+	int i = 0;
+}

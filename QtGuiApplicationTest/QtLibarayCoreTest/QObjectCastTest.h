@@ -54,4 +54,6 @@ class QTLIBARAYCORETEST_EXPORT DllCastDeriveQObjectExtra : public DllCastBaseQOb
 public:
 	DllCastDeriveQObjectExtra();
 	virtual ~DllCastDeriveQObjectExtra();
+
+	virtual void TestFunc() override;
 };
