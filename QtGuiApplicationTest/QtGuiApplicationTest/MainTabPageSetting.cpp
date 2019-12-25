@@ -76,7 +76,7 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     if (pShadow != Q_NULLPTR)
     {
         pShadow->setWindowFlags(pShadow->windowFlags() | Qt::NoDropShadowWindowHint);
-        pShadow->setAttribute(Qt::WA_TranslucentBackground);
+        //pShadow->setAttribute(Qt::WA_TranslucentBackground);
     }
 
     this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainTabPageSetting::SlotListVScrollBarValueChanged);
