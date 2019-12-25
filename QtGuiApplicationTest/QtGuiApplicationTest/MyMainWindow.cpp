@@ -71,9 +71,11 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpSystemTrayMenu->addAction(mpTrayActionShow);
     mpSystemTrayMenu->addAction(mpTrayActionHide);
     mpSystemTrayMenu->addAction(mpTrayActionExit);
+    mpSystemTrayMenu->setWindowFlags(mpSystemTrayMenu->windowFlags() | Qt::NoDropShadowWindowHint);
     this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
     this->connect(mpTrayActionHide, SIGNAL(triggered(bool)), SLOT(on_trayActionHide_triggered(bool)));
     this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(on_trayActionExit_triggered(bool)));
+
 
     // œµÕ≥Õ–≈Ã
     mpSystemTray = new QSystemTrayIcon(this);
