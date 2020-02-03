@@ -7,6 +7,7 @@
 #include <QTextBlock>
 #include <QBuffer>
 #include <QNetworkInterface>
+#include <QStyledItemDelegate>
 
 #include <LogUtil.h>
 
@@ -69,8 +70,17 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     ui.settingTxt->setText("setting ...");
     ui.tePdfTest->setText("abc");
 
-    this->connect(ui.listWidget->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainTabPageSetting::SlotListVScrollBarValueChanged);
-    this->connect(ui.listWidget->verticalScrollBar(), &QScrollBar::rangeChanged, this, &MainTabPageSetting::SlotListVScrollBarRangeChanged);
+    QStyledItemDelegate *pItemDelegate = new QStyledItemDelegate();
+    ui.cbTest->setItemDelegate(pItemDelegate);
+    QWidget *pShadow = qobject_cast<QWidget*>(ui.cbTest->view()->parent());
+    if (pShadow != Q_NULLPTR)
+    {
+        pShadow->setWindowFlags(pShadow->windowFlags() | Qt::NoDropShadowWindowHint);
+        //pShadow->setAttribute(Qt::WA_TranslucentBackground);
+    }
+
+    this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainTabPageSetting::SlotListVScrollBarValueChanged);
+    this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::rangeChanged, this, &MainTabPageSetting::SlotListVScrollBarRangeChanged);
 }
 
 MainTabPageSetting::~MainTabPageSetting()
@@ -218,15 +228,15 @@ void MainTabPageSetting::on_btnChangeItemCount_clicked()
         itemCount = 3;
     }
 
-    QSize listWidgetSize = ui.listWidget->size();
-    QSize listWidgetViewportSize = ui.listWidget->maximumViewportSize();
-    QRect visualItemRect1 = ui.listWidget->visualItemRect(ui.listWidget->item(0));
-    QRect visualItemRect2 = ui.listWidget->visualItemRect(ui.listWidget->item(1));
+    QSize listWidgetSize = ui.lwTest->size();
+    QSize listWidgetViewportSize = ui.lwTest->maximumViewportSize();
+    QRect visualItemRect1 = ui.lwTest->visualItemRect(ui.lwTest->item(0));
+    QRect visualItemRect2 = ui.lwTest->visualItemRect(ui.lwTest->item(1));
 
-    QSize itemSizeHit1 = ui.listWidget->item(0)->sizeHint();
-    QSize itemSizeHit2 = ui.listWidget->item(1)->sizeHint();
+    QSize itemSizeHit1 = ui.lwTest->item(0)->sizeHint();
+    QSize itemSizeHit2 = ui.lwTest->item(1)->sizeHint();
 
-    ui.listWidget->clear();
+    ui.lwTest->clear();
     for (int i = 0; i < itemCount; ++i)
     {
         QWidget *pItemWidget = new QWidget(this);
@@ -242,12 +252,12 @@ void MainTabPageSetting::on_btnChangeItemCount_clicked()
         //pItemWidget->setGeometry(0, 0, listWidgetViewportSize.width(), 30);
         //pItemWidget->resize(listWidgetViewportSize.width(), 30);
         //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
-        //pItemWidget->resize(ui.listWidget->iconSize());
-        //pItemWidget->setMinimumSize(ui.listWidget->iconSize());
+        //pItemWidget->resize(ui.lwTest->iconSize());
+        //pItemWidget->setMinimumSize(ui.lwTest->iconSize());
 
-        if (ui.listWidget->verticalScrollBar()->isVisible())
+        if (ui.lwTest->verticalScrollBar()->isVisible())
         {
-            //pItemWidget->setMinimumWidth(listWidgetViewportSize.width() - ui.listWidget->verticalScrollBar()->width());
+            //pItemWidget->setMinimumWidth(listWidgetViewportSize.width() - ui.lwTest->verticalScrollBar()->width());
             pItemWidget->resize(200, 30);
         }
         else
@@ -255,15 +265,15 @@ void MainTabPageSetting::on_btnChangeItemCount_clicked()
             pItemWidget->resize(100, 30);
             //pItemWidget->resize(listWidgetViewportSize.width(), 30);
             //pItemWidget->setMinimumWidth(listWidgetViewportSize.width());
-            //pItemWidget->resize(ui.listWidget->iconSize());
-            //pItemWidget->setMinimumSize(ui.listWidget->iconSize());
+            //pItemWidget->resize(ui.lwTest->iconSize());
+            //pItemWidget->setMinimumSize(ui.lwTest->iconSize());
         }
 
         QLabel *pItemLabel = new QLabel(pItemWidget);
         pItemLabel->setText(QString("TestItem Label: %1 abcdefghijklmnopqrstuvwxyz").arg(i));
-        QListWidgetItem *pListItem = new QListWidgetItem(QString("TestItem %1").arg(i), ui.listWidget);
-        ui.listWidget->addItem(pListItem);
-        ui.listWidget->setItemWidget(pListItem, pItemWidget);
+        QListWidgetItem *pListItem = new QListWidgetItem(QString("TestItem %1").arg(i), ui.lwTest);
+        ui.lwTest->addItem(pListItem);
+        ui.lwTest->setItemWidget(pListItem, pItemWidget);
     }
 }
 
@@ -273,11 +283,11 @@ void MainTabPageSetting::on_btnShowVerticalScrollBar_clicked()
     if (bShow)
     {
         bShow = false;
-        ui.listWidget->verticalScrollBar()->setVisible(bShow);
+        ui.lwTest->verticalScrollBar()->setVisible(bShow);
     }
     else
     {
         bShow = true;
-        ui.listWidget->verticalScrollBar()->setVisible(bShow);
+        ui.lwTest->verticalScrollBar()->setVisible(bShow);
     }
 }
