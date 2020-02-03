@@ -24,6 +24,9 @@ class HelloWorldMainWindow(QMainWindow):
     def init_ui(self):
         self.ui.btnTest.clicked.connect(self.on_btn_test_clicked)
 
+    def resizeEvent(self, event):
+        self.about_widget.resize(event.size())
+
     def on_btn_test_clicked(self):
         self.count += 1
         self.ui.leInputTest.setText("test %d" % self.count)
