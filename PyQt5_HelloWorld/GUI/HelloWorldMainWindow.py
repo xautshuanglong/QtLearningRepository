@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .Ui_HelloWorldMainWindow import Ui_HelloWorldMainWindow
+from Generated.Ui_HelloWorldMainWindow import Ui_HelloWorldMainWindow
 from PyQt5.QtWidgets import QMainWindow
 
 
