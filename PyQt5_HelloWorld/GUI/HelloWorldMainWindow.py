@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Generated.Ui_HelloWorldMainWindow import Ui_HelloWorldMainWindow
+from .AboutWidget import AboutWidget
 from PyQt5.QtWidgets import QMainWindow
 
 
@@ -12,6 +13,10 @@ class HelloWorldMainWindow(QMainWindow):
         self.ui = Ui_HelloWorldMainWindow()
         self.ui.setupUi(self)
 
+        self.about_widget = AboutWidget()
+        self.about_widget.setParent(self)
+        self.about_widget.setVisible(False)
+
         self.count = 0
         self.le_input = None
         self.init_ui()
@@ -22,3 +27,4 @@ class HelloWorldMainWindow(QMainWindow):
     def on_btn_test_clicked(self):
         self.count += 1
         self.ui.leInputTest.setText("test %d" % self.count)
+        self.about_widget.setVisible(True)
