@@ -184,14 +184,17 @@
               <widget class="QLabel" name="label_2">
                <property name="geometry">
                 <rect>
-                 <x>30</x>
+                 <x>90</x>
                  <y>20</y>
-                 <width>54</width>
-                 <height>12</height>
+                 <width>101</width>
+                 <height>101</height>
                 </rect>
                </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../Resources/HelloWorld.qrc">:/HelloWorld.ico</pixmap>
                </property>
               </widget>
              </widget>
@@ -207,6 +210,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resources/HelloWorld.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -94,6 +94,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resources/HelloWorld.qrc"/>
+ </resources>
  <connections/>
 </ui>

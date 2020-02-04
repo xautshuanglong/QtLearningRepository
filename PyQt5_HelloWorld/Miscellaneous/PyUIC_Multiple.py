@@ -12,14 +12,14 @@ def translate_ui_to_py(in_filename):
     out_dir = os.path.join(cwd, "Generated")
     temp_filename = os.path.basename(in_filename)
     filename_without_ext = os.path.splitext(temp_filename)[0]
-    out_filename = os.path.join(out_dir, "Ui_" + filename_without_ext + ".py")
+    out_filename = os.path.join(out_dir, filename_without_ext + "_ui.py")
 
     in_file_stat = os.stat(in_filename)
     if os.path.exists(out_filename):
         out_file_stat = os.stat(out_filename)
     if not os.path.exists(out_filename) or in_file_stat.st_mtime > out_file_stat.st_mtime:
-        print("\tpyuic5 %s -o %s" % (in_filename, out_filename))
-        os.system("pyuic5 %s -o %s" % (in_filename, out_filename))
+        print("\tpyuic5 %s -o %s --import-from=Generated" % (in_filename, out_filename))
+        os.system("pyuic5 %s -o %s --import-from=Generated" % (in_filename, out_filename))
 
 
 if __name__ == '__main__':

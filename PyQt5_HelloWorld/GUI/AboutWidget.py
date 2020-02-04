@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from Generated.Ui_AboutWidget import Ui_AboutWidget
+from Generated.AboutWidget_ui import Ui_AboutWidget
 from PyQt5.QtWidgets import QWidget
 
 

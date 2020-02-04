@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     mainWin = HelloWorldMainWindow()
 
-    mainWin.setWindowIcon(QIcon('./Resources/app.ico'))
+    mainWin.setWindowIcon(QIcon(':/HelloWorld.ico'))
     mainWin.resize(400, 300)
     mainWin.setWindowTitle('Simple')
     mainWin.show()
