@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# 打包单个 exe : (适用于在 Release 文件夹中运行)
+# pyinstaller -i E:\VS2017\QtLearningRepository\PyQt5_HelloWorld\Resources\HelloWorld.ico -F ../Main.py -w --clean
+#
+
 import sys
 
 from PyQt5.QtGui import QIcon
