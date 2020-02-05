@@ -3,6 +3,7 @@
 from Generated.HelloWorldMainWindow_ui import Ui_HelloWorldMainWindow
 from .AboutWidget import AboutWidget
 from PyQt5.QtWidgets import QMainWindow
+import psycopg2
 
 
 class HelloWorldMainWindow(QMainWindow):
@@ -31,3 +32,16 @@ class HelloWorldMainWindow(QMainWindow):
         self.count += 1
         self.ui.leInputTest.setText("test %d" % self.count)
         self.about_widget.setVisible(True)
+
+        try:
+            conn = psycopg2.connect(database="test_db", user="postgres", password="shuanglong", host="localhost", port="5432")
+            cur = conn.cursor()
+            cur.execute('select * from public."Users"')
+            results = cur.fetchall()
+            print(results)
+        except Exception as err:
+            print("Databese error: ", err)
+        finally:
+            conn.commit()
+            cur.close()
+            conn.close()
