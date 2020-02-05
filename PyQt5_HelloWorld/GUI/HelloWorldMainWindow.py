@@ -40,7 +40,7 @@ class HelloWorldMainWindow(QMainWindow):
             results = cur.fetchall()
             print(results)
         except Exception as err:
-            print("Databese error: ", err)
+            print("Database error: ", err)
         finally:
             conn.commit()
             cur.close()
