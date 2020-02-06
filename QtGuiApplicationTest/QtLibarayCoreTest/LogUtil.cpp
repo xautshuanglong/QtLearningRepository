@@ -15,7 +15,7 @@
 
 int                LogUtil::mLoggerID = 0;
 int                LogUtil::mLogCollections[LOG_COLLECTION_TYPE_MAX] = { 0 };
-LogCallback       LogUtil::mpLogCallback = nullptr;
+LogCallback        LogUtil::mpLogCallback = nullptr;
 LogLevelType       LogUtil::mLevel = LOG_LEVEL_NONE;
 
 LogUtil::LogUtil()
@@ -33,42 +33,44 @@ void LogUtil::Init(LogLevelType level, LogCallback zlogHandler/* =/* =nullptr */
     if (zlogHandler != nullptr)
     {
         mpLogCallback = zlogHandler;
-        return;
     }
-
-    mpLogCallback = DefaultLogHandler;
+    else
+    {
+        mpLogCallback = LogUtil::DefaultLogHandler;
+    }
 
     // zlog ≥ı ºªØ…Ë÷√
     if (mLoggerID == 0)
     {
         mLoggerID = zlog::IZLogManager::getRef().createLogger("LogUtil");
-    }
-    zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./logs/");
-    zlog::IZLogManager::getRef().setFilterLogLevel(mLoggerID, level);
-    zlog::IZLogManager::getRef().setLogFileSizeLimit(mLoggerID, 10);
-    zlog::IZLogManager::getRef().setIsDisplayOnConsole(mLoggerID, true);
-    zlog::IZLogManager::getRef().setIsWriteToFile(mLoggerID, true);
-    zlog::IZLogManager::getRef().setIsDisplayOnConsole(zlog::ZLOG_MAIN_LOGGER_ID, false);
-    zlog::IZLogManager::getRef().setIsWriteToFile(zlog::ZLOG_MAIN_LOGGER_ID, false);
 
-    //zlog::IZLogManager::getRef().configFromFile("./ZlogConfig.ini");
-    //zlog::IZLogManager::getRef().updateConfig();
-        
-    std::stringstream oss;
-    for (int i = 0; i < LOG_COLLECTION_TYPE_MAX; ++i)
-    {
-        oss.str("");
-        oss << "Collection_Type_" << i;
-        int logId = zlog::IZLogManager::getRef().createLogger(oss.str().c_str());
-        zlog::IZLogManager::getRef().setLogFilePath(logId, "./log/");
-        zlog::IZLogManager::getRef().setFilterLogLevel(logId, LOG_LEVEL_INFO);
-        zlog::IZLogManager::getRef().setLogFileSizeLimit(logId, 8);
-        zlog::IZLogManager::getRef().setIsDisplayOnConsole(logId, true);
-        zlog::IZLogManager::getRef().setIsWriteToFile(logId, true);
-        mLogCollections[i] = logId;
-    }
+        zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./logs/");
+        zlog::IZLogManager::getRef().setFilterLogLevel(mLoggerID, level);
+        zlog::IZLogManager::getRef().setLogFileSizeLimit(mLoggerID, 10);
+        zlog::IZLogManager::getRef().setIsDisplayOnConsole(mLoggerID, true);
+        zlog::IZLogManager::getRef().setIsWriteToFile(mLoggerID, true);
+        zlog::IZLogManager::getRef().setIsDisplayOnConsole(zlog::ZLOG_MAIN_LOGGER_ID, false);
+        zlog::IZLogManager::getRef().setIsWriteToFile(zlog::ZLOG_MAIN_LOGGER_ID, false);
 
-    zlog::IZLogManager::getRef().start();
+        //zlog::IZLogManager::getRef().configFromFile("./ZlogConfig.ini");
+        //zlog::IZLogManager::getRef().updateConfig();
+
+        std::stringstream oss;
+        for (int i = 0; i < LOG_COLLECTION_TYPE_MAX; ++i)
+        {
+            oss.str("");
+            oss << "Collection_Type_" << i;
+            int logId = zlog::IZLogManager::getRef().createLogger(oss.str().c_str());
+            zlog::IZLogManager::getRef().setLogFilePath(logId, "./log/");
+            zlog::IZLogManager::getRef().setFilterLogLevel(logId, LOG_LEVEL_INFO);
+            zlog::IZLogManager::getRef().setLogFileSizeLimit(logId, 8);
+            zlog::IZLogManager::getRef().setIsDisplayOnConsole(logId, true);
+            zlog::IZLogManager::getRef().setIsWriteToFile(logId, true);
+            mLogCollections[i] = logId;
+        }
+
+        zlog::IZLogManager::getRef().start();
+    }
 }
 
 void LogUtil::Debug(const char *fmt, ...)

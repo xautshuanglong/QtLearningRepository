@@ -290,6 +290,8 @@ dmypy.json
 # Added by Shuanglong
 .idea/
 */.idea/
+*_ui.py
+*_rc.py
 
 # Trace by Shuanglong
 !**/libs/*/[Dd]ebug/
