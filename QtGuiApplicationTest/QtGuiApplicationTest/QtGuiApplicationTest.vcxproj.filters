@@ -310,6 +310,9 @@
     <ClCompile Include="MiscellaneousQObjectCast.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousPostgresql.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -358,6 +361,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousQObjectCast.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousPostgresql.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -491,6 +497,9 @@
       <Filter>Debugger</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousQObjectCast.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousPostgresql.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
