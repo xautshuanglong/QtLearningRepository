@@ -32,6 +32,7 @@ protected:
 private:
     void InitializeUI();
     void AppendTestPage(MiscellaneousBase* pWidgetPage);
+    void ShowTestPage(QTreeWidgetItem *pItem);
 
 signals:
     void SignalClosed();

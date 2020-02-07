@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 #ifdef _DEBUG
-    LogUtil::Init(LOG_LEVEL_DEBUG);
+    LogUtil::Init(LOG_LEVEL_DEBUG, true);
 #else
-    LogUtil::Init(LOG_LEVEL_INFO);
+    LogUtil::Init(LOG_LEVEL_INFO, false);
 #endif
 
     LogUtil::Debug(CODE_LOCATION, "-------------- Start testing --------------");

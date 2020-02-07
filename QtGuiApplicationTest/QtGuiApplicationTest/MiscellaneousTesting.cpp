@@ -74,9 +74,22 @@ void MiscellaneousTesting::InitializeUI()
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
     MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();
+    MiscellaneousTestItem itemID = pCurMiscellaneousTest->GetItemID();
     if (mMapTestGroup.contains(groupID))
     {
-        mMapTestGroup[groupID]->setExpanded(true);
+        QTreeWidgetItem *pChild = Q_NULLPTR;
+        QTreeWidgetItem *parrent = mMapTestGroup[groupID];
+        parrent->setExpanded(true);
+        int childCount = parrent->childCount();
+        for (int i = 0; i < childCount; ++i)
+        {
+            pChild = parrent->child(i);
+            if (itemID == pChild->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>())
+            {
+                pChild->setSelected(true);
+                break;
+            }
+        }
     }
 }
 
@@ -97,6 +110,18 @@ void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)
     }
 }
 
+void MiscellaneousTesting::ShowTestPage(QTreeWidgetItem *pItem)
+{
+    if (pItem != Q_NULLPTR)
+    {
+        MiscellaneousTestItem itemID = pItem->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>();
+        if (mMapTestPageIndex.contains(itemID))
+        {
+            ui->swTestPageWidget->setCurrentIndex(mMapTestPageIndex[itemID]);
+        }
+    }
+}
+
 void MiscellaneousTesting::closeEvent(QCloseEvent *event)
 {
     emit SignalClosed();
@@ -106,11 +131,7 @@ void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem
 {
     if (item->type() == TYPE_ITEM)
     {
-        MiscellaneousTestItem itemID = item->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>();
-        if (mMapTestPageIndex.contains(itemID))
-        {
-            ui->swTestPageWidget->setCurrentIndex(mMapTestPageIndex[itemID]);
-        }
+        this->ShowTestPage(item);
     }
     else if (item->type() == TYPE_GROUP)
     {
@@ -119,7 +140,17 @@ void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem
         {
             if (pItem == item)
             {
-                pItem->setExpanded(!pItem->isExpanded());
+                if (pItem->isExpanded())
+                {
+                    pItem->setExpanded(false);
+                }
+                else
+                {
+                    pItem->setExpanded(true);
+                    QTreeWidgetItem *pShowItem = pItem->child(0);
+                    pShowItem->setSelected(true);
+                    this->ShowTestPage(pShowItem);
+                }
             }
             else
             {

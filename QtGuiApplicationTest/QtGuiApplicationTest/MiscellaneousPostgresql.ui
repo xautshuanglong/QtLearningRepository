@@ -269,7 +269,7 @@ Insert</string>
        <property name="styleSheet">
         <string notr="true">QLabel
 {
-	background-color: rgb(69,125,204);
+	background-color: rgb(75,165,224);
 }</string>
        </property>
        <property name="text">

@@ -70,32 +70,38 @@ QProgressIndicator {
 }
 
 /*********** ≤‚ ‘œÓƒø‘”ºØ ***********/
-QTreeWidget#twMiscellaneousTesting {
+QTreeWidget#twMiscellaneousTesting
+{
     border: 1px solid rgb(111, 156, 207);
     indentation: 0px;
 }
 
-QTreeWidget#twMiscellaneousTesting QHeaderView::section:horizontal {
+QTreeWidget#twMiscellaneousTesting QHeaderView::section:horizontal
+{
     border: none;
     show-decoration-selected: 1;
     border-bottom: 1px solid rgb(139,185,232);
 }
 
-QTreeWidget#twMiscellaneousTesting::item {
+QTreeWidget#twMiscellaneousTesting::item
+{
     color: rgb(3,65,151);
     background-color: rgb(187,212,238);
     border-bottom: 1px solid rgb(111,156,207);
 }
 
-QTreeWidget#twMiscellaneousTesting::item:hover {
+QTreeWidget#twMiscellaneousTesting::item:hover
+{
     background-color: rgb(137,216,250);
 }
 
-QTreeWidget#twMiscellaneousTesting::item:selected {
+QTreeWidget#twMiscellaneousTesting::item:selected
+{
     background-color: rgb(137,216,250);
 }
 
-QTreeWidget#twMiscellaneousTesting::item:has-children {
+QTreeWidget#twMiscellaneousTesting::item:has-children
+{
     background-color: rgb(120,170,220);
 }
 
