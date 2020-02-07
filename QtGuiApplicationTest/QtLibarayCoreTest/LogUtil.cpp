@@ -27,7 +27,7 @@ LogUtil::~LogUtil()
 {
 }
 
-void LogUtil::Init(LogLevelType level, LogCallback zlogHandler/* =/* =nullptr */)
+void LogUtil::Init(LogLevelType level, bool bDisplayOnConsole, LogCallback zlogHandler/* =/* =nullptr */)
 {
     mLevel = level;
     if (zlogHandler != nullptr)
@@ -47,9 +47,9 @@ void LogUtil::Init(LogLevelType level, LogCallback zlogHandler/* =/* =nullptr */
         zlog::IZLogManager::getRef().setLogFilePath(mLoggerID, "./logs/");
         zlog::IZLogManager::getRef().setFilterLogLevel(mLoggerID, level);
         zlog::IZLogManager::getRef().setLogFileSizeLimit(mLoggerID, 10);
-        zlog::IZLogManager::getRef().setIsDisplayOnConsole(mLoggerID, true);
+        zlog::IZLogManager::getRef().setIsDisplayOnConsole(mLoggerID, bDisplayOnConsole);
         zlog::IZLogManager::getRef().setIsWriteToFile(mLoggerID, true);
-        zlog::IZLogManager::getRef().setIsDisplayOnConsole(zlog::ZLOG_MAIN_LOGGER_ID, false);
+        zlog::IZLogManager::getRef().setIsDisplayOnConsole(zlog::ZLOG_MAIN_LOGGER_ID, bDisplayOnConsole);
         zlog::IZLogManager::getRef().setIsWriteToFile(zlog::ZLOG_MAIN_LOGGER_ID, false);
 
         //zlog::IZLogManager::getRef().configFromFile("./ZlogConfig.ini");
@@ -61,10 +61,10 @@ void LogUtil::Init(LogLevelType level, LogCallback zlogHandler/* =/* =nullptr */
             oss.str("");
             oss << "Collection_Type_" << i;
             int logId = zlog::IZLogManager::getRef().createLogger(oss.str().c_str());
-            zlog::IZLogManager::getRef().setLogFilePath(logId, "./log/");
+            zlog::IZLogManager::getRef().setLogFilePath(logId, "./logs/");
             zlog::IZLogManager::getRef().setFilterLogLevel(logId, LOG_LEVEL_INFO);
             zlog::IZLogManager::getRef().setLogFileSizeLimit(logId, 8);
-            zlog::IZLogManager::getRef().setIsDisplayOnConsole(logId, true);
+            zlog::IZLogManager::getRef().setIsDisplayOnConsole(logId, false);
             zlog::IZLogManager::getRef().setIsWriteToFile(logId, true);
             mLogCollections[i] = logId;
         }

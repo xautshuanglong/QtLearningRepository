@@ -307,6 +307,8 @@ dmypy.json
 **/libs/dcmtk-libtiff-4.0.9/**
 **/libs/dcmtk-openssl-1.1.0g/**
 **/libs/wxsqlite3/**
+**/libs/libpq/**
+**/libs/pqxx/**
 
 # QT generated files
 **/GeneratedFiles/**

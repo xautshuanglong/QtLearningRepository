@@ -95,7 +95,7 @@ private:
 public:
     ~LogUtil();
 
-    static void Init(LogLevelType level, LogCallback zlogHandler = nullptr);
+    static void Init(LogLevelType level, bool bDisplayOnConsole, LogCallback zlogHandler = nullptr);
 
     static void Debug(const char *fmt, ...);
     static void Debug(CodeLocation location, const char *fmt, ...);

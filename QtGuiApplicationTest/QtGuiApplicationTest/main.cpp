@@ -28,9 +28,9 @@ int main(int argc, char *argv[])
     MyApplication app(argc, argv);
 
 #ifdef QT_DEBUG
-    LogUtil::Init(LOG_LEVEL_DEBUG);
+    LogUtil::Init(LOG_LEVEL_DEBUG, true);
 #else
-    LogUtil::Init(LOG_LEVEL_INFO);
+    LogUtil::Init(LOG_LEVEL_INFO, false);
 #endif
 
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");
