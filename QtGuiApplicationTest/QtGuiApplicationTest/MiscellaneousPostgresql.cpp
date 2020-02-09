@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <sstream>
 
+#include <QDateTime>
+
 // libpq/libpqxx Headers
 /************************************************************************/
 /* postgresql 数据库相关操作测试                                          */
@@ -157,7 +159,26 @@ void MiscellaneousPostgresql::on_btnLibpqSelect_clicked()
 
 void MiscellaneousPostgresql::on_btnLibpqxxInsert_clicked()
 {
-    int i = 0;
+    try
+    {
+        // insert into public."Users" (name, passwd, reg_time) values ('zhangsan', 'zhangtest', current_timestamp);
+        qint64 currentSecond = QDateTime::currentMSecsSinceEpoch();
+        QString username = QString("user_%1").arg(currentSecond);
+        QString password = QString("passwd_%1").arg(currentSecond);
+        QString insertSatence = QString("insert into public.\"Users\" (name, passwd, reg_time) values ('%1', '%2', current_timestamp)").arg(username).arg(password);
+
+        pqxx::connection conn("dbname=test_db user=postgres password=shuanglong hostaddr=127.0.0.1 port=5432");
+        LogUtil::Info(CODE_LOCATION, "Connected to : %s", conn.dbname());
+        pqxx::work work(conn);
+
+        pqxx::result res = work.exec(insertSatence.toUtf8().data());
+        work.commit();
+        LogUtil::Info(CODE_LOCATION, "OK.");
+    }
+    catch (const std::exception &e)
+    {
+        LogUtil::Error(CODE_LOCATION, "pqxx error: %s", e.what());
+    }
 }
 
 void MiscellaneousPostgresql::on_btnLibpqxxDelete_clicked()
@@ -172,7 +193,6 @@ void MiscellaneousPostgresql::on_btnLibpqxxUpdate_clicked()
 
 void MiscellaneousPostgresql::on_btnLibpqxxSelect_clicked()
 {
-    int i = 0;
     try
     {
         pqxx::connection conn("dbname=test_db user=postgres password=shuanglong hostaddr=127.0.0.1 port=5432");
