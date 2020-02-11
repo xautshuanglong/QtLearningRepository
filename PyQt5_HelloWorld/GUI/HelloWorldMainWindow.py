@@ -24,9 +24,13 @@ class HelloWorldMainWindow(QMainWindow):
 
     def init_ui(self):
         self.ui.btnTest.clicked.connect(self.on_btn_test_clicked)
+        # self.ui.actionAbout.triggered.connect(self.on_action_about_triggered)
 
     def resizeEvent(self, event):
         self.about_widget.resize(event.size())
+
+    def on_actionAbout_triggered(self):
+        self.about_widget.setVisible(True)
 
     def on_btn_test_clicked(self):
         self.count += 1

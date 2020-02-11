@@ -14,5 +14,8 @@ class AboutWidget(QWidget):
 
         self.ui.btnClose.clicked.connect(self.on_btnClose_clicked)
 
+    def resizeEvent(self, event):
+        pass
+
     def on_btnClose_clicked(self):
         self.hide()

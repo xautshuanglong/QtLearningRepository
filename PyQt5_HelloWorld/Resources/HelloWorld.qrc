@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>button_close_hover.png</file>
+    <file>button_close_normal.png</file>
     <file>HelloWorld.ico</file>
   </qresource>
 </RCC>
