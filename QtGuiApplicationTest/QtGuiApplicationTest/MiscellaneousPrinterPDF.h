@@ -21,6 +21,10 @@ private:
     Ui::MiscellaneousPrinterPDF ui;
 
 private slots:
+    void on_btnPrinterInfo_clicked();
+    void on_btnPageSetupDlg_clicked();
+    void on_btnPrintPreviewDlg_clicked();
+    void on_btnPrintDlg_clicked();
     void on_btnQPrinterTest_clicked();
 };
 

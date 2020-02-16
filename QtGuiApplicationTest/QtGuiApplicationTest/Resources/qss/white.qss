@@ -449,7 +449,7 @@ QTreeWidget
 
 QTreeWidget::item
 {
-    height: 28px;
+    height: 34px;
     background: transparent;
     outline: none;
 }
