@@ -35,7 +35,6 @@ class HelloWorldMainWindow(QMainWindow):
     def on_btn_test_clicked(self):
         self.count += 1
         self.ui.leInputTest.setText("test %d" % self.count)
-        self.about_widget.setVisible(True)
 
         try:
             conn = psycopg2.connect(database="test_db", user="postgres", password="shuanglong", host="localhost", port="5432")
