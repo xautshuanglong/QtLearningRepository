@@ -169,6 +169,15 @@ void MiscellaneousPrinterPDF::on_btnPageSetupDlg_clicked()
     QPageSetupDialog dlg(&printer);
     if (QDialog::Accepted == dlg.exec())
     {
+        if (printer.pageLayout().orientation() == QPageLayout::Landscape)
+        {
+            printer.setPageOrientation(QPageLayout::Landscape);
+        }
+        else
+        {
+            printer.setPageOrientation(QPageLayout::Portrait);
+        }
+
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName("E:/Temp/QtPrintTest/PageSetupTest.pdf");
         QPainter painter;
@@ -260,6 +269,7 @@ void MiscellaneousPrinterPDF::on_btnPrintDlg_clicked()
     if (QDialog::Accepted == printDlg.exec())
     {
         QPainter painter;
+
         if (!painter.begin(&printer))
         {
             // failed to open file
