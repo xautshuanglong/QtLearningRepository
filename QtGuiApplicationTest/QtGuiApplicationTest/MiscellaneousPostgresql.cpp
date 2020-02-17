@@ -15,6 +15,13 @@
 #include <libpq-fe.h>
 #include <pqxx/pqxx>
 
+template <> QDateTime pqxx::field::as<QDateTime>() const
+{
+    //QString timeString2("2019-07-08 17:52:02.987"); // 2020-02-17 17:19:52.122236+08
+    //QDateTime timeTest2 = QDateTime::fromString(timeString2, "yyyy-MM-dd hh:mm:ss.zzz");
+    return QDateTime::fromString(QString(this->c_str()).left(23), "yyyy-MM-dd hh:mm:ss.z");
+}
+
 #include <LogUtil.h>
 
 MiscellaneousPostgresql::MiscellaneousPostgresql(QWidget *parent)
@@ -78,6 +85,7 @@ void MiscellaneousPostgresql::on_btnLibpqSelect_clicked()
         LogUtil::Error(CODE_LOCATION, "Connection to database failed: %s",
                 PQerrorMessage(conn));
         PQfinish(conn);
+        return;
     }
 
     /*
@@ -93,6 +101,7 @@ void MiscellaneousPostgresql::on_btnLibpqSelect_clicked()
         LogUtil::Error(CODE_LOCATION, "BEGIN command failed: %s", PQerrorMessage(conn));
         PQclear(res);
         PQfinish(conn);
+        return;
     }
 
     /*
@@ -109,6 +118,7 @@ void MiscellaneousPostgresql::on_btnLibpqSelect_clicked()
         LogUtil::Error(CODE_LOCATION, "DECLARE CURSOR failed: %s", PQerrorMessage(conn));
         PQclear(res);
         PQfinish(conn);
+        return;
     }
     PQclear(res);
 
@@ -118,6 +128,7 @@ void MiscellaneousPostgresql::on_btnLibpqSelect_clicked()
         LogUtil::Error(CODE_LOCATION, "FETCH ALL failed: %s", PQerrorMessage(conn));
         PQclear(res);
         PQfinish(conn);
+        return;
     }
 
     /* 首先，打印属性名称 */
@@ -203,14 +214,25 @@ void MiscellaneousPostgresql::on_btnLibpqxxSelect_clicked()
         LogUtil::Info(CODE_LOCATION, "Found %d users:", res.size());
         for (pqxx::row user : res)
         {
-            LogUtil::Info(CODE_LOCATION, "%s %s %s",
-                           user[0].c_str(),
-                           user[1].c_str(),
-                           user[2].c_str());
+            LogUtil::Info(CODE_LOCATION, "%s %s %s %s",
+                          user[0].c_str(),
+                          user[1].c_str(),
+                          user[2].c_str(),
+                          user[3].c_str());
+            QDateTime reg_time = user[3].as<QDateTime>();
+            LogUtil::Info(CODE_LOCATION, "QDateTime: %s", reg_time.toString(Qt::ISODateWithMs).toUtf8().data());
+
+            QDateTime reg_time_at = user.at("reg_time").as<QDateTime>();
+            LogUtil::Info(CODE_LOCATION, "Row at QDateTime: %s", reg_time.toString(Qt::ISODateWithMs).toUtf8().data());
         }
 
         work.commit();
         std::cout << "OK." << std::endl;
+    }
+    catch (pqxx::sql_error const &e)
+    {
+        LogUtil::Error(CODE_LOCATION, "SQL error: %s", e.what());
+        LogUtil::Error(CODE_LOCATION, "Query was: %s", e.query().c_str());
     }
     catch (const std::exception &e)
     {
