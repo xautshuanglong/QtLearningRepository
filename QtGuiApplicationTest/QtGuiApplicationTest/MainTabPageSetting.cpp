@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QTextBlock>
 #include <QBuffer>
+#include <QMenu>
 #include <QNetworkInterface>
 #include <QStyledItemDelegate>
 
@@ -81,6 +82,19 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
 
     this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainTabPageSetting::SlotListVScrollBarValueChanged);
     this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::rangeChanged, this, &MainTabPageSetting::SlotListVScrollBarRangeChanged);
+
+    // 按钮下拉菜单测试
+    QMenu *pButtonMenu = new QMenu(this);
+    QAction *pActionAdd = new QAction(pButtonMenu);
+    QAction *pActionDelete = new QAction(pButtonMenu);
+    pActionAdd->setText(QObject::tr("DropMenu-Add"));
+    pActionDelete->setText(QObject::tr("DropMenu-Delete"));
+    pButtonMenu->addAction(pActionAdd);
+    pButtonMenu->addAction(pActionDelete);
+    ui.btnDropMenu->setMenu(pButtonMenu);
+    ui.btnDropMenu->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(pActionAdd, &QAction::triggered, this, &MainTabPageSetting::SlotDropMenuActionTriggeredAdd);
+    connect(pActionDelete, &QAction::triggered, this, &MainTabPageSetting::SlotDropMenuActionTriggeredDelete);
 }
 
 MainTabPageSetting::~MainTabPageSetting()
@@ -95,6 +109,16 @@ void MainTabPageSetting::SlotListVScrollBarRangeChanged(int min, int max)
 void MainTabPageSetting::SlotListVScrollBarValueChanged(int value)
 {
     LogUtil::Debug(CODE_LOCATION, "value:%d", value);
+}
+
+void MainTabPageSetting::SlotDropMenuActionTriggeredAdd()
+{
+    int i = 0;
+}
+
+void MainTabPageSetting::SlotDropMenuActionTriggeredDelete()
+{
+    int i = 0;
 }
 
 void MainTabPageSetting::on_btnGeneratePDF_clicked()
@@ -290,4 +314,14 @@ void MainTabPageSetting::on_btnShowVerticalScrollBar_clicked()
         bShow = true;
         ui.lwTest->verticalScrollBar()->setVisible(bShow);
     }
+}
+
+void MainTabPageSetting::on_btnDropMenu_clicked()
+{
+    int i = 0;
+}
+
+void MainTabPageSetting::on_btnDropMenu_customContextMenuRequested(const QPoint &pos)
+{
+    int i = 0;
 }

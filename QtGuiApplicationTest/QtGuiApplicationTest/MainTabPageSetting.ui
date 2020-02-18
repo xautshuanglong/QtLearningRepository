@@ -31,7 +31,7 @@
     <rect>
      <x>10</x>
      <y>70</y>
-     <width>231</width>
+     <width>230</width>
      <height>40</height>
     </rect>
    </property>
@@ -93,8 +93,8 @@ QComboBox QAbstractItemView
   <widget class="QListWidget" name="lwTest">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>360</y>
+     <x>10</x>
+     <y>170</y>
      <width>240</width>
      <height>140</height>
     </rect>
@@ -233,8 +233,8 @@ QListWidget::item::hover
   <widget class="QPushButton" name="btnChangeItemCount">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>320</y>
+     <x>10</x>
+     <y>130</y>
      <width>100</width>
      <height>30</height>
     </rect>
@@ -246,14 +246,63 @@ QListWidget::item::hover
   <widget class="QPushButton" name="btnShowVerticalScrollBar">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>320</y>
+     <x>140</x>
+     <y>130</y>
      <width>100</width>
      <height>30</height>
     </rect>
    </property>
    <property name="text">
     <string>ShowVerticalBar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDropMenu">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>450</y>
+     <width>230</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+	border: 1px solid gray;
+    color: rgb(75, 75, 75);
+}
+
+QPushButton::menu-indicator:open
+{
+	image: url(:/AppImages/Resources/images/white/arrow_up.png);
+    subcontrol-position: right center;
+    subcontrol-origin: padding;
+}
+
+QPushButton::menu-indicator:closed
+{
+	image: url(:/AppImages/Resources/images/white/arrow_down.png);
+    subcontrol-position: right center;
+    subcontrol-origin: padding;
+}</string>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
