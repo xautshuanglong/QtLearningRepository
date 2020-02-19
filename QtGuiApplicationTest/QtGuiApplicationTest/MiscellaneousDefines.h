@@ -10,6 +10,7 @@ enum class MiscellaneousTestGroup
     Standard_Cpp,    // 标准 CPP 库函数测试
     QT_Test,         // QT 功能模块测试
     Database,        // 数据库相关测试
+    Others,          // 其他未知分类
     Max_Size
 };
 Q_DECLARE_METATYPE(MiscellaneousTestGroup)
@@ -26,6 +27,7 @@ enum class MiscellaneousTestItem
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_Postgresql,       // 数据库操作 postgresql
+    Others_ZLib,                      // 使用 ZLib 归档文件
     Max_Size
 };
 Q_DECLARE_METATYPE(MiscellaneousTestItem)

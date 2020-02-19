@@ -19,6 +19,8 @@
 // Database
 #include "MiscellaneousWxSqlite3.h"
 #include "MiscellaneousPostgresql.h"
+// Others
+#include "MiscellaneousZLib.h"
 
 enum TreeItemType
 {
@@ -71,6 +73,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousQObjectCast(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
     this->AppendTestPage(new MiscellaneousPostgresql(this));
+    this->AppendTestPage(new MiscellaneousZLib(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
     MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();
