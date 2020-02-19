@@ -17,11 +17,18 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    int def(FILE *source, FILE *dest, int level);
+    int inf(FILE *source, FILE *dest);
+    void zerr(int ret);
+
 private slots:
     void on_btnBrowseFiles_clicked();
     void on_btnBrowseDirectory_clicked();
-    void on_btnArchiveFiles_clicked();
-    void on_btnArchiveDirectory_clicked();
+    void on_btnFilesDeflate_clicked();
+    void on_btnFilesInflate_clicked();
+    void on_btnDirectoryDeflate_clicked();
+    void on_btnDirectoryInflate_clicked();
 
 private:
     Ui::MiscellaneousZLib ui;
