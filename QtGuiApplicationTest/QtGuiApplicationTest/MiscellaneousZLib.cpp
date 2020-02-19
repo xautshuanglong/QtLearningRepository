@@ -1,6 +1,7 @@
 #include "MiscellaneousZLib.h"
 
 #include <QFileDialog>
+#include <zlib/zlib.h>
 
 MiscellaneousZLib::MiscellaneousZLib(QWidget *parent)
     : MiscellaneousBase(parent)
