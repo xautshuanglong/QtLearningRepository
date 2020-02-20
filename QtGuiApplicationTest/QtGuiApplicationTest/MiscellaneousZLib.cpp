@@ -205,7 +205,7 @@ void MiscellaneousZLib::zerr(int ret)
 
 void MiscellaneousZLib::on_btnBrowseFiles_clicked()
 {
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Open files"), qApp->applicationDirPath(), "Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml);;All(*)");
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Open files"), qApp->applicationDirPath(), "All (*);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)");
     ui.leFilenames->setText(files.join(";"));
 }
 
@@ -223,15 +223,21 @@ void MiscellaneousZLib::on_btnFilesDeflate_clicked()
     QStringList files = inputFilesStr.split(";", QString::SkipEmptyParts, Qt::CaseInsensitive);
     if (files.count() <= 0) return;
 
+    const char *pOutFilename = "E:\\zlib_files_deflate_test_deflate.zip";
     FILE *pInFile = fopen(files[0].toUtf8().data(), "r");
-    FILE *pOutFile = fopen("E:\\zlib_files_deflate_test.zip", "w");
+    FILE *pOutFile = fopen(pOutFilename, "w");
 
     SET_BINARY_MODE(pInFile);
     SET_BINARY_MODE(pOutFile);
 
     int ret = def(pInFile, pOutFile, Z_DEFAULT_COMPRESSION);
     if (ret != Z_OK)
+    {
         zerr(ret);
+        fclose(pOutFile);
+        int res = remove(pOutFilename);
+        LogUtil::Debug(CODE_LOCATION, "remove file result: %d", res);
+    }
     fclose(pInFile);
     fclose(pOutFile);
 }
@@ -244,15 +250,21 @@ void MiscellaneousZLib::on_btnFilesInflate_clicked()
     QStringList files = inputFilesStr.split(";", QString::SkipEmptyParts, Qt::CaseInsensitive);
     if (files.count() <= 0) return;
 
+    const char *pOutFilename = "E:\\zlib_files_deflate_test_inflate.jpg";
     FILE *pInFile = fopen(files[0].toUtf8().data(), "r");
-    FILE *pOutFile = fopen("E:\\zlib_files_deflate_test.jpg", "w");
+    FILE *pOutFile = fopen(pOutFilename, "w");
 
     SET_BINARY_MODE(pInFile);
     SET_BINARY_MODE(pOutFile);
 
     int ret = inf(pInFile, pOutFile);
     if (ret != Z_OK)
+    {
         zerr(ret);
+        fclose(pOutFile);
+        int res = remove(pOutFilename);
+        LogUtil::Debug(CODE_LOCATION, "remove file result: %d", res);
+    }
 
     fclose(pInFile);
     fclose(pOutFile);
