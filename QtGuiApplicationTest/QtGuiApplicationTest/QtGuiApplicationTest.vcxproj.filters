@@ -316,6 +316,9 @@
     <ClCompile Include="MiscellaneousZLib.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousZip.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -370,6 +373,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousZLib.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousZip.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -509,6 +515,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousZLib.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousZip.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

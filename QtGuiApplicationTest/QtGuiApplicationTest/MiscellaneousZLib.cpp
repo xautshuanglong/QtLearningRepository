@@ -32,7 +32,7 @@ QString MiscellaneousZLib::GetTitle()
 
 QString MiscellaneousZLib::GetTitleTooltip()
 {
-    return QObject::tr("How to use zlib make archive files.");
+    return QObject::tr("How to use zlib compress and uncompress files.");
 }
 
 MiscellaneousTestGroup MiscellaneousZLib::GetGroupID()

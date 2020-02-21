@@ -27,7 +27,8 @@ enum class MiscellaneousTestItem
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_Postgresql,       // 数据库操作 postgresql
-    Others_ZLib,                      // 使用 ZLib 归档文件
+    Others_Zip,                       // 使用 ZLib 归档/提取文件
+    Others_ZLib,                      // 使用 ZLib 压缩/解压文件
     Max_Size
 };
 Q_DECLARE_METATYPE(MiscellaneousTestItem)
