@@ -193,11 +193,9 @@ bool IsZipHandleZ(HZIP hz);
 #ifdef _unzip_H
 #undef CloseZip
 #define CloseZip(hz) (IsZipHandleZ(hz)?CloseZipZ(hz):CloseZipU(hz))
-#else
+#else // _unzip_H
 #define CloseZip CloseZipZ
 #define FormatZipMessage FormatZipMessageZ
-#endif
-
-
+#endif // _unzip_H
 
 #endif
