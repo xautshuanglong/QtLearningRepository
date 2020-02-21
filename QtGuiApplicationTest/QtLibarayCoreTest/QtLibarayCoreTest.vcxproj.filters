@@ -36,6 +36,9 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Zip">
+      <UniqueIdentifier>{7ad13db2-5e7c-4358-b23c-e41e48599ba0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtlibaraycoretest_global.h">
@@ -59,6 +62,12 @@
     <ClInclude Include="zlog.h">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="unzip.h">
+      <Filter>Zip</Filter>
+    </ClInclude>
+    <ClInclude Include="zip.h">
+      <Filter>Zip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DllMain.cpp">
@@ -81,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="QObjectCastTest.cpp">
       <Filter>MiscellaneousTest</Filter>
+    </ClCompile>
+    <ClCompile Include="unzip.cpp">
+      <Filter>Zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip.cpp">
+      <Filter>Zip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
