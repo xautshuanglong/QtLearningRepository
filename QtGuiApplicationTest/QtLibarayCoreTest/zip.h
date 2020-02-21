@@ -1,13 +1,27 @@
 #ifndef _zip_H
 #define _zip_H
 
-
 // ZIP functions -- for creating zip files
 // This file is a repackaged form of the Info-Zip source code available
 // at www.info-zip.org. The original copyright notice may be found in
 // zip.cpp. The repackaging was done by Lucian Wischik to simplify and
 // extend its use in Windows/C++. Also to add encryption and unicode.
 
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
+
+#include <windows.h>
+
+#ifndef BUILD_STATIC
+# if defined(QTLIBARAYCORETEST_LIB)
+#  define ZIP_EXTERN _declspec(dllexport)
+# else
+#  define ZIP_EXTERN _declspec(dllimport)
+# endif
+#else
+# define ZIP_EXTERN
+#endif
 
 #ifndef _unzip_H
 DECLARE_HANDLE(HZIP);
@@ -17,11 +31,9 @@ DECLARE_HANDLE(HZIP);
 typedef DWORD ZRESULT;
 // return codes from any of the zip functions. Listed later.
 
-
-
-HZIP CreateZip(const TCHAR *fn, const char *password);
-HZIP CreateZip(void *buf,unsigned int len, const char *password);
-HZIP CreateZipHandle(HANDLE h, const char *password);
+ZIP_EXTERN HZIP CreateZip(const TCHAR *fn, const char *password);
+ZIP_EXTERN HZIP CreateZip(void *buf,unsigned int len, const char *password);
+ZIP_EXTERN HZIP CreateZipHandle(HANDLE h, const char *password);
 // CreateZip - call this to start the creation of a zip file.
 // As the zip is being created, it will be stored somewhere:
 // to a pipe:              CreateZipHandle(hpipe_write);
@@ -52,12 +64,11 @@ HZIP CreateZipHandle(HANDLE h, const char *password);
 // but for real windows, the zip makes its own copy of your handle, so you
 // can close yours anytime.
 
-
-ZRESULT ZipAdd(HZIP hz,const TCHAR *dstzn, const TCHAR *fn);
-ZRESULT ZipAdd(HZIP hz,const TCHAR *dstzn, void *src,unsigned int len);
-ZRESULT ZipAddHandle(HZIP hz,const TCHAR *dstzn, HANDLE h);
-ZRESULT ZipAddHandle(HZIP hz,const TCHAR *dstzn, HANDLE h, unsigned int len);
-ZRESULT ZipAddFolder(HZIP hz,const TCHAR *dstzn);
+ZIP_EXTERN ZRESULT ZipAdd(HZIP hz,const TCHAR *dstzn, const TCHAR *fn);
+ZIP_EXTERN ZRESULT ZipAdd(HZIP hz,const TCHAR *dstzn, void *src,unsigned int len);
+ZIP_EXTERN ZRESULT ZipAddHandle(HZIP hz,const TCHAR *dstzn, HANDLE h);
+ZIP_EXTERN ZRESULT ZipAddHandle(HZIP hz,const TCHAR *dstzn, HANDLE h, unsigned int len);
+ZIP_EXTERN ZRESULT ZipAddFolder(HZIP hz,const TCHAR *dstzn);
 // ZipAdd - call this for each file to be added to the zip.
 // dstzn is the name that the file will be stored as in the zip file.
 // The file to be added to the zip can come
@@ -72,16 +83,16 @@ ZRESULT ZipAddFolder(HZIP hz,const TCHAR *dstzn);
 // compressed item itself, which in turn makes it easier when unzipping the
 // zipfile from a pipe.
 
-ZRESULT ZipGetMemory(HZIP hz, void **buf, unsigned long *len);
+ZIP_EXTERN ZRESULT ZipGetMemory(HZIP hz, void **buf, unsigned long *len);
 // ZipGetMemory - If the zip was created in memory, via ZipCreate(0,len),
 // then this function will return information about that memory block.
 // buf will receive a pointer to its start, and len its length.
 // Note: you can't add any more after calling this.
 
-ZRESULT CloseZip(HZIP hz);
+ZIP_EXTERN ZRESULT CloseZip(HZIP hz);
 // CloseZip - the zip handle must be closed with this function.
 
-unsigned int FormatZipMessage(ZRESULT code, TCHAR *buf,unsigned int len);
+ZIP_EXTERN unsigned int FormatZipMessage(ZRESULT code, TCHAR *buf,unsigned int len);
 // FormatZipMessage - given an error code, formats it as a string.
 // It returns the length of the error message. If buf/len points
 // to a real buffer, then it also writes as much as possible into there.
@@ -187,9 +198,9 @@ unsigned int FormatZipMessage(ZRESULT code, TCHAR *buf,unsigned int len);
 // the cpp files for zip and unzip are both present, so we will call
 // one or the other of them based on a dynamic choice. If the header file
 // for only one is present, then we will bind to that particular one.
-ZRESULT CloseZipZ(HZIP hz);
-unsigned int FormatZipMessageZ(ZRESULT code, char *buf,unsigned int len);
-bool IsZipHandleZ(HZIP hz);
+ZIP_EXTERN ZRESULT CloseZipZ(HZIP hz);
+ZIP_EXTERN unsigned int FormatZipMessageZ(ZRESULT code, char *buf,unsigned int len);
+ZIP_EXTERN bool IsZipHandleZ(HZIP hz);
 #ifdef _unzip_H
 #undef CloseZip
 #define CloseZip(hz) (IsZipHandleZ(hz)?CloseZipZ(hz):CloseZipU(hz))
@@ -198,4 +209,8 @@ bool IsZipHandleZ(HZIP hz);
 #define FormatZipMessage FormatZipMessageZ
 #endif // _unzip_H
 
-#endif
+//#ifdef __cplusplus
+//}
+//#endif // __cplusplus
+
+#endif // _zip_H

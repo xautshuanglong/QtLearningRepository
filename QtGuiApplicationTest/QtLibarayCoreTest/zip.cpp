@@ -2631,10 +2631,6 @@ ZRESULT TZip::AddCentral()
     return ZR_OK;
 }
 
-
-
-
-
 ZRESULT lasterrorZ = ZR_OK;
 
 unsigned int FormatZipMessageZ(ZRESULT code, char *buf, unsigned int len)

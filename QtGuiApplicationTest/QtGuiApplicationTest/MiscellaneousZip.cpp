@@ -1,6 +1,10 @@
 #include "MiscellaneousZip.h"
 
+#include <assert.h>
 #include <QFileDialog>
+
+#include <zip.h>
+#include <unzip.h>
 
 MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -34,8 +38,29 @@ MiscellaneousTestItem MiscellaneousZip::GetItemID()
 
 void MiscellaneousZip::on_btnFilesArchive_clicked()
 {
-    QString sourceDir = ui.leFilesArchive->text();
+    QStringList sourceFiles = ui.leFilesArchive->text().split(";");
     QString targetFile = ui.leZipFilesSave->text();
+
+    assert(sourceFiles.count() != 0);
+    assert(!targetFile.isEmpty());
+    if (sourceFiles.count() == 0 || targetFile.isEmpty()) return;
+
+    QFileInfo tempFileInfo;
+    ZRESULT zres = ZR_OK;
+    HZIP hZipFile;
+    hZipFile = CreateZip(targetFile.toUtf8().data(), 0);
+
+    for each (QString filename in sourceFiles)
+    {
+        tempFileInfo.setFile(filename);
+        zres = ZipAdd(hZipFile, tempFileInfo.fileName().toUtf8().data(), filename.toUtf8().data());
+        if (zres != ZR_OK)
+        {
+            break;
+        }
+    }
+
+    CloseZip(hZipFile);
 }
 
 void MiscellaneousZip::on_btnFilesArchiveOpen_clicked()
@@ -54,6 +79,29 @@ void MiscellaneousZip::on_btnFilesExtract_clicked()
 {
     QString sourceFile = ui.leZipFilesOpen->text();
     QString targetDir = ui.leFilesExtract->text();
+
+    assert(!sourceFile.isEmpty());
+    assert(!targetDir.isEmpty());
+    if (sourceFile.isEmpty() || targetDir.isEmpty()) return;
+
+    ZRESULT zres = ZR_OK;
+    HZIP hZipFile = OpenZip(sourceFile.toUtf8().data(), 0);
+    zres = SetUnzipBaseDir(hZipFile, targetDir.toUtf8().data());
+    if (zres == ZR_OK)
+    {
+        ZIPENTRY zipEntry;
+        zres = GetZipItem(hZipFile, -1, &zipEntry);
+        int numitems = zipEntry.index;
+        if (zres == ZR_OK)
+        {
+            for (int zi = 0; zi < numitems; zi++)
+            {
+                zres = GetZipItem(hZipFile, zi, &zipEntry);
+                zres = UnzipItem(hZipFile, zi, zipEntry.name);
+            }
+        }
+    }
+    CloseZip(hZipFile);
 }
 
 void MiscellaneousZip::on_btnFilesExtractOpen_clicked()
