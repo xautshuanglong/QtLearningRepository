@@ -117,7 +117,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbArchiveDirectories">
        <property name="text">
-        <string>打包多文件：</string>
+        <string>压缩多文件：</string>
        </property>
       </widget>
      </item>
@@ -138,7 +138,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="lbArchiveFiles">
        <property name="text">
-        <string>打包文件夹：</string>
+        <string>压缩文件夹：</string>
        </property>
       </widget>
      </item>

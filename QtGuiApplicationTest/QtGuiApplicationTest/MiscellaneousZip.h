@@ -18,12 +18,18 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
-    void on_btnBrowseFiles_clicked();
-    void on_btnBrowseDirectory_clicked();
     void on_btnFilesArchive_clicked();
+    void on_btnFilesArchiveOpen_clicked();
+    void on_btnFilesArchiveBrowse_clicked();
     void on_btnFilesExtract_clicked();
+    void on_btnFilesExtractOpen_clicked();
+    void on_btnFilesExtractBrowse_clicked();
     void on_btnDirectoryArchive_clicked();
+    void on_btnDirectoryArchiveOpen_clicked();
+    void on_btnDirectoryArchiveBrowse_clicked();
     void on_btnDirectoryExtract_clicked();
+    void on_btnDirectoryExtractOpen_clicked();
+    void on_btnDirectoryExtractBrowse_clicked();
 
 private:
     Ui::MiscellaneousZip ui;
