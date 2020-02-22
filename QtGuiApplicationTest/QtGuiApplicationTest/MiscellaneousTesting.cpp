@@ -8,9 +8,11 @@
 
 // WinAPI Test
 #include "MiscellaneousBeginThreadEx.h"
+// Standard CPP
+#include "MiscellaneousStdSharedPointer.h"
+#include "MiscellaneousCLanguageFeatures.h"
 // QT Test
 #include "MiscellaneousPrinterPDF.h"
-#include "MiscellaneousStdSharedPointer.h"
 #include "MiscellaneousSignalSlot.h"
 #include "MiscellaneousPrinterWidget.h"
 #include "MiscellaneousImageQImage.h"
@@ -66,6 +68,7 @@ void MiscellaneousTesting::InitializeUI()
 
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
+    this->AppendTestPage(new MiscellaneousCLanguageFeatures(this));
     this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
