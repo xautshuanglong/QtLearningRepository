@@ -5,6 +5,7 @@
 
 #include <zip.h>
 #include <unzip.h>
+#include <libzip/zip.h>
 
 MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -148,6 +149,62 @@ void MiscellaneousZip::on_btnDirectoryExtractOpen_clicked()
 
 void MiscellaneousZip::on_btnDirectoryExtractBrowse_clicked()
 {
+    QString extractDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), qApp->applicationDirPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    ui.leDirectoryExtract->setText(extractDir);
+}
+
+void MiscellaneousZip::on_btnLibZipArchive_clicked()
+{
+    int i = 0;
+
+    QStringList sourceFiles = ui.leFilesArchive->text().split(";");
+    QString targetFile = ui.leZipFilesSave->text();
+
+    assert(sourceFiles.count() != 0);
+    assert(!targetFile.isEmpty());
+    if (sourceFiles.count() == 0 || targetFile.isEmpty()) return;
+}
+
+void MiscellaneousZip::on_btnLibZipArchiveOpen_clicked()
+{
+    int i = 0;
+
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Open files"), qApp->applicationDirPath(), "All (*);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)");
+    ui.leFilesArchive->setText(files.join(";"));;
+}
+
+void MiscellaneousZip::on_btnLibZipArchiveBrowse_clicked()
+{
+    int i = 0;
+
+    QString zipFileSave = QFileDialog::getSaveFileName(this, tr("Save Zip file"), qApp->applicationDirPath(), "Zip (*.zip);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml);;All (*)");
+    ui.leZipFilesSave->setText(zipFileSave);
+}
+
+void MiscellaneousZip::on_btnLibZipExtract_clicked()
+{
+    int i = 0;
+
+    QString sourceFile = ui.leZipFilesOpen->text();
+    QString targetDir = ui.leFilesExtract->text();
+
+    assert(!sourceFile.isEmpty());
+    assert(!targetDir.isEmpty());
+    if (sourceFile.isEmpty() || targetDir.isEmpty()) return;
+}
+
+void MiscellaneousZip::on_btnLibZipExtractOpen_clicked()
+{
+    int i = 0;
+
+    QString zipFileOpen = QFileDialog::getOpenFileName(this, tr("Open Zip file"), qApp->applicationDirPath(), "Zip (*.zip);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml);;All (*)");
+    ui.leZipDirectoryOpen->setText(zipFileOpen);
+}
+
+void MiscellaneousZip::on_btnLibZipExtractBrowse_clicked()
+{
+    int i = 0;
+
     QString extractDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), qApp->applicationDirPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     ui.leDirectoryExtract->setText(extractDir);
 }

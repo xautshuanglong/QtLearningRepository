@@ -24,12 +24,20 @@ private slots:
     void on_btnFilesExtract_clicked();
     void on_btnFilesExtractOpen_clicked();
     void on_btnFilesExtractBrowse_clicked();
+
     void on_btnDirectoryArchive_clicked();
     void on_btnDirectoryArchiveOpen_clicked();
     void on_btnDirectoryArchiveBrowse_clicked();
     void on_btnDirectoryExtract_clicked();
     void on_btnDirectoryExtractOpen_clicked();
     void on_btnDirectoryExtractBrowse_clicked();
+
+    void on_btnLibZipArchive_clicked();
+    void on_btnLibZipArchiveOpen_clicked();
+    void on_btnLibZipArchiveBrowse_clicked();
+    void on_btnLibZipExtract_clicked();
+    void on_btnLibZipExtractOpen_clicked();
+    void on_btnLibZipExtractBrowse_clicked();
 
 private:
     Ui::MiscellaneousZip ui;
