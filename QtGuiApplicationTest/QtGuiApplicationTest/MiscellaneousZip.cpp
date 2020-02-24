@@ -7,6 +7,8 @@
 #include <unzip.h>
 #include <libzip/zip.h>
 
+#include <LogUtil.h>
+
 MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     : MiscellaneousBase(parent)
 {
@@ -137,8 +139,8 @@ void MiscellaneousZip::on_btnDirectoryArchiveBrowse_clicked()
 
 void MiscellaneousZip::on_btnDirectoryExtract_clicked()
 {
-    QString sourceFile = ui.leZipDirectoryOpen->text();
-    QString targetDir = ui.leDirectoryExtract->text();
+QString sourceFile = ui.leZipDirectoryOpen->text();
+QString targetDir = ui.leDirectoryExtract->text();
 }
 
 void MiscellaneousZip::on_btnDirectoryExtractOpen_clicked()
@@ -157,8 +159,8 @@ void MiscellaneousZip::on_btnLibZipArchive_clicked()
 {
     int i = 0;
 
-    QStringList sourceFiles = ui.leFilesArchive->text().split(";");
-    QString targetFile = ui.leZipFilesSave->text();
+    QStringList sourceFiles = ui.leLibZipArchive->text().split(";");
+    QString targetFile = ui.leLibZipSave->text();
 
     assert(sourceFiles.count() != 0);
     assert(!targetFile.isEmpty());
@@ -170,7 +172,7 @@ void MiscellaneousZip::on_btnLibZipArchiveOpen_clicked()
     int i = 0;
 
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open files"), qApp->applicationDirPath(), "All (*);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)");
-    ui.leFilesArchive->setText(files.join(";"));;
+    ui.leLibZipArchive->setText(files.join(";"));;
 }
 
 void MiscellaneousZip::on_btnLibZipArchiveBrowse_clicked()
@@ -178,19 +180,103 @@ void MiscellaneousZip::on_btnLibZipArchiveBrowse_clicked()
     int i = 0;
 
     QString zipFileSave = QFileDialog::getSaveFileName(this, tr("Save Zip file"), qApp->applicationDirPath(), "Zip (*.zip);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml);;All (*)");
-    ui.leZipFilesSave->setText(zipFileSave);
+    ui.leLibZipSave->setText(zipFileSave);
 }
 
 void MiscellaneousZip::on_btnLibZipExtract_clicked()
 {
     int i = 0;
 
-    QString sourceFile = ui.leZipFilesOpen->text();
-    QString targetDir = ui.leFilesExtract->text();
+    QString sourceFile = ui.leLibZipOpen->text();
+    QString targetDir = ui.leLibZipExtract->text();
 
     assert(!sourceFile.isEmpty());
     assert(!targetDir.isEmpty());
     if (sourceFile.isEmpty() || targetDir.isEmpty()) return;
+
+    int errCode = ZIP_ER_OK;
+    zip_t *pZipArchive = NULL;
+    pZipArchive = zip_open(sourceFile.toUtf8().data(), ZIP_RDONLY, &errCode);
+    if (pZipArchive == NULL)
+    {
+        zip_error_t error;
+        zip_error_init_with_code(&error, errCode);
+        LogUtil::Error(CODE_LOCATION, "Open file %s failed. Error[%d]: %s", sourceFile.toUtf8().data(), errCode, zip_error_strerror(&error));
+        zip_error_fini(&error);
+        return;
+    }
+
+    zip_int64_t index;
+    zip_int64_t entryCount = zip_get_num_entries(pZipArchive, 0);
+    if (entryCount < 0)
+    {
+        LogUtil::Error(CODE_LOCATION, "Can not get number of entries for %s. Error: %s", sourceFile.toUtf8().data(), zip_strerror(pZipArchive));
+        zip_close(pZipArchive);
+        return;
+    }
+
+    char readBuffer[8192] = { 0 };
+    const char *pFilenameInZip = NULL;
+    zip_int64_t readCount = 0;
+    zip_error_t error_got, error_ex;
+    zip_error_t *pZipFileError = NULL;
+    zip_file_t *pZipFileItem = NULL;
+    zip_stat_t fileStatInZip;
+
+    zip_stat_init(&fileStatInZip);
+    zip_error_init(&error_got);
+    zip_error_init(&error_ex);
+    zip_error_set(&error_ex, ZIP_ER_OK, 0);
+
+    for (int i = 0; i < entryCount; ++i)
+    {
+        pFilenameInZip = zip_get_name(pZipArchive, i, ZIP_FL_ENC_GUESS);
+        pZipFileItem = zip_fopen(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
+        if (pZipFileItem == NULL)
+        {
+            pZipFileError = zip_get_error(pZipArchive);
+            zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+        }
+        else
+        {
+            QString outFilename = targetDir + "/" + pFilenameInZip;
+            FILE *pExtractFile = fopen(outFilename.toUtf8().data(), "wb");
+            int readTime = 0;
+            while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+            {
+                ++readTime;
+                LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
+                for (int i = 0; i<readCount; ++i)
+                {
+                    fputc(readBuffer[i], pExtractFile);
+                }
+            }
+            if (pExtractFile != NULL)
+            {
+                fclose(pExtractFile);
+            }
+            if (readCount < 0)
+            {
+                pZipFileError = zip_file_get_error(pZipFileItem);
+                zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+            }
+        }
+        index = zip_name_locate(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
+        if (index >= 0)
+        {
+            zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
+            LogUtil::Info(CODE_LOCATION, "%5d --> %s [%s] size:%llu time:%lld CRC:%08X", index, pFilenameInZip,
+                          fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
+        }
+        else
+        {
+            LogUtil::Info(CODE_LOCATION, "-----------------------------");
+        }
+    }
+
+    zip_close(pZipArchive);
+    zip_error_fini(&error_got);
+    zip_error_fini(&error_ex);
 }
 
 void MiscellaneousZip::on_btnLibZipExtractOpen_clicked()
@@ -198,7 +284,7 @@ void MiscellaneousZip::on_btnLibZipExtractOpen_clicked()
     int i = 0;
 
     QString zipFileOpen = QFileDialog::getOpenFileName(this, tr("Open Zip file"), qApp->applicationDirPath(), "Zip (*.zip);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml);;All (*)");
-    ui.leZipDirectoryOpen->setText(zipFileOpen);
+    ui.leLibZipOpen->setText(zipFileOpen);
 }
 
 void MiscellaneousZip::on_btnLibZipExtractBrowse_clicked()
@@ -206,5 +292,5 @@ void MiscellaneousZip::on_btnLibZipExtractBrowse_clicked()
     int i = 0;
 
     QString extractDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), qApp->applicationDirPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    ui.leDirectoryExtract->setText(extractDir);
+    ui.leLibZipExtract->setText(extractDir);
 }
