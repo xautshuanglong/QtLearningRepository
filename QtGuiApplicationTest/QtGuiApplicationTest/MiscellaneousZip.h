@@ -19,7 +19,9 @@ public:
 
 private:
     void ExtractFilesFromZipArchive_SelfOpenFile(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZipArchive_SelfOpenFileDir(const QString sourceFile, const QString targetDir);
     void ExtractFilesFromZipArchive_ZipSourceFile(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZipArchive_ZipSourceFileDir(const QString sourceFile, const QString targetDir);
 
 private slots:
     void on_btnFilesArchive_clicked();
