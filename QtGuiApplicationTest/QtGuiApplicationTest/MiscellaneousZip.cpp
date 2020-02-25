@@ -5,6 +5,7 @@
 
 #include <sys/stat.h>
 #include <sys/utime.h>
+#include <direct.h>
 
 #include <zip.h>
 #include <unzip.h>
@@ -345,23 +346,37 @@ void MiscellaneousZip::ExtractFilesFromZipArchive_ZipSourceFileDir(const QString
         else
         {
             QString outFilename = targetDir + "/" + pFilenameInZip;
-            zip_source_t *pOutFile = zip_source_file_create(outFilename.toUtf8().data(), 0, 10, pSourceFileError);
-            zip_source_begin_write(pOutFile);
-            while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+            int filenameLen = strlen(pFilenameInZip);
+            if (pFilenameInZip[filenameLen-1] == '/')
             {
-                writeCount = zip_source_write(pOutFile, readBuffer, readCount);
-                if (writeCount < 0)
-                {
-                    pSourceFileError = zip_source_error(pOutFile);
-                    LogUtil::Debug(CODE_LOCATION, "write to source file failed: %s", zip_error_strerror(pSourceFileError));
-                }
-                else
-                {
-                    LogUtil::Debug(CODE_LOCATION, "readCount: %04d    writeCount: %04d", readCount, writeCount);
-                }
+                mkdir(outFilename.toUtf8().data());
             }
-            zip_source_commit_write(pOutFile);
-            zip_source_close(pOutFile);
+            else
+            {
+                zip_source_t *pOutFile = zip_source_file_create(outFilename.toUtf8().data(), 0, 10, pSourceFileError);
+                zip_source_begin_write(pOutFile);
+                while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+                {
+                    writeCount = zip_source_write(pOutFile, readBuffer, readCount);
+                    if (writeCount < 0)
+                    {
+                        pSourceFileError = zip_source_error(pOutFile);
+                        LogUtil::Debug(CODE_LOCATION, "write to source file failed: %s", zip_error_strerror(pSourceFileError));
+                    }
+                    else
+                    {
+                        LogUtil::Debug(CODE_LOCATION, "readCount: %04d    writeCount: %04d", readCount, writeCount);
+                    }
+                }
+                zip_source_commit_write(pOutFile);
+                zip_source_close(pOutFile);
+
+                // 保持文件原有时间戳
+                struct utimbuf winTimeBuf;
+                winTimeBuf.actime = fileStatInZip.mtime;
+                winTimeBuf.modtime = fileStatInZip.mtime;
+                utime(outFilename.toUtf8().data(), &winTimeBuf);
+            }
 
             //LogUtil::Info(CODE_LOCATION, "%-20s size:%llu time:%lld CRC:%08X",
             //              fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
@@ -376,11 +391,6 @@ void MiscellaneousZip::ExtractFilesFromZipArchive_ZipSourceFileDir(const QString
                           "compression", fileStatInZip.valid & ZIP_STAT_COMP_METHOD ? fileStatInZip.comp_method : 0,
                           "enctyption", fileStatInZip.valid & ZIP_STAT_ENCRYPTION_METHOD ? fileStatInZip.encryption_method : 0,
                           "flags", fileStatInZip.valid & ZIP_STAT_FLAGS ? fileStatInZip.flags : 0);
-
-            struct utimbuf winTimeBuf;
-            winTimeBuf.actime = fileStatInZip.mtime;
-            winTimeBuf.modtime = fileStatInZip.mtime;
-            utime(outFilename.toUtf8().data(), &winTimeBuf);
 
             if (readCount < 0)
             {
