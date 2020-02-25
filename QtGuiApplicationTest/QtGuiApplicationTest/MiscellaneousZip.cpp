@@ -3,6 +3,9 @@
 #include <assert.h>
 #include <QFileDialog>
 
+#include <sys/stat.h>
+#include <sys/utime.h>
+
 #include <zip.h>
 #include <unzip.h>
 #include <libzip/zip.h>
@@ -37,6 +40,189 @@ MiscellaneousTestGroup MiscellaneousZip::GetGroupID()
 MiscellaneousTestItem MiscellaneousZip::GetItemID()
 {
     return MiscellaneousTestItem::Others_Zip;
+}
+
+void MiscellaneousZip::ExtractFilesFromZipArchive_SelfOpenFile(const QString sourceFile, const QString targetDir)
+{
+    int errCode = ZIP_ER_OK;
+    zip_t *pZipArchive = NULL;
+    pZipArchive = zip_open(sourceFile.toUtf8().data(), ZIP_RDONLY, &errCode);
+    if (pZipArchive == NULL)
+    {
+        zip_error_t error;
+        zip_error_init_with_code(&error, errCode);
+        LogUtil::Error(CODE_LOCATION, "Open file %s failed. Error[%d]: %s", sourceFile.toUtf8().data(), errCode, zip_error_strerror(&error));
+        zip_error_fini(&error);
+        return;
+    }
+
+    zip_int64_t entryCount = zip_get_num_entries(pZipArchive, 0);
+    if (entryCount < 0)
+    {
+        LogUtil::Error(CODE_LOCATION, "Can not get number of entries for %s. Error: %s", sourceFile.toUtf8().data(), zip_strerror(pZipArchive));
+        zip_close(pZipArchive);
+        return;
+    }
+
+    char readBuffer[8192] = { 0 };
+    const char *pFilenameInZip = NULL;
+    zip_int64_t readCount = 0, writeCount = 0;
+    zip_error_t error_got;
+    zip_error_t *pZipFileError = NULL;
+    zip_file_t *pZipFileItem = NULL;
+    zip_stat_t fileStatInZip;
+
+    zip_stat_init(&fileStatInZip);
+    zip_error_init(&error_got);
+
+    for (int i = 0; i < entryCount; ++i)
+    {
+        pFilenameInZip = zip_get_name(pZipArchive, i, ZIP_FL_ENC_GUESS);
+        pZipFileItem = zip_fopen(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
+        if (pZipFileItem == NULL)
+        {
+            pZipFileError = zip_get_error(pZipArchive);
+            zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+        }
+        else
+        {
+            QString outFilename = targetDir + "/" + pFilenameInZip;
+            FILE *pExtractFile = fopen(outFilename.toUtf8().data(), "wb");
+            int readTime = 0;
+            while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+            {
+                ++readTime;
+                LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
+                for (int i = 0; i<readCount; ++i)
+                {
+                    fputc(readBuffer[i], pExtractFile);
+                }
+            }
+            fclose(pExtractFile);
+
+            struct stat winFileStat;
+            stat(outFilename.toUtf8().data(), &winFileStat);
+
+            zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
+            LogUtil::Info(CODE_LOCATION, "%-20s size:%llu time:%lld CRC:%08X",
+                          fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
+
+            struct utimbuf winTimeBuf;
+            winTimeBuf.actime = fileStatInZip.mtime;
+            winTimeBuf.modtime = fileStatInZip.mtime;
+            utime(outFilename.toUtf8().data(), &winTimeBuf);
+
+            if (readCount < 0)
+            {
+                pZipFileError = zip_file_get_error(pZipFileItem);
+                zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+            }
+        }
+
+        //zip_int64_t index;
+        //index = zip_name_locate(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
+        //if (index >= 0)
+        //{
+        //    zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
+        //    LogUtil::Info(CODE_LOCATION, "%5d --> %s [%s] size:%8llu time:%lld CRC:%08X", index, pFilenameInZip,
+        //                  fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
+        //}
+        //else
+        //{
+        //    LogUtil::Warn(CODE_LOCATION, "%s does not exist in zip file.", pFilenameInZip);
+        //}
+    }
+
+    zip_close(pZipArchive);
+    zip_error_fini(&error_got);
+}
+
+void MiscellaneousZip::ExtractFilesFromZipArchive_ZipSourceFile(const QString sourceFile, const QString targetDir)
+{
+    int errCode = ZIP_ER_OK;
+    zip_t *pZipArchive = NULL;
+    pZipArchive = zip_open(sourceFile.toUtf8().data(), ZIP_RDONLY, &errCode);
+    if (pZipArchive == NULL)
+    {
+        zip_error_t error;
+        zip_error_init_with_code(&error, errCode);
+        LogUtil::Error(CODE_LOCATION, "Open file %s failed. Error[%d]: %s", sourceFile.toUtf8().data(), errCode, zip_error_strerror(&error));
+        zip_error_fini(&error);
+        return;
+    }
+
+    zip_int64_t index;
+    zip_int64_t entryCount = zip_get_num_entries(pZipArchive, 0);
+    if (entryCount < 0)
+    {
+        LogUtil::Error(CODE_LOCATION, "Can not get number of entries for %s. Error: %s", sourceFile.toUtf8().data(), zip_strerror(pZipArchive));
+        zip_close(pZipArchive);
+        return;
+    }
+
+    char readBuffer[8192] = { 0 };
+    const char *pFilenameInZip = NULL;
+    zip_int64_t readCount = 0, writeCount = 0;
+    zip_error_t error_got;
+    zip_error_t *pZipFileError = NULL, *pSourceFileError = NULL;
+    zip_file_t *pZipFileItem = NULL;
+    zip_stat_t fileStatInZip;
+
+    zip_stat_init(&fileStatInZip);
+    zip_error_init(&error_got);
+
+    for (int i = 0; i < entryCount; ++i)
+    {
+        pFilenameInZip = zip_get_name(pZipArchive, i, ZIP_FL_ENC_GUESS);
+        pZipFileItem = zip_fopen(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
+        if (pZipFileItem == NULL)
+        {
+            pZipFileError = zip_get_error(pZipArchive);
+            zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+        }
+        else
+        {
+            QString outFilename = targetDir + "/" + pFilenameInZip;
+            zip_stat_t fileItemStat;
+            zip_source_t *pOutFile = zip_source_file_create(outFilename.toUtf8().data(), 0, 10, pSourceFileError);
+            zip_stat_init(&fileItemStat);
+            zip_source_stat(pOutFile, &fileItemStat);
+            zip_source_begin_write(pOutFile);
+            while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+            {
+                writeCount = zip_source_write(pOutFile, readBuffer, readCount);
+                if (writeCount < 0)
+                {
+                    pSourceFileError = zip_source_error(pOutFile);
+                    LogUtil::Debug(CODE_LOCATION, "write to source file failed: %s", zip_error_strerror(pSourceFileError));
+                }
+                else
+                {
+                    LogUtil::Debug(CODE_LOCATION, "readCount: %04d    writeCount: %04d", readCount, writeCount);
+                }
+            }
+            zip_source_commit_write(pOutFile);
+            zip_source_close(pOutFile);
+
+            zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
+            LogUtil::Info(CODE_LOCATION, "%-20s size:%llu time:%lld CRC:%08X",
+                          fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
+
+            struct utimbuf winTimeBuf;
+            winTimeBuf.actime = fileStatInZip.mtime;
+            winTimeBuf.modtime = fileStatInZip.mtime;
+            utime(outFilename.toUtf8().data(), &winTimeBuf);
+
+            if (readCount < 0)
+            {
+                pZipFileError = zip_file_get_error(pZipFileItem);
+                zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
+            }
+        }
+    }
+
+    zip_close(pZipArchive);
+    zip_error_fini(&error_got);
 }
 
 void MiscellaneousZip::on_btnFilesArchive_clicked()
@@ -194,105 +380,8 @@ void MiscellaneousZip::on_btnLibZipExtract_clicked()
     assert(!targetDir.isEmpty());
     if (sourceFile.isEmpty() || targetDir.isEmpty()) return;
 
-    int errCode = ZIP_ER_OK;
-    zip_t *pZipArchive = NULL;
-    pZipArchive = zip_open(sourceFile.toUtf8().data(), ZIP_RDONLY, &errCode);
-    if (pZipArchive == NULL)
-    {
-        zip_error_t error;
-        zip_error_init_with_code(&error, errCode);
-        LogUtil::Error(CODE_LOCATION, "Open file %s failed. Error[%d]: %s", sourceFile.toUtf8().data(), errCode, zip_error_strerror(&error));
-        zip_error_fini(&error);
-        return;
-    }
-
-    zip_int64_t index;
-    zip_int64_t entryCount = zip_get_num_entries(pZipArchive, 0);
-    if (entryCount < 0)
-    {
-        LogUtil::Error(CODE_LOCATION, "Can not get number of entries for %s. Error: %s", sourceFile.toUtf8().data(), zip_strerror(pZipArchive));
-        zip_close(pZipArchive);
-        return;
-    }
-
-    char readBuffer[8192] = { 0 };
-    const char *pFilenameInZip = NULL;
-    zip_int64_t readCount = 0, writeCount = 0;
-    zip_error_t error_got, error_ex;
-    zip_error_t *pZipFileError = NULL, *pSourceFileError = NULL;
-    zip_file_t *pZipFileItem = NULL;
-    zip_stat_t fileStatInZip;
-
-    zip_stat_init(&fileStatInZip);
-    zip_error_init(&error_got);
-    zip_error_init(&error_ex);
-    zip_error_set(&error_ex, ZIP_ER_OK, 0);
-
-    for (int i = 0; i < entryCount; ++i)
-    {
-        pFilenameInZip = zip_get_name(pZipArchive, i, ZIP_FL_ENC_GUESS);
-        pZipFileItem = zip_fopen(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
-        if (pZipFileItem == NULL)
-        {
-            pZipFileError = zip_get_error(pZipArchive);
-            zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
-        }
-        else
-        {
-            QString outFilename = targetDir + "/" + pFilenameInZip;
-            //FILE *pExtractFile = fopen(outFilename.toUtf8().data(), "wb");
-            //int readTime = 0;
-            //while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
-            //{
-            //    ++readTime;
-            //    LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
-            //    for (int i = 0; i<readCount; ++i)
-            //    {
-            //        fputc(readBuffer[i], pExtractFile);
-            //    }
-            //}
-
-            zip_source_t *pOutFile = zip_source_file_create(outFilename.toUtf8().data(), 0, 10, pSourceFileError);
-            zip_source_begin_write(pOutFile);
-
-            while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
-            {
-                writeCount = zip_source_write(pOutFile, readBuffer, readCount);
-                if (writeCount < 0)
-                {
-                    pSourceFileError = zip_source_error(pOutFile);
-                    LogUtil::Debug(CODE_LOCATION, "write to source file failed: %s", zip_error_strerror(pSourceFileError));
-                }
-                else
-                {
-                    LogUtil::Debug(CODE_LOCATION, "readCount: %04d    writeCount: %04d", readCount, writeCount);
-                }
-            }
-            zip_source_commit_write(pOutFile);
-            zip_source_close(pOutFile);
-
-            if (readCount < 0)
-            {
-                pZipFileError = zip_file_get_error(pZipFileItem);
-                zip_error_set(&error_got, zip_error_code_zip(pZipFileError), zip_error_code_system(pZipFileError));
-            }
-        }
-        index = zip_name_locate(pZipArchive, pFilenameInZip, ZIP_FL_NODIR);
-        if (index >= 0)
-        {
-            zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
-            LogUtil::Info(CODE_LOCATION, "%5d --> %s [%s] size:%8llu time:%lld CRC:%08X", index, pFilenameInZip,
-                          fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
-        }
-        else
-        {
-            LogUtil::Info(CODE_LOCATION, "-----------------------------");
-        }
-    }
-
-    zip_close(pZipArchive);
-    zip_error_fini(&error_got);
-    zip_error_fini(&error_ex);
+    //this->ExtractFilesFromZipArchive_SelfOpenFile(sourceFile, targetDir);
+    this->ExtractFilesFromZipArchive_ZipSourceFile(sourceFile, targetDir);
 }
 
 void MiscellaneousZip::on_btnLibZipExtractOpen_clicked()

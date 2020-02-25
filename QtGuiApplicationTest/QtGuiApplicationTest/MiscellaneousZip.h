@@ -17,6 +17,10 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void ExtractFilesFromZipArchive_SelfOpenFile(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZipArchive_ZipSourceFile(const QString sourceFile, const QString targetDir);
+
 private slots:
     void on_btnFilesArchive_clicked();
     void on_btnFilesArchiveOpen_clicked();
