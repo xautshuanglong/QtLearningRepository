@@ -94,10 +94,7 @@ void MiscellaneousZip::ExtractFilesFromZipArchive_SelfOpenFile(const QString sou
             {
                 ++readTime;
                 LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
-                for (int i = 0; i<readCount; ++i)
-                {
-                    fputc(readBuffer[i], pExtractFile);
-                }
+                fwrite(readBuffer, sizeof(char), readCount, pExtractFile);
             }
             fclose(pExtractFile);
 
@@ -189,10 +186,7 @@ void MiscellaneousZip::ExtractFilesFromZipArchive_SelfOpenFileDir(const QString 
             {
                 ++readTime;
                 LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
-                for (int i = 0; i < readCount; ++i)
-                {
-                    fputc(readBuffer[i], pExtractFile);
-                }
+                fwrite(readBuffer, sizeof(char), readCount, pExtractFile);
             }
             fclose(pExtractFile);
 
