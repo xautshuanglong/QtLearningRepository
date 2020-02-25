@@ -217,9 +217,9 @@ void MiscellaneousZip::on_btnLibZipExtract_clicked()
 
     char readBuffer[8192] = { 0 };
     const char *pFilenameInZip = NULL;
-    zip_int64_t readCount = 0;
+    zip_int64_t readCount = 0, writeCount = 0;
     zip_error_t error_got, error_ex;
-    zip_error_t *pZipFileError = NULL;
+    zip_error_t *pZipFileError = NULL, *pSourceFileError = NULL;
     zip_file_t *pZipFileItem = NULL;
     zip_stat_t fileStatInZip;
 
@@ -240,21 +240,37 @@ void MiscellaneousZip::on_btnLibZipExtract_clicked()
         else
         {
             QString outFilename = targetDir + "/" + pFilenameInZip;
-            FILE *pExtractFile = fopen(outFilename.toUtf8().data(), "wb");
-            int readTime = 0;
+            //FILE *pExtractFile = fopen(outFilename.toUtf8().data(), "wb");
+            //int readTime = 0;
+            //while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
+            //{
+            //    ++readTime;
+            //    LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
+            //    for (int i = 0; i<readCount; ++i)
+            //    {
+            //        fputc(readBuffer[i], pExtractFile);
+            //    }
+            //}
+
+            zip_source_t *pOutFile = zip_source_file_create(outFilename.toUtf8().data(), 0, 10, pSourceFileError);
+            zip_source_begin_write(pOutFile);
+
             while ((readCount = zip_fread(pZipFileItem, readBuffer, sizeof(readBuffer))) > 0)
             {
-                ++readTime;
-                LogUtil::Debug(CODE_LOCATION, "read time %02d       read count: %04d", readTime, readCount);
-                for (int i = 0; i<readCount; ++i)
+                writeCount = zip_source_write(pOutFile, readBuffer, readCount);
+                if (writeCount < 0)
                 {
-                    fputc(readBuffer[i], pExtractFile);
+                    pSourceFileError = zip_source_error(pOutFile);
+                    LogUtil::Debug(CODE_LOCATION, "write to source file failed: %s", zip_error_strerror(pSourceFileError));
+                }
+                else
+                {
+                    LogUtil::Debug(CODE_LOCATION, "readCount: %04d    writeCount: %04d", readCount, writeCount);
                 }
             }
-            if (pExtractFile != NULL)
-            {
-                fclose(pExtractFile);
-            }
+            zip_source_commit_write(pOutFile);
+            zip_source_close(pOutFile);
+
             if (readCount < 0)
             {
                 pZipFileError = zip_file_get_error(pZipFileItem);
@@ -265,7 +281,7 @@ void MiscellaneousZip::on_btnLibZipExtract_clicked()
         if (index >= 0)
         {
             zip_stat(pZipArchive, pFilenameInZip, 0, &fileStatInZip);
-            LogUtil::Info(CODE_LOCATION, "%5d --> %s [%s] size:%llu time:%lld CRC:%08X", index, pFilenameInZip,
+            LogUtil::Info(CODE_LOCATION, "%5d --> %s [%s] size:%8llu time:%lld CRC:%08X", index, pFilenameInZip,
                           fileStatInZip.name, fileStatInZip.size, fileStatInZip.mtime, fileStatInZip.crc);
         }
         else
