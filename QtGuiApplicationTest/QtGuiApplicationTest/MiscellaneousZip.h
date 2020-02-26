@@ -8,6 +8,13 @@ class MiscellaneousZip : public MiscellaneousBase
 {
     Q_OBJECT
 
+    enum EnumLibZipArchiveOpenType
+    {
+        ELZAOT_UNKNOWN,
+        ELZAOT_FILES,
+        ELZAOT_DIR
+    };
+
 public:
     MiscellaneousZip(QWidget *parent = Q_NULLPTR);
     ~MiscellaneousZip();
@@ -18,10 +25,12 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private:
-    void ExtractFilesFromZipArchive_SelfOpenFile(const QString sourceFile, const QString targetDir);
-    void ExtractFilesFromZipArchive_SelfOpenFileDir(const QString sourceFile, const QString targetDir);
-    void ExtractFilesFromZipArchive_ZipSourceFile(const QString sourceFile, const QString targetDir);
-    void ExtractFilesFromZipArchive_ZipSourceFileDir(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZip_SelfOpenFile(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZip_SelfOpenFileDir(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZip_ZipSourceFile(const QString sourceFile, const QString targetDir);
+    void ExtractFilesFromZip_ZipSourceFileDir(const QString sourceFile, const QString targetDir);
+    void ArchiveFilesToZip_SourceFiles(const QStringList sourceFiles, const QString targetFile);
+    void ArchiveFilesToZip_SourceDir(const QString sourceDir, const QString targetFile);
 
 private slots:
     void on_btnFilesArchive_clicked();
@@ -39,7 +48,8 @@ private slots:
     void on_btnDirectoryExtractBrowse_clicked();
 
     void on_btnLibZipArchive_clicked();
-    void on_btnLibZipArchiveOpen_clicked();
+    void on_actionArchiveFiles_triggered(bool checked);
+    void on_actionArchiveDir_triggered(bool checked);
     void on_btnLibZipArchiveBrowse_clicked();
     void on_btnLibZipExtract_clicked();
     void on_btnLibZipExtractOpen_clicked();
@@ -47,6 +57,7 @@ private slots:
 
 private:
     Ui::MiscellaneousZip ui;
+    EnumLibZipArchiveOpenType m_libZipArchiveType;
 };
 
 #endif // MISCELLANEOUS_ZIP_H
