@@ -470,6 +470,11 @@ void MiscellaneousZip::ArchiveFilesToZip_SourceDir(const QString sourceDir, cons
     QFileInfoList sourceFileInfos;
     QStack<QFileInfo> sourceFileInfoStack;
     sourceFileInfoStack.push(QFileInfo(sourceDir));
+    int rootDirLen = sourceDir.length();
+    if (!(sourceDir.endsWith("/") || sourceDir.endsWith("\\")))
+    {
+        ++rootDirLen;
+    }
 
     do
     {
@@ -487,12 +492,12 @@ void MiscellaneousZip::ArchiveFilesToZip_SourceDir(const QString sourceDir, cons
             {
                 sourceFileInfoStack.push(fileInfo);
             }
-            zip_dir_add(pZipArchive, tempFileInfo.fileName().toUtf8().data(), 0);
+            zip_dir_add(pZipArchive, tempFileInfo.filePath().mid(rootDirLen).toUtf8().data(), 0);
         }
         else
         {
             pSourceFile = zip_source_file_create(tempFileInfo.filePath().toUtf8().data(), 0, 0, pSourceFileError);
-            curIndex = zip_add(pZipArchive, tempFileInfo.fileName().toUtf8().data(), pSourceFile);
+            curIndex = zip_add(pZipArchive, tempFileInfo.filePath().mid(rootDirLen).toUtf8().data(), pSourceFile);
         }
     }
     while (!sourceFileInfoStack.isEmpty());
