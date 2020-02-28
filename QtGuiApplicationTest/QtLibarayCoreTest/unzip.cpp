@@ -389,9 +389,6 @@ size_t lufread(void *ptr, size_t size, size_t n, LUFILE *stream)
     return red / size;
 }
 
-
-
-
 // file_in_zip_read_info_s contain internal information about a file in zipfile,
 //  when reading and decompress it
 typedef struct
@@ -1120,7 +1117,7 @@ int unzOpenCurrentFile(unzFile file, const char *password)
         pfile_in_zip_read_info->stream.zfree = (free_func)0;
         pfile_in_zip_read_info->stream.opaque = (voidpf)0;
 
-        err = inflateInit2(&pfile_in_zip_read_info->stream, 16 + MAX_WBITS);
+        err = inflateInit2(&pfile_in_zip_read_info->stream, -15);
         if (err == Z_OK)
             pfile_in_zip_read_info->stream_initialised = 1;
         // windowBits is passed < 0 to tell that there is no zlib header.
@@ -1410,7 +1407,7 @@ int unzGetGlobalComment(unzFile file, char *szComment, uLong uSizeBuf)
 }
 
 int unzOpenCurrentFile(unzFile file, const char *password);
-int unzReadCurrentFile(unzFile file, void *buf, unsigned len);
+//int unzReadCurrentFile(unzFile file, void *buf, unsigned len);
 int unzCloseCurrentFile(unzFile file);
 
 typedef unsigned __int32 lutime_t;       // define it ourselves since we don't include time.h
