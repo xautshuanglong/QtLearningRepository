@@ -309,6 +309,7 @@ dmypy.json
 **/libs/wxsqlite3/**
 **/libs/libpq/**
 **/libs/pqxx/**
+**/libs/zlib/**
 
 # QT generated files
 **/GeneratedFiles/**
