@@ -34,7 +34,7 @@ MiscellaneousTestItem MiscellaneousRegularExpression::GetItemID()
 
 void MiscellaneousRegularExpression::LogFilenameMatchTest(const QString& targetStr)
 {
-    QRegExp regExpLogFilename("^((?!\_)\\w)+_((?!\_)\\w)+_\\d{8}_\\d{5}.log$");
+    QRegExp regExpLogFilename("^((?!_)\\w)+_((?!_)\\w)+_\\d{8}_\\d{5}.log$");
     if (regExpLogFilename.exactMatch(targetStr))
     {
         LogUtil::Debug(CODE_LOCATION, "Regular Expression Test: %s match %s",
@@ -51,7 +51,7 @@ void MiscellaneousRegularExpression::LogFilenameCaptureTest(const QString& targe
 {
     LogUtil::Debug(CODE_LOCATION, "------------------------------------------------ Split Line Begin ------------------------------------------------");
 
-    QRegExp regExpLogFilename("^((?!\_)\\w+)_((?!\_)\\w+)_(\\d{8})_(\\d{5}).log$");
+    QRegExp regExpLogFilename("^((?!_)\\w+)_((?!_)\\w+)_(\\d{8})_(\\d{5}).log$");
 
     int pos = regExpLogFilename.indexIn(targetStr);
     if (pos > -1)
