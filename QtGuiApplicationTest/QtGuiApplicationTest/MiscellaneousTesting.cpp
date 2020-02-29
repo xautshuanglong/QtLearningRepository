@@ -18,8 +18,10 @@
 #include "MiscellaneousImageQImage.h"
 #include "MiscellaneousImageQPixmap.h"
 #include "MiscellaneousQObjectCast.h"
+#include "MiscellaneousRegularExpression.h"
 // Database
 #include "MiscellaneousWxSqlite3.h"
+#include "MiscellaneousSqlCipher.h"
 #include "MiscellaneousPostgresql.h"
 // Others
 #include "MiscellaneousZip.h"
@@ -75,7 +77,9 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousImageQImage(this));
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
     this->AppendTestPage(new MiscellaneousQObjectCast(this));
+    this->AppendTestPage(new MiscellaneousRegularExpression(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
+    this->AppendTestPage(new MiscellaneousSqlCipher(this));
     this->AppendTestPage(new MiscellaneousPostgresql(this));
     this->AppendTestPage(new MiscellaneousZip(this));
     this->AppendTestPage(new MiscellaneousZLib(this));
@@ -103,8 +107,7 @@ void MiscellaneousTesting::InitializeUI()
 
 void MiscellaneousTesting::AppendTestPage(MiscellaneousBase* pWidgetPage)
 {
-    int pageIndex = static_cast<int>(pWidgetPage->GetItemID());
-    int realPageIndex = ui->swTestPageWidget->insertWidget(pageIndex, pWidgetPage);
+    int realPageIndex = ui->swTestPageWidget->addWidget(pWidgetPage);
     MiscellaneousTestItem itemID = pWidgetPage->GetItemID();
     mMapTestPageIndex[itemID] = realPageIndex;
     MiscellaneousTestGroup groupID = pWidgetPage->GetGroupID();

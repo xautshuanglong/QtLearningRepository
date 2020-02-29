@@ -39,7 +39,7 @@ MiscellaneousZip::~MiscellaneousZip()
 
 QString MiscellaneousZip::GetTitle()
 {
-    return QObject::tr("Zip");
+    return QObject::tr("LibZip");
 }
 
 QString MiscellaneousZip::GetTitleTooltip()

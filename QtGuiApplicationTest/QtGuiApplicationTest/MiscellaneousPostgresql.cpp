@@ -51,7 +51,7 @@ MiscellaneousTestGroup MiscellaneousPostgresql::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousPostgresql::GetItemID()
 {
-    return MiscellaneousTestItem::Database_Sqlite_Postgresql;
+    return MiscellaneousTestItem::Database_Postgresql;
 }
 
 void MiscellaneousPostgresql::on_btnLibpqInsert_clicked()

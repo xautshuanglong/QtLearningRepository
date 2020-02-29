@@ -310,6 +310,7 @@ dmypy.json
 **/libs/libpq/**
 **/libs/pqxx/**
 **/libs/zlib/**
+**/libs/libzip/**
 
 # QT generated files
 **/GeneratedFiles/**
