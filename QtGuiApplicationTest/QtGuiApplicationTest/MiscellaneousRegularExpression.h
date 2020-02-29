@@ -17,6 +17,10 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void LogFilenameMatchTest(const QString& targetStr);
+    void LogFilenameCaptureTest(const QString& targetStr);
+
 private slots:
     void on_btnFullMatch_clicked();
     void on_btnCaptureGroup_clicked();

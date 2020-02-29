@@ -1552,19 +1552,22 @@ namespace zlog
                 {
                     createRecursionDir(path);
                 }
-                if (ZLOG_SYNC_WRITE_TO_FILE)
-                {
-                    sprintf(buf, "%s_%s_%04d%02d%02d%02d_%s_%03u.log",
-                            _processName.c_str(), name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-                            t.tm_hour, _processId.c_str(), pLoggerInfo->_curFileIndex);
-                }
-                else
-                {
+                sprintf(buf, "%s_%s_%04d%02d%02d_%05u.log",
+                        _processName.c_str(), name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
+                        pLoggerInfo->_curFileIndex);
+                //if (ZLOG_SYNC_WRITE_TO_FILE)
+                //{
+                //    sprintf(buf, "%s_%s_%04d%02d%02d%02d_%s_%03u.log",
+                //            _processName.c_str(), name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
+                //            t.tm_hour, _processId.c_str(), pLoggerInfo->_curFileIndex);
+                //}
+                //else
+                //{
 
-                    sprintf(buf, "%s_%s_%04d%02d%02d%02d%02d_%s_%03u.log",
-                            _processName.c_str(), name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-                            t.tm_hour, t.tm_min, _processId.c_str(), pLoggerInfo->_curFileIndex);
-                }
+                //    sprintf(buf, "%s_%s_%04d%02d%02d%02d%02d_%s_%03u.log",
+                //            _processName.c_str(), name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
+                //            t.tm_hour, t.tm_min, _processId.c_str(), pLoggerInfo->_curFileIndex);
+                //}
                 path += buf;
                 long curLen = pLoggerInfo->_loggerFileHandler.open(path.c_str(), "ab");
                 if (!pLoggerInfo->_loggerFileHandler.isOpen() || curLen < 0)
