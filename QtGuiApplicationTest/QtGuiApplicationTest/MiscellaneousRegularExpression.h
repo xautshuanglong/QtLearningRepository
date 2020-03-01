@@ -24,6 +24,7 @@ private:
 private slots:
     void on_btnFullMatch_clicked();
     void on_btnCaptureGroup_clicked();
+    void on_btnDoMatch_clicked();
 
 private:
     Ui::MiscellaneousRegularExpression ui;

@@ -119,3 +119,8 @@ void MiscellaneousRegularExpression::on_btnCaptureGroup_clicked()
     this->LogFilenameCaptureTest(targetStr5);
     this->LogFilenameCaptureTest(targetStr6);
 }
+
+void MiscellaneousRegularExpression::on_btnDoMatch_clicked()
+{
+    int i = 0;
+}
