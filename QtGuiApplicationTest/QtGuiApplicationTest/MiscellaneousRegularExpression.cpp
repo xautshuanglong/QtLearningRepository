@@ -6,6 +6,13 @@ MiscellaneousRegularExpression::MiscellaneousRegularExpression(QWidget *parent)
     : MiscellaneousBase(parent)
 {
     ui.setupUi(this);
+
+    ui.teMatchTarget->appendPlainText("ProcessName_LoggerName_20200229_00001.log");
+    ui.teMatchTarget->appendPlainText("ProcessName11_LoggerName_20200229_00001.log");
+    ui.teMatchTarget->appendPlainText("ProcessName_Logger2Name_20200229_00001.log");
+    ui.teMatchTarget->appendPlainText("ProcessName_LoggerName_120200229_00001.log");
+    ui.teMatchTarget->appendPlainText("ProcessName_LoggerName_20200229_000012.log");
+    ui.teMatchTarget->appendPlainText(QStringLiteral("ProcessName_ÖÐÎÄ²âÊÔ_20200229_00001.log"));
 }
 
 MiscellaneousRegularExpression::~MiscellaneousRegularExpression()
@@ -90,7 +97,7 @@ void MiscellaneousRegularExpression::on_btnFullMatch_clicked()
     this->LogFilenameMatchTest(targetStr5);
 
     QString tempStr = "sfn_aa";
-    QRegExp regExpLogFilename("^((?!\_)\\w)+_((?!\_)\\w)+$");
+    QRegExp regExpLogFilename("^((?!_)\\w)+_((?!_)\\w)+$");
     if (regExpLogFilename.exactMatch(tempStr))
     {
         LogUtil::Debug(CODE_LOCATION, "Regular Expression Test: %s match %s",
@@ -122,5 +129,36 @@ void MiscellaneousRegularExpression::on_btnCaptureGroup_clicked()
 
 void MiscellaneousRegularExpression::on_btnDoMatch_clicked()
 {
-    int i = 0;
+    QString regExpressionStr = ui.teMatchExpression->toPlainText();
+    QString matchTargetStr = ui.teMatchTarget->toPlainText();
+    ui.teMatchError->setPlainText("");
+    ui.teMatchResult->setPlainText("");
+
+    QRegExp regExpression;
+    regExpression.setPattern(regExpressionStr);
+    if (regExpression.isValid())
+    {
+        QString matchResultPrefix;
+        QStringList targetLines = matchTargetStr.split("\n");
+        QStringList capturedTexts;
+        for each (QString targetLine in targetLines)
+        {
+            if (regExpression.exactMatch(targetLine))
+            {
+                matchResultPrefix = QString("%1").arg("matched", 15);
+            }
+            else
+            {
+                matchResultPrefix = QString("%1").arg("unmatched", 15);
+            }
+            int pos = regExpression.indexIn(targetLine);
+            capturedTexts = regExpression.capturedTexts();
+            ui.teMatchResult->appendPlainText(QString("%1 : %2%3%4").arg(matchResultPrefix).arg(targetLine).arg(pos > -1 ? " --> " : "").arg(pos > -1 ? capturedTexts.join("; ") : ""));
+        }
+    }
+    else
+    {
+        ui.teMatchError->appendPlainText(regExpressionStr + "is not valid regular expression");
+        ui.teMatchError->appendPlainText(regExpression.errorString());
+    }
 }
