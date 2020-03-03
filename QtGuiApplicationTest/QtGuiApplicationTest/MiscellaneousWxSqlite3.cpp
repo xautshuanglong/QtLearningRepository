@@ -43,10 +43,11 @@ MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 {
-    wxString dbFileName(wxS("E:\\Temp\\sqlite3\\NavicatSqlite3.db"));
-    wxString dbKey(wxS("test"));
-    wxSQLite3CipherAes128 sqlCipher;
-    sqlCipher.InitializeFromGlobalDefault();
+    //wxString dbFileName(wxS("E:\\Temp\\sqlite3\\NavicatSqlite3.db"));
+    wxString dbFileName(wxS("E:\\Temp\\sqlite3\\HaveEncrypted_Test123.db"));
+    wxString dbKey(wxS("Test123"));
+    wxSQLite3CipherAes128 sqlCipher; // 与 Navicat 加密方式相同（配合 Navicat 自带 Sqlite3.dll）。
+                                     // 与 sqlcipher 兼容性实验失败，使用默认加密算法，组合也不通过
 
     try
     {
@@ -67,17 +68,27 @@ void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 
         LogUtil::Debug(CODE_LOCATION, "Version: %s", db.GetVersion().mb_str());
 
-        int numRows = db.ExecuteScalar("SELECT COUNT(*) FROM t1");
+        int numRows = db.ExecuteScalar("SELECT COUNT(*) FROM user");
         LogUtil::Debug(CODE_LOCATION, "Total number of rows = %d", numRows);
         LogUtil::Debug(CODE_LOCATION, "Distinct tuples:");
-        wxSQLite3ResultSet set = db.ExecuteQuery("SELECT DISTINCT * FROM t1");
-        int count = 0;
+        wxSQLite3ResultSet set = db.ExecuteQuery("SELECT DISTINCT * FROM user");
+        wxString rowString;
+        int rowCount = 0;
+        int colCount = set.GetColumnCount();
+
         while (set.NextRow())
         {
-            ++count;
-            wxString col1 = set.GetString(0);
-            wxString col2 = set.GetString(1);
-            LogUtil::Debug(CODE_LOCATION, "%d: %s, %s", count, (const char*)(col1.mb_str()), (const char*)(col2.mb_str()));
+            ++rowCount;
+            rowString = "";
+            for (int colIndex = 0; colIndex < colCount; ++colIndex)
+            {
+                if (colIndex != 0)
+                {
+                    rowString.append(", ");
+                }
+                rowString.append(set.GetString(colIndex));
+            }
+            LogUtil::Debug(CODE_LOCATION, "%d: %s", rowCount, (const char*)(rowString.mb_str()));
         }
         db.Close();
     }
