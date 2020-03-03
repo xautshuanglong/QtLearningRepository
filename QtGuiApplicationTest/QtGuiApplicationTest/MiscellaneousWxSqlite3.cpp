@@ -7,6 +7,13 @@
 /*    前者模拟用户登录，后者用于数据库文件加解密。                          */
 /************************************************************************/
 #define TEST_FLAG_WX_SQLITE3 0
+#if TEST_FLAG_WX_SQLITE3
+#   if _DEBUG
+#       pragma comment(lib, "wxSqlite3d.lib")
+#   else
+#       pragma comment(lib, "wxSqlite3.lib")
+#   endif
+#endif
 #include <wx/wxsqlite3.h>
 
 #include <LogUtil.h>
@@ -45,9 +52,10 @@ MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 {
 #if TEST_FLAG_WX_SQLITE3
-    //wxString dbFileName(wxS("E:\\Temp\\sqlite3\\NavicatSqlite3.db"));
-    wxString dbFileName(wxS("E:\\Temp\\sqlite3\\HaveEncrypted_Test123.db"));
-    wxString dbKey(wxS("Test123"));
+    wxString dbFileName(wxS("E:\\Temp\\sqlite3\\NoEncrypted_Test123.db"));
+    wxString dbKey(wxS(""));
+    //wxString dbFileName(wxS("E:\\Temp\\sqlite3\\HaveEncrypted_Test123.db"));
+    //wxString dbKey(wxS("Test123"));
     wxSQLite3CipherAes128 sqlCipher; // 与 Navicat 加密方式相同（配合 Navicat 自带 Sqlite3.dll）。
                                      // 与 sqlcipher 兼容性实验失败，使用默认加密算法，组合也不通过
 
@@ -90,7 +98,7 @@ void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
                 }
                 rowString.append(set.GetString(colIndex));
             }
-            LogUtil::Debug(CODE_LOCATION, "%d: %s", rowCount, (const char*)(rowString.mb_str()));
+            LogUtil::Info(CODE_LOCATION, "%d: %s", rowCount, (const char*)(rowString.mb_str()));
         }
         db.Close();
     }

@@ -1,5 +1,10 @@
 #include "MiscellaneousSqlCipher.h"
 
+#define TEST_FLAG_SQL_CIPHER 1
+#if TEST_FLAG_SQL_CIPHER
+#pragma comment(lib, "sqlite3.lib")
+#endif
+
 #define SQLITE_HAS_CODEC
 #include <sqlcipher/sqlite3.h>
 
@@ -52,6 +57,7 @@ void MiscellaneousSqlCipher::on_btnUpdate_clicked()
 
 void MiscellaneousSqlCipher::on_btnSelect_clicked()
 {
+#if TEST_FLAG_SQL_CIPHER
     const char* unencryptedDataPath = "E:\\Temp\\sqlite3\\NoEncrypted_Test123.db"; // Œ¥º”√‹
     sqlite3 *pDB1 = NULL;
     //int result = sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE, NULL);
@@ -118,6 +124,9 @@ void MiscellaneousSqlCipher::on_btnSelect_clicked()
     }
 
     sqlite3_close(pDB2);
+#else
+    LogUtil::Warn(CODE_LOCATION, "Define TEST_FLAG_SQL_CIPHER not zero to enable sqlcipher ...");
+#endif
 }
 
 int MiscellaneousSqlCipher::Sqlite3_Callback(void *notUsed, int argc, char **argv, char **azColName)
