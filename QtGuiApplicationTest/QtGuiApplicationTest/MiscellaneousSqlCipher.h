@@ -28,6 +28,7 @@ private slots:
 
 private:
     Ui::MiscellaneousSqlCipher ui;
+    bool                       mShowHeaderFlag;
 };
 
 #endif MISCELLANEOUS_SQLCIPHER_H

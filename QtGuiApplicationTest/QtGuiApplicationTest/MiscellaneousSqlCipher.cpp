@@ -12,6 +12,7 @@
 
 MiscellaneousSqlCipher::MiscellaneousSqlCipher(QWidget *parent)
     : MiscellaneousBase(parent)
+    , mShowHeaderFlag(false)
 {
     ui.setupUi(this);
 }
@@ -67,16 +68,21 @@ void MiscellaneousSqlCipher::on_btnSelect_clicked()
     else
         LogUtil::Error(CODE_LOCATION, "Open unencrypted database failed: %s", unencryptedDataPath);
 
-    char* errmsg1;
-    result = sqlite3_exec(pDB1, "SELECT * FROM user;", MiscellaneousSqlCipher::Sqlite3_Callback, NULL, &errmsg1);
     if (result == SQLITE_OK)
     {
-        LogUtil::Info(CODE_LOCATION, "Execut select successfully.");
+        char *errmsg1 = NULL;
+        mShowHeaderFlag = true;
+        result = sqlite3_exec(pDB1, "SELECT * FROM user;", MiscellaneousSqlCipher::Sqlite3_Callback, this, &errmsg1);
+        if (result == SQLITE_OK)
+        {
+            LogUtil::Info(CODE_LOCATION, "Execut select successfully.");
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "Execut select failed. ErrMsg: %s", errmsg1);
+        }
     }
-    else
-    {
-        LogUtil::Error(CODE_LOCATION, "Execut select failed. ErrMsg: %s", errmsg1);
-    }
+
     sqlite3_close(pDB1);
 
     //----------------------------------------------------------------------------------------------------
@@ -112,15 +118,19 @@ void MiscellaneousSqlCipher::on_btnSelect_clicked()
     //    cout << "SQL 语句执行时发生错误：" << sqlite3_errmsg(db) << endl;
     //}
 
-    char* errmsg2;
-    result = sqlite3_exec(pDB2, "SELECT * FROM user;", MiscellaneousSqlCipher::Sqlite3_Callback, NULL, &errmsg2);
     if (result == SQLITE_OK)
     {
-        LogUtil::Info(CODE_LOCATION, "Execut select successfully.");
-    }
-    else
-    {
-        LogUtil::Error(CODE_LOCATION, "Execut select failed. ErrMsg: %s", errmsg2);
+        char *errmsg2 = NULL;
+        mShowHeaderFlag = true;
+        result = sqlite3_exec(pDB2, "SELECT * FROM user;", MiscellaneousSqlCipher::Sqlite3_Callback, this, &errmsg2);
+        if (result == SQLITE_OK)
+        {
+            LogUtil::Info(CODE_LOCATION, "Execut select successfully.");
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "Execut select failed. ErrMsg: %s", errmsg2);
+        }
     }
 
     sqlite3_close(pDB2);
@@ -131,21 +141,25 @@ void MiscellaneousSqlCipher::on_btnSelect_clicked()
 
 int MiscellaneousSqlCipher::Sqlite3_Callback(void *notUsed, int argc, char **argv, char **azColName)
 {
+    MiscellaneousSqlCipher *pThis = (MiscellaneousSqlCipher*)notUsed;
     const int BUFFER_LEN = 512;
-    char rowHeader[BUFFER_LEN] = { 0 };
-    for (int i = 0; i < argc; i++)
+    if (pThis!=NULL && pThis->mShowHeaderFlag)
     {
-        if (i*20 > 512)
+        pThis->mShowHeaderFlag = false;
+        char rowHeader[BUFFER_LEN] = { 0 };
+        for (int i = 0; i < argc; i++)
         {
-            LogUtil::Info(CODE_LOCATION, "RowHeader buffer is too small ...");
-            break;
+            if (i * 20 > 512)
+            {
+                LogUtil::Info(CODE_LOCATION, "RowHeader buffer is too small ...");
+                break;
+            }
+            snprintf(rowHeader + i * 20, BUFFER_LEN, "%20s", azColName[i]);
         }
-        snprintf(rowHeader + i * 20, BUFFER_LEN , "%20s", azColName[i]);
+        LogUtil::Info(CODE_LOCATION, "--------------------------------------------------------------------------------");
+        LogUtil::Info(CODE_LOCATION, "%s", rowHeader);
+        LogUtil::Info(CODE_LOCATION, "--------------------------------------------------------------------------------");
     }
-    LogUtil::Info("--------------------------------------------------------------------------------");
-    LogUtil::Info(CODE_LOCATION, "%s", rowHeader);
-    LogUtil::Info("--------------------------------------------------------------------------------");
-
     char rowContent[512] = { 0 };
     for (int i = 0; i < argc; i++)
     {
