@@ -311,6 +311,7 @@ dmypy.json
 **/libs/pqxx/**
 **/libs/zlib/**
 **/libs/libzip/**
+**/libs/sqlcipher/**
 
 # QT generated files
 **/GeneratedFiles/**

@@ -17,6 +17,9 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    static int Sqlite3_Callback(void *notUsed, int argc, char **argv, char **azColName);
+
 private slots:
     void on_btnInsert_clicked();
     void on_btnDelete_clicked();

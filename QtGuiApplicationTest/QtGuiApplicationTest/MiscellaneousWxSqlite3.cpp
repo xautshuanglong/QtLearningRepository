@@ -6,6 +6,7 @@
 /* wxSlite3 分用户授权、密码认证两部分：                                   */
 /*    前者模拟用户登录，后者用于数据库文件加解密。                          */
 /************************************************************************/
+#define TEST_FLAG_WX_SQLITE3 0
 #include <wx/wxsqlite3.h>
 
 #include <LogUtil.h>
@@ -43,6 +44,7 @@ MiscellaneousTestItem MiscellaneousWxSqlite3::GetItemID()
 
 void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
 {
+#if TEST_FLAG_WX_SQLITE3
     //wxString dbFileName(wxS("E:\\Temp\\sqlite3\\NavicatSqlite3.db"));
     wxString dbFileName(wxS("E:\\Temp\\sqlite3\\HaveEncrypted_Test123.db"));
     wxString dbKey(wxS("Test123"));
@@ -96,6 +98,9 @@ void MiscellaneousWxSqlite3::on_btnEncryptPassword_clicked()
     {
         LogUtil::Error(CODE_LOCATION, "%d: %s", e.GetErrorCode(), e.GetMessage().mb_str());
     }
+#else
+    LogUtil::Warn(CODE_LOCATION, "Define TEST_FLAG_WX_SQLITE3 not zero to enable wxSqlite3 ...");
+#endif
 }
 
 void MiscellaneousWxSqlite3::on_btnUserAuthorization_clicked()
