@@ -47,6 +47,9 @@
       <property name="showDropIndicator" stdset="0">
        <bool>true</bool>
       </property>
+      <property name="autoExpandDelay">
+       <number>2</number>
+      </property>
       <property name="indentation">
        <number>0</number>
       </property>

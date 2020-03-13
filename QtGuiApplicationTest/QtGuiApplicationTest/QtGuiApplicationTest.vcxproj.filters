@@ -328,6 +328,12 @@
     <ClCompile Include="MiscellaneousSqlCipher.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="StringUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousStringUtil.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -394,6 +400,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousSqlCipher.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousStringUtil.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -473,6 +482,9 @@
     <ClInclude Include="GeneratedFiles\ui_MiscellaneousStdSharedPointer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainTabPageDicom.h">
@@ -545,6 +557,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousSqlCipher.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStringUtil.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

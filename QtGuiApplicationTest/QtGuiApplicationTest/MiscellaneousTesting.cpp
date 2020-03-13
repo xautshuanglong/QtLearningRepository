@@ -23,6 +23,8 @@
 #include "MiscellaneousWxSqlite3.h"
 #include "MiscellaneousSqlCipher.h"
 #include "MiscellaneousPostgresql.h"
+// Utility Tools
+#include "MiscellaneousStringUtil.h"
 // Others
 #include "MiscellaneousZip.h"
 #include "MiscellaneousZLib.h"
@@ -83,6 +85,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousPostgresql(this));
     this->AppendTestPage(new MiscellaneousZip(this));
     this->AppendTestPage(new MiscellaneousZLib(this));
+    this->AppendTestPage(new MiscellaneousStringUtil(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
     MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();

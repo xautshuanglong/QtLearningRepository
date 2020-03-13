@@ -10,6 +10,7 @@ enum class MiscellaneousTestGroup
     Standard_Cpp,    // 标准 CPP 库函数测试
     QT_Test,         // QT 功能模块测试
     Database,        // 数据库相关测试
+    Utility_Tools,   // 实用工具类测试入口
     Others,          // 其他未知分类
     Max_Size
 };
@@ -30,6 +31,7 @@ enum class MiscellaneousTestItem
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
     Database_Postgresql,              // 数据库操作 postgresql
+    Utility_StringUtil,               // 工具类 - 字符串操作
     Others_Zip,                       // 使用 ZLib 归档/提取文件
     Others_ZLib,                      // 使用 ZLib 压缩/解压文件
     Max_Size

@@ -8,5 +8,6 @@ MiscellaneousGroupTitle gMiscellaneousGroupInfo[] =
     { MiscellaneousTestGroup::Standard_Cpp, QObject::tr("Standard CPP") },
     { MiscellaneousTestGroup::QT_Test, QObject::tr("QT Testing") },
     { MiscellaneousTestGroup::Database, QObject::tr("Database") },
+    { MiscellaneousTestGroup::Utility_Tools, QObject::tr("Utility Tools") },
     { MiscellaneousTestGroup::Others, QObject::tr("Others") }
 };
