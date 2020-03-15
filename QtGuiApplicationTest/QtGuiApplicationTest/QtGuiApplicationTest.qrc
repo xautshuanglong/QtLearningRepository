@@ -28,5 +28,7 @@
         <file>Resources/images/app.ico</file>
         <file>Resources/images/dicom_xray.ico</file>
         <file>Resources/images/dicom_download.png</file>
+        <file>Resources/images/dark/checkbox_checked_32px.png</file>
+        <file>Resources/images/dark/checkbox_unchecked_32px.png</file>
     </qresource>
 </RCC>

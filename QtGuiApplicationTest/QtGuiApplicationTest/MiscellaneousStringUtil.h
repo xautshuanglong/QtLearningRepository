@@ -4,6 +4,9 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousStringUtil.h"
 
+class QListWidget;
+class QLineEdit;
+
 class MiscellaneousStringUtil : public MiscellaneousBase
 {
     Q_OBJECT
@@ -17,7 +20,11 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void InitCharacterTypeComboBox();
+
 private slots:
+    void stateChanged(int state);
     void on_btnCharacterShiftLeft_clicked();
     void on_btnCharacterShiftRight_clicked();
     void on_btnBase64ShiftEncode_clicked();
@@ -28,6 +35,10 @@ private:
     Ui::MiscellaneousStringUtil ui;
     QString                     m_strShifted;
     QString                     m_strEncoded;
+    bool                        m_bSelected;
+    QString                     m_strSelectedText;
+    QListWidget                *m_pListWidget;
+    QLineEdit                  *m_pLineEdit;
 };
 
 #endif // MISCELLANEOUS_STRING_UTIL_H

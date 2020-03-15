@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
-    <height>592</height>
+    <width>1050</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,27 +42,13 @@
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout" columnstretch="8,1,1">
      <property name="leftMargin">
       <number>0</number>
      </property>
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="btnCharacterShiftLeft">
-       <property name="text">
-        <string>Character Shift Left</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="btnCharacterShiftRight">
-       <property name="text">
-        <string>Character Shift Right</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLineEdit" name="leShiftTarget"/>
      </item>
@@ -72,29 +58,156 @@
      <item row="2" column="0">
       <widget class="QLineEdit" name="lePasswordOut"/>
      </item>
-     <item row="1" column="2">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="btnCharacterShiftLeft">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Character Shift Left</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="btnCharacterShiftRight">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Character Shift Right</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="QPushButton" name="btnBase64ShiftEncode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Base64 Shift Encode</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
+     <item row="2" column="1">
+      <widget class="QComboBox" name="cbCharacterTypes">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox
+{
+    color: rgb(75, 75, 75);
+}
+
+QComboBox::drop-down
+{
+	width: 20px;
+}
+
+QComboBox QAbstractItemView
+{
+	color: rgb(75,75,75);
+	selection-background-color: gray;
+	selection-color: rgb(255, 255, 255);
+}
+
+QComboBox QAbstractItemView::item {
+        height: 20px;
+        color: rgb(73, 73, 73);
+        outline: none;
+}
+</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Item-1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Item-2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Item-3</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="2">
       <widget class="QPushButton" name="btnBase64ShiftDecode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Base64 Shift Decode</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
+     <item row="2" column="2">
       <widget class="QPushButton" name="btnRandomPassword">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Random Password</string>
        </property>
       </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QComboBox" name="cbCharactorTypes"/>
      </item>
     </layout>
    </item>
@@ -112,6 +225,14 @@
     </spacer>
    </item>
   </layout>
+  <action name="actionabc">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>abc</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

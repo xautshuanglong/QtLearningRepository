@@ -596,8 +596,9 @@ QComboBox::drop-down {
 QComboBox::drop-down:hover {
         background: rgba(255, 255, 255, 30);
 }
-QComboBox::down-arrow {
-        image: url(:/White/arrowBottom);
+QComboBox::down-arrow
+{
+       image: url(:/AppImages/Resources/images/white/arrow_down.png);
 }
 QComboBox::down-arrow:on {
         /**top: 1px;**/
@@ -665,22 +666,22 @@ QCheckBox::indicator {
         height: 20px;
 }
 QCheckBox::indicator:unchecked {
-        image: url(:/White/checkBox);
+        image: url(:/AppImages/Resources/images/dark/checkbox_unchecked_32px.png);
 }
 QCheckBox::indicator:unchecked:hover {
-        image: url(:/White/checkBoxHover);
+        image: url(:/AppImages/Resources/images/dark/checkbox_unchecked_32px.png);
 }
 QCheckBox::indicator:unchecked:pressed {
-        image: url(:/White/checkBoxPressed);
+        image: url(:/AppImages/Resources/images/dark/checkbox_unchecked_32px.png);
 }
 QCheckBox::indicator:checked {
-        image: url(:/White/checkBoxChecked);
+        image: url(:/AppImages/Resources/images/dark/checkbox_checked_32px.png);
 }
 QCheckBox::indicator:checked:hover {
-        image: url(:/White/checkBoxCheckedHover);
+        image: url(:/AppImages/Resources/images/dark/checkbox_checked_32px.png);
 }
 QCheckBox::indicator:checked:pressed {
-        image: url(:/White/checkBoxCheckedPressed);
+        image: url(:/AppImages/Resources/images/dark/checkbox_checked_32px.png);
 }
 QCheckBox::indicator:indeterminate {
         image: url(:/White/checkBoxIndeterminate);
