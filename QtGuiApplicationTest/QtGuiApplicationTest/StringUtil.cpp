@@ -6,6 +6,8 @@
 
 #include <LogUtil.h>
 
+#define BASE64_COUNT 65 // A-Z a-z 0-9 + - =
+
 QString StringUtil::GetRandomPassword(uint characterTypes, int passwdLen)
 {
     static int randSeed = 0;
@@ -43,21 +45,18 @@ QString StringUtil::Base64ShiftLeft(QString targetString, int shift)
     int oldIndex = 0, newIndex = 0;
     int strLen = targetString.length();
     int realShift = shift;
-    if (realShift > 0)
+    if (realShift > BASE64_COUNT)
     {
-        realShift = realShift % 64;
+        realShift = realShift % BASE64_COUNT;
     }
-    else
+    while (realShift < 0)
     {
-        while (realShift < 0)
-        {
-            realShift += 64;
-        }
+        realShift += BASE64_COUNT;
     }
     for (int i = 0; i < strLen; ++i)
     {
         oldIndex = StringUtil::Base64CharToIndex(targetString.at(i).toLatin1());
-        newIndex = oldIndex < realShift ? oldIndex + 64 - realShift : oldIndex - realShift;
+        newIndex = oldIndex >= realShift ? oldIndex - realShift : oldIndex + BASE64_COUNT - realShift;
         retValue.append(StringUtil::Base64IndexToChar(newIndex));
     }
     return retValue;
@@ -69,21 +68,18 @@ QString StringUtil::Base64ShiftRight(QString targetString, int shift)
     int oldIndex = 0, newIndex = 0;
     int strLen = targetString.length();
     int realShift = shift;
-    if (realShift > 0)
+    if (realShift >= BASE64_COUNT)
     {
-        realShift = realShift % 64;
+        realShift = realShift % BASE64_COUNT;
     }
-    else
+    while (realShift < 0)
     {
-        while (realShift < 0)
-        {
-            realShift += 64;
-        }
+        realShift += BASE64_COUNT;
     }
     for (int i = 0; i < strLen; ++i)
     {
         oldIndex = StringUtil::Base64CharToIndex(targetString.at(i).toLatin1());
-        newIndex = oldIndex > 64 - realShift ? oldIndex + realShift -64 : oldIndex + realShift;
+        newIndex = oldIndex + realShift < BASE64_COUNT ? oldIndex + realShift : oldIndex + realShift - BASE64_COUNT;
         retValue.append(StringUtil::Base64IndexToChar(newIndex));
     }
     return retValue;

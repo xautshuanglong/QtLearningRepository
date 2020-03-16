@@ -172,29 +172,29 @@ void MiscellaneousStringUtil::stateChanged(int state)
 void MiscellaneousStringUtil::on_btnCharacterShiftLeft_clicked()
 {
     QString target = ui.leShiftTarget->text();
-    QString shiftedString = StringUtil::Base64ShiftLeft(target, 65);
+    QString shiftedString = StringUtil::Base64ShiftLeft(target, 66);
     ui.leShiftTarget->setText(shiftedString);
 }
 
 void MiscellaneousStringUtil::on_btnCharacterShiftRight_clicked()
 {
     QString shiftedString = ui.leShiftTarget->text();
-    //QString original = StringUtil::Base64ShiftRight(shiftedString, 65);
-    QString original = StringUtil::Base64ShiftLeft(shiftedString, -129);
+    //QString original = StringUtil::Base64ShiftRight(shiftedString, 66);
+    QString original = StringUtil::Base64ShiftLeft(shiftedString, -131);
     ui.leShiftTarget->setText(original);
 }
 
 void MiscellaneousStringUtil::on_btnBase64ShiftEncode_clicked()
 {
     QString target = ui.leEncodeTarget->text();
-    QString strEncoded = StringUtil::Base64ShiftEncode(target, 65);
+    QString strEncoded = StringUtil::Base64ShiftEncode(target, 66);
     ui.leEncodeTarget->setText(strEncoded);
 }
 
 void MiscellaneousStringUtil::on_btnBase64ShiftDecode_clicked()
 {
     QString strEncoded = ui.leEncodeTarget->text();
-    QString original = StringUtil::Base64ShiftDecode(strEncoded, 65);
+    QString original = StringUtil::Base64ShiftDecode(strEncoded, 66);
     ui.leEncodeTarget->setText(original);
 }
 
