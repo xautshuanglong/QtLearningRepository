@@ -2,7 +2,7 @@
 
 #include <QString>
 
-enum CandidateCharacterType
+enum CandidateCharacterType:uint
 {
     CAPITAL         = 0x00000001, // A-Z
     LOWERCASE       = 0x00000002, // a-z
@@ -45,11 +45,13 @@ public:
     ~StringUtil() = delete;
 
     static QString GetRandomPassword(uint characterTypes, int passwdLen);
-    static QString CharacterShiftRight(QString targetString, int shift);
-    static QString CharacterShiftLeft(QString targetString, int shift);
-    static QString Base64ShiftEncode(QString targetString);
-    static QString Base64ShiftDecode(QString targetString);
+    static QString Base64ShiftLeft(QString targetString, int shift);
+    static QString Base64ShiftRight(QString targetString, int shift);
+    static QString Base64ShiftEncode(QString targetString, int shift);
+    static QString Base64ShiftDecode(QString targetString, int shift);
 
 private:
     static QByteArray MakeCandidateCharacterArray(uint characterTypes);
+    static int Base64CharToIndex(char targetChar);
+    static char Base64IndexToChar(int targetIndex);
 };

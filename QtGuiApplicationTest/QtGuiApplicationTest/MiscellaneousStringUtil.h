@@ -34,8 +34,6 @@ private slots:
 
 private:
     Ui::MiscellaneousStringUtil ui;
-    QString                     m_strShifted;
-    QString                     m_strEncoded;
     bool                        m_bSelected;
     uint                        m_characterTypes;
     QString                     m_strSelectedText;

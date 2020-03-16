@@ -172,23 +172,30 @@ void MiscellaneousStringUtil::stateChanged(int state)
 void MiscellaneousStringUtil::on_btnCharacterShiftLeft_clicked()
 {
     QString target = ui.leShiftTarget->text();
-    m_strShifted = StringUtil::CharacterShiftLeft(target, 5);
+    QString shiftedString = StringUtil::Base64ShiftLeft(target, 65);
+    ui.leShiftTarget->setText(shiftedString);
 }
 
 void MiscellaneousStringUtil::on_btnCharacterShiftRight_clicked()
 {
-    QString original = StringUtil::CharacterShiftRight(m_strShifted, 5);
+    QString shiftedString = ui.leShiftTarget->text();
+    //QString original = StringUtil::Base64ShiftRight(shiftedString, 65);
+    QString original = StringUtil::Base64ShiftLeft(shiftedString, -129);
+    ui.leShiftTarget->setText(original);
 }
 
 void MiscellaneousStringUtil::on_btnBase64ShiftEncode_clicked()
 {
     QString target = ui.leEncodeTarget->text();
-    QString m_strEncoded = StringUtil::Base64ShiftEncode(target);
+    QString strEncoded = StringUtil::Base64ShiftEncode(target, 65);
+    ui.leEncodeTarget->setText(strEncoded);
 }
 
 void MiscellaneousStringUtil::on_btnBase64ShiftDecode_clicked()
 {
-    QString original = StringUtil::Base64ShiftDecode(m_strEncoded);
+    QString strEncoded = ui.leEncodeTarget->text();
+    QString original = StringUtil::Base64ShiftDecode(strEncoded, 65);
+    ui.leEncodeTarget->setText(original);
 }
 
 void MiscellaneousStringUtil::on_btnRandomPassword_clicked()
