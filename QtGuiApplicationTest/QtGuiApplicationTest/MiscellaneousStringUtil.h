@@ -22,6 +22,7 @@ public:
 
 private:
     void InitCharacterTypeComboBox();
+    void GetCharacterTypeInfo(uint typeID, QString& shortText, QString& showText);
 
 private slots:
     void stateChanged(int state);
@@ -36,6 +37,7 @@ private:
     QString                     m_strShifted;
     QString                     m_strEncoded;
     bool                        m_bSelected;
+    uint                        m_characterTypes;
     QString                     m_strSelectedText;
     QListWidget                *m_pListWidget;
     QLineEdit                  *m_pLineEdit;

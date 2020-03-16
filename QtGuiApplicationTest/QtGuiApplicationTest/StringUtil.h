@@ -44,9 +44,12 @@ public:
     StringUtil() = delete;
     ~StringUtil() = delete;
 
-    static QString GetRandomPassword(CandidateCharacterType characterTypes, int passwdLen);
+    static QString GetRandomPassword(uint characterTypes, int passwdLen);
     static QString CharacterShiftRight(QString targetString, int shift);
     static QString CharacterShiftLeft(QString targetString, int shift);
     static QString Base64ShiftEncode(QString targetString);
     static QString Base64ShiftDecode(QString targetString);
+
+private:
+    static QByteArray MakeCandidateCharacterArray(uint characterTypes);
 };

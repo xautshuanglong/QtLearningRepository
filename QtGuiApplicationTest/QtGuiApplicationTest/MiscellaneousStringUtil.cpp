@@ -6,9 +6,53 @@
 
 #include <StringUtil.h>
 
+struct CharacterTypes
+{
+    uint TypeID;
+    QString TypeShortText;
+    QString TeypeShowText;
+};
+
+static CharacterTypes gCharacterTypes[] = {
+    {CandidateCharacterType::CAPITAL,      "A-Z",     QStringLiteral("´óÐ´×ÖÄ¸        ")},
+    {CandidateCharacterType::LOWERCASE,    "a-z",     QStringLiteral("Ð¡Ð´×ÖÄ¸        ")},
+    {CandidateCharacterType::DIGITAL,      "0-9",     QStringLiteral("Êý×Ö            ")},
+    {CandidateCharacterType::SHARP,        "#",       QStringLiteral("# ¾®ºÅ          ")},
+    {CandidateCharacterType::ASTERISK,     "*",       QStringLiteral("* ÐÇºÅ          ")},
+    {CandidateCharacterType::PLUS,         "+",       QStringLiteral("+ ¼ÓºÅ          ")},
+    {CandidateCharacterType::MINUS,        "-",       QStringLiteral("- ¼õºÅ          ")},
+    {CandidateCharacterType::SLASH,        "/ or \\", QStringLiteral("/ Ð±¸Ü \\ ·´Ð±¸Ü")},
+    {CandidateCharacterType::QUOTE,        "'",       QStringLiteral("' µ¥ÒýºÅ         ")},
+    {CandidateCharacterType::DOUBLE_QUOTE, "\"",      QStringLiteral("\" Ë«ÒýºÅ         ")},
+    {CandidateCharacterType::BACK_QUOTE,   "`",       QStringLiteral("` ·´ÒýºÅ         ")},
+    {CandidateCharacterType::TILDE,        "~",       QStringLiteral("~ ²¨ÀËºÅ         ")},
+    {CandidateCharacterType::EXCLAM,       "!",       QStringLiteral("! ¸ÐÌ¾ºÅ         ")},
+    {CandidateCharacterType::AT,           "@",       QStringLiteral("@ at ·ûºÅ        ")},
+    {CandidateCharacterType::DOLLAR,       "$",       QStringLiteral("$ ÃÀÔªºÅ         ")},
+    {CandidateCharacterType::PERCENT,      "%",       QStringLiteral("% °Ù·ÖºÅ         ")},
+    {CandidateCharacterType::CARET,        "^",       QStringLiteral("^ ÍÑ×Ö·û         ")},
+    {CandidateCharacterType::AMPERSAND,    "&",       QStringLiteral("& And ·ûºÅ       ")},
+    {CandidateCharacterType::PAREN,        "()",      QStringLiteral("() Ô²À¨ºÅ        ")},
+    {CandidateCharacterType::UNDERSCORE,   "_",       QStringLiteral("_ ÏÂ»®Ïß         ")},
+    {CandidateCharacterType::EQUAL,        "=",       QStringLiteral("= µÈÓÚºÅ         ")},
+    {CandidateCharacterType::BRACKET,      "[]",      QStringLiteral("[] ·½À¨ºÅ        ")},
+    {CandidateCharacterType::BRACE,        "{}",      QStringLiteral("{} ´óÀ¨ºÅ        ")},
+    {CandidateCharacterType::SEMICOLON,    ";",       QStringLiteral("; ·ÖºÅ           ")},
+    {CandidateCharacterType::COLON,        ":",       QStringLiteral(": Ã°ºÅ           ")},
+    {CandidateCharacterType::BAR,          "|",       QStringLiteral("| ÊúÏß           ")},
+    {CandidateCharacterType::COMMA,        ",",       QStringLiteral(", ¶ººÅ           ")},
+    {CandidateCharacterType::LESS,         "<",       QStringLiteral("< Ð¡ÓÚºÅ         ")},
+    {CandidateCharacterType::GREATER,      ">",       QStringLiteral("> ´óÓÚºÅ         ")},
+    {CandidateCharacterType::PERIOD,       ".",       QStringLiteral(". ¾äºÅ           ")},
+    {CandidateCharacterType::QUESTION,     "?",       QStringLiteral("? ÎÊºÅ           ")},
+    {CandidateCharacterType::SPACE,        " ",       QStringLiteral(" ¿Õ¸ñ            ")}
+};
+const int typesCount = sizeof(gCharacterTypes) / sizeof(CharacterTypes);
+
 MiscellaneousStringUtil::MiscellaneousStringUtil(QWidget *parent)
     : MiscellaneousBase(parent)
     , m_bSelected(false)
+    , m_characterTypes(0)
 {
     ui.setupUi(this);
 
@@ -53,14 +97,14 @@ void MiscellaneousStringUtil::InitCharacterTypeComboBox()
     }
     m_pListWidget = new QListWidget(this);
     m_pLineEdit = new QLineEdit(this);
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < typesCount; ++i)
     {
         QCheckBox *pCheckBox = new QCheckBox(this);
-        pCheckBox->setText(QStringLiteral("Qteaaaaaaaaaaaaaaaaaaaaaa%1").arg(i));
+        pCheckBox->setText(QStringLiteral("%1").arg(gCharacterTypes[i].TeypeShowText));
         pCheckBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         //pCheckBox->setStyleSheet("background-color: green;");
         QListWidgetItem *pItem = new QListWidgetItem(m_pListWidget);
-        pItem->setData(Qt::UserRole, i);
+        pItem->setData(Qt::UserRole, gCharacterTypes[i].TypeID);
         m_pListWidget->addItem(pItem);
         m_pListWidget->setItemWidget(pItem, pCheckBox);
         connect(pCheckBox, SIGNAL(stateChanged(int)), this, SLOT(stateChanged(int)));
@@ -72,6 +116,19 @@ void MiscellaneousStringUtil::InitCharacterTypeComboBox()
     m_pLineEdit->setReadOnly(true);
 }
 
+void MiscellaneousStringUtil::GetCharacterTypeInfo(uint typeID, QString& shortText, QString& showText)
+{
+    for (int i = 0; i < typesCount; ++i)
+    {
+        if (typeID == gCharacterTypes[i].TypeID)
+        {
+            showText = gCharacterTypes[i].TeypeShowText;
+            shortText = gCharacterTypes[i].TypeShortText;
+            break;
+        }
+    }
+}
+
 void MiscellaneousStringUtil::stateChanged(int state)
 {
     m_bSelected = true;
@@ -79,8 +136,9 @@ void MiscellaneousStringUtil::stateChanged(int state)
     m_strSelectedText.clear();
     QObject *object = QObject::sender();
     QCheckBox *pSenderCheckBox = static_cast<QCheckBox*>(object);
-    QSize hitSize = pSenderCheckBox->sizeHint();
-    QRect genomertyRect = pSenderCheckBox->geometry();
+    //QSize hitSize = pSenderCheckBox->sizeHint();
+    //QRect genomertyRect = pSenderCheckBox->geometry();
+    m_characterTypes = 0;
     int nCount = m_pListWidget->count();
     for (int i = 0; i < nCount; ++i)
     {
@@ -89,20 +147,17 @@ void MiscellaneousStringUtil::stateChanged(int state)
         QCheckBox *pCheckBox = (QCheckBox *)pWidget;
         if (pCheckBox->isChecked())
         {
-            QString strText = pCheckBox->text();
-            strSelectedData.append(strText).append(";");
-        }
-        //Ëùµã»÷µÄ¸´Ñ¡¿ò
-        if (pSenderCheckBox == pCheckBox)
-        {
-            int nData = pItem->data(Qt::UserRole).toInt();
+            uint typeID = pItem->data(Qt::UserRole).toUInt();
+            m_characterTypes |= typeID;
+            QString showText, shortText;
+            this->GetCharacterTypeInfo(typeID, shortText, showText);
+            strSelectedData.append(shortText).append(";");
         }
     }
     if (strSelectedData.endsWith(";"))
         strSelectedData.remove(strSelectedData.count() - 1, 1);
     if (!strSelectedData.isEmpty())
     {
-        //ui.comboBox->setEditText(strSelectedData);
         m_strSelectedText = strSelectedData;
         m_pLineEdit->setText(strSelectedData);
         m_pLineEdit->setToolTip(strSelectedData);
@@ -110,7 +165,6 @@ void MiscellaneousStringUtil::stateChanged(int state)
     else
     {
         m_pLineEdit->clear();
-        //ui.comboBox->setEditText("");
     }
     m_bSelected = false;
 }
@@ -139,7 +193,7 @@ void MiscellaneousStringUtil::on_btnBase64ShiftDecode_clicked()
 
 void MiscellaneousStringUtil::on_btnRandomPassword_clicked()
 {
-    QString password = StringUtil::GetRandomPassword(CAPITAL, 1);
+    QString password = StringUtil::GetRandomPassword(m_characterTypes, 10);
     ui.leEncodeTarget->setText(password);
     ui.leShiftTarget->setText(password);
 }
