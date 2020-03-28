@@ -334,6 +334,9 @@
     <ClCompile Include="MiscellaneousStringUtil.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousStdConstructor.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -403,6 +406,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousStringUtil.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousStdConstructor.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -560,6 +566,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousStringUtil.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStdConstructor.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

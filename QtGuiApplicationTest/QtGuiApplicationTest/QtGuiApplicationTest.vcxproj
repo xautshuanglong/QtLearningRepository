@@ -258,6 +258,7 @@
     <ClCompile Include="MiscellaneousRegularExpression.cpp" />
     <ClCompile Include="MiscellaneousSignalSlot.cpp" />
     <ClCompile Include="MiscellaneousSqlCipher.cpp" />
+    <ClCompile Include="MiscellaneousStdConstructor.cpp" />
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp" />
     <ClCompile Include="MiscellaneousStringUtil.cpp" />
     <ClCompile Include="MiscellaneousTesting.cpp" />
@@ -363,6 +364,9 @@
     <QtUic Include="MiscellaneousRegularExpression.ui" />
     <QtUic Include="MiscellaneousSignalSlot.ui" />
     <QtUic Include="MiscellaneousSqlCipher.ui" />
+    <QtUic Include="MiscellaneousStdConstructor.ui">
+      <SubType>Designer</SubType>
+    </QtUic>
     <QtUic Include="MiscellaneousStringUtil.ui" />
     <QtUic Include="MiscellaneousTesting.ui" />
     <CustomBuild Include="NotifyWidget.ui">
@@ -616,6 +620,10 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousStringUtil.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStdConstructor.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>

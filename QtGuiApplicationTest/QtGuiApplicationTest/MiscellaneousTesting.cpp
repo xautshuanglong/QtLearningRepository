@@ -10,6 +10,7 @@
 #include "MiscellaneousBeginThreadEx.h"
 // Standard CPP
 #include "MiscellaneousStdSharedPointer.h"
+#include "MiscellaneousStdConstructor.h"
 #include "MiscellaneousCLanguageFeatures.h"
 // QT Test
 #include "MiscellaneousPrinterPDF.h"
@@ -72,6 +73,7 @@ void MiscellaneousTesting::InitializeUI()
 
     this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
+    this->AppendTestPage(new MiscellaneousStdConstructor(this));
     this->AppendTestPage(new MiscellaneousCLanguageFeatures(this));
     this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
