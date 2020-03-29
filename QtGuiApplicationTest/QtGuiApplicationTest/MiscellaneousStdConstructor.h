@@ -27,4 +27,37 @@ private:
     Ui::MiscellaneousStdConstructor ui;
 };
 
+class ConstructorTestBase
+{
+public:
+    ConstructorTestBase();
+    ConstructorTestBase(const ConstructorTestBase& other);
+    ConstructorTestBase(const ConstructorTestBase&& other);
+    ~ConstructorTestBase();
+    ConstructorTestBase& operator=(const ConstructorTestBase& other);
+
+    void SetIntValue(const int intValue);
+    void SetName(const QString& name);
+
+    int GetIntValue();
+    QString GetName();
+
+private:
+    int       mIntValue;
+    QString   mStrName;
+};
+
+class ConstructorTestDerived : public ConstructorTestBase
+{
+public:
+    ConstructorTestDerived();
+    ~ConstructorTestDerived();
+
+    void SetIntValue(const int intValue);
+    int GetIntValue();
+
+private:
+    int   mIntValue;
+};
+
 #endif // MISCELLANEOUS_STD_CONSTRUCTOR_H
