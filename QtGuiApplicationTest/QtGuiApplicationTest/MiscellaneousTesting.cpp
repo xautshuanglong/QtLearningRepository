@@ -12,6 +12,8 @@
 #include "MiscellaneousStdSharedPointer.h"
 #include "MiscellaneousStdConstructor.h"
 #include "MiscellaneousCLanguageFeatures.h"
+// Algorithm
+#include "MiscellaneousAlgorithmLeetCode.h"
 // QT Test
 #include "MiscellaneousPrinterPDF.h"
 #include "MiscellaneousSignalSlot.h"
@@ -75,6 +77,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
     this->AppendTestPage(new MiscellaneousCLanguageFeatures(this));
+    this->AppendTestPage(new MiscellaneousAlgorithmLeetCode(this));
     this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
@@ -164,8 +167,11 @@ void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem
                 {
                     pItem->setExpanded(true);
                     QTreeWidgetItem *pShowItem = pItem->child(0);
-                    pShowItem->setSelected(true);
-                    this->ShowTestPage(pShowItem);
+                    if (pShowItem != Q_NULLPTR)
+                    {
+                        pShowItem->setSelected(true);
+                        this->ShowTestPage(pShowItem);
+                    }
                 }
             }
             else

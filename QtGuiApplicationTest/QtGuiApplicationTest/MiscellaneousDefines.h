@@ -8,6 +8,7 @@ enum class MiscellaneousTestGroup
 {
     WinAPI_Test,     // Windows 原生 API 测试
     Standard_Cpp,    // 标准 CPP 库函数测试
+    Algorithm,       // 算法练习
     QT_Test,         // QT 功能模块测试
     Database,        // 数据库相关测试
     Utility_Tools,   // 实用工具类测试入口
@@ -22,6 +23,7 @@ enum class MiscellaneousTestItem
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值
     StdCpp_C_Language_Features,       // C 语言特性测试
+    Algorithm_LeetCode,               // LeetCode 力扣练习题
     QT_Signal_Slot,                   // QT 信号槽测试：传递自定义类型
     QT_Printer_PDF,                   // QT 输出 PDF
     QT_Printer_Widget,                // QT 将 QWidget 输出到 PDF
