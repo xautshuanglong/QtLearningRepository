@@ -2,12 +2,23 @@
 #define MISCELLANEOUS_ALGORITHM_LEETCODE_H
 
 #include <vector>
+#include <functional>
+#include <QMap>
 
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousAlgorithmLeetCode.h"
 
 class MiscellaneousAlgorithmLeetCode : public MiscellaneousBase
 {
+private:
+    struct LeetCodeSubject
+    {
+        int No;
+        std::function<void()> entryFunction;
+        QString Title;
+        QString Description;
+    };
+
     Q_OBJECT
 
 public:
@@ -20,14 +31,20 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
-    void on_btnNumOfIsland_1_clicked();
-    void on_btnTest_clicked();
+    void on_lwSubjects_itemClicked(QListWidgetItem *item);
+    void on_lwSubjects_itemDoubleClicked(QListWidgetItem *item);
 
 private:
-    int LeetCode_100_NumberOfIsland(std::vector<std::vector<char>>& grid);
+    void InitializeUI();
+
+    void LeetCode_200_Entry();
+    int  LeetCode_200_NumberOfIsland(std::vector<std::vector<char>>& grid);
+    void LeetCode_201_Entry();
+    void LeetCode_201_Unknown();
 
 private:
     Ui::MiscellaneousAlgorithmLeetCode ui;
+    QMap<int, LeetCodeSubject>         mLeetCodeSubjectInfo;
 };
 
 #endif // MISCELLANEOUS_ALGORITHM_LEETCODE_H
