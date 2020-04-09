@@ -38,7 +38,8 @@ private:
     void InitializeUI();
 
     void LeetCode_200_Entry();
-    int  LeetCode_200_NumberOfIsland(std::vector<std::vector<char>>& grid);
+    int  LeetCode_200_NumberOfIsland_LowMemery(std::vector<std::vector<char>>& grid);
+    int  LeetCode_200_NumberOfIsland_LowTime(std::vector<std::vector<char>>& grid);
     void LeetCode_201_Entry();
     void LeetCode_201_Unknown();
 

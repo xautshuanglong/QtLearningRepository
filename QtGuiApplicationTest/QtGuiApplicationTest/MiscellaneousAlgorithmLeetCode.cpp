@@ -87,7 +87,7 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
     for (int i = 0; i < subjectCount; ++i)
     {
         mLeetCodeSubjectInfo.insert(leetCodeSubjects[i].No, leetCodeSubjects[i]);
-        tempItemText = QString("%1. %2").arg(leetCodeSubjects[i].No, 8).arg(leetCodeSubjects[i].Title);
+        tempItemText = QString("%1. %2").arg(leetCodeSubjects[i].No, 6).arg(leetCodeSubjects[i].Title);
         pTempItem = new QListWidgetItem(tempItemText, ui.lwSubjects);
         pTempItem->setData(Qt::UserRole, leetCodeSubjects[i].No);
         ui.lwSubjects->addItem(pTempItem);
@@ -110,8 +110,6 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_200_Entry()
     inputGrid1.push_back(vector<char>({ '1', '1', '0', '0', '0' }));
     inputGrid1.push_back(vector<char>({ '0', '0', '0', '0', '0' }));
 
-    int islandCount1 = this->LeetCode_200_NumberOfIsland(inputGrid1);
-
     //11000
     //11000
     //00100
@@ -123,21 +121,131 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_200_Entry()
     inputGrid2.push_back(vector<char>({ '0', '0', '1', '0', '0' }));
     inputGrid2.push_back(vector<char>({ '0', '0', '0', '1', '1' }));
 
-    int islandCount2 = this->LeetCode_200_NumberOfIsland(inputGrid2);
+    int islandCount1 = this->LeetCode_200_NumberOfIsland_LowMemery(inputGrid1);
+    int islandCount2 = this->LeetCode_200_NumberOfIsland_LowMemery(inputGrid2);
+    int islandCount3 = this->LeetCode_200_NumberOfIsland_LowTime(inputGrid1);
+    int islandCount4 = this->LeetCode_200_NumberOfIsland_LowTime(inputGrid2);
 
     int i = 0;
 }
 
-int MiscellaneousAlgorithmLeetCode::LeetCode_200_NumberOfIsland(std::vector<std::vector<char>>& grid)
+int MiscellaneousAlgorithmLeetCode::LeetCode_200_NumberOfIsland_LowMemery(std::vector<std::vector<char>>& grid)
 {
     if (grid.size() == 0) return 0;
 
+    struct GridCell 
+    {
+        int row;
+        int col;
+    };
     // copy 同等规模矩阵
     vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
-
+    vector<GridCell> islandVec;
     int islandCount = 0;
+    int maxRow = grid.size();
+    int maxCol = grid[0].size();
+
+    GridCell nextCell = { 0, 0 };
+    GridCell tempCell = { 0, 0 };
+    int tempRow = 0, tempCol = 0;
+
+    for (int row = 0; row < maxRow; ++row)
+    {
+        for (int col = 0; col < maxCol; ++col)
+        {
+            if (false == visited[row][col])
+            {
+                visited[row][col] = true;
+                if ('1' == grid[row][col])
+                {
+                    ++islandCount;
+
+                    tempCell.row = row;
+                    tempCell.col = col;
+                    islandVec.push_back(tempCell);
+
+                    while (islandVec.size() > 0)
+                    {
+                        tempCell = islandVec.front();
+                        islandVec.erase(islandVec.begin());
+                        // 上侧
+                        tempRow = tempCell.row - 1;
+                        tempCol = tempCell.col;
+                        if (tempRow >= 0 && false == visited[tempRow][tempCol] && '1' == grid[tempRow][tempCol])
+                        {
+                            nextCell.row = tempRow;
+                            nextCell.col = tempCol;
+                            islandVec.push_back(nextCell);
+                            visited[tempRow][tempCol] = true;
+                        }
+                        // 右侧
+                        tempRow = tempCell.row;
+                        tempCol = tempCell.col + 1;
+                        if (tempCol < maxCol && false == visited[tempRow][tempCol] && '1' == grid[tempRow][tempCol])
+                        {
+                            nextCell.row = tempRow;
+                            nextCell.col = tempCol;
+                            islandVec.push_back(nextCell);
+                            visited[tempRow][tempCol] = true;
+                        }
+                        // 下侧
+                        tempRow = tempCell.row + 1;
+                        tempCol = tempCell.col;
+                        if (tempRow < maxRow && false == visited[tempRow][tempCol] && '1' == grid[tempRow][tempCol])
+                        {
+                            nextCell.row = tempRow;
+                            nextCell.col = tempCol;
+                            islandVec.push_back(nextCell);
+                            visited[tempRow][tempCol] = true;
+                        }
+                        // 左侧
+                        tempRow = tempCell.row;
+                        tempCol = tempCell.col - 1;
+                        if (tempCol >= 0 && false == visited[tempRow][tempCol] && '1' == grid[tempRow][tempCol])
+                        {
+                            nextCell.row = tempRow;
+                            nextCell.col = tempCol;
+                            islandVec.push_back(nextCell);
+                            visited[tempRow][tempCol] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return islandCount;
+}
+
+// breadth first search
+// depth first search
+void dfs(vector<vector<char>>& grid, int i, int j)
+{
+    if (i < 0 || i >= grid.size() ||
+        j < 0 || j >= grid[0].size() ||
+        grid[i][j] != '1')
+        return;
+    grid[i][j] = '2';
+    dfs(grid, i + 1, j);
+    dfs(grid, i - 1, j);
+    dfs(grid, i, j - 1);
+    dfs(grid, i, j + 1);
+}
+
+int MiscellaneousAlgorithmLeetCode::LeetCode_200_NumberOfIsland_LowTime(std::vector<std::vector<char>>& grid)
+{
+    int res = 0;
+    for (int i = 0; i < grid.size(); i++) {
+        for (int j = 0; j < grid[0].size(); j++)
+        {
+            if (grid[i][j] == '1')
+            {
+                res++;
+                dfs(grid, i, j);
+            }
+        }
+    }
+    return res;
 }
 
 void MiscellaneousAlgorithmLeetCode::LeetCode_201_Entry()
