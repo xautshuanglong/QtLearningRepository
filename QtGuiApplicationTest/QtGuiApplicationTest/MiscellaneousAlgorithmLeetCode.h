@@ -37,6 +37,14 @@ private slots:
 private:
     void InitializeUI();
 
+    void LeetCode_121_Entry();
+    int  LeetCode_121_MaxProfit(std::vector<int>& prices);
+    void LeetCode_122_Entry();
+    int  LeetCode_122_MaxProfit(std::vector<int>& prices);
+    void LeetCode_123_Entry();
+    int  LeetCode_123_MaxProfit(std::vector<int>& prices);
+    void LeetCode_188_Entry();
+    int  LeetCode_188_MaxProfit(int k, std::vector<int>& prices);
     void LeetCode_200_Entry();
     int  LeetCode_200_NumberOfIsland_LowMemery(std::vector<std::vector<char>>& grid);
     int  LeetCode_200_NumberOfIsland_LowTime(std::vector<std::vector<char>>& grid);

@@ -1,6 +1,6 @@
 #include "MiscellaneousAlgorithmLeetCode.h"
 
-using namespace std;
+#include <algorithm>
 
 MiscellaneousAlgorithmLeetCode::MiscellaneousAlgorithmLeetCode(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -55,6 +55,88 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
 {
     LeetCodeSubject leetCodeSubjects[] =
     {
+        {121, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_121_Entry, this), QStringLiteral("买卖股票的最佳时机 I"),
+        QStringLiteral("\n给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。"
+                       "\n如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。"
+                       "\n注意：你不能在买入股票前卖出股票。"
+                       "\n"
+                       "\n示例 1:"
+                       "\n"
+                       "\n输入: [7,1,5,3,6,4]"
+                       "\n输出 : 5"
+                       "\n解释 : 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6 - 1 = 5 。"
+                       "\n       注意利润不能是 7 - 1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。"
+                       "\n"
+                       "\n示例 2 :"
+                       "\n"
+                       "\n输入 : [7,6,4,3,1]"
+                       "\n输出 : 0"
+                       "\n解释 : 在这种情况下, 没有交易完成, 所以最大利润为 0。")},
+        {122, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_122_Entry, this), QStringLiteral("买卖股票的最佳时机 II"),
+        QStringLiteral("\n给定一个数组，它的第?i 个元素是一支给定股票第 i 天的价格。"
+                       "\n设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。"
+                       "\n注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。"
+                       "\n"
+                       "\n示例 1:"
+                       "\n"
+                       "\n输入: [7,1,5,3,6,4]"
+                       "\n输出 : 7"
+                       "\n解释 : 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。"
+                       "\n       随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6 - 3 = 3 。"
+                       "\n"
+                       "\n示例 2 :"
+                       "\n"
+                       "\n输入 : [1,2,3,4,5]"
+                       "\n输出 : 4"
+                       "\n解释 : 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。"
+                       "\n       注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。"
+                       "\n       因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。"
+                       "\n"
+                       "\n示例 3 :"
+                       "\n"
+                       "\n输入 : [7,6,4,3,1]"
+                       "\n输出 : 0"
+                       "\n解释 : 在这种情况下, 没有交易完成, 所以最大利润为 0。"
+                       "\n"
+                       "\n提示："
+                       "\n1 <= prices.length <= 3 * 10 ^ 4"
+                       "\n0 <= prices[i] <= 10 ^ 4")},
+        {123, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_123_Entry, this), QStringLiteral("买卖股票的最佳时机 III"),
+        QStringLiteral("\n给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。"
+                       "\n设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。"
+                       "\n注意 : 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。"
+                       "\n"
+                       "\n示例 1 :"
+                       "\n"
+                       "\n输入 : [3,3,5,0,0,3,1,4]"
+                       "\n输出 : 6"
+                       "\n解释 : 在第 4 天（股票价格 = 0）的时候买入，在第 6 天（股票价格 = 3）的时候卖出，这笔交易所能获得利润 = 3 - 0 = 3 。"
+                       "\n       随后，在第 7 天（股票价格 = 1）的时候买入，在第 8 天 （股票价格 = 4）的时候卖出，这笔交易所能获得利润 = 4 - 1 = 3 。"
+                       "\n"
+                       "\n示例 2 :"
+                       "\n"
+                       "\n输入 : [1,2,3,4,5]"
+                       "\n输出 : 4"
+                       "\n解释 : 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。"
+                       "\n       注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。"
+                       "\n       因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。"
+                       "\n"
+                       "\n示例 3 :"
+                       "\n"
+                       "\n输入 : [7,6,4,3,1]"
+                       "\n输出 : 0"
+                       "\n解释 : 在这个情况下, 没有交易完成, 所以最大利润为 0。")},
+        {188, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_188_Entry, this), QStringLiteral("买卖股票的最佳时机 IV"),
+        QStringLiteral("给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。"
+                       "\n注意: 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。"
+                       "\n\n示例 1 :"
+                       "\n\n输入 : [2,4,1], k = 2"
+                       "\n输出 : 2"
+                       "\n解释 : 在第 1 天(股票价格 = 2) 的时候买入，在第 2 天(股票价格 = 4) 的时候卖出，这笔交易所能获得利润 = 4 - 2 = 2 。"
+                       "\n\n示例 2 :"
+                       "\n\n输入 : [3,2,6,5,0,3], k = 2"
+                       "\n输出 : 7"
+                       "\n解释 : 在第 2 天(股票价格 = 2) 的时候买入，在第 3 天(股票价格 = 6) 的时候卖出, 这笔交易所能获得利润 = 6 - 2 = 4 。随后，在第 5 天(股票价格 = 0) 的时候买入，在第 6 天(股票价格 = 3) 的时候卖出, 这笔交易所能获得利润 = 3 - 0 = 3 。")},
         {200, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_200_Entry, this), QStringLiteral("岛屿数量"),
         QStringLiteral("给定一个由 '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。"
                        "\n\n示例 1:"
@@ -97,6 +179,104 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
     ui.teSubject->setPlainText(leetCodeSubjects[0].Description);
 }
 
+void MiscellaneousAlgorithmLeetCode::LeetCode_121_Entry()
+{
+    // 输入: [7, 1, 5, 3, 6, 4]
+    // 输出 : 5
+    std::vector<int> priceList1 = { 7, 1, 5, 3, 6, 4 };
+    int maxProfit1 = this->LeetCode_121_MaxProfit(priceList1);
+
+    // 输入: [7,6,4,3,1]
+    // 输出: 0
+    std::vector<int> priceList2 = { 7,6,4,3,1 };
+    int maxProfit2 = this->LeetCode_121_MaxProfit(priceList2);
+}
+
+int MiscellaneousAlgorithmLeetCode::LeetCode_121_MaxProfit(std::vector<int>& prices)
+{
+    int retValue = 0;
+
+    return retValue;
+}
+
+void MiscellaneousAlgorithmLeetCode::LeetCode_122_Entry()
+{
+    // 输入: [7, 1, 5, 3, 6, 4]
+    // 输出 : 7
+    std::vector<int> priceList1 = { 7, 1, 5, 3, 6, 4 };
+    int maxProfit1 = this->LeetCode_122_MaxProfit(priceList1);
+
+    // 输入: [1, 2, 3, 4, 5]
+    // 输出 : 4
+    std::vector<int> priceList2 = { 1, 2, 3, 4, 5 };
+    int maxProfit2 = this->LeetCode_122_MaxProfit(priceList2);
+
+    // 输入: [7, 6, 4, 3, 1]
+    // 输出 : 0
+    std::vector<int> priceList3 = { 7, 6, 4, 3, 1 };
+    int maxProfit3 = this->LeetCode_122_MaxProfit(priceList3);
+}
+
+int MiscellaneousAlgorithmLeetCode::LeetCode_122_MaxProfit(std::vector<int>& prices)
+{
+    int retValue = 0;
+
+    return retValue;
+}
+
+void MiscellaneousAlgorithmLeetCode::LeetCode_123_Entry()
+{
+    // 输入: [3,3,5,0,0,3,1,4]
+    // 输出: 6
+    std::vector<int> priceList1 = { 3,3,5,0,0,3,1,4 };
+    int maxProfit1 = this->LeetCode_123_MaxProfit(priceList1);
+
+    // 输入: [1,2,3,4,5]
+    // 输出: 4
+    std::vector<int> priceList2 = { 1,2,3,4,5 };
+    int maxProfit2 = this->LeetCode_123_MaxProfit(priceList2);
+
+    // 输入: [7, 6, 4, 3, 1]
+    // 输出 : 0
+    std::vector<int> priceList3 = { 7, 6, 4, 3, 1 };
+    int maxProfit3 = this->LeetCode_123_MaxProfit(priceList3);
+}
+
+int MiscellaneousAlgorithmLeetCode::LeetCode_123_MaxProfit(std::vector<int>& prices)
+{
+    int retValue = 0;
+
+    return retValue;
+}
+
+void MiscellaneousAlgorithmLeetCode::LeetCode_188_Entry()
+{
+    // 输入 : [2,4,1], k = 2
+    // 输出 : 2
+    int k1 = 2;
+    std::vector<int> priceList1 = { 2, 4, 1 };
+    this->LeetCode_188_MaxProfit(k1, priceList1);
+
+    // 输入 : [3,2,6,5,0,3], k = 2
+    // 输出 : 7
+    int k2 = 2;
+    std::vector<int> priceList2 = { 3, 2, 6, 5, 0, 3 };
+    this->LeetCode_188_MaxProfit(k2, priceList2);
+}
+
+int MiscellaneousAlgorithmLeetCode::LeetCode_188_MaxProfit(int k, std::vector<int>& prices)
+{
+    int retValue = 0;
+
+    int transactionCount = std::min(int(prices.size() / 2), k % 2 == 0 ? k : k - 1);
+    for (int i = 0; i < transactionCount; ++i)
+    {
+        ; //
+    }
+
+    return retValue;
+}
+
 void MiscellaneousAlgorithmLeetCode::LeetCode_200_Entry()
 {
     //11110
@@ -104,22 +284,22 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_200_Entry()
     //11000
     //00000
     // 1个
-    vector<vector<char>> inputGrid1;
-    inputGrid1.push_back(vector<char>({ '1', '1', '1', '1', '0' }));
-    inputGrid1.push_back(vector<char>({ '1', '1', '0', '1', '0' }));
-    inputGrid1.push_back(vector<char>({ '1', '1', '0', '0', '0' }));
-    inputGrid1.push_back(vector<char>({ '0', '0', '0', '0', '0' }));
+    std::vector<std::vector<char>> inputGrid1;
+    inputGrid1.push_back(std::vector<char>({ '1', '1', '1', '1', '0' }));
+    inputGrid1.push_back(std::vector<char>({ '1', '1', '0', '1', '0' }));
+    inputGrid1.push_back(std::vector<char>({ '1', '1', '0', '0', '0' }));
+    inputGrid1.push_back(std::vector<char>({ '0', '0', '0', '0', '0' }));
 
     //11000
     //11000
     //00100
     //00011
     // 3个
-    vector<vector<char>> inputGrid2;
-    inputGrid2.push_back(vector<char>({ '1', '1', '0', '0', '0' }));
-    inputGrid2.push_back(vector<char>({ '1', '1', '0', '0', '0' }));
-    inputGrid2.push_back(vector<char>({ '0', '0', '1', '0', '0' }));
-    inputGrid2.push_back(vector<char>({ '0', '0', '0', '1', '1' }));
+    std::vector<std::vector<char>> inputGrid2;
+    inputGrid2.push_back(std::vector<char>({ '1', '1', '0', '0', '0' }));
+    inputGrid2.push_back(std::vector<char>({ '1', '1', '0', '0', '0' }));
+    inputGrid2.push_back(std::vector<char>({ '0', '0', '1', '0', '0' }));
+    inputGrid2.push_back(std::vector<char>({ '0', '0', '0', '1', '1' }));
 
     int islandCount1 = this->LeetCode_200_NumberOfIsland_LowMemery(inputGrid1);
     int islandCount2 = this->LeetCode_200_NumberOfIsland_LowMemery(inputGrid2);
@@ -139,8 +319,8 @@ int MiscellaneousAlgorithmLeetCode::LeetCode_200_NumberOfIsland_LowMemery(std::v
         int col;
     };
     // copy 同等规模矩阵
-    vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
-    vector<GridCell> islandVec;
+    std::vector<std::vector<bool>> visited(grid.size(), std::vector<bool>(grid[0].size(), false));
+    std::vector<GridCell> islandVec;
     int islandCount = 0;
     int maxRow = grid.size();
     int maxCol = grid[0].size();
@@ -219,7 +399,7 @@ int MiscellaneousAlgorithmLeetCode::LeetCode_200_NumberOfIsland_LowMemery(std::v
 
 // breadth first search
 // depth first search
-void dfs(vector<vector<char>>& grid, int i, int j)
+void dfs(std::vector<std::vector<char>>& grid, int i, int j)
 {
     if (i < 0 || i >= grid.size() ||
         j < 0 || j >= grid[0].size() ||
