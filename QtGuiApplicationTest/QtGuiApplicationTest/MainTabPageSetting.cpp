@@ -129,26 +129,26 @@ void MainTabPageSetting::on_btnGeneratePDF_clicked()
 
 void MainTabPageSetting::on_btnParseDocument_clicked()
 {
-    static int count = 0;
-    NotifyWidget::ShowInformation(QString("Hello world!\n%1").arg(++count));
-    return;
+    //static int count = 0;
+    //NotifyWidget::ShowInformation(QString("Hello world!\n%1").arg(++count));
+    //return;
 
-    QList<QScreen*> screenList = QApplication::screens();
-    for each (QScreen *pScreen in screenList)
-    {
-        QRect availableGeometry = pScreen->availableGeometry();
-        QSize availableSize = pScreen->availableSize();
-        LogUtil::Debug(CODE_LOCATION, "AvailabeSize: %dx%d    AvaliableGeometry(x,y,width,height): %d,%d %dx%d",
-                       availableSize.width(), availableSize.height(),
-                       availableGeometry.x(), availableGeometry.y(), availableGeometry.width(), availableGeometry.height());
+    //QList<QScreen*> screenList = QApplication::screens();
+    //for each (QScreen *pScreen in screenList)
+    //{
+    //    QRect availableGeometry = pScreen->availableGeometry();
+    //    QSize availableSize = pScreen->availableSize();
+    //    LogUtil::Debug(CODE_LOCATION, "AvailabeSize: %dx%d    AvaliableGeometry(x,y,width,height): %d,%d %dx%d",
+    //                   availableSize.width(), availableSize.height(),
+    //                   availableGeometry.x(), availableGeometry.y(), availableGeometry.width(), availableGeometry.height());
 
-        QRect virtualGeometry = pScreen->availableVirtualGeometry();
-        QSize virtualSize = pScreen->availableVirtualSize();
-        LogUtil::Debug(CODE_LOCATION, "VirtualSize: %dx%d    VirtualGeometry(x,y,width,height): %d,%d %dx%d",
-                       virtualSize.width(), virtualSize.height(),
-                       virtualGeometry.x(), virtualGeometry.y(), virtualGeometry.width(), virtualGeometry.height());
-    }
-    return;
+    //    QRect virtualGeometry = pScreen->availableVirtualGeometry();
+    //    QSize virtualSize = pScreen->availableVirtualSize();
+    //    LogUtil::Debug(CODE_LOCATION, "VirtualSize: %dx%d    VirtualGeometry(x,y,width,height): %d,%d %dx%d",
+    //                   virtualSize.width(), virtualSize.height(),
+    //                   virtualGeometry.x(), virtualGeometry.y(), virtualGeometry.width(), virtualGeometry.height());
+    //}
+    //return;
 
     //QHostAddress loopback("127.0.0.1");
     //if (loopback.isLoopback())
@@ -229,13 +229,13 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     tempCursor.insertText(QString("Insert Text Test %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzz"))); // 2019-07-06T17:52:02.017578
     tempCursor.insertBlock();
 
-    QString timeString("2019-07-06T17:52:02.987");
-    QDateTime timeTest = QDateTime::fromString(timeString, "yyyy-MM-dd'T'hh:mm:ss.zzz");
-    QString newTimeStr = timeTest.toString("yyyy-MM-ddThh:mm:ss.z");
+    //QString timeString("2019-07-06T17:52:02.987");
+    //QDateTime timeTest = QDateTime::fromString(timeString, "yyyy-MM-dd'T'hh:mm:ss.zzz");
+    //QString newTimeStr = timeTest.toString("yyyy-MM-ddThh:mm:ss.z");
 
-    QString timeString2("2019-07-08 17:52:02.987");
-    QDateTime timeTest2 = QDateTime::fromString(timeString2, "yyyy-MM-dd hh:mm:ss.zzz");
-    QString newTimeStr2 = timeTest2.toString("yyyy-MM-dd hh:mm:ss.z");
+    //QString timeString2("2019-07-08 17:52:02.987");
+    //QDateTime timeTest2 = QDateTime::fromString(timeString2, "yyyy-MM-dd hh:mm:ss.zzz");
+    //QString newTimeStr2 = timeTest2.toString("yyyy-MM-dd hh:mm:ss.z");
 
     int i = 0;
 }

@@ -340,6 +340,9 @@
     <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousExcelReadWrite.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -415,6 +418,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousAlgorithmLeetCode.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousExcelReadWrite.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -578,6 +584,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousAlgorithmLeetCode.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousExcelReadWrite.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

@@ -31,6 +31,7 @@ enum class MiscellaneousTestItem
     QT_Image_QPixmap,                 // QT 图像操作 QPixmap
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     QT_Regular_Expression,            // QT 正则表达式训练
+    QT_Excel_ReadWrite,               // QT Excel 文件读写
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
     Database_Postgresql,              // 数据库操作 postgresql

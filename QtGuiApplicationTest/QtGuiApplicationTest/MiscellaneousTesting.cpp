@@ -22,6 +22,7 @@
 #include "MiscellaneousImageQPixmap.h"
 #include "MiscellaneousQObjectCast.h"
 #include "MiscellaneousRegularExpression.h"
+#include "MiscellaneousExcelReadWrite.h"
 // Database
 #include "MiscellaneousWxSqlite3.h"
 #include "MiscellaneousSqlCipher.h"
@@ -85,6 +86,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
     this->AppendTestPage(new MiscellaneousQObjectCast(this));
     this->AppendTestPage(new MiscellaneousRegularExpression(this));
+    this->AppendTestPage(new MiscellaneousExcelReadWrite(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
     this->AppendTestPage(new MiscellaneousSqlCipher(this));
     this->AppendTestPage(new MiscellaneousPostgresql(this));
