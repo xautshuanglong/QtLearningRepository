@@ -36,7 +36,7 @@ MiscellaneousTestItem MiscellaneousExcelReadWrite::GetItemID()
     return MiscellaneousTestItem::QT_Excel_ReadWrite;
 }
 
-void MiscellaneousExcelReadWrite::on_btnOne_clicked()
+void MiscellaneousExcelReadWrite::on_btnSqlSelect_clicked()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC", "xlsx_connection");
     if (db.isValid())
@@ -109,7 +109,7 @@ void MiscellaneousExcelReadWrite::on_btnOne_clicked()
     QSqlDatabase::removeDatabase("xlsx_connection");
 }
 
-void MiscellaneousExcelReadWrite::on_btnTwo_clicked()
+void MiscellaneousExcelReadWrite::on_btnSqlUpdateAndInsert_clicked()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC", "xlsx_connection");
     if (db.isValid())
@@ -162,12 +162,12 @@ void MiscellaneousExcelReadWrite::on_btnTwo_clicked()
     QSqlDatabase::removeDatabase("xlsx_connection");
 }
 
-void MiscellaneousExcelReadWrite::on_btnThree_clicked()
+void MiscellaneousExcelReadWrite::on_btnAxObjectRead_clicked()
 {
     int i = 0;
 }
 
-void MiscellaneousExcelReadWrite::on_btnFour_clicked()
+void MiscellaneousExcelReadWrite::on_btnAxObjectWrite_clicked()
 {
     int i = 0;
 }

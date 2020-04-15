@@ -18,10 +18,10 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
-    void on_btnOne_clicked();
-    void on_btnTwo_clicked();
-    void on_btnThree_clicked();
-    void on_btnFour_clicked();
+    void on_btnSqlSelect_clicked();
+    void on_btnSqlUpdateAndInsert_clicked();
+    void on_btnAxObjectRead_clicked();
+    void on_btnAxObjectWrite_clicked();
 
 private:
     Ui::MiscellaneousExcelReadWrite ui;
