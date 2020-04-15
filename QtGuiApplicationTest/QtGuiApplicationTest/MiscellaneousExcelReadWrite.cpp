@@ -1,5 +1,6 @@
 #include "MiscellaneousExcelReadWrite.h"
 
+#include <QAxObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -165,6 +166,40 @@ void MiscellaneousExcelReadWrite::on_btnSqlUpdateAndInsert_clicked()
 void MiscellaneousExcelReadWrite::on_btnAxObjectRead_clicked()
 {
     int i = 0;
+
+    QAxObject *pAxObjExcel = new QAxObject();
+    pAxObjExcel->setControl("Excel.Application");
+    pAxObjExcel->setProperty("Visible", true);
+    pAxObjExcel->setProperty("DisplayAlerts", false);
+    pAxObjExcel->setProperty("Caption", "Qt Excel");
+
+    QAxObject *pWorkBooks = pAxObjExcel->querySubObject("WorkBooks");
+    QAxObject *pWorkBook = pWorkBooks->querySubObject("Open(const QString&)", QString("E:\\Temp\\QT_SQL_DATABASE_1.xlsx"));
+
+    QAxObject *pWorkBookActive = pAxObjExcel->querySubObject("ActiveWorkBook");
+    QAxObject *pWorkSheet = pWorkBookActive->querySubObject("Sheets(int)", 1);
+
+    QAxObject *pCell = Q_NULLPTR;
+    QAxObject *pFont = Q_NULLPTR;
+
+    pCell = pWorkSheet->querySubObject("Cells(int,int)", 2, 5);
+    pCell->setProperty("Value", "2-2");
+    pFont = pCell->querySubObject("Font");
+    pFont->setProperty("Color", QColor(74, 51, 255));
+
+    pCell = pWorkSheet->querySubObject("Cells(int,int)", 3, 5);
+    pCell->setProperty("Value", "3-2");
+    pFont = pCell->querySubObject("Font");
+    pFont->setProperty("Color", QColor(255, 255, 0));
+
+    pCell = pWorkSheet->querySubObject("Cells(int,int)", 4, 5);
+    pCell->setProperty("Value", "4-2");
+    pFont = pCell->querySubObject("Font");
+    pFont->setProperty("Color", QColor(255, 0, 0));
+
+    pWorkBook->dynamicCall("Save()");
+
+    delete pAxObjExcel;
 }
 
 void MiscellaneousExcelReadWrite::on_btnAxObjectWrite_clicked()
