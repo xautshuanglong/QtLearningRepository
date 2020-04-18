@@ -190,13 +190,48 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_121_Entry()
     // Êä³ö: 0
     std::vector<int> priceList2 = { 7,6,4,3,1 };
     int maxProfit2 = this->LeetCode_121_MaxProfit(priceList2);
+
+    int i = 0;
 }
 
 int MiscellaneousAlgorithmLeetCode::LeetCode_121_MaxProfit(std::vector<int>& prices)
 {
+    int min = 0x7FFFFFFF;
     int retValue = 0;
-
+    int dayCount = prices.size();
+    if (dayCount > 0)
+    {
+        min = prices[0];
+        for (int i = 1; i < dayCount; ++i)
+        {
+            if (prices[i] < min)
+            {
+                min = prices[i];
+                ++i;
+            }
+            if (prices[i] - min > retValue)
+            {
+                retValue = prices[i] - min;
+            }
+        }
+    }
     return retValue;
+
+    //int min = 0x7FFFFFFF;
+    //int retValue = 0;
+    //int dayCount = prices.size();
+    //for (int i = 0; i < dayCount; ++i)
+    //{
+    //    if (prices[i] < min)
+    //    {
+    //        min = prices[i];
+    //    }
+    //    if (prices[i] - min > retValue)
+    //    {
+    //        retValue = prices[i] - min;
+    //    }
+    //}
+    //return retValue;
 }
 
 void MiscellaneousAlgorithmLeetCode::LeetCode_122_Entry()
