@@ -255,7 +255,15 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_122_Entry()
 int MiscellaneousAlgorithmLeetCode::LeetCode_122_MaxProfit(std::vector<int>& prices)
 {
     int retValue = 0;
-
+    int inputCount = prices.size();
+    for (int i = 0; i < inputCount - 1; ++i)
+    {
+        prices[i] = prices[i + 1] - prices[i];
+        if (prices[i] > 0)
+        {
+            retValue += prices[i];
+        }
+    }
     return retValue;
 }
 
