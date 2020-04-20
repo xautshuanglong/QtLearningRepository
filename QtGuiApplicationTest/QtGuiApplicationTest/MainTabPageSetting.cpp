@@ -95,6 +95,10 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     ui.btnDropMenu->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(pActionAdd, &QAction::triggered, this, &MainTabPageSetting::SlotDropMenuActionTriggeredAdd);
     connect(pActionDelete, &QAction::triggered, this, &MainTabPageSetting::SlotDropMenuActionTriggeredDelete);
+
+    // TextEdit ²âÊÔ
+    QTextDocument *pTextDoc = ui.tePdfTest->document();
+    connect(pTextDoc, SIGNAL(cursorPositionChanged(const QTextCursor &)), this, SLOT(SlotTextDocumentCursorPositionChanged(const QTextCursor &)));
 }
 
 MainTabPageSetting::~MainTabPageSetting()
@@ -229,6 +233,24 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     tempCursor.insertText(QString("Insert Text Test %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzz"))); // 2019-07-06T17:52:02.017578
     tempCursor.insertBlock();
 
+    QFont linkFont("Times", 25);
+    linkFont.setUnderline(true);
+    QTextCharFormat charFormatOld = tempCursor.blockCharFormat();
+    QTextCharFormat charFormatNew = charFormatOld;
+    charFormatNew.setFont(linkFont);
+    charFormatNew.setForeground(QBrush(Qt::blue));
+    tempCursor.setCharFormat(charFormatNew);
+    tempCursor.insertText("CharFormatTesting");
+    tempCursor.setCharFormat(charFormatOld);
+    tempCursor.insertText("Recover to old format");
+
+    QTextFrameFormat frameFormat;
+    QTextFrame *pCurFrame = tempCursor.insertFrame(frameFormat);
+    QTextCursor curFrameCursor = pCurFrame->firstCursorPosition();
+    curFrameCursor.insertText("Text inside new frame");
+    curFrameCursor.insertText("append text");
+
+    tempCursor.insertText("Old Cursor Text");
     //QString timeString("2019-07-06T17:52:02.987");
     //QDateTime timeTest = QDateTime::fromString(timeString, "yyyy-MM-dd'T'hh:mm:ss.zzz");
     //QString newTimeStr = timeTest.toString("yyyy-MM-ddThh:mm:ss.z");
@@ -323,5 +345,20 @@ void MainTabPageSetting::on_btnDropMenu_clicked()
 
 void MainTabPageSetting::on_btnDropMenu_customContextMenuRequested(const QPoint &pos)
 {
+    int i = 0;
+}
+
+void MainTabPageSetting::on_tePdfTest_cursorPositionChanged()
+{
+    QTextCursor cursor = ui.tePdfTest->textCursor();
+    QTextBlock curBlock = cursor.block();
+    QString text = curBlock.text();
+    LogUtil::Info(CODE_LOCATION, "Current block's text: %s", text.toUtf8().data());
+}
+
+void MainTabPageSetting::SlotTextDocumentCursorPositionChanged(const QTextCursor &cursor)
+{
+    QTextBlock curBlock = cursor.block();
+    QString text = curBlock.text();
     int i = 0;
 }

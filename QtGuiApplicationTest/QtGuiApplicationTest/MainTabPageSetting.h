@@ -15,12 +15,14 @@ private slots:
     void SlotListVScrollBarValueChanged(int value);
     void SlotDropMenuActionTriggeredAdd();
     void SlotDropMenuActionTriggeredDelete();
+    void SlotTextDocumentCursorPositionChanged(const QTextCursor &cursor);
     void on_btnGeneratePDF_clicked();
     void on_btnParseDocument_clicked();
     void on_btnChangeItemCount_clicked();
     void on_btnShowVerticalScrollBar_clicked();
     void on_btnDropMenu_clicked();
     void on_btnDropMenu_customContextMenuRequested(const QPoint &pos);
+    void on_tePdfTest_cursorPositionChanged();
 
 public:
     MainTabPageSetting(QWidget *parent = Q_NULLPTR);
