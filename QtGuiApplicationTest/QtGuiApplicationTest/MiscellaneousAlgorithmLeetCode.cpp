@@ -55,8 +55,25 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
 {
     LeetCodeSubject leetCodeSubjects[] =
     {
+        {42, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_42_Entry, this), QStringLiteral("面试题： 连续子数组的最大和"),
+        QStringLiteral("输入一个整型数组，数组里有正数也有负数。数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。"
+                       "\n"
+                       "\n要求时间复杂度为O(n)。"
+                       "\n"
+                       "\n"
+                       "\n示例1 :"
+                       "\n"
+                       "\n输入: nums = [-2,1,-3,4,-1,2,1,-5,4]"
+                       "\n输出 : 6"
+                       "\n解释 : 连续子数组[4,-1,2,1] 的和最大，为 6。"
+                       "\n"
+                       "\n"
+                       "\n提示："
+                       "\n"
+                       "\n1 <= arr.length <= 10 ^ 5"
+                       "\n-100 <= arr[i] <= 100")},
         {121, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_121_Entry, this), QStringLiteral("买卖股票的最佳时机 I"),
-        QStringLiteral("\n给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。"
+        QStringLiteral("给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。"
                        "\n如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。"
                        "\n注意：你不能在买入股票前卖出股票。"
                        "\n"
@@ -73,7 +90,7 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
                        "\n输出 : 0"
                        "\n解释 : 在这种情况下, 没有交易完成, 所以最大利润为 0。")},
         {122, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_122_Entry, this), QStringLiteral("买卖股票的最佳时机 II"),
-        QStringLiteral("\n给定一个数组，它的第?i 个元素是一支给定股票第 i 天的价格。"
+        QStringLiteral("给定一个数组，它的第?i 个元素是一支给定股票第 i 天的价格。"
                        "\n设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。"
                        "\n注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。"
                        "\n"
@@ -102,7 +119,7 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
                        "\n1 <= prices.length <= 3 * 10 ^ 4"
                        "\n0 <= prices[i] <= 10 ^ 4")},
         {123, std::bind(&MiscellaneousAlgorithmLeetCode::LeetCode_123_Entry, this), QStringLiteral("买卖股票的最佳时机 III"),
-        QStringLiteral("\n给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。"
+        QStringLiteral("给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。"
                        "\n设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。"
                        "\n注意 : 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。"
                        "\n"
@@ -177,6 +194,89 @@ void MiscellaneousAlgorithmLeetCode::InitializeUI()
 
     ui.lwSubjects->setCurrentRow(0);
     ui.teSubject->setPlainText(leetCodeSubjects[0].Description);
+}
+
+
+void MiscellaneousAlgorithmLeetCode::LeetCode_42_Entry()
+{
+    std::vector<int> inputNum1 = { -2,1,-3,4,-1,2,1,-5,4 }; // 6
+    int maxSum = this->LeetCode_42_MaxSubArray(inputNum1);
+
+    std::vector<int> inputNum2 = { -2,1 }; // 1
+    int maxSum2 = this->LeetCode_42_MaxSubArray(inputNum2);
+
+    int i = 0;
+}
+
+int  MiscellaneousAlgorithmLeetCode::LeetCode_42_MaxSubArray(std::vector<int>& nums)
+{
+    int maxSum = 0;
+
+    int numLen = nums.size();
+
+    if (numLen > 0)
+    {
+        int newLen = 0;
+        for (int i = 1; i < numLen; ++i)
+        {
+            if (nums[newLen] * nums[i-1] < 0)
+            {
+                ++newLen;
+                nums[newLen] = nums[i];
+            }
+            else
+            {
+                nums[newLen] += nums[i];
+            }
+        }
+        maxSum = nums[0];
+        int index = 0;
+        if (maxSum < 0 && newLen > 1)
+        {
+            maxSum = nums[1];
+            ++index;
+        }
+        int tempNum = 0, tempMax = maxSum;
+        for (int i = index + 1; i < newLen; i+=2)
+        {
+            tempNum = nums[i] * -1;
+            if (i + 1 < newLen && tempNum < maxSum && tempNum < nums[i = 1])
+            {
+                tempMax += nums[i];
+                tempMax += nums[i+1];
+            }
+            else
+            {
+                tempMax = nums[i + 1];
+            }
+
+        }
+    }
+
+    // 枚举 耗时长
+    //int inputLen = nums.size();
+    //if (inputLen > 0)
+    //{
+    //    maxSum = nums[0];
+    //    int tempSum = 0;
+    //    for (int step = 1; step <= inputLen; ++step)
+    //    {
+    //        for (int j = 0; j <= inputLen - step; ++j)
+    //        {
+    //            tempSum = 0;
+    //            for (int k = 0; k < step; ++k)
+    //            {
+    //                tempSum += nums[j + k];
+    //            }
+    //            if (tempSum > maxSum)
+    //            {
+    //                maxSum = tempSum;
+    //            }
+    //        }
+    //    }
+    //}
+
+    return maxSum;
 }
 
 void MiscellaneousAlgorithmLeetCode::LeetCode_121_Entry()
@@ -271,7 +371,8 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_123_Entry()
 {
     // 输入: [3,3,5,0,0,3,1,4]
     // 输出: 6
-    std::vector<int> priceList1 = { 3,3,5,0,0,3,1,4 };
+    //std::vector<int> priceList1 = { 3,3,5,0,0,3,1,4 };
+    std::vector<int> priceList1 = { 1, 2, 4, 2, 5, 7, 2, 4, 9, 0 };
     int maxProfit1 = this->LeetCode_123_MaxProfit(priceList1);
 
     // 输入: [1,2,3,4,5]
@@ -287,9 +388,47 @@ void MiscellaneousAlgorithmLeetCode::LeetCode_123_Entry()
 
 int MiscellaneousAlgorithmLeetCode::LeetCode_123_MaxProfit(std::vector<int>& prices)
 {
-    int retValue = 0;
+    int firstBig = 0, secondBig = 0, tempBig = 0;
 
-    return retValue;
+    int inputCount = prices.size();
+
+    // 求差
+    std::vector<int> diffVector;
+    for (int i = 0; i < inputCount - 1; ++i)
+    {
+        diffVector.push_back(prices[i + 1] - prices[i]);
+    }
+    // 同号合并
+    int multiple = 0;
+    std::vector<int> unionVector;
+    unionVector.push_back(diffVector[0]);
+    int unionCount = 1;
+    int diffCount = diffVector.size();
+    for (int i = 1; i < diffCount; ++i)
+    {
+        multiple = unionVector[unionCount - 1] * diffVector[i];
+        if (multiple < 0)
+        {
+            // 相邻异号
+            unionVector.push_back(diffVector[i]);
+            ++unionCount;
+        }
+        else
+        {
+            unionVector[unionCount - 1] = unionVector[unionCount - 1] + diffVector[i];
+        }
+    }
+    // 合并最大利益
+    int tempUnionThree = 0;
+    for (int i = 0, j = 1; j < unionCount; ++j)
+    {
+        tempUnionThree = unionVector[j - 1] + unionVector[j] + unionVector[j + 1];
+        if (unionVector[j] < 0 && tempUnionThree > unionVector[j - 1] && tempUnionThree > unionVector[j + 1]);
+        {
+        }
+    }
+
+    return firstBig + secondBig;
 }
 
 void MiscellaneousAlgorithmLeetCode::LeetCode_188_Entry()

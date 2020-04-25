@@ -37,6 +37,8 @@ private slots:
 private:
     void InitializeUI();
 
+    void LeetCode_42_Entry();
+    int  LeetCode_42_MaxSubArray(std::vector<int>& numbers);
     void LeetCode_121_Entry();
     int  LeetCode_121_MaxProfit(std::vector<int>& prices);
     void LeetCode_122_Entry();
