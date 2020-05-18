@@ -39,13 +39,16 @@ private slots:
     void SlotStateChanged(QAbstractSocket::SocketState state);
     void SlotTextFrameReceived(const QString &frame, bool isLastFrame);
     void SlotTextMessageReceived(const QString &message);
+    void SlotWebSocketTimeout();
 
     void on_btnConnect_clicked();
     void on_btnDisconnect_clicked();
+    void on_cbAutoConnect_stateChanged(int state);
 
 private:
     Ui::MiscellaneousQWebSocket ui;
     QWebSocket                 *m_pWebSocket;
+    bool                        m_autoConnectFlag;
 };
 
 #endif // MISCELLANEOUSQ_QWEBSOCKET_H

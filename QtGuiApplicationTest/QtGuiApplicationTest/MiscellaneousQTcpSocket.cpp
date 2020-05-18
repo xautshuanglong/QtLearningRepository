@@ -9,6 +9,7 @@
 MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     : MiscellaneousBase(parent)
     , m_pTcpSocket(new QTcpSocket(this))
+    , m_autoConnectFlag(false)
 {
     ui.setupUi(this);
 
@@ -30,7 +31,7 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
 
     QTimer *pSocketTimer = new QTimer(this);
     this->connect(pSocketTimer, SIGNAL(timeout()), this, SLOT(SlotSocketTimeout()));
-    pSocketTimer->start(500);
+    pSocketTimer->start(100);
 }
 
 MiscellaneousQTcpSocket::~MiscellaneousQTcpSocket()
@@ -117,7 +118,10 @@ void MiscellaneousQTcpSocket::SlotReadyRead()
 
 void MiscellaneousQTcpSocket::SlotSocketTimeout()
 {
-    this->on_btnConnect_clicked();
+    if (m_autoConnectFlag)
+    {
+        this->on_btnConnect_clicked();
+    }
 }
 
 void MiscellaneousQTcpSocket::on_btnConnect_clicked()
@@ -152,4 +156,9 @@ void MiscellaneousQTcpSocket::on_btnDisconnect_clicked()
     {
         m_pTcpSocket->disconnectFromHost();
     }
+}
+
+void MiscellaneousQTcpSocket::on_cbAutoConnect_stateChanged(int state)
+{
+    m_autoConnectFlag = state == Qt::Checked;
 }

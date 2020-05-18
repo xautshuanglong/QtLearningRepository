@@ -39,10 +39,12 @@ private slots:
 
     void on_btnConnect_clicked();
     void on_btnDisconnect_clicked();
+    void on_cbAutoConnect_stateChanged(int state);
 
 private:
     Ui::MiscellaneousQTcpSocket ui;
     QTcpSocket                 *m_pTcpSocket;
+    bool                        m_autoConnectFlag;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H

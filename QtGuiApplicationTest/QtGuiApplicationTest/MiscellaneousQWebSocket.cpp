@@ -2,12 +2,14 @@
 
 #include <QWebSocket>
 #include <QMetaEnum>
+#include <QTimer>
 
 #include <LogUtil.h>
 
 MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     : MiscellaneousBase(parent)
     , m_pWebSocket(Q_NULLPTR)
+    , m_autoConnectFlag(false)
 {
     ui.setupUi(this);
 
@@ -35,6 +37,10 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     this->connect(m_pWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(SlotStateChanged(QAbstractSocket::SocketState)));
     this->connect(m_pWebSocket, SIGNAL(textFrameReceived(const QString &, bool)), this, SLOT(SlotTextFrameReceived(const QString &, bool)));
     this->connect(m_pWebSocket, SIGNAL(textMessageReceived(const QString &)), this, SLOT(SlotTextMessageReceived(const QString &)));
+
+    QTimer *pSocketTimer = new QTimer(this);
+    this->connect(pSocketTimer, SIGNAL(timeout()), this, SLOT(SlotWebSocketTimeout()));
+    pSocketTimer->start(100);
 }
 
 MiscellaneousQWebSocket::~MiscellaneousQWebSocket()
@@ -143,6 +149,14 @@ void MiscellaneousQWebSocket::SlotTextMessageReceived(const QString &message)
     int i = 0;
 }
 
+void MiscellaneousQWebSocket::SlotWebSocketTimeout()
+{
+    if (m_autoConnectFlag)
+    {
+        this->on_btnConnect_clicked();
+    }
+}
+
 void MiscellaneousQWebSocket::on_btnConnect_clicked()
 {
     QString urlString = ui.leServerUrl->text();
@@ -174,4 +188,9 @@ void MiscellaneousQWebSocket::on_btnDisconnect_clicked()
     {
         m_pWebSocket->close();
     }
+}
+
+void MiscellaneousQWebSocket::on_cbAutoConnect_stateChanged(int state)
+{
+    m_autoConnectFlag = state == Qt::Checked;
 }
