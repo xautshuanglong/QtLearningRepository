@@ -32,6 +32,8 @@ enum class MiscellaneousTestItem
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     QT_Regular_Expression,            // QT 正则表达式训练
     QT_Excel_ReadWrite,               // QT Excel 文件读写
+    QT_WEBSOCKET_CLIENT,              // QT QWebSocket 客户端测试
+    QT_TCPSOCKET_CLIENT,              // QT QTcpSocket 客户端测试
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
     Database_Postgresql,              // 数据库操作 postgresql

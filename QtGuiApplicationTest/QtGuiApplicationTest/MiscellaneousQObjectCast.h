@@ -28,7 +28,7 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
-    private slots:
+private slots:
     void on_btnSameModule_clicked();
     void on_btnSameModuleExtra_clicked();
     void on_btnDllQObject_clicked();
