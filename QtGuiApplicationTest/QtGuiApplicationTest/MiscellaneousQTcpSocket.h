@@ -4,6 +4,10 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousQTcpSocket.h"
 
+#include <QAbstractSocket>
+
+class QTcpSocket;
+
 class MiscellaneousQTcpSocket : public MiscellaneousBase
 {
     Q_OBJECT
@@ -17,8 +21,28 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private slots:
+    void SlotConnected();
+    void SlotDisconnected();
+    void SlotError(QAbstractSocket::SocketError socketError);
+    void SlotHostFound();
+    void SlotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
+    void SlotStateChanged(QAbstractSocket::SocketState socketState);
+    void SlotAboutToClose();
+    void SlotBytesWritten(qint64 bytes);
+    void SlotChannelBytesWritten(int channel, qint64 bytes);
+    void SlotChannelReadyRead(int channel);
+    void SlotReadChannelFinished();
+    void SlotReadyRead();
+
+    void SlotSocketTimeout();
+
+    void on_btnConnect_clicked();
+    void on_btnDisconnect_clicked();
+
 private:
     Ui::MiscellaneousQTcpSocket ui;
+    QTcpSocket                 *m_pTcpSocket;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H

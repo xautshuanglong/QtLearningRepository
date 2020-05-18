@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>692</width>
-    <height>368</height>
+    <width>1059</width>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,49 +107,70 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QPushButton" name="btnFullMatch">
+         <widget class="QLabel" name="lbServerIP">
+          <property name="text">
+           <string>ServerIP:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="leServerIP"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbServerPort">
+          <property name="text">
+           <string>ServerPort:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="leServerPort"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnConnect">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="text">
+           <string>Connect</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDisconnect">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Disconnect</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbAutoConnect">
+          <property name="text">
+           <string>AutoConnect</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>140</width>
-            <height>30</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>RegEx Match</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnCaptureGroup">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Capture Group</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnDoMatch">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Do Match</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
