@@ -107,24 +107,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="lbIP">
+         <widget class="QLabel" name="lbUrl">
           <property name="text">
-           <string>IP:</string>
+           <string>WebSocket URL:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="leIPStr"/>
-        </item>
-        <item>
-         <widget class="QLabel" name="lbPort">
-          <property name="text">
-           <string>Port:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lePortStr"/>
+         <widget class="QLineEdit" name="leServerUrl"/>
         </item>
         <item>
          <widget class="QPushButton" name="btnConnect">
