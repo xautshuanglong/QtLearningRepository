@@ -22,6 +22,7 @@
 #include "MiscellaneousImageQPixmap.h"
 #include "MiscellaneousQObjectCast.h"
 #include "MiscellaneousRegularExpression.h"
+#include "MiscellaneousQMimeType.h"
 #include "MiscellaneousExcelReadWrite.h"
 #include "MiscellaneousQWebsocket.h"
 #include "MiscellaneousQTcpSocket.h"
@@ -88,6 +89,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
     this->AppendTestPage(new MiscellaneousQObjectCast(this));
     this->AppendTestPage(new MiscellaneousRegularExpression(this));
+    this->AppendTestPage(new MiscellaneousQMimeType(this));
     this->AppendTestPage(new MiscellaneousExcelReadWrite(this));
     this->AppendTestPage(new MiscellaneousQWebSocket(this));
     this->AppendTestPage(new MiscellaneousQTcpSocket(this));
