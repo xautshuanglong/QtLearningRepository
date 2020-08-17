@@ -2,6 +2,7 @@
 #include "ui_MiscellaneousImageQPixmap.h"
 
 #include <QMenu>
+#include <QSignalMapper>
 
 MiscellaneousImageQPixmap::MiscellaneousImageQPixmap(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -47,10 +48,16 @@ void MiscellaneousImageQPixmap::InitCustomContextMenu()
     pOpenOption->addAction("YUV Shared Memory", this, SLOT(SlotStackedWidgetYuvSharedMemory()));
     pOpenOption->setWindowFlags(pOpenOption->windowFlags() | Qt::NoDropShadowWindowHint);
 
+    // Ò³ÃæÇÐ»»Ó³Éä
+    QSignalMapper *pSignalMapper = new QSignalMapper(this);
+    this->connect(pSignalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(SlotStackedWidgetSwitchPage(QWidget*)));
     QMenu *pStackSwitch = new QMenu("Switch Page", this);
-    pStackSwitch->addAction("Page 1", this, SLOT(SlotStackedWidgetSwitchPage()));
-    pStackSwitch->addAction("Page 2", this, SLOT(SlotStackedWidgetSwitchPage()));
-    pStackSwitch->addAction("Page 3", this, SLOT(SlotStackedWidgetSwitchPage()));
+    QAction *pIamgePixmap = pStackSwitch->addAction("Pixmap", pSignalMapper, SLOT(map()));
+    QAction *pIamgeOpenGL = pStackSwitch->addAction("OpenGL", pSignalMapper, SLOT(map()));
+    QAction *pIamgeGraphicsView = pStackSwitch->addAction("Graphics View", pSignalMapper, SLOT(map()));
+    pSignalMapper->setMapping(pIamgePixmap, ui->imgPixmap);
+    pSignalMapper->setMapping(pIamgeOpenGL, ui->imgOpenGL);
+    pSignalMapper->setMapping(pIamgeGraphicsView, ui->imgGraphicsView);
     pStackSwitch->setWindowFlags(pStackSwitch->windowFlags() | Qt::NoDropShadowWindowHint);
 
     mpCustomContext = new QMenu("Test", this);
@@ -75,9 +82,10 @@ void MiscellaneousImageQPixmap::SlotStackedWidgetYuvSharedMemory()
     int i = 0;
 }
 
-void MiscellaneousImageQPixmap::SlotStackedWidgetSwitchPage()
+void MiscellaneousImageQPixmap::SlotStackedWidgetSwitchPage(QWidget *pCurWidget)
 {
     int i = 0;
+    ui->stackedWidget->setCurrentWidget(pCurWidget);
 }
 
 void MiscellaneousImageQPixmap::SlotStackedWidgetProperties()

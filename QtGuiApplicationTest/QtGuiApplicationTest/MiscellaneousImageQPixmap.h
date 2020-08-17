@@ -27,7 +27,7 @@ private slots:
     void SlotStackedWidgetYuvFile();
     void SlotStackedWidgetYuvStream();
     void SlotStackedWidgetYuvSharedMemory();
-    void SlotStackedWidgetSwitchPage();
+    void SlotStackedWidgetSwitchPage(QWidget *pCurWidget);
     void SlotStackedWidgetProperties();
     void on_stackedWidget_customContextMenuRequested(const QPoint &position);
     void on_stackedWidget_currentChanged(int index);
