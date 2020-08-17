@@ -5,6 +5,8 @@
 
 namespace Ui {class MiscellaneousImageQPixmap;};
 
+class QMenu;
+
 class MiscellaneousImageQPixmap : public MiscellaneousBase
 {
     Q_OBJECT
@@ -19,7 +21,20 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private:
+    void InitCustomContextMenu();
+
+private slots:
+    void SlotStackedWidgetYuvFile();
+    void SlotStackedWidgetYuvStream();
+    void SlotStackedWidgetYuvSharedMemory();
+    void SlotStackedWidgetSwitchPage();
+    void SlotStackedWidgetProperties();
+    void on_stackedWidget_customContextMenuRequested(const QPoint &position);
+    void on_stackedWidget_currentChanged(int index);
+
+private:
     Ui::MiscellaneousImageQPixmap *ui;
+    QMenu                         *mpCustomContext;
 };
 
 #endif // MISCELLANEOUS_IMAGE_QPIXMAP_H
