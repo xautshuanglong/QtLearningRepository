@@ -3,6 +3,8 @@
 
 #include "MiscellaneousBase.h"
 
+#include <QVariant>
+
 namespace Ui { class MiscellaneousSignalSlot; };
 
 class SelfDefinedClass
@@ -49,6 +51,18 @@ private:
 };
 //Q_DECLARE_METATYPE(QSharedPointer<ExtendQObject>)  // 此处声明元类型，导致释放崩溃，同一个 QObject 不能属于两个线程
 
+
+/************************************************************************/
+/*  通过 QVariant 包装自定义结构体，用于信号与槽之间传递数据。             */
+/************************************************************************/
+typedef struct _ToBeWrappedWithQVariant
+{
+    int intValue;
+    QString strValue;
+    QList<int> intList;
+} ToBeWrappedDaata;
+Q_DECLARE_METATYPE(ToBeWrappedDaata)
+
 class SignalTestWorker : public QObject
 {
     Q_OBJECT
@@ -76,6 +90,9 @@ private slots :
     void SlotSubThreadSelfDefinedClass(const SelfDefinedClass& testObj);
     void SlotSubThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
     void SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
+    // Wrapped with QVariant
+    void SlotSubThreadQVariant(const QVariant variantData);
+    void SlotSubThreadQVariantPointer(const QVariant* pVariantData);
 
 private:
     int          m_intValue;
@@ -111,11 +128,16 @@ private slots:
     void SlotMainThreadSelfDefinedClass(const SelfDefinedClass& testObj);
     void SlotMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
     void SlotMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
+    // Wrapped with QVariant
+    void SlotMainThreadQVariant(const QVariant variantData);
+    void SlotMainThreadQVariantPointer(const QVariant* pVariantData);
 
     void on_btnEmitSignalMainThread_clicked();
     void on_btnEmitSignalSubThread_clicked();
     void on_btnEmitSignalMainThreadCustomClass_clicked();
     void on_btnEmitSignalSubThreadCustomClass_clicked();
+    void on_btnEmitSignalSubThreadQVariant_clicked();
+    void on_btnEmitSignalMainThreadQVariant_clicked();
 
 signals:
     // primitive data type testing
@@ -134,6 +156,9 @@ signals:
     void SignalMainThreadSelfDefinedClass(const SelfDefinedClass& testObj);
     void SignalMainThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
     void SignalMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
+    // Wrapped with QVariant
+    void SignalMainThreadQVariant(const QVariant variantData);
+    void SignalMainThreadQVariantPointer(const QVariant* pVariantData);
     // primitive data type testing
     void SignalSubThreadVoid();
     void SignalSubThreadInteger(int testInt);
@@ -150,6 +175,9 @@ signals:
     void SignalSubThreadSelfDefinedClass(const SelfDefinedClass& testObj);
     void SignalSubThreadSelfDefinedClassPointer(SelfDefinedClass* pTestObj);
     void SignalSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass> pTestObj);
+    // Wrapped with QVariant
+    void SignalSubThreadQVariant(const QVariant variantData);
+    void SignalSubThreadQVariantPointer(const QVariant* pVariantData);
 
 private:
     Ui::MiscellaneousSignalSlot *ui;
