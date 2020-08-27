@@ -93,6 +93,7 @@ private slots :
     // Wrapped with QVariant
     void SlotSubThreadQVariant(const QVariant variantData);
     void SlotSubThreadQVariantPointer(const QVariant* pVariantData);
+    void SlotSubThreadQVariantList(const QVariantList variantList);
 
 private:
     int          m_intValue;
@@ -131,13 +132,14 @@ private slots:
     // Wrapped with QVariant
     void SlotMainThreadQVariant(const QVariant variantData);
     void SlotMainThreadQVariantPointer(const QVariant* pVariantData);
+    void SlotMainThreadQVariantList(const QVariantList variantList);
 
     void on_btnEmitSignalMainThread_clicked();
     void on_btnEmitSignalSubThread_clicked();
     void on_btnEmitSignalMainThreadCustomClass_clicked();
     void on_btnEmitSignalSubThreadCustomClass_clicked();
-    void on_btnEmitSignalSubThreadQVariant_clicked();
     void on_btnEmitSignalMainThreadQVariant_clicked();
+    void on_btnEmitSignalSubThreadQVariant_clicked();
 
 signals:
     // primitive data type testing
@@ -159,6 +161,7 @@ signals:
     // Wrapped with QVariant
     void SignalMainThreadQVariant(const QVariant variantData);
     void SignalMainThreadQVariantPointer(const QVariant* pVariantData);
+    void SignalMainThreadQVariantList(const QVariantList variantList);
     // primitive data type testing
     void SignalSubThreadVoid();
     void SignalSubThreadInteger(int testInt);
@@ -178,6 +181,7 @@ signals:
     // Wrapped with QVariant
     void SignalSubThreadQVariant(const QVariant variantData);
     void SignalSubThreadQVariantPointer(const QVariant* pVariantData);
+    void SignalSubThreadQVariantList(const QVariantList variantList);
 
 private:
     Ui::MiscellaneousSignalSlot *ui;

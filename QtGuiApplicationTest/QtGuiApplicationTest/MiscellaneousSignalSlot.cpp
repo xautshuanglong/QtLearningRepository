@@ -43,8 +43,8 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)), this, SLOT(SlotMainThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)));
     // Wrapped with QVariant
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadQVariant(const QVariant)), this, SLOT(SlotMainThreadQVariant(const QVariant)));
-    resultFlag = this->connect(this, SIGNAL(SignalMainThreadQVariantReference(const QVariant&)), this, SLOT(SlotMainThreadQVariantReference(const QVariant&)));
     resultFlag = this->connect(this, SIGNAL(SignalMainThreadQVariantPointer(const QVariant*)), this, SLOT(SlotMainThreadQVariantPointer(const QVariant*)));
+    resultFlag = this->connect(this, SIGNAL(SignalMainThreadQVariantList(const QVariantList)), this, SLOT(SlotMainThreadQVariantList(const QVariantList)));
 
     // 子线程信号槽测试（队列化连接方式）
     SignalTestWorker *pSignalWorker = new SignalTestWorker();
@@ -72,8 +72,8 @@ MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)), pSignalWorker, SLOT(SlotSubThreadSelfDefinedClassSharedPointer(QSharedPointer<SelfDefinedClass>)));
     // Wrapped with QVariant
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQVariant(const QVariant)), pSignalWorker, SLOT(SlotSubThreadQVariant(const QVariant)));
-    resultFlag = this->connect(this, SIGNAL(SignalSubThreadQVariantReference(const QVariant&)), pSignalWorker, SLOT(SlotSubThreadQVariantReference(const QVariant&)));
     resultFlag = this->connect(this, SIGNAL(SignalSubThreadQVariantPointer(const QVariant*)), pSignalWorker, SLOT(SlotSubThreadQVariantPointer(const QVariant*)));
+    resultFlag = this->connect(this, SIGNAL(SignalSubThreadQVariantList(const QVariantList)), pSignalWorker, SLOT(SlotSubThreadQVariantList(const QVariantList)));
 
     pWorkerThread->start();
 }
@@ -194,6 +194,16 @@ void MiscellaneousSignalSlot::SlotMainThreadQVariantPointer(const QVariant* pVar
     int i = 0;
 }
 
+void MiscellaneousSignalSlot::SlotMainThreadQVariantList(const QVariantList variantList)
+{
+    for each (QVariant variantData in variantList)
+    {
+        ToBeWrappedDaata testData = variantData.value<ToBeWrappedDaata>();
+        int i = 0;
+    }
+    int i = 0;
+}
+
 void MiscellaneousSignalSlot::on_btnEmitSignalMainThread_clicked()
 {
     // primitive data type testing
@@ -296,7 +306,7 @@ void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadCustomClass_clicked()
     emit SignalSubThreadSelfDefinedClassSharedPointer(spTestSelfDefinedClass);
 }
 
-void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadQVariant_clicked()
+void MiscellaneousSignalSlot::on_btnEmitSignalMainThreadQVariant_clicked()
 {
     // QVariant Testing
     ToBeWrappedDaata testData;
@@ -318,10 +328,17 @@ void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadQVariant_clicked()
     testData_2.intList.append(9);
     QVariant *pTestVariant = new QVariant();
     pTestVariant->setValue(testData_2);
+
+    QVariantList testVariantList;
+    testVariantList.append(testVariant);
+    testVariantList.append(*pTestVariant);
+    emit SignalMainThreadQVariantList(testVariantList);
+
+    // 槽函数中会将 pTestVariant 指针删除
     emit SignalMainThreadQVariantPointer(pTestVariant);
 }
 
-void MiscellaneousSignalSlot::on_btnEmitSignalMainThreadQVariant_clicked()
+void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadQVariant_clicked()
 {
     // QVariant Testing
     ToBeWrappedDaata testData;
@@ -343,6 +360,13 @@ void MiscellaneousSignalSlot::on_btnEmitSignalMainThreadQVariant_clicked()
     testData_2.intList.append(9);
     QVariant *pTestVariant = new QVariant();
     pTestVariant->setValue(testData_2);
+
+    QVariantList testVariantList;
+    testVariantList.append(testVariant);
+    testVariantList.append(*pTestVariant);
+    emit SignalSubThreadQVariantList(testVariantList);
+
+    // 槽函数中会将 pTestVariant 指针删除
     emit SignalSubThreadQVariantPointer(pTestVariant);
 }
 
@@ -461,5 +485,15 @@ void SignalTestWorker::SlotSubThreadQVariantPointer(const QVariant* pVariantData
 {
     ToBeWrappedDaata testData = pVariantData->value<ToBeWrappedDaata>();
     delete pVariantData;
+    int i = 0;
+}
+
+void SignalTestWorker::SlotSubThreadQVariantList(const QVariantList variantList)
+{
+    for each (QVariant variantData in variantList)
+    {
+        ToBeWrappedDaata testData = variantData.value<ToBeWrappedDaata>();
+        int i = 0;
+    }
     int i = 0;
 }
