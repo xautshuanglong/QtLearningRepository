@@ -12,37 +12,25 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
-    <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <Keyword>QtVS_v303</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
-    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <SourcePath>$(SourcePath)</SourcePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
   </Target>
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
-    <Import Project="$(QtMsBuild)\qt.props" />
-  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -52,77 +40,100 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>$(DefaultQtVersion)</QtInstall>
+    <QtModules>core;xml;sql;network;gui;axcontainer;xmlpatterns;widgets;printsupport;websockets;charts</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>$(DefaultQtVersion)</QtInstall>
+    <QtModules>core;xml;sql;network;gui;axcontainer;xmlpatterns;widgets;printsupport;websockets;charts</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;QT_SQL_LIB;QT_WEBSOCKETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;Qt5PrintSupportd.lib;Qt5Networkd.lib;Qt5Xmld.lib;Qt5XmlPatternsd.lib;Qt5Chartsd.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlibd.lib;zip.lib;Qt5Sqld.lib;Qt5AxContainerd.lib;Qt5AxBased.lib;Qt5WebSocketsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
     <QtMoc>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;QT_SQL_LIB;QT_WEBSOCKETS_LIB;%(PreprocessorDefinitions)</Define>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <QtUicDir>.\GeneratedFiles</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
     </QtUic>
     <QtRcc>
       <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <QtRccDir>.\GeneratedFiles</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;QT_SQL_LIB;QT_WEBSOCKETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5PrintSupport.lib;Qt5Network.lib;Qt5Xml.lib;Qt5XmlPatterns.lib;Qt5Charts.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;Qt5Sql.lib;Qt5AxContainer.lib;Qt5AxBase.lib;Qt5WebSockets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;QT_SQL_LIB;QT_WEBSOCKETS_LIB;%(PreprocessorDefinitions)</Define>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <QtUicDir>.\GeneratedFiles</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
     </QtUic>
     <QtRcc>
       <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
-      <QTDIR>$(QTDIR)</QTDIR>
+      <QtRccDir>.\GeneratedFiles</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -149,96 +160,6 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DicomServerBrowserWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DicomWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MainTabPageFirst.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MainTabPageSetting.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousBeginThreadEx.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQImage.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQPixmap.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterPDF.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousSignalSlot.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousStdSharedPointer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousTesting.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousWxSqlite3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MyMainWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_NotifyWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DicomServerBrowserWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DicomWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageFirst.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageSetting.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousBeginThreadEx.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQImage.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQPixmap.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterPDF.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousSignalSlot.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousStdSharedPointer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousTesting.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousWxSqlite3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MyMainWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_NotifyWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
@@ -290,16 +211,8 @@
     <ClCompile Include="XmlReportGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="MyMainWindow.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MyMainWindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MyMainWindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="MyMainWindow.h">
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AppListItemWidget.ui" />
@@ -313,56 +226,16 @@
     <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
-    <CustomBuild Include="MiscellaneousPrinterPDF.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterWidget.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQImage.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQPixmap.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousStdSharedPointer.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
+    <QtUic Include="MiscellaneousPrinterPDF.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousPrinterWidget.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousImageQImage.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousImageQPixmap.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousStdSharedPointer.ui">
+    </QtUic>
     <QtUic Include="MiscellaneousAlgorithmLeetCode.ui" />
     <QtUic Include="MiscellaneousCLanguageFeatures.ui" />
     <QtUic Include="MiscellaneousExcelReadWrite.ui" />
@@ -379,36 +252,12 @@
     </QtUic>
     <QtUic Include="MiscellaneousStringUtil.ui" />
     <QtUic Include="MiscellaneousTesting.ui" />
-    <CustomBuild Include="NotifyWidget.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousBeginThreadEx.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousWxSqlite3.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
+    <QtUic Include="NotifyWidget.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousBeginThreadEx.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousWxSqlite3.ui">
+    </QtUic>
     <QtUic Include="MiscellaneousZip.ui" />
     <QtUic Include="MiscellaneousZLib.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
@@ -420,56 +269,22 @@
   <ItemGroup>
     <ClInclude Include="AppListIcon.h" />
     <QtMoc Include="MuPDF.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="FopReportClient.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="DebugPanel.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="DebugInfoBaseWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="DebugInfoHardwareWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="AppListItemDelegate.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="DebugInfoTestWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="AppListItemWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="DebugInfoNetworkWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)libs\include;$(SolutionDir)QtLibarayCoreTest</IncludePath>
     </QtMoc>
     <ClInclude Include="DebugMenuEvent.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
@@ -478,276 +293,86 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </ClInclude>
     <QtMoc Include="DicomDownloadWigdet.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
     </QtMoc>
-    <CustomBuild Include="DicomServerBrowserWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing DicomServerBrowserWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing DicomServerBrowserWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="DicomServerBrowserWidget.h">
+    </QtMoc>
     <ClInclude Include="FopReportProtocol.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousBeginThreadEx.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQImage.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQPixmap.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterPDF.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterWidget.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousStdSharedPointer.h" />
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousWxSqlite3.h" />
-    <ClInclude Include="GeneratedFiles\ui_NotifyWidget.h" />
     <ClInclude Include="MessageTest.pb.h" />
-    <CustomBuild Include="NotifyWidget.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing NotifyWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing NotifyWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="NotifyWidget.h">
+    </QtMoc>
     <QtMoc Include="MiscellaneousAlgorithmLeetCode.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <ClInclude Include="MiscellaneousBase.h" />
     <QtMoc Include="MiscellaneousCLanguageFeatures.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
     </QtMoc>
     <ClInclude Include="MiscellaneousDefines.h" />
-    <CustomBuild Include="MiscellaneousPrinterPDF.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousPrinterPDF.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousPrinterPDF.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousBeginThreadEx.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousBeginThreadEx.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousBeginThreadEx.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterWidget.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousPrinterWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousPrinterWidget.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousWxSqlite3.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousWxSqlite3.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousWxSqlite3.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQImage.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousImageQImage.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousImageQImage.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQPixmap.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousImageQPixmap.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousImageQPixmap.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousStdSharedPointer.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousStdSharedPointer.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousStdSharedPointer.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousSignalSlot.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousSignalSlot.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousSignalSlot.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="MiscellaneousPrinterPDF.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousBeginThreadEx.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousPrinterWidget.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousWxSqlite3.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousImageQImage.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousImageQPixmap.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStdSharedPointer.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousSignalSlot.h">
+    </QtMoc>
     <QtMoc Include="MiscellaneousQObjectCast.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousPostgresql.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousZLib.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousZip.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousRegularExpression.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousSqlCipher.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousStringUtil.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousStdConstructor.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousExcelReadWrite.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousQTcpSocket.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousQWebSocket.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt</IncludePath>
     </QtMoc>
     <QtMoc Include="MiscellaneousQMimeType.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts;$(SolutionDIr)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtSql;$(QTDIR)\include\ActiveQt;$(QTDIR)\include\QtWebSockets</IncludePath>
     </QtMoc>
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <QtMoc Include="SuspendedScrollBar.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
     </QtMoc>
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="UrlUtil.h" />
     <ClInclude Include="Win32PerformanceUtil.h" />
     <ClInclude Include="XmlReportGenerator.h" />
     <QtMoc Include="WinReportTesting.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
     </QtMoc>
     <QtMoc Include="MyWorkerThread.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </QtMoc>
     <QtMoc Include="WorkerTaskBase.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </QtMoc>
     <QtMoc Include="FramelessWindowHelper.h" />
-    <CustomBuild Include="MainTabPageFirst.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MainTabPageFirst.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MainTabPageFirst.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="MainTabPageSetting.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MainTabPageSetting.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MainTabPageSetting.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
-    <CustomBuild Include="DicomWindow.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtCharts</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;QT_CHARTS_LIB;_MBCS</Define>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing DicomWindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing DicomWindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="MainTabPageFirst.h">
+    </QtMoc>
+    <QtMoc Include="MainTabPageSetting.h">
+    </QtMoc>
+    <QtMoc Include="DicomWindow.h">
+    </QtMoc>
     <QtMoc Include="MainTabPageDicom.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </QtMoc>
     <ClInclude Include="IWorkerTask.h" />
-    <CustomBuild Include="MiscellaneousTesting.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB</Define>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MiscellaneousTesting.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)SharedCode" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MiscellaneousTesting.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DZLOG_QT_VERSION -DZLOG_LIBRARY -DQT_PRINTSUPPORT_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DQT_CHARTS_LIB -D_MBCS  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtCharts" "-I$(SolutionDir)QtDicomLib" "-I$(SolutionDir)QtLibarayCoreTest" "-I$(SolutionDir)libs\include" "-I$(SolutionDIr)libs\include\wxsqlite3"</Command>
-    </CustomBuild>
+    <QtMoc Include="MiscellaneousTesting.h">
+    </QtMoc>
     <ClInclude Include="MessageInfo.pb.h" />
     <ClInclude Include="MyApplication.h" />
     <ClInclude Include="MyBackgroundWorker.h" />
@@ -785,7 +410,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

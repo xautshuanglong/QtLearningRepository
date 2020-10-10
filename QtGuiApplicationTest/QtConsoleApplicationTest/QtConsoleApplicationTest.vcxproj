@@ -13,17 +13,17 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{138CD575-5A61-4C86-894C-96BD34B10D2B}</ProjectGuid>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -56,12 +56,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_DLL;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +72,7 @@
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Networkd.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_d.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_DLL;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
+      <Define>WIN32;WIN64;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
       <IncludePath>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -80,11 +81,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,7 +96,7 @@
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Network.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_o.lib;Qt5Gui.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
+      <Define>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
       <IncludePath>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -138,7 +140,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
+      <UserProperties lreleaseOptions="" lupdateOnBuild="0" lupdateOptions="" MocDir=".\GeneratedFiles\$(ConfigurationName)" MocOptions="" Qt5Version_x0020_x64="$(DefaultQtVersion)" RccDir=".\GeneratedFiles" UicDir=".\GeneratedFiles" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

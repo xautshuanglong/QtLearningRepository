@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <thread>
+#include <functional>
 
 #include <LogUtil.h>
 

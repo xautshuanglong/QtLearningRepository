@@ -19,6 +19,7 @@
 #include <QStringListModel>
 #include <QMetaType>
 #include <QGraphicsOpacityEffect>
+#include <QButtonGroup>
 
 /* DCMTK 3.6.3 Headers */
 //#include <dcmtk/ofstd/offile.h>

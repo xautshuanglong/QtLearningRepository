@@ -2,17 +2,14 @@
 
 #include "qtlibaraycoretest_global.h"
 
-namespace SL
+namespace SL::Core
 {
-    namespace Core
+    class QTLIBARAYCORETEST_EXPORT ITaskInterface
     {
-        class QTLIBARAYCORETEST_EXPORT ITaskInterface
-        {
-        public:
-            ITaskInterface::ITaskInterface() {}
-            virtual ITaskInterface::~ITaskInterface() {}
+    public:
+        ITaskInterface::ITaskInterface() {}
+        virtual ITaskInterface::~ITaskInterface() {}
 
-            virtual void DoWork() = 0;
-        };
-    }
+        virtual void DoWork() = 0;
+    };
 }

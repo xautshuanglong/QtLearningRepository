@@ -48,7 +48,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <zorder>topMiddleWidget</zorder>
       </widget>
      </item>
      <item>

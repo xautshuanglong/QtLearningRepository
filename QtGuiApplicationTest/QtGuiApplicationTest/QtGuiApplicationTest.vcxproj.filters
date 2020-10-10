@@ -178,48 +178,24 @@
     <ClCompile Include="DebugInfoNetworkWidget.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MainTabPageFirst.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageFirst.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="MessageTest.pb.cc">
       <Filter>ProtoBuf</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MainTabPageSetting.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MainTabPageSetting.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DicomServerBrowserWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DicomServerBrowserWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_NotifyWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_NotifyWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
     <ClCompile Include="NotifyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DicomWindow.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DicomWindow.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousTesting.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousTesting.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="MiscellaneousTesting.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
@@ -229,84 +205,48 @@
     <ClCompile Include="MiscellaneousDefines.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterPDF.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterPDF.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="MiscellaneousPrinterPDF.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousBeginThreadEx.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousBeginThreadEx.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousBeginThreadEx.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousPrinterWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousPrinterWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
     <ClCompile Include="MiscellaneousPrinterWidget.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousWxSqlite3.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousWxSqlite3.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="MiscellaneousWxSqlite3.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MyMainWindow.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MyMainWindow.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQImage.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQImage.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousImageQPixmap.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousImageQPixmap.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
     <ClCompile Include="MiscellaneousImageQImage.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousImageQPixmap.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousStdSharedPointer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousStdSharedPointer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousSignalSlot.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MiscellaneousSignalSlot.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MiscellaneousSignalSlot.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="MiscellaneousQObjectCast.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
@@ -488,36 +428,20 @@
     <ClInclude Include="MessageTest.pb.h">
       <Filter>ProtoBuf</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_NotifyWidget.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
+    
     <ClInclude Include="MiscellaneousBase.h">
       <Filter>Miscellaneous</Filter>
     </ClInclude>
     <ClInclude Include="MiscellaneousDefines.h">
       <Filter>Miscellaneous</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterPDF.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousBeginThreadEx.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousPrinterWidget.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousWxSqlite3.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQImage.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousImageQPixmap.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_MiscellaneousStdSharedPointer.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
+    
+    
+    
+    
+    
+    
+    
     <ClInclude Include="StringUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -651,74 +575,74 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="MainTabPageFirst.h">
+    <QtMoc Include="MainTabPageFirst.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MainTabPageSetting.h">
+    </QtMoc>
+    <QtMoc Include="MainTabPageSetting.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DicomServerBrowserWidget.h">
+    </QtMoc>
+    <QtMoc Include="DicomServerBrowserWidget.h">
       <Filter>DICOM</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NotifyWidget.h">
+    </QtMoc>
+    <QtMoc Include="NotifyWidget.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NotifyWidget.ui">
+    </QtMoc>
+    <QtUic Include="NotifyWidget.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DicomWindow.h">
+    </QtUic>
+    <QtMoc Include="DicomWindow.h">
       <Filter>DICOM</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousTesting.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousTesting.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterPDF.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousPrinterPDF.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterPDF.h">
+    </QtUic>
+    <QtMoc Include="MiscellaneousPrinterPDF.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousBeginThreadEx.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousBeginThreadEx.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousBeginThreadEx.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousBeginThreadEx.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterWidget.h">
+    </QtUic>
+    <QtMoc Include="MiscellaneousPrinterWidget.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousPrinterWidget.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousPrinterWidget.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousWxSqlite3.h">
+    </QtUic>
+    <QtMoc Include="MiscellaneousWxSqlite3.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousWxSqlite3.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousWxSqlite3.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MyMainWindow.h">
+    </QtUic>
+    <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQImage.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousImageQImage.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQPixmap.ui">
+    </QtUic>
+    <QtUic Include="MiscellaneousImageQPixmap.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQImage.h">
+    </QtUic>
+    <QtMoc Include="MiscellaneousImageQImage.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousImageQPixmap.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousImageQPixmap.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousStdSharedPointer.h">
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStdSharedPointer.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousStdSharedPointer.ui">
+    </QtMoc>
+    <QtUic Include="MiscellaneousStdSharedPointer.ui">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MiscellaneousSignalSlot.h">
+    </QtUic>
+    <QtMoc Include="MiscellaneousSignalSlot.h">
       <Filter>Miscellaneous</Filter>
-    </CustomBuild>
+    </QtMoc>
   </ItemGroup>
 </Project>

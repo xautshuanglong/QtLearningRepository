@@ -5,6 +5,7 @@
 #include <QMutex>
 #include <QMap>
 #include <typeinfo>
+#include <typeindex>
 
 class QMenu;
 class QMenuBar;
@@ -64,7 +65,7 @@ public:
     template <typename T> T* GetDebugInfoWidget()
     {
         const std::type_info &typeInfo = typeid(T);
-        LogUtil::Debug(CODE_LOCATION, "Class: %s  hash_code: %u  %d", typeInfo.name(), typeInfo.hash_code(), typeInfo);
+        LogUtil::Debug(CODE_LOCATION, "Class: %s  HashCode: %llu  TypIndex: %d", typeInfo.name(), typeInfo.hash_code(), std::type_index(typeInfo));
         DebugInfoBaseWidget *pWidget = mMapTypeWidget[typeid(T).hash_code()];
         T* pRetValue = dynamic_cast<T*>(pWidget);
         return pRetValue;

@@ -17,7 +17,7 @@
 
 MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     : MiscellaneousBase(parent)
-    , m_libZipArchiveType(ELZAOT_UNKNOWN)
+    , m_libZipArchiveType(MiscellaneousZip::ELZAOT_UNKNOWN)
 {
     ui.setupUi(this);
 
