@@ -196,9 +196,6 @@
     <ClCompile Include="MiscellaneousPrinterPDF.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousBeginThreadEx.cpp">
-      <Filter>Miscellaneous</Filter>
-    </ClCompile>
     <ClCompile Include="MiscellaneousPrinterWidget.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
@@ -263,6 +260,9 @@
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousWinPrintDlg.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousWinBeginThreadEx.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
   </ItemGroup>
@@ -355,6 +355,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousWinPrintDlg.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousWinBeginThreadEx.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -511,6 +514,9 @@
     <QtMoc Include="MiscellaneousWinPrintDlg.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
+    <QtMoc Include="MiscellaneousWinBeginThreadEx.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtGuiApplicationTest.qrc">
@@ -573,12 +579,6 @@
     <QtMoc Include="MiscellaneousPrinterPDF.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousBeginThreadEx.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousBeginThreadEx.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
     <QtMoc Include="MiscellaneousPrinterWidget.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>

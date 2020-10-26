@@ -188,7 +188,7 @@
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp" />
     <ClCompile Include="MiscellaneousStringUtil.cpp" />
     <ClCompile Include="MiscellaneousTesting.cpp" />
-    <ClCompile Include="MiscellaneousBeginThreadEx.cpp" />
+    <ClCompile Include="MiscellaneousWinBeginThreadEx.cpp" />
     <ClCompile Include="MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="MiscellaneousWxSqlite3.cpp" />
     <ClCompile Include="MiscellaneousZip.cpp" />
@@ -256,8 +256,7 @@
     <QtUic Include="MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="NotifyWidget.ui">
     </QtUic>
-    <QtUic Include="MiscellaneousBeginThreadEx.ui">
-    </QtUic>
+    <QtUic Include="MiscellaneousWinBeginThreadEx.ui" />
     <QtUic Include="MiscellaneousWxSqlite3.ui">
     </QtUic>
     <QtUic Include="MiscellaneousZip.ui" />
@@ -310,7 +309,7 @@
     <ClInclude Include="MiscellaneousDefines.h" />
     <QtMoc Include="MiscellaneousPrinterPDF.h">
     </QtMoc>
-    <QtMoc Include="MiscellaneousBeginThreadEx.h">
+    <QtMoc Include="MiscellaneousWinBeginThreadEx.h">
     </QtMoc>
     <QtMoc Include="MiscellaneousPrinterWidget.h">
     </QtMoc>

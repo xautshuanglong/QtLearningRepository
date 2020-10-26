@@ -7,7 +7,7 @@
 #include "MiscellaneousBase.h"
 
 // WinAPI Test
-#include "MiscellaneousBeginThreadEx.h"
+#include "MiscellaneousWinBeginThreadEx.h"
 #include "MiscellaneousWinPrintDlg.h"
 // Standard CPP
 #include "MiscellaneousStdSharedPointer.h"
@@ -78,7 +78,7 @@ void MiscellaneousTesting::InitializeUI()
         mMapTestGroup[gMiscellaneousGroupInfo[i].groupID] = pTreeWidgetItem;
     }
 
-    this->AppendTestPage(new MiscellaneousBeginThreadEx(this));
+    this->AppendTestPage(new MiscellaneousWinBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousWinPrintDlg(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
