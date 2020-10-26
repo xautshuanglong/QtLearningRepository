@@ -178,24 +178,12 @@
     <ClCompile Include="DebugInfoNetworkWidget.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="MessageTest.pb.cc">
       <Filter>ProtoBuf</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
     <ClCompile Include="NotifyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="MiscellaneousTesting.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
@@ -205,48 +193,30 @@
     <ClCompile Include="MiscellaneousDefines.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="MiscellaneousPrinterPDF.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousBeginThreadEx.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="MiscellaneousPrinterWidget.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="MiscellaneousWxSqlite3.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
     <ClCompile Include="MiscellaneousImageQImage.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousImageQPixmap.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousSignalSlot.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="MiscellaneousQObjectCast.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
@@ -290,6 +260,9 @@
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="MiscellaneousQMimeType.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousWinPrintDlg.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
   </ItemGroup>
@@ -381,6 +354,9 @@
     <QtUic Include="MiscellaneousQMimeType.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
+    <QtUic Include="MiscellaneousWinPrintDlg.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThreadWaitCondition.h">
@@ -428,20 +404,12 @@
     <ClInclude Include="MessageTest.pb.h">
       <Filter>ProtoBuf</Filter>
     </ClInclude>
-    
     <ClInclude Include="MiscellaneousBase.h">
       <Filter>Miscellaneous</Filter>
     </ClInclude>
     <ClInclude Include="MiscellaneousDefines.h">
       <Filter>Miscellaneous</Filter>
     </ClInclude>
-    
-    
-    
-    
-    
-    
-    
     <ClInclude Include="StringUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -538,6 +506,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousQMimeType.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousWinPrintDlg.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

@@ -39,7 +39,7 @@ MiscellaneousTestGroup MiscellaneousBeginThreadEx::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousBeginThreadEx::GetItemID()
 {
-    return MiscellaneousTestItem::WinAPI_Thread_beginthreadex;
+    return MiscellaneousTestItem::WinAPI_Thread_BeginThreadEx;
 }
 
 void MiscellaneousBeginThreadEx::on_btnWinApiThreadStart_clicked()

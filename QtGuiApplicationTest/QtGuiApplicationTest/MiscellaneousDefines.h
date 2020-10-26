@@ -19,7 +19,8 @@ Q_DECLARE_METATYPE(MiscellaneousTestGroup)
 
 enum class MiscellaneousTestItem
 {
-    WinAPI_Thread_beginthreadex,      // Windows API 线程操作
+    WinAPI_Thread_BeginThreadEx,      // Windows API 线程操作
+    WinAPI_Thread_WinPrintDlg,        // Windows API 打印机设置对话框
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值
     StdCpp_C_Language_Features,       // C 语言特性测试
