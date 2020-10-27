@@ -36,24 +36,37 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlg_clicked()
 {
     PRINTDLG pd;
     // Initialize PRINTDLG
-    ZeroMemory(&pd, sizeof(pd));
+    ZeroMemory(&pd, sizeof(pd)); // 下列置空参数，用于标记改结构体有哪些可用参数。
     pd.lStructSize = sizeof(pd);
     pd.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId();
     pd.hDevMode = NULL;      // Don't forget to free or store hDevMode.
     pd.hDevNames = NULL;     // Don't forget to free or store hDevNames.
+    pd.hDC = NULL;
+    //pd.Flags = PD_USEDEVMODECOPIESANDCOLLATE | PD_ENABLEPRINTHOOK | PD_ENABLESETUPHOOK | PD_RETURNDC;
     pd.Flags = PD_USEDEVMODECOPIESANDCOLLATE | PD_RETURNDC;
-    pd.nCopies = 1;
     pd.nFromPage = 0xFFFF;
     pd.nToPage = 0xFFFF;
     pd.nMinPage = 1;
     pd.nMaxPage = 0xFFFF;
+    pd.nCopies = 1;
+    pd.hInstance = NULL;
+    pd.lCustData = 0;
+    pd.lpfnPrintHook = MiscellaneousWinPrintDlg::PrintDlg_PrintHook;
+    pd.lpfnSetupHook = MiscellaneousWinPrintDlg::PrintDlg_SetupHook;
+    pd.lpPrintTemplateName = TEXT("");
+    pd.lpSetupTemplateName = TEXT("");
+    pd.hPrintTemplate = NULL;
+    pd.hSetupTemplate = NULL;
 
     if (PrintDlg(&pd) == TRUE)
     {
         // GDI calls to render output. 
 
         // Delete DC when done.
-        DeleteDC(pd.hDC);
+        if (pd.hDC != NULL)
+        {
+            DeleteDC(pd.hDC);
+        }
     }
     else
     {
@@ -93,7 +106,7 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlgEx_clicked()
     pdx.nCopies = 1;
     pdx.hInstance = 0;
     pdx.lpPrintTemplateName = NULL;
-    pdx.lpCallback = NULL;
+    pdx.lpCallback = new WinPrintDialogExCallback();
     pdx.nPropertyPages = 0;
     pdx.lphPropertyPages = NULL;
     pdx.nStartPage = START_PAGE_GENERAL;
@@ -134,17 +147,19 @@ void MiscellaneousWinPrintDlg::on_btnPageSetup_clicked()
     // Initialize PAGESETUPDLG
     ZeroMemory(&psd, sizeof(psd));
     psd.lStructSize = sizeof(psd);
-    // QT 中的实现
-    //psd.hwndOwner = parentWindow ? (HWND)QGuiApplication::platformNativeInterface()->nativeResourceForWindow("handle", parentWindow)
-    psd.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId();
+    psd.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId(); //psd.hwndOwner = parentWindow ? (HWND)QGuiApplication::platformNativeInterface()->nativeResourceForWindow("handle", parentWindow)
     psd.hDevMode = NULL;  // Don't forget to free or store hDevMode.
     psd.hDevNames = NULL; // Don't forget to free or store hDevNames.
-    psd.Flags = PSD_INHUNDREDTHSOFMILLIMETERS | PSD_MARGINS | PSD_ENABLEPAGEPAINTHOOK; // PSD_INTHOUSANDTHSOFINCHES
-    psd.rtMargin.top = 1000;
-    psd.rtMargin.left = 1250;
-    psd.rtMargin.right = 1250;
-    psd.rtMargin.bottom = 1000;
-    psd.lpfnPagePaintHook = MiscellaneousWinPrintDlg::PaintHook;
+    psd.Flags = PSD_INHUNDREDTHSOFMILLIMETERS | PSD_MARGINS | PSD_ENABLEPAGESETUPHOOK | PSD_ENABLEPAGEPAINTHOOK; // PSD_INTHOUSANDTHSOFINCHES
+    psd.ptPaperSize = { 0, 0 };
+    psd.rtMinMargin = { 0, 0, 0, 0 };          // left  top  right  bottom;
+    psd.rtMargin = { 1250, 1000, 1250, 1000 }; // left  top  right  bottom;
+    psd.hInstance = NULL;
+    psd.lCustData = 0;
+    psd.lpfnPageSetupHook = MiscellaneousWinPrintDlg::PageSetupDlg_SetupHook;
+    psd.lpfnPagePaintHook = MiscellaneousWinPrintDlg::PageSetupDlg_PaintHook;
+    psd.lpPageSetupTemplateName = TEXT("");
+    psd.hPageSetupTemplate = NULL;
 
     if (PageSetupDlg(&psd) == TRUE)
     {
@@ -166,7 +181,34 @@ void MiscellaneousWinPrintDlg::on_btnEmpty1_clicked()
     int i = 0;
 }
 
-UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PaintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PrintDlg_SetupHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    return FALSE;
+}
+UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PrintDlg_PrintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    return FALSE;
+}
+
+UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_SetupHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    LPRECT lprc;
+    COLORREF penColor;
+    HDC hdc;
+    HFONT hFont;
+    HGDIOBJ hdcOld;
+
+    // 通用对话框消息，一般无需特殊处理。
+    switch (uMsg)
+    {
+    default:
+        return FALSE;
+    }
+    return FALSE;
+}
+
+// 绘制打印室实例（页面设置对话框内）
+UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_PaintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LPRECT lprc;
     COLORREF penColor;
@@ -206,5 +248,95 @@ UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PaintHook(HWND hwndDlg, UINT uMsg, W
     default:
         return FALSE;
     }
+    return TRUE;
+}
+
+WinPrintDialogExCallback::WinPrintDialogExCallback()
+    : mRefCount(0)
+{
+    int i = 0;
+}
+
+WinPrintDialogExCallback::~WinPrintDialogExCallback()
+{
+    int i = 0;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::QueryInterface(THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj)
+{
+    if (ppvObj == nullptr) return E_INVALIDARG;
+
+    *ppvObj = this;
+    this->AddRef();
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExCallback::AddRef(THIS)
+{
+    return ++mRefCount;
+}
+
+COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExCallback::Release(THIS)
+{
+    return --mRefCount;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::InitDone(THIS)
+{
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::SelectionChange(THIS)
+{
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::HandleMessage(THIS_ HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+    return TRUE;
+}
+
+WinPrintDialogExService::WinPrintDialogExService()
+    : mRefCount(0)
+{
+    int i = 0;
+}
+
+WinPrintDialogExService::~WinPrintDialogExService()
+{
+    int i = 0;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::QueryInterface(THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj)
+{
+    if (ppvObj == nullptr) return E_INVALIDARG;
+
+    *ppvObj = this;
+    this->AddRef();
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::AddRef(THIS)
+{
+    return ++mRefCount;
+}
+
+COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::Release(THIS)
+{
+    return --mRefCount;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentDevMode(THIS_ _Inout_ LPDEVMODE pDevMode, _Inout_ UINT* pcbSize)
+{
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPrinterName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPrinterName, _Inout_ UINT* pcchSize)
+{
+    return TRUE;
+}
+
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPortName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPortName, _Inout_ UINT* pcchSize)
+{
     return TRUE;
 }
