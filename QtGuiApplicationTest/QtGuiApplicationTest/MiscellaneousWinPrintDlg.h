@@ -4,6 +4,8 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousWinPrintDlg.h"
 
+#include "windows.h"
+
 class MiscellaneousWinPrintDlg : public MiscellaneousBase
 {
     Q_OBJECT
@@ -18,6 +20,7 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private:
+    static UINT_PTR CALLBACK PaintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private slots:
     void on_btnPrinterOptions_clicked();
