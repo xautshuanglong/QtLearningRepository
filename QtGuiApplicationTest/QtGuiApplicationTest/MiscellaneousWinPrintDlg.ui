@@ -65,7 +65,7 @@
       <number>9</number>
      </property>
      <item row="0" column="1">
-      <widget class="QPushButton" name="btnPageSetup">
+      <widget class="QPushButton" name="btnPrintDlgEx">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -79,12 +79,12 @@
         </size>
        </property>
        <property name="text">
-        <string>WinAPI Page Setup</string>
+        <string>WinAPI PrintDlgEx</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="btnPrinterOptions">
+      <widget class="QPushButton" name="btnPrintDlg">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -98,11 +98,11 @@
         </size>
        </property>
        <property name="text">
-        <string>WinAPI Printer Options</string>
+        <string>WinAPI PrintDlg</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="1" column="1">
       <widget class="QPushButton" name="btnEmpty1">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -121,8 +121,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnEmpty2">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnPageSetup">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -136,7 +136,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Empty Button</string>
+        <string>WinAPI Page Setup</string>
        </property>
       </widget>
      </item>

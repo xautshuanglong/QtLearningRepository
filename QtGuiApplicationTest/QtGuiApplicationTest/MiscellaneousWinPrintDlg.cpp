@@ -32,14 +32,103 @@ MiscellaneousTestItem MiscellaneousWinPrintDlg::GetItemID()
     return MiscellaneousTestItem::WinAPI_Thread_WinPrintDlg;
 }
 
-void MiscellaneousWinPrintDlg::on_btnPrinterOptions_clicked()
+void MiscellaneousWinPrintDlg::on_btnPrintDlg_clicked()
 {
-    int i = 0;
+    PRINTDLG pd;
+    // Initialize PRINTDLG
+    ZeroMemory(&pd, sizeof(pd));
+    pd.lStructSize = sizeof(pd);
+    pd.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId();
+    pd.hDevMode = NULL;      // Don't forget to free or store hDevMode.
+    pd.hDevNames = NULL;     // Don't forget to free or store hDevNames.
+    pd.Flags = PD_USEDEVMODECOPIESANDCOLLATE | PD_RETURNDC;
+    pd.nCopies = 1;
+    pd.nFromPage = 0xFFFF;
+    pd.nToPage = 0xFFFF;
+    pd.nMinPage = 1;
+    pd.nMaxPage = 0xFFFF;
+
+    if (PrintDlg(&pd) == TRUE)
+    {
+        // GDI calls to render output. 
+
+        // Delete DC when done.
+        DeleteDC(pd.hDC);
+    }
+    else
+    {
+        DWORD errCode = CommDlgExtendedError();
+        if (errCode != 0)
+        {
+            int i = 0;
+        }
+    }
+}
+
+void MiscellaneousWinPrintDlg::on_btnPrintDlgEx_clicked()
+{
+    HRESULT hResult;
+    PRINTDLGEX pdx = { 0 };
+    LPPRINTPAGERANGE pPageRanges = NULL;
+
+    // Allocate an array of PRINTPAGERANGE structures.
+    pPageRanges = (LPPRINTPAGERANGE)GlobalAlloc(GPTR, 10 * sizeof(PRINTPAGERANGE));
+    if (!pPageRanges)
+        return;
+
+    //  Initialize the PRINTDLGEX structure.
+    pdx.lStructSize = sizeof(PRINTDLGEX);
+    pdx.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId();
+    pdx.hDevMode = NULL;
+    pdx.hDevNames = NULL;
+    pdx.hDC = NULL;
+    pdx.Flags = PD_RETURNDC | PD_COLLATE;
+    pdx.Flags2 = 0;
+    pdx.ExclusionFlags = 0;
+    pdx.nPageRanges = 0;
+    pdx.nMaxPageRanges = 10;
+    pdx.lpPageRanges = pPageRanges;
+    pdx.nMinPage = 1;
+    pdx.nMaxPage = 1000;
+    pdx.nCopies = 1;
+    pdx.hInstance = 0;
+    pdx.lpPrintTemplateName = NULL;
+    pdx.lpCallback = NULL;
+    pdx.nPropertyPages = 0;
+    pdx.lphPropertyPages = NULL;
+    pdx.nStartPage = START_PAGE_GENERAL;
+    pdx.dwResultAction = 0;
+
+    //  Invoke the Print property sheet.
+    hResult = PrintDlgEx(&pdx);
+    if ((hResult == S_OK) && pdx.dwResultAction == PD_RESULT_PRINT)
+    {
+        // User clicked the Print button, so use the DC and other information returned in the 
+        // PRINTDLGEX structure to print the document.
+    }
+    else if (hResult != S_OK)
+    {
+        DWORD errCode = CommDlgExtendedError();
+        if (errCode != 0)
+        {
+            int i = 0;
+        }
+    }
+
+    if (pdx.hDevMode != NULL)
+        GlobalFree(pdx.hDevMode);
+    if (pdx.hDevNames != NULL)
+        GlobalFree(pdx.hDevNames);
+    if (pdx.lpPageRanges != NULL)
+        GlobalFree(pPageRanges);
+
+    if (pdx.hDC != NULL)
+        DeleteDC(pdx.hDC);
 }
 
 void MiscellaneousWinPrintDlg::on_btnPageSetup_clicked()
 {
-    PAGESETUPDLG psd;    // common dialog box structure
+    PAGESETUPDLG psd;      // common dialog box structure
     //HWND hwnd;           // owner window
 
     // Initialize PAGESETUPDLG
@@ -73,11 +162,6 @@ void MiscellaneousWinPrintDlg::on_btnPageSetup_clicked()
 }
 
 void MiscellaneousWinPrintDlg::on_btnEmpty1_clicked()
-{
-    int i = 0;
-}
-
-void MiscellaneousWinPrintDlg::on_btnEmpty2_clicked()
 {
     int i = 0;
 }

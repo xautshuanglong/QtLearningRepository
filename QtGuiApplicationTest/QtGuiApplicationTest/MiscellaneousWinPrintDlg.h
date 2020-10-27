@@ -23,10 +23,10 @@ private:
     static UINT_PTR CALLBACK PaintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private slots:
-    void on_btnPrinterOptions_clicked();
+    void on_btnPrintDlg_clicked();
+    void on_btnPrintDlgEx_clicked();
     void on_btnPageSetup_clicked();
     void on_btnEmpty1_clicked();
-    void on_btnEmpty2_clicked();
 
 private:
     Ui::MiscellaneousWinPrintDlg   ui;
