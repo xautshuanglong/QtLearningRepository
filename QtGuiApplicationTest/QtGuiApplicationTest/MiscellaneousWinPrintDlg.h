@@ -4,7 +4,8 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousWinPrintDlg.h"
 
-#include "windows.h"
+#include <windows.h>
+#include <OCIdl.h>
 
 class MiscellaneousWinPrintDlg : public MiscellaneousBase
 {
@@ -36,11 +37,11 @@ private:
     Ui::MiscellaneousWinPrintDlg   ui;
 };
 
-class WinPrintDialogExCallback : public IPrintDialogCallback
+class WinPrintDialogExCallback : public IPrintDialogCallback, public IObjectWithSite
 {
 public:
     explicit WinPrintDialogExCallback();
-    ~WinPrintDialogExCallback();
+    virtual ~WinPrintDialogExCallback();
 
     // *** IUnknown methods ***
     STDMETHOD(QueryInterface) (THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj) override;
@@ -50,30 +51,13 @@ public:
     STDMETHOD(InitDone) (THIS) override;
     STDMETHOD(SelectionChange) (THIS) override;
     STDMETHOD(HandleMessage) (THIS_ HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
+    // *** IObjectWithSite methods ***
+    STDMETHOD(SetSite) (__RPC__in_opt IUnknown* pUnkSite) override;
+    STDMETHOD(GetSite) (__RPC__in REFIID riid, __RPC__deref_out_opt void** ppvSite) override;
 
 private:
     ULONG                     mnRefCount;
     WinPrintDialogExCallback *mpSelfPointer;
-};
-
-class WinPrintDialogExService : public IPrintDialogServices
-{
-public:
-    explicit WinPrintDialogExService();
-    ~WinPrintDialogExService();
-
-    // *** IUnknown methods ***
-    STDMETHOD(QueryInterface) (THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj) override;
-    STDMETHOD_(ULONG, AddRef) (THIS) override;
-    STDMETHOD_(ULONG, Release)(THIS) override;
-    // *** IPrintDialogServices methods ***
-    STDMETHOD(GetCurrentDevMode) (THIS_ _Inout_ LPDEVMODE pDevMode, _Inout_ UINT* pcbSize) override;
-    STDMETHOD(GetCurrentPrinterName) (THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPrinterName, _Inout_ UINT* pcchSize) override;
-    STDMETHOD(GetCurrentPortName) (THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPortName, _Inout_ UINT* pcchSize) override;
-
-private:
-    ULONG                     mnRefCount;
-    WinPrintDialogExService  *mpSelfPointer;
 };
 
 #endif // MISCELLANEOUS_WIN_PRINT_DLG_H

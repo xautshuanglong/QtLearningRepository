@@ -106,7 +106,7 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlgEx_clicked()
     pdx.nCopies = 1;
     pdx.hInstance = 0;
     pdx.lpPrintTemplateName = NULL;
-    pdx.lpCallback = new WinPrintDialogExCallback();
+    pdx.lpCallback = (IPrintDialogCallback*) new WinPrintDialogExCallback();
     pdx.nPropertyPages = 0;
     pdx.lphPropertyPages = NULL;
     pdx.nStartPage = START_PAGE_GENERAL;
@@ -270,13 +270,19 @@ COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::QueryIn
     HRESULT retValue = E_NOINTERFACE;
     if (riid == IID_IUnknown)
     {
-        *ppvObj = static_cast<IUnknown*>(this);
+        *ppvObj = static_cast<IUnknown*>(static_cast<IPrintDialogCallback*>(this));
         this->AddRef();
         retValue = S_OK;
     }
     else if (riid == IID_IPrintDialogCallback)
     {
         *ppvObj = static_cast<IPrintDialogCallback*>(this);
+        this->AddRef();
+        retValue = S_OK;
+    }
+    else if (riid == IID_IObjectWithSite)
+    {
+        *ppvObj = static_cast<IObjectWithSite*>(this);
         this->AddRef();
         retValue = S_OK;
     }
@@ -301,6 +307,7 @@ COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExCallback::Release(T
     if (mnRefCount == 0 && mpSelfPointer != nullptr)
     {
         delete mpSelfPointer;
+        mpSelfPointer = nullptr;
     }
     return mnRefCount;
 }
@@ -320,71 +327,52 @@ COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::HandleM
     return TRUE;
 }
 
-WinPrintDialogExService::WinPrintDialogExService()
-    : mnRefCount(0)
-    , mpSelfPointer(this)
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::SetSite(__RPC__in_opt IUnknown* pUnkSite)
 {
-    int i = 0;
+    if (pUnkSite == NULL) return E_POINTER;
+
+    IPrintDialogServices* pPrintServices = NULL;
+    HRESULT res = pUnkSite->QueryInterface(IID_IPrintDialogServices, (void**)&pPrintServices);
+    if (res == S_OK)
+    {
+        WCHAR printerNameArr[128] = { 0 };
+        LPCSTR printerName = (LPCSTR)printerNameArr;
+        UINT printerNameLen = 128;
+        HRESULT printerRes = pPrintServices->GetCurrentPrinterName(printerNameArr, &printerNameLen);
+        WCHAR portNameArr[128] = { 0 };
+        LPCSTR portName = (LPCSTR)portNameArr;
+        UINT portNameLen = 128;
+        printerRes = pPrintServices->GetCurrentPortName(portNameArr, &portNameLen);
+        pPrintServices->Release();
+    }
+
+    return S_OK;
 }
 
-WinPrintDialogExService::~WinPrintDialogExService()
+COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::GetSite(REFIID riid, void** ppvSite)
 {
-    int i = 0;
-}
+    if (ppvSite == NULL) return E_POINTER;
 
-COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::QueryInterface(THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj)
-{
-    if (ppvObj == nullptr) return E_POINTER;
+    if (ppvSite != NULL)
+    {
+        ;
+    }
 
     HRESULT retValue = E_NOINTERFACE;
     if (riid == IID_IUnknown)
     {
-        *ppvObj = static_cast<IUnknown*>(this);
-        this->AddRef();
+        *ppvSite = nullptr;
+        retValue = S_OK;
+    }
+    else if (riid == IID_IPrintDialogCallback)
+    {
+        *ppvSite = nullptr;
         retValue = S_OK;
     }
     else if (riid == IID_IPrintDialogServices)
     {
-        *ppvObj = static_cast<IPrintDialogServices*>(this);
-        this->AddRef();
+        *ppvSite = nullptr;
         retValue = S_OK;
     }
     return retValue;
-}
-
-COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::AddRef(THIS)
-{
-    if (mnRefCount < ULONG_MAX)
-    {
-        ++mnRefCount;
-    }
-    return mnRefCount;
-}
-
-COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::Release(THIS)
-{
-    if (mnRefCount > 0)
-    {
-        --mnRefCount;
-    }
-    if (mnRefCount == 0 && mpSelfPointer != nullptr)
-    {
-        delete mpSelfPointer;
-    }
-    return mnRefCount;
-}
-
-COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentDevMode(THIS_ _Inout_ LPDEVMODE pDevMode, _Inout_ UINT* pcbSize)
-{
-    return S_OK;
-}
-
-COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPrinterName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPrinterName, _Inout_ UINT* pcchSize)
-{
-    return S_OK;
-}
-
-COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPortName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPortName, _Inout_ UINT* pcchSize)
-{
-    return S_OK;
 }
