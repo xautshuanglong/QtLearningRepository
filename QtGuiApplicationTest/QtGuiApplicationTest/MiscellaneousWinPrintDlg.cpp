@@ -252,7 +252,8 @@ UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_PaintHook(HWND hwndDlg,
 }
 
 WinPrintDialogExCallback::WinPrintDialogExCallback()
-    : mRefCount(0)
+    : mnRefCount(0)
+    , mpSelfPointer(this)
 {
     int i = 0;
 }
@@ -264,21 +265,44 @@ WinPrintDialogExCallback::~WinPrintDialogExCallback()
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::QueryInterface(THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj)
 {
-    if (ppvObj == nullptr) return E_INVALIDARG;
+    if (ppvObj == nullptr) return E_POINTER;
 
-    *ppvObj = this;
-    this->AddRef();
-    return TRUE;
+    HRESULT retValue = E_NOINTERFACE;
+    if (riid == IID_IUnknown)
+    {
+        *ppvObj = static_cast<IUnknown*>(this);
+        this->AddRef();
+        retValue = S_OK;
+    }
+    else if (riid == IID_IPrintDialogCallback)
+    {
+        *ppvObj = static_cast<IPrintDialogCallback*>(this);
+        this->AddRef();
+        retValue = S_OK;
+    }
+    return retValue;
 }
 
 COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExCallback::AddRef(THIS)
 {
-    return ++mRefCount;
+    if (mnRefCount < ULONG_MAX)
+    {
+        ++mnRefCount;
+    }
+    return mnRefCount;
 }
 
 COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExCallback::Release(THIS)
 {
-    return --mRefCount;
+    if (mnRefCount > 0)
+    {
+        --mnRefCount;
+    }
+    if (mnRefCount == 0 && mpSelfPointer != nullptr)
+    {
+        delete mpSelfPointer;
+    }
+    return mnRefCount;
 }
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::InitDone(THIS)
@@ -297,7 +321,8 @@ COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::HandleM
 }
 
 WinPrintDialogExService::WinPrintDialogExService()
-    : mRefCount(0)
+    : mnRefCount(0)
+    , mpSelfPointer(this)
 {
     int i = 0;
 }
@@ -309,34 +334,57 @@ WinPrintDialogExService::~WinPrintDialogExService()
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::QueryInterface(THIS_ _In_ REFIID riid, _Outptr_ void** ppvObj)
 {
-    if (ppvObj == nullptr) return E_INVALIDARG;
+    if (ppvObj == nullptr) return E_POINTER;
 
-    *ppvObj = this;
-    this->AddRef();
-    return TRUE;
+    HRESULT retValue = E_NOINTERFACE;
+    if (riid == IID_IUnknown)
+    {
+        *ppvObj = static_cast<IUnknown*>(this);
+        this->AddRef();
+        retValue = S_OK;
+    }
+    else if (riid == IID_IPrintDialogServices)
+    {
+        *ppvObj = static_cast<IPrintDialogServices*>(this);
+        this->AddRef();
+        retValue = S_OK;
+    }
+    return retValue;
 }
 
 COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::AddRef(THIS)
 {
-    return ++mRefCount;
+    if (mnRefCount < ULONG_MAX)
+    {
+        ++mnRefCount;
+    }
+    return mnRefCount;
 }
 
 COM_DECLSPEC_NOTHROW ULONG STDMETHODCALLTYPE WinPrintDialogExService::Release(THIS)
 {
-    return --mRefCount;
+    if (mnRefCount > 0)
+    {
+        --mnRefCount;
+    }
+    if (mnRefCount == 0 && mpSelfPointer != nullptr)
+    {
+        delete mpSelfPointer;
+    }
+    return mnRefCount;
 }
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentDevMode(THIS_ _Inout_ LPDEVMODE pDevMode, _Inout_ UINT* pcbSize)
 {
-    return TRUE;
+    return S_OK;
 }
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPrinterName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPrinterName, _Inout_ UINT* pcchSize)
 {
-    return TRUE;
+    return S_OK;
 }
 
 COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExService::GetCurrentPortName(THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPortName, _Inout_ UINT* pcchSize)
 {
-    return TRUE;
+    return S_OK;
 }

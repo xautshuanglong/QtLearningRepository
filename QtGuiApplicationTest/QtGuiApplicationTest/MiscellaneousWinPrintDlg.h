@@ -52,7 +52,8 @@ public:
     STDMETHOD(HandleMessage) (THIS_ HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 
 private:
-    ULONG     mRefCount;
+    ULONG                     mnRefCount;
+    WinPrintDialogExCallback *mpSelfPointer;
 };
 
 class WinPrintDialogExService : public IPrintDialogServices
@@ -71,7 +72,8 @@ public:
     STDMETHOD(GetCurrentPortName) (THIS_ _Out_writes_opt_(*pcchSize) LPWSTR pPortName, _Inout_ UINT* pcchSize) override;
 
 private:
-    ULONG       mRefCount;
+    ULONG                     mnRefCount;
+    WinPrintDialogExService  *mpSelfPointer;
 };
 
 #endif // MISCELLANEOUS_WIN_PRINT_DLG_H
