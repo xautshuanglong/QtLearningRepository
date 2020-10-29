@@ -19,9 +19,54 @@ public:
 
 private slots:
     void on_btnIfCondition_clicked();
+    void on_btnVirtualInheritance_clicked();
 
 private:
     Ui::MiscellaneousStdCLanguageFeatures ui;
+};
+
+class IUnknownTest
+{
+public:
+    IUnknownTest() {}
+    virtual ~IUnknownTest() {}
+
+    virtual void PureVirtualFunctionA() = 0;
+    virtual void PureVirtualFunctionB() = 0;
+};
+
+class IUnknownDrivedTestA : public IUnknownTest
+{
+public:
+    IUnknownDrivedTestA() {}
+    virtual ~IUnknownDrivedTestA() {}
+
+    virtual void PureVirtualFunctionDerivedA() = 0;
+    virtual void PureVirtualFunctionA() override;
+    virtual void PureVirtualFunctionB() override;
+};
+
+class IUnknownDrivedTestB : public IUnknownTest
+{
+public:
+    IUnknownDrivedTestB() {}
+    virtual ~IUnknownDrivedTestB() {}
+
+    virtual void PureVirtualFunctionDerivedB() = 0;
+    virtual void PureVirtualFunctionA() override;
+    virtual void PureVirtualFunctionB() override;
+};
+
+class IUnknownImplementTest : public IUnknownDrivedTestA, public IUnknownDrivedTestB
+{
+public:
+    IUnknownImplementTest();
+    ~IUnknownImplementTest();
+
+    virtual void PureVirtualFunctionA() override;
+    virtual void PureVirtualFunctionB() override;
+    virtual void PureVirtualFunctionDerivedA() override;
+    virtual void PureVirtualFunctionDerivedB() override;
 };
 
 #endif // MISCELLANEOUS_STD_C_LANGUAGE_FEATURES_H
