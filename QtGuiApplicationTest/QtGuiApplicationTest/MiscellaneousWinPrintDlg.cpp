@@ -2,6 +2,8 @@
 
 #include <QWindow>
 
+#pragma warning (disable: 6387)
+
 MiscellaneousWinPrintDlg::MiscellaneousWinPrintDlg(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
 {
@@ -95,7 +97,7 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlgEx_clicked()
     pdx.hDevMode = NULL;
     pdx.hDevNames = NULL;
     pdx.hDC = NULL;
-    pdx.Flags = PD_RETURNDC | PD_COLLATE;
+    pdx.Flags = PD_RETURNDC | PD_USEDEVMODECOPIESANDCOLLATE;
     pdx.Flags2 = 0;
     pdx.ExclusionFlags = 0;
     pdx.nPageRanges = 0;
@@ -129,14 +131,26 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlgEx_clicked()
     }
 
     if (pdx.hDevMode != NULL)
+    {
+        DEVMODE* pDevMode = nullptr;
+        pDevMode = reinterpret_cast<DEVMODE*>(GlobalLock(pdx.hDevMode));
         GlobalFree(pdx.hDevMode);
+    }
     if (pdx.hDevNames != NULL)
+    {
+        DEVNAMES* pDevNames = nullptr;
+        pDevNames = reinterpret_cast<DEVNAMES*>(GlobalLock(pdx.hDevNames));
+        PCSTR printerName = reinterpret_cast<PCSTR>(pDevNames) + pDevNames->wDeviceOffset;
         GlobalFree(pdx.hDevNames);
+    }
     if (pdx.lpPageRanges != NULL)
+    {
         GlobalFree(pPageRanges);
-
+    }
     if (pdx.hDC != NULL)
+    {
         DeleteDC(pdx.hDC);
+    }
 }
 
 void MiscellaneousWinPrintDlg::on_btnPageSetup_clicked()
@@ -339,10 +353,24 @@ COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::SetSite
         LPCSTR printerName = (LPCSTR)printerNameArr;
         UINT printerNameLen = 128;
         HRESULT printerRes = pPrintServices->GetCurrentPrinterName(printerNameArr, &printerNameLen);
+        
         WCHAR portNameArr[128] = { 0 };
         LPCSTR portName = (LPCSTR)portNameArr;
         UINT portNameLen = 128;
         printerRes = pPrintServices->GetCurrentPortName(portNameArr, &portNameLen);
+
+        UINT devModeSize = 0;
+        printerRes = pPrintServices->GetCurrentDevMode(NULL, &devModeSize);
+        if (devModeSize > 0)
+        {
+            DEVMODE* pDevMode = (DEVMODE*)GlobalAlloc(GPTR, devModeSize * sizeof(char));
+            if (pDevMode != NULL)
+            {
+                printerRes = pPrintServices->GetCurrentDevMode(pDevMode, &devModeSize);
+                GlobalFree(pDevMode);
+            }
+        }
+
         pPrintServices->Release();
     }
 
@@ -353,26 +381,24 @@ COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE WinPrintDialogExCallback::GetSite
 {
     if (ppvSite == NULL) return E_POINTER;
 
+    HRESULT retValue = E_NOINTERFACE;
     if (ppvSite != NULL)
     {
-        ;
-    }
-
-    HRESULT retValue = E_NOINTERFACE;
-    if (riid == IID_IUnknown)
-    {
-        *ppvSite = nullptr;
-        retValue = S_OK;
-    }
-    else if (riid == IID_IPrintDialogCallback)
-    {
-        *ppvSite = nullptr;
-        retValue = S_OK;
-    }
-    else if (riid == IID_IPrintDialogServices)
-    {
-        *ppvSite = nullptr;
-        retValue = S_OK;
+        if (riid == IID_IUnknown)
+        {
+            *ppvSite = nullptr;
+            retValue = S_OK;
+        }
+        else if (riid == IID_IPrintDialogCallback)
+        {
+            *ppvSite = nullptr;
+            retValue = S_OK;
+        }
+        else if (riid == IID_IPrintDialogServices)
+        {
+            *ppvSite = nullptr;
+            retValue = S_OK;
+        }
     }
     return retValue;
 }
