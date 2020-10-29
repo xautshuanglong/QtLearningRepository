@@ -1,38 +1,41 @@
-#include "MiscellaneousCLanguageFeatures.h"
+#include "MiscellaneousStdCLanguageFeatures.h"
 
 #include <LogUtil.h>
 
-MiscellaneousCLanguageFeatures::MiscellaneousCLanguageFeatures(QWidget *parent)
+MiscellaneousStdCLanguageFeatures::MiscellaneousStdCLanguageFeatures(QWidget *parent)
     : MiscellaneousBase(parent)
 {
     ui.setupUi(this);
 }
 
-MiscellaneousCLanguageFeatures::~MiscellaneousCLanguageFeatures()
+MiscellaneousStdCLanguageFeatures::~MiscellaneousStdCLanguageFeatures()
 {
 }
 
-QString MiscellaneousCLanguageFeatures::GetTitle()
+QString MiscellaneousStdCLanguageFeatures::GetTitle()
 {
     return QObject::tr("C Language Features");
 }
 
-QString MiscellaneousCLanguageFeatures::GetTitleTooltip()
+QString MiscellaneousStdCLanguageFeatures::GetTitleTooltip()
 {
     return QObject::tr("Take advantage of the C language.");
 }
 
-MiscellaneousTestGroup MiscellaneousCLanguageFeatures::GetGroupID()
+MiscellaneousTestGroup MiscellaneousStdCLanguageFeatures::GetGroupID()
 {
     return MiscellaneousTestGroup::Standard_Cpp;
 }
 
-MiscellaneousTestItem MiscellaneousCLanguageFeatures::GetItemID()
+MiscellaneousTestItem MiscellaneousStdCLanguageFeatures::GetItemID()
 {
     return MiscellaneousTestItem::StdCpp_C_Language_Features;
 }
 
-void MiscellaneousCLanguageFeatures::on_btnIfCondition_clicked()
+/************************************************************************/
+/* if 语句（单行多句，没有括号），只执行第一句。                           */
+/************************************************************************/
+void MiscellaneousStdCLanguageFeatures::on_btnIfCondition_clicked()
 {
     int a = 0, b = 0;
     LogUtil::Debug(CODE_LOCATION, "a=%d b=%d", a, b);

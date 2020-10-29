@@ -169,7 +169,7 @@
     <ClCompile Include="MessageTest.pb.cc" />
     <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp" />
     <ClCompile Include="MiscellaneousBase.cpp" />
-    <ClCompile Include="MiscellaneousCLanguageFeatures.cpp" />
+    <ClCompile Include="MiscellaneousStdCLanguageFeatures.cpp" />
     <ClCompile Include="MiscellaneousDefines.cpp" />
     <ClCompile Include="MiscellaneousExcelReadWrite.cpp" />
     <ClCompile Include="MiscellaneousImageQImage.cpp" />
@@ -238,7 +238,7 @@
     <QtUic Include="MiscellaneousStdSharedPointer.ui">
     </QtUic>
     <QtUic Include="MiscellaneousAlgorithmLeetCode.ui" />
-    <QtUic Include="MiscellaneousCLanguageFeatures.ui" />
+    <QtUic Include="MiscellaneousStdCLanguageFeatures.ui" />
     <QtUic Include="MiscellaneousExcelReadWrite.ui" />
     <QtUic Include="MiscellaneousPostgresql.ui" />
     <QtUic Include="MiscellaneousQMimeType.ui" />
@@ -304,7 +304,7 @@
     <QtMoc Include="MiscellaneousAlgorithmLeetCode.h">
     </QtMoc>
     <ClInclude Include="MiscellaneousBase.h" />
-    <QtMoc Include="MiscellaneousCLanguageFeatures.h">
+    <QtMoc Include="MiscellaneousStdCLanguageFeatures.h">
     </QtMoc>
     <ClInclude Include="MiscellaneousDefines.h" />
     <QtMoc Include="MiscellaneousPrinterPDF.h">

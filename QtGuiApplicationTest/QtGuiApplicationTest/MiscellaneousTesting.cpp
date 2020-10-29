@@ -12,7 +12,7 @@
 // Standard CPP
 #include "MiscellaneousStdSharedPointer.h"
 #include "MiscellaneousStdConstructor.h"
-#include "MiscellaneousCLanguageFeatures.h"
+#include "MiscellaneousStdCLanguageFeatures.h"
 // Algorithm
 #include "MiscellaneousAlgorithmLeetCode.h"
 // QT Test
@@ -82,7 +82,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousWinPrintDlg(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
-    this->AppendTestPage(new MiscellaneousCLanguageFeatures(this));
+    this->AppendTestPage(new MiscellaneousStdCLanguageFeatures(this));
     this->AppendTestPage(new MiscellaneousAlgorithmLeetCode(this));
     this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
