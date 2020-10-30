@@ -318,3 +318,38 @@ void MiscellaneousPrinterPDF::on_btnQPrinterTest_clicked()
     imagePainter.drawText(QPoint(100, 100), "Hello world!");
     imagePainter.end();
 }
+
+void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
+{
+    QPrinter printer(QPrinter::ScreenResolution);
+
+    // 页面布局相关
+    printer.setPageMargins(QMarginsF(1.0, 2.0, 3.0, 4.0), QPageLayout::Millimeter);
+    printer.setPageOrientation(QPageLayout::Landscape);
+    printer.setPageSize(QPagedPaintDevice::A4Extra);
+    //QPagedPaintDevice::Margins margins = { 1.0, 2.0, 3.0, 4.0 };
+    //printer.setMargins(margins);
+
+    // 打印机属性相关
+    printer.setPrintRange(QPrinter::PageRange);                   // 打印页范围模式：所有页、选中的页、指定范围、当前页。
+    printer.setFromTo(1, 2);                                      // 打印页范围
+    printer.setCopyCount(5);                                      // 打印份数
+    printer.setPrinterName(QString("HP LaserJet Pro MFP M127-M128 PCLmS"));
+    printer.setDoubleSidedPrinting(true);                         // 是否翻页
+    printer.setDuplex(QPrinter::DuplexShortSide);                 // 长/短边翻页
+
+    QPageSetupDialog pageSetupDlg(&printer);
+    if (QDialog::Accepted == pageSetupDlg.exec())
+    {
+        qreal left = 0.0, top = 0.0, right = 0.0, bottom = 0.0;
+        printer.getPageMargins(&left, &top, &right, &bottom, QPrinter::Millimeter);
+        printer.getPageMargins(&left, &top, &right, &bottom, QPrinter::Inch);
+        int i = 0;
+    }
+    QPrintDialog printDlg(&printer, this);
+    if (QDialog::Accepted == printDlg.exec())
+    {
+        int copyCount = printer.copyCount();
+        this->render(&printer);
+    }
+}

@@ -26,6 +26,7 @@ private slots:
     void on_btnPrintPreviewDlg_clicked();
     void on_btnPrintDlg_clicked();
     void on_btnQPrinterTest_clicked();
+    void on_btnQPrinterCustom_clicked();
 };
 
 #endif // MISCELLANEOUS_QT_PRINTER_H
