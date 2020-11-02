@@ -4,6 +4,7 @@
 #include <QPrinter>
 #include <QPrinterInfo>
 #include <QPrintDialog>
+#include <QPrintPreviewWidget>
 #include <QPrintPreviewDialog>
 #include <QPageSetupDialog>
 
@@ -13,6 +14,11 @@ MiscellaneousPrinterPDF::MiscellaneousPrinterPDF(QWidget *parent)
     : MiscellaneousBase(parent)
 {
     ui.setupUi(this);
+
+    QPrinter* pPrinter = new QPrinter(QPrinter::HighResolution);
+    mpPrintPreviewWgt = new QPrintPreviewWidget(pPrinter, this);
+    connect(mpPrintPreviewWgt, &QPrintPreviewWidget::paintRequested, this, &MiscellaneousPrinterPDF::SlotPreviewPaintRequested);
+    ui.gridLayout->addWidget(mpPrintPreviewWgt, 3, 1, 1, 1);
 }
 
 MiscellaneousPrinterPDF::~MiscellaneousPrinterPDF()
@@ -38,6 +44,44 @@ MiscellaneousTestGroup MiscellaneousPrinterPDF::GetGroupID()
 MiscellaneousTestItem MiscellaneousPrinterPDF::GetItemID()
 {
     return MiscellaneousTestItem::QT_Printer_PDF;
+}
+
+void MiscellaneousPrinterPDF::SlotPreviewPaintRequested(QPrinter* printer)
+{
+    static int paintCount = 0;
+    ++paintCount;
+
+    QPainter painter;
+    if (!painter.begin(printer))
+    {
+        // failed to open file
+        qWarning("failed to open file, is it writable?");
+        return;
+    }
+
+    QStringList testStrList;
+    for (int i = 0; i < 200; ++i)
+    {
+        testStrList << QString("Test string line %1 - %2").arg(i).arg(paintCount);
+    }
+
+    int count = testStrList.count();
+    for (int i = 0, j = 1; i < count; i++)
+    {
+        QString text = testStrList[i];
+        painter.drawText(10, painter.fontMetrics().height() * j++, text);
+
+        if ((i + 1) % 93 == 0)
+        {
+            if (!printer->newPage())
+            {
+                LogUtil::Warn(CODE_LOCATION, "Failed in flushing page to disk, disk full?");
+                break;
+            }
+            j = 1;
+        }
+    }
+    painter.end();
 }
 
 void MiscellaneousPrinterPDF::on_btnPrinterInfo_clicked()
@@ -253,6 +297,25 @@ void MiscellaneousPrinterPDF::on_btnPrintPreviewDlg_clicked()
         painter.end();
     });
     printPreDlg.exec();
+}
+
+void MiscellaneousPrinterPDF::on_btnPrintPreviewWgt_clicked()
+{
+    static int clickCount = 0;
+    switch (++clickCount % 3)
+    {
+    case 0:
+        mpPrintPreviewWgt->updatePreview();
+        break;
+    case 1:
+        mpPrintPreviewWgt->zoomIn();
+        break;
+    case 2:
+        mpPrintPreviewWgt->zoomOut();
+        break;
+    default:
+        break;
+    }
 }
 
 void MiscellaneousPrinterPDF::on_btnPrintDlg_clicked()
