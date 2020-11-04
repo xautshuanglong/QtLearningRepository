@@ -386,12 +386,31 @@ void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
 {
     QPrinter printer(QPrinter::ScreenResolution);
 
-    // 页面布局相关
-    printer.setPageMargins(QMarginsF(1.0, 2.0, 3.0, 4.0), QPageLayout::Millimeter);
-    printer.setPageOrientation(QPageLayout::Landscape);
-    printer.setPageSize(QPagedPaintDevice::A4Extra);
-    //QPagedPaintDevice::Margins margins = { 1.0, 2.0, 3.0, 4.0 };
-    //printer.setMargins(margins);
+    // 页面布局相关 —— 尺寸不在合理范围内（Min ~ Max）或者单位不一致，将导致设置边距失败。
+    //QPageLayout pageLayout = printer.pageLayout();
+    //QPageLayout::Unit pageUnit = pageLayout.units();
+    //QMarginsF maxMargins = pageLayout.maximumMargins();
+    //QMarginsF minMargins = pageLayout.minimumMargins();
+    //bool testFlag1 = pageLayout.setMargins(QMarginsF(20.0, 30.0, 40.0, 50.0));
+    //bool testFlag2 = printer.setPageMargins(QMarginsF(20.0, 30.0, 40.0, 50.0), pageUnit);
+    //printer.setPageOrientation(QPageLayout::Landscape);
+    //printer.setPageSize(QPagedPaintDevice::A4Extra);
+    ////QPagedPaintDevice::Margins margins = { 1.0, 2.0, 3.0, 4.0 };
+    ////printer.setMargins(margins);
+
+    // 页面布局相关 —— 通过 QPageLayout 设置边距
+    //QPageLayout pageLayout(QPageSize(QPageSize::A4),QPageLayout::Landscape, QMarginsF(1.0, 2.0, 3.0, 4.0), QPageLayout::Millimeter, QMarginsF(0.0, 0.0, 0.0, 0.0));
+    QPageLayout pageLayout = printer.pageLayout();
+    QMarginsF minMargins1 = pageLayout.minimumMargins();
+    pageLayout.setMode(QPageLayout::StandardMode);
+    pageLayout.setUnits(QPageLayout::Millimeter);
+    QMarginsF minMargins2 = pageLayout.minimumMargins();
+    pageLayout.setMinimumMargins(QMarginsF(5.0, 5.0, 5.0, 5.0));
+    pageLayout.setMargins(QMarginsF(5.0, 5.0, 4.0, 5.0));
+    QPageLayout::Unit pageUnit = pageLayout.units();
+    QMarginsF maxMargins = pageLayout.maximumMargins();
+    QMarginsF minMargins = pageLayout.minimumMargins();
+    bool testFlag2 = printer.setPageLayout(pageLayout);
 
     // 打印机属性相关
     printer.setPrintRange(QPrinter::PageRange);                   // 打印页范围模式：所有页、选中的页、指定范围、当前页。
