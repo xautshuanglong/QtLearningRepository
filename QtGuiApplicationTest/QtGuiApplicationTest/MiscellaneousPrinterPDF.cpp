@@ -420,6 +420,11 @@ void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
     printer.setDoubleSidedPrinting(true);                         // ÊÇ·ñ·­Ò³
     printer.setDuplex(QPrinter::DuplexShortSide);                 // ³¤/¶Ì±ß·­Ò³
 
+    QPrinter::PaperSource paperSource = printer.paperSource();
+    QList<QPrinter::PaperSource> paperSources = printer.supportedPaperSources();
+    QList<int> resolutionList = printer.supportedResolutions();
+    bool supportCopyFlag = printer.supportsMultipleCopies();
+
     QPageSetupDialog pageSetupDlg(&printer);
     if (QDialog::Accepted == pageSetupDlg.exec())
     {
