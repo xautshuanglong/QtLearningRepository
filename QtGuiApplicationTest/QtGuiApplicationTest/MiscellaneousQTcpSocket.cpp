@@ -61,6 +61,7 @@ MiscellaneousTestItem MiscellaneousQTcpSocket::GetItemID()
 void MiscellaneousQTcpSocket::SlotConnected()
 {
     LogUtil::Info(CODE_LOCATION, "QTcpSocket connected --------------");
+    m_pTcpSocket->write("hello world ...");
 }
 
 void MiscellaneousQTcpSocket::SlotDisconnected()
