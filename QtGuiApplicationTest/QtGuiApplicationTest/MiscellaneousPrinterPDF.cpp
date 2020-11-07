@@ -301,21 +301,31 @@ void MiscellaneousPrinterPDF::on_btnPrintPreviewDlg_clicked()
 
 void MiscellaneousPrinterPDF::on_btnPrintPreviewWgt_clicked()
 {
-    static int clickCount = 0;
-    switch (++clickCount % 3)
-    {
-    case 0:
-        mpPrintPreviewWgt->updatePreview();
-        break;
-    case 1:
-        mpPrintPreviewWgt->zoomIn();
-        break;
-    case 2:
-        mpPrintPreviewWgt->zoomOut();
-        break;
-    default:
-        break;
-    }
+    QList<int> intList;
+    intList.append(1);
+    intList.append(2);
+    intList.append(3);
+
+    QList<QString> stringList;
+    stringList.append("A");
+    stringList.append("B");
+    stringList.append("C");
+
+    //static int clickCount = 0;
+    //switch (++clickCount % 3)
+    //{
+    //case 0:
+    //    mpPrintPreviewWgt->updatePreview();
+    //    break;
+    //case 1:
+    //    mpPrintPreviewWgt->zoomIn();
+    //    break;
+    //case 2:
+    //    mpPrintPreviewWgt->zoomOut();
+    //    break;
+    //default:
+    //    break;
+    //}
 }
 
 void MiscellaneousPrinterPDF::on_btnPrintDlg_clicked()
