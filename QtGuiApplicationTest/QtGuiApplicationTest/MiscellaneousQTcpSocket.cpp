@@ -142,8 +142,10 @@ void MiscellaneousQTcpSocket::on_btnConnect_clicked()
         if (m_pTcpSocket->isValid())
         {
             m_pTcpSocket->disconnectFromHost();
+            m_pTcpSocket->waitForDisconnected();
         }
         m_pTcpSocket->connectToHost(serverIP, serverPort);
+        m_pTcpSocket->waitForConnected();
     }
     else
     {
