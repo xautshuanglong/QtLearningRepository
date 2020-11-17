@@ -17,6 +17,7 @@ MiscellaneousPrinterPDF::MiscellaneousPrinterPDF(QWidget *parent)
 
     QPrinter* pPrinter = new QPrinter(QPrinter::HighResolution);
     mpPrintPreviewWgt = new QPrintPreviewWidget(pPrinter, this);
+    //mpPrintPreviewWgt->setStyleSheet("background-color:red;"); // 打印预览框背景设置无效：内部采用场景控件，灰色背景刷，没有对外提供接口。
     connect(mpPrintPreviewWgt, &QPrintPreviewWidget::paintRequested, this, &MiscellaneousPrinterPDF::SlotPreviewPaintRequested);
     ui.gridLayout->addWidget(mpPrintPreviewWgt, 3, 1, 1, 1);
 }
