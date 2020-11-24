@@ -76,13 +76,14 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
     FILETIME curUserTime;
     ::GetSystemTimes(&curIdleTime, &curKernelTime, &curUserTime);
 
-    long idle = FileTimeDiff(curIdleTime, gPreIdleTime);
-    long kernel = FileTimeDiff(curKernelTime, gPreKernelTime);
-    long user = FileTimeDiff(curUserTime, gPreUserTime);
+    long long idle = FileTimeDiff(curIdleTime, gPreIdleTime);
+    long long kernel = FileTimeDiff(curKernelTime, gPreKernelTime);
+    long long user = FileTimeDiff(curUserTime, gPreUserTime);
 
     if (kernel + user == 0)
         return 0.00;
-    double cpuPercent = (kernel + user - idle) * 100.0 / (kernel + user);
+    double cpuPercent = (kernel + user - idle) * 1.0 / (kernel + user) * 100.0;
+
     gPreIdleTime = curIdleTime;
     gPreKernelTime = curKernelTime;
     gPreUserTime = curUserTime;
@@ -90,13 +91,13 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
     return cpuPercent;
 }
 
-long Win32PerformanceUtil::FileTimeDiff(FILETIME time1, FILETIME time2)
+long long Win32PerformanceUtil::FileTimeDiff(FILETIME time1, FILETIME time2)
 {
     __int64 value1 = time1.dwHighDateTime;
     __int64 value2 = time2.dwHighDateTime;
     value1 = value1 << 32 | time1.dwLowDateTime;
     value2 = value2 << 32 | time2.dwLowDateTime;
-    long retValue = value1 - value2;
+    long long retValue = value1 - value2;
     return retValue;
 }
 

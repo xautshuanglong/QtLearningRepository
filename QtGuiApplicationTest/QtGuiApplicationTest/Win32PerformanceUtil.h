@@ -36,6 +36,6 @@ public:
     static QString GetTcpState(DWORD state);
 
 private:
-    static long FileTimeDiff(FILETIME time1, FILETIME time2);
+    static long long FileTimeDiff(FILETIME time1, FILETIME time2);
 };
 
