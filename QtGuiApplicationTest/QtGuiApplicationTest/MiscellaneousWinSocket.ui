@@ -147,6 +147,42 @@
          </widget>
         </item>
         <item>
+         <widget class="QComboBox" name="cbServerMode">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>C Style Select</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Win32 Select</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Win32 Asynchronize</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Complete port</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="btnListen">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
