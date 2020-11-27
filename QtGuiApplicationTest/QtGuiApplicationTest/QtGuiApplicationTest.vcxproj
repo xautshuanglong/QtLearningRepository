@@ -190,6 +190,7 @@
     <ClCompile Include="MiscellaneousTesting.cpp" />
     <ClCompile Include="MiscellaneousWinBeginThreadEx.cpp" />
     <ClCompile Include="MiscellaneousWinPrintDlg.cpp" />
+    <ClCompile Include="MiscellaneousWinSocket.cpp" />
     <ClCompile Include="MiscellaneousWxSqlite3.cpp" />
     <ClCompile Include="MiscellaneousZip.cpp" />
     <ClCompile Include="MiscellaneousZLib.cpp" />
@@ -254,6 +255,7 @@
     <QtUic Include="MiscellaneousStringUtil.ui" />
     <QtUic Include="MiscellaneousTesting.ui" />
     <QtUic Include="MiscellaneousWinPrintDlg.ui" />
+    <QtUic Include="MiscellaneousWinSocket.ui" />
     <QtUic Include="NotifyWidget.ui">
     </QtUic>
     <QtUic Include="MiscellaneousWinBeginThreadEx.ui" />
@@ -348,6 +350,7 @@
     <QtMoc Include="MiscellaneousQMimeType.h">
     </QtMoc>
     <QtMoc Include="MiscellaneousWinPrintDlg.h" />
+    <QtMoc Include="MiscellaneousWinSocket.h" />
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
     </QtMoc>

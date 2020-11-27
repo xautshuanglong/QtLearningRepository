@@ -9,6 +9,7 @@
 // WinAPI Test
 #include "MiscellaneousWinBeginThreadEx.h"
 #include "MiscellaneousWinPrintDlg.h"
+#include "MiscellaneousWinSocket.h"
 // Standard CPP
 #include "MiscellaneousStdSharedPointer.h"
 #include "MiscellaneousStdConstructor.h"
@@ -80,6 +81,7 @@ void MiscellaneousTesting::InitializeUI()
 
     this->AppendTestPage(new MiscellaneousWinBeginThreadEx(this));
     this->AppendTestPage(new MiscellaneousWinPrintDlg(this));
+    this->AppendTestPage(new MiscellaneousWinSocket(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
     this->AppendTestPage(new MiscellaneousStdCLanguageFeatures(this));
