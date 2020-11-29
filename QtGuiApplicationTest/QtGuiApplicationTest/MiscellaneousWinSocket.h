@@ -4,6 +4,11 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousWinSocket.h"
 
+namespace std
+{
+    class thread;
+}
+
 enum class EnumServerSocketMode
 {
     CStyleSelect,
@@ -34,6 +39,7 @@ private:
     void Win32AsynchronizeStop();
     void CompletionPortStart();
     void CompletionPortStop();
+    static void ThreadFunction(void* pArg);
 
 private slots:
     void on_cbServerMode_currentIndexChanged(int index);
@@ -43,6 +49,7 @@ private slots:
 private:
     Ui::MiscellaneousWinSocket   ui;
     EnumServerSocketMode         mServerMode;
+    std::thread                 *mpThreadListen;
 };
 
 #endif // MISCELLANEOUS_WIN_SOCKET_H

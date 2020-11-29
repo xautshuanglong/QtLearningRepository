@@ -1,5 +1,7 @@
 #include "MiscellaneousWinSocket.h"
 
+#include <thread>
+
 #include <QWindow>
 
 #pragma warning (disable: 6387)
@@ -7,12 +9,18 @@
 MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
     , mServerMode(EnumServerSocketMode::CStyleSelect)
+    , mpThreadListen(nullptr)
 {
     ui.setupUi(this);
+    mpThreadListen = new std::thread(&MiscellaneousWinSocket::ThreadFunction, this);
 }
 
 MiscellaneousWinSocket::~MiscellaneousWinSocket()
 {
+    if (mpThreadListen != nullptr)
+    {
+        delete mpThreadListen;
+    }
 }
 
 QString MiscellaneousWinSocket::GetTitle()
@@ -67,10 +75,16 @@ void MiscellaneousWinSocket::Win32AsynchronizeStop()
 
 void MiscellaneousWinSocket::CompletionPortStart()
 {
+    uint hardwareConcurrentcy = std::thread::hardware_concurrency();
     int i = 0;
 }
 
 void MiscellaneousWinSocket::CompletionPortStop()
+{
+    int i = 0;
+}
+
+void MiscellaneousWinSocket::ThreadFunction(void* pArg)
 {
     int i = 0;
 }
