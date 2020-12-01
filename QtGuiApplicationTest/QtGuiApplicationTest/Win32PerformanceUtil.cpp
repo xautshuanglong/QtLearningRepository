@@ -82,7 +82,8 @@ double Win32PerformanceUtil::GetCpuUsageSystem()
 
     if (kernel + user == 0)
         return 0.00;
-    double cpuPercent = (kernel + user - idle) * 1.0 / (kernel + user) * 100.0;
+    //double cpuPercent = (kernel + user - idle) * 1.0 / (kernel + user) * 100.0;
+    double cpuPercent = 100.0 - idle * 1.0 / (kernel + user) * 100.0;
 
     gPreIdleTime = curIdleTime;
     gPreKernelTime = curKernelTime;
@@ -249,7 +250,7 @@ void Win32PerformanceUtil::GetExtendTcpTableInfo(ULONG inProtoclFamily, QList<Tc
         LogUtil::Error(CODE_LOCATION, "An invalid parameter was passed to the function.");
     }
 
-    delete pTcpTable;
+    delete []pTcpTable;
 }
 
 void Win32PerformanceUtil::GetExtendUdpTableInfo(ULONG inProtoclFamily, QList<UdpConnections> &outListConnections)

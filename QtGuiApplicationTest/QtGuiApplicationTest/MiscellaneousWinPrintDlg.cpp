@@ -38,7 +38,7 @@ void MiscellaneousWinPrintDlg::on_btnPrintDlg_clicked()
 {
     PRINTDLG pd;
     // Initialize PRINTDLG
-    ZeroMemory(&pd, sizeof(pd)); // ÏÂÁĞÖÃ¿Õ²ÎÊı£¬ÓÃÓÚ±ê¼Ç¸Ä½á¹¹ÌåÓĞÄÄĞ©¿ÉÓÃ²ÎÊı¡£
+    ZeroMemory(&pd, sizeof(pd)); // ä¸‹åˆ—ç½®ç©ºå‚æ•°ï¼Œç”¨äºæ ‡è®°æ”¹ç»“æ„ä½“æœ‰å“ªäº›å¯ç”¨å‚æ•°ã€‚
     pd.lStructSize = sizeof(pd);
     pd.hwndOwner = (HWND)this->nativeParentWidget()->windowHandle()->winId();
     pd.hDevMode = NULL;      // Don't forget to free or store hDevMode.
@@ -212,7 +212,7 @@ UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_SetupHook(HWND hwndDlg,
     HFONT hFont;
     HGDIOBJ hdcOld;
 
-    // Í¨ÓÃ¶Ô»°¿òÏûÏ¢£¬Ò»°ãÎŞĞèÌØÊâ´¦Àí¡£
+    // é€šç”¨å¯¹è¯æ¡†æ¶ˆæ¯ï¼Œä¸€èˆ¬æ— éœ€ç‰¹æ®Šå¤„ç†ã€‚
     switch (uMsg)
     {
     default:
@@ -221,7 +221,7 @@ UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_SetupHook(HWND hwndDlg,
     return FALSE;
 }
 
-// »æÖÆ´òÓ¡ÊÒÊµÀı£¨Ò³ÃæÉèÖÃ¶Ô»°¿òÄÚ£©
+// ç»˜åˆ¶æ‰“å°å®¤å®ä¾‹ï¼ˆé¡µé¢è®¾ç½®å¯¹è¯æ¡†å†…ï¼‰
 UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_PaintHook(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LPRECT lprc;
@@ -252,9 +252,9 @@ UINT_PTR CALLBACK MiscellaneousWinPrintDlg::PageSetupDlg_PaintHook(HWND hwndDlg,
         hdc = (HDC)wParam;
         lprc = (LPRECT)lParam;
         hFont = CreateFont(10, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
-                           CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("¿¬Ìå"));
+                           CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("æ¥·ä½“"));
         hdcOld = SelectObject(hdc, hFont);
-        DrawText(hdc, TEXT("Hello world!\nÄãºÃÊÀ½ç£¡"), -1, lprc, DT_CENTER | DT_VCENTER);
+        DrawText(hdc, TEXT("Hello world!\nä½ å¥½ä¸–ç•Œï¼"), -1, lprc, DT_CENTER | DT_VCENTER);
         DeleteObject(hFont);
         SelectObject(hdc, hdcOld);
         return TRUE;

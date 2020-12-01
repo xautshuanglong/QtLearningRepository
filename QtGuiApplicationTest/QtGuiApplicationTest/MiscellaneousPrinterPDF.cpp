@@ -17,7 +17,7 @@ MiscellaneousPrinterPDF::MiscellaneousPrinterPDF(QWidget *parent)
 
     QPrinter* pPrinter = new QPrinter(QPrinter::HighResolution);
     mpPrintPreviewWgt = new QPrintPreviewWidget(pPrinter, this);
-    //mpPrintPreviewWgt->setStyleSheet("background-color:red;"); // ´òÓ¡Ô¤ÀÀ¿ò±³¾°ÉèÖÃÎŞĞ§£ºÄÚ²¿²ÉÓÃ³¡¾°¿Ø¼ş£¬»ÒÉ«±³¾°Ë¢£¬Ã»ÓĞ¶ÔÍâÌá¹©½Ó¿Ú¡£
+    //mpPrintPreviewWgt->setStyleSheet("background-color:red;"); // æ‰“å°é¢„è§ˆæ¡†èƒŒæ™¯è®¾ç½®æ— æ•ˆï¼šå†…éƒ¨é‡‡ç”¨åœºæ™¯æ§ä»¶ï¼Œç°è‰²èƒŒæ™¯åˆ·ï¼Œæ²¡æœ‰å¯¹å¤–æä¾›æ¥å£ã€‚
     connect(mpPrintPreviewWgt, &QPrintPreviewWidget::paintRequested, this, &MiscellaneousPrinterPDF::SlotPreviewPaintRequested);
     ui.gridLayout->addWidget(mpPrintPreviewWgt, 3, 1, 1, 1);
 }
@@ -397,7 +397,7 @@ void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
 {
     QPrinter printer(QPrinter::ScreenResolution);
 
-    // Ò³Ãæ²¼¾ÖÏà¹Ø ¡ª¡ª ³ß´ç²»ÔÚºÏÀí·¶Î§ÄÚ£¨Min ~ Max£©»òÕßµ¥Î»²»Ò»ÖÂ£¬½«µ¼ÖÂÉèÖÃ±ß¾àÊ§°Ü¡£
+    // é¡µé¢å¸ƒå±€ç›¸å…³ â€”â€” å°ºå¯¸ä¸åœ¨åˆç†èŒƒå›´å†…ï¼ˆMin ~ Maxï¼‰æˆ–è€…å•ä½ä¸ä¸€è‡´ï¼Œå°†å¯¼è‡´è®¾ç½®è¾¹è·å¤±è´¥ã€‚
     //QPageLayout pageLayout = printer.pageLayout();
     //QPageLayout::Unit pageUnit = pageLayout.units();
     //QMarginsF maxMargins = pageLayout.maximumMargins();
@@ -409,7 +409,7 @@ void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
     ////QPagedPaintDevice::Margins margins = { 1.0, 2.0, 3.0, 4.0 };
     ////printer.setMargins(margins);
 
-    // Ò³Ãæ²¼¾ÖÏà¹Ø ¡ª¡ª Í¨¹ı QPageLayout ÉèÖÃ±ß¾à
+    // é¡µé¢å¸ƒå±€ç›¸å…³ â€”â€” é€šè¿‡ QPageLayout è®¾ç½®è¾¹è·
     //QPageLayout pageLayout(QPageSize(QPageSize::A4),QPageLayout::Landscape, QMarginsF(1.0, 2.0, 3.0, 4.0), QPageLayout::Millimeter, QMarginsF(0.0, 0.0, 0.0, 0.0));
     QPageLayout pageLayout = printer.pageLayout();
     QMarginsF minMargins1 = pageLayout.minimumMargins();
@@ -423,13 +423,13 @@ void MiscellaneousPrinterPDF::on_btnQPrinterCustom_clicked()
     QMarginsF minMargins = pageLayout.minimumMargins();
     bool testFlag2 = printer.setPageLayout(pageLayout);
 
-    // ´òÓ¡»úÊôĞÔÏà¹Ø
-    printer.setPrintRange(QPrinter::PageRange);                   // ´òÓ¡Ò³·¶Î§Ä£Ê½£ºËùÓĞÒ³¡¢Ñ¡ÖĞµÄÒ³¡¢Ö¸¶¨·¶Î§¡¢µ±Ç°Ò³¡£
-    printer.setFromTo(1, 2);                                      // ´òÓ¡Ò³·¶Î§
-    printer.setCopyCount(5);                                      // ´òÓ¡·İÊı
+    // æ‰“å°æœºå±æ€§ç›¸å…³
+    printer.setPrintRange(QPrinter::PageRange);                   // æ‰“å°é¡µèŒƒå›´æ¨¡å¼ï¼šæ‰€æœ‰é¡µã€é€‰ä¸­çš„é¡µã€æŒ‡å®šèŒƒå›´ã€å½“å‰é¡µã€‚
+    printer.setFromTo(1, 2);                                      // æ‰“å°é¡µèŒƒå›´
+    printer.setCopyCount(5);                                      // æ‰“å°ä»½æ•°
     printer.setPrinterName(QString("HP LaserJet Pro MFP M127-M128 PCLmS"));
-    printer.setDoubleSidedPrinting(true);                         // ÊÇ·ñ·­Ò³
-    printer.setDuplex(QPrinter::DuplexShortSide);                 // ³¤/¶Ì±ß·­Ò³
+    printer.setDoubleSidedPrinting(true);                         // æ˜¯å¦ç¿»é¡µ
+    printer.setDuplex(QPrinter::DuplexShortSide);                 // é•¿/çŸ­è¾¹ç¿»é¡µ
 
     QPrinter::PaperSource paperSource = printer.paperSource();
     QList<QPrinter::PaperSource> paperSources = printer.supportedPaperSources();
