@@ -12,13 +12,17 @@ MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */
     , mpThreadListen(nullptr)
 {
     ui.setupUi(this);
-    mpThreadListen = new std::thread(&MiscellaneousWinSocket::ThreadFunction, this);
+    mpThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
 }
 
 MiscellaneousWinSocket::~MiscellaneousWinSocket()
 {
     if (mpThreadListen != nullptr)
     {
+        if (mpThreadListen->joinable())
+        {
+            mpThreadListen->join();
+        }
         delete mpThreadListen;
     }
 }
@@ -84,7 +88,7 @@ void MiscellaneousWinSocket::CompletionPortStop()
     int i = 0;
 }
 
-void MiscellaneousWinSocket::ThreadFunction(void* pArg)
+void MiscellaneousWinSocket::ThreadFunction()
 {
     int i = 0;
 }

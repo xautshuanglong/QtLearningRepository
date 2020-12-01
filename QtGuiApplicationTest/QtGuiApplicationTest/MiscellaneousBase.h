@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISCELLANEOUS_BASE_H
+#define MISCELLANEOUS_BASE_H
 
 #include <QWidget>
 
@@ -15,3 +16,5 @@ public:
     virtual MiscellaneousTestGroup GetGroupID();
     virtual MiscellaneousTestItem GetItemID();
 };
+
+#endif // MISCELLANEOUS_BASE_H

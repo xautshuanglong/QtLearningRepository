@@ -1,4 +1,4 @@
-#include "MiscellaneousWinPrintDlg.h"
+﻿#include "MiscellaneousWinPrintDlg.h"
 
 #include <QWindow>
 

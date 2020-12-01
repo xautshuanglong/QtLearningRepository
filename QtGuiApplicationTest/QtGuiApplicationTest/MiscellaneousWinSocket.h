@@ -39,7 +39,7 @@ private:
     void Win32AsynchronizeStop();
     void CompletionPortStart();
     void CompletionPortStop();
-    static void ThreadFunction(void* pArg);
+    void ThreadFunction();
 
 private slots:
     void on_cbServerMode_currentIndexChanged(int index);
