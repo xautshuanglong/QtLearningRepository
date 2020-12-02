@@ -49,7 +49,8 @@ private slots:
 private:
     Ui::MiscellaneousWinSocket   ui;
     EnumServerSocketMode         mServerMode;
-    std::thread                 *mpThreadListen;
+    std::thread                 *mThreadListen;
+    std::list<std::thread*>      mListThreads;
 };
 
 #endif // MISCELLANEOUS_WIN_SOCKET_H

@@ -1,6 +1,8 @@
 #include "MiscellaneousWinSocket.h"
 
 #include <thread>
+#include <limits.h> 
+#include <windows.h>
 
 #include <QWindow>
 
@@ -9,21 +11,36 @@
 MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
     , mServerMode(EnumServerSocketMode::CStyleSelect)
-    , mpThreadListen(nullptr)
+    , mThreadListen(nullptr)
 {
     ui.setupUi(this);
-    mpThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
+    mThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
+
+    unsigned int hardwareConcurrency = std::thread::hardware_concurrency();
+    for (int i = 0; i < hardwareConcurrency - 2; ++i)
+    {
+        mListThreads.push_back(new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this)));
+    }
 }
 
 MiscellaneousWinSocket::~MiscellaneousWinSocket()
 {
-    if (mpThreadListen != nullptr)
+    if (mThreadListen != nullptr)
     {
-        if (mpThreadListen->joinable())
+        if (mThreadListen->joinable())
         {
-            mpThreadListen->join();
+            mThreadListen->join();
         }
-        delete mpThreadListen;
+        delete mThreadListen;
+    }
+
+    for (std::thread *pThread : mListThreads)
+    {
+        if (pThread->joinable())
+        {
+            pThread->join();
+        }
+        delete pThread;
     }
 }
 
@@ -90,8 +107,26 @@ void MiscellaneousWinSocket::CompletionPortStop()
 
 void MiscellaneousWinSocket::ThreadFunction()
 {
-
-    int i = 0;
+    static ULONGLONG countHigh = 0;
+    static ULONGLONG countLow = 0;
+    countLow = 0;
+    while (true)
+    {
+        ++countLow;
+        if (countLow > 100000000000)
+        {
+            break;
+        }
+        //if (countLow == ULLONG_MAX)
+        //{
+        //    countLow = 0;
+        //    ++countHigh;
+        //    if (countHigh == ULLONG_MAX)
+        //    {
+        //        break;
+        //    }
+        //}
+    }
 }
 
 void MiscellaneousWinSocket::on_cbServerMode_currentIndexChanged(int index)
