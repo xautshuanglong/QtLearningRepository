@@ -90,6 +90,7 @@ void MiscellaneousWinSocket::CompletionPortStop()
 
 void MiscellaneousWinSocket::ThreadFunction()
 {
+
     int i = 0;
 }
 
