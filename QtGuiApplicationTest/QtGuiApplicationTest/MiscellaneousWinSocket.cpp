@@ -14,8 +14,12 @@ MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */
     , mThreadListen(nullptr)
 {
     ui.setupUi(this);
-    mThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
 
+    // 套接字环境初始化
+
+    // 监听线程
+    mThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
+    // 并发测试线程
     unsigned int hardwareConcurrency = std::thread::hardware_concurrency();
     for (int i = 0; i < hardwareConcurrency - 2; ++i)
     {
@@ -74,18 +78,9 @@ void MiscellaneousWinSocket::CStyleSelectStop()
     int i = 0;
 }
 
-void MiscellaneousWinSocket::Win32SelectStart()
-{
-    int i = 0;
-}
-
-void MiscellaneousWinSocket::Win32SelectStop()
-{
-    int i = 0;
-}
-
 void MiscellaneousWinSocket::Win32AsynchronizeStart()
 {
+    //WSAAsyncSelect()
     int i = 0;
 }
 
@@ -141,9 +136,6 @@ void MiscellaneousWinSocket::on_btnListen_clicked()
     case EnumServerSocketMode::CStyleSelect:
         this->CStyleSelectStart();
         break;
-    case EnumServerSocketMode::Win32Select:
-        this->Win32SelectStart();
-        break;
     case EnumServerSocketMode::Win32Asynchronize:
         this->Win32AsynchronizeStart();
         break;
@@ -161,9 +153,6 @@ void MiscellaneousWinSocket::on_btnStop_clicked()
     {
     case EnumServerSocketMode::CStyleSelect:
         this->CStyleSelectStop();
-        break;
-    case EnumServerSocketMode::Win32Select:
-        this->Win32SelectStop();
         break;
     case EnumServerSocketMode::Win32Asynchronize:
         this->Win32AsynchronizeStop();

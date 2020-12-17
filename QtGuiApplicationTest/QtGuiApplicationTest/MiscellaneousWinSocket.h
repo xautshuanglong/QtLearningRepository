@@ -12,7 +12,6 @@ namespace std
 enum class EnumServerSocketMode
 {
     CStyleSelect,
-    Win32Select,
     Win32Asynchronize,
     CompletionPort,
 };
@@ -33,8 +32,6 @@ public:
 private:
     void CStyleSelectStart();
     void CStyleSelectStop();
-    void Win32SelectStart();
-    void Win32SelectStop();
     void Win32AsynchronizeStart();
     void Win32AsynchronizeStop();
     void CompletionPortStart();

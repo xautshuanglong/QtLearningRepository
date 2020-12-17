@@ -167,11 +167,6 @@
           </item>
           <item>
            <property name="text">
-            <string>Win32 Select</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
             <string>Win32 Asynchronize</string>
            </property>
           </item>
