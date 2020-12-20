@@ -20,11 +20,11 @@ MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */
     // 监听线程
     mThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
     // 并发测试线程
-    unsigned int hardwareConcurrency = std::thread::hardware_concurrency();
-    for (int i = 0; i < hardwareConcurrency - 2; ++i)
-    {
-        mListThreads.push_back(new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this)));
-    }
+    //unsigned int hardwareConcurrency = std::thread::hardware_concurrency();
+    //for (int i = 0; i < hardwareConcurrency - 2; ++i)
+    //{
+    //    mListThreads.push_back(new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this)));
+    //}
 }
 
 MiscellaneousWinSocket::~MiscellaneousWinSocket()
@@ -108,7 +108,7 @@ void MiscellaneousWinSocket::ThreadFunction()
     while (true)
     {
         ++countLow;
-        if (countLow > 100000000000)
+        if (countLow > 100000)
         {
             break;
         }

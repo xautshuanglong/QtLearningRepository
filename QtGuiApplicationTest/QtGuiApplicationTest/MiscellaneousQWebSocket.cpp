@@ -40,7 +40,7 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
 
     QTimer *pSocketTimer = new QTimer(this);
     this->connect(pSocketTimer, SIGNAL(timeout()), this, SLOT(SlotWebSocketTimeout()));
-    pSocketTimer->start(100);
+    pSocketTimer->start(10);
 }
 
 MiscellaneousQWebSocket::~MiscellaneousQWebSocket()

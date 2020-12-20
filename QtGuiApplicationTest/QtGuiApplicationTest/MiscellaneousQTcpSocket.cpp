@@ -31,7 +31,7 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
 
     QTimer *pSocketTimer = new QTimer(this);
     this->connect(pSocketTimer, SIGNAL(timeout()), this, SLOT(SlotSocketTimeout()));
-    pSocketTimer->start(100);
+    pSocketTimer->start(10);
 }
 
 MiscellaneousQTcpSocket::~MiscellaneousQTcpSocket()
