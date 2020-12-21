@@ -4,6 +4,10 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousWinSocket.h"
 
+//#define FD_SETSIZE 64 // to increase max socket size in fdset
+//#include <WinSock2.h>
+#include <windows.h>
+
 namespace std
 {
     class thread;
@@ -37,6 +41,7 @@ private:
     void CompletionPortStart();
     void CompletionPortStop();
     void ThreadFunction();
+    LRESULT WindowProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private slots:
     void on_cbServerMode_currentIndexChanged(int index);
@@ -48,6 +53,7 @@ private:
     EnumServerSocketMode         mServerMode;
     std::thread                 *mThreadListen;
     std::list<std::thread*>      mListThreads;
+    HWND                         mMsgWinHandle;
 };
 
 #endif // MISCELLANEOUS_WIN_SOCKET_H

@@ -1,21 +1,40 @@
 #include "MiscellaneousWinSocket.h"
 
 #include <thread>
-#include <limits.h> 
-#include <windows.h>
+#include <limits.h>
 
 #include <QWindow>
 
+#include "LogUtil.h"
+
 #pragma warning (disable: 6387)
+
+#define WM_USER_ASYNCSELECT_MSG     WM_USER + 1
 
 MiscellaneousWinSocket::MiscellaneousWinSocket(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
     , mServerMode(EnumServerSocketMode::CStyleSelect)
     , mThreadListen(nullptr)
+    , mMsgWinHandle(NULL)
 {
     ui.setupUi(this);
 
     // 套接字环境初始化
+    // version 2.2 = a.b --> a | (b << 8)
+    // The high-order byte specifies the minor version number;
+    // the low-order byte specifies the major version number.
+    WSADATA wsaData;
+    int retVal = ::WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (retVal != 0)
+    {
+        LogUtil::Error(CODE_LOCATION, "WSAStartup start failed! ErrorCode: %d", retVal);
+    }
+    else
+    {
+        LogUtil::Info(CODE_LOCATION, "WSAStartup start successfully: CurreentVersion=%hu.%hu HighestVersion=%hu.%u MaxSockets=%hu",
+                      LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion), LOBYTE(wsaData.wHighVersion), HIBYTE(wsaData.wHighVersion),
+                      wsaData.iMaxSockets);
+    }
 
     // 监听线程
     mThreadListen = new std::thread(std::bind(&MiscellaneousWinSocket::ThreadFunction, this));
@@ -46,6 +65,8 @@ MiscellaneousWinSocket::~MiscellaneousWinSocket()
         }
         delete pThread;
     }
+
+    ::WSACleanup();
 }
 
 QString MiscellaneousWinSocket::GetTitle()
@@ -80,8 +101,43 @@ void MiscellaneousWinSocket::CStyleSelectStop()
 
 void MiscellaneousWinSocket::Win32AsynchronizeStart()
 {
-    //WSAAsyncSelect()
-    int i = 0;
+    WNDCLASS window;
+    HWND windowHandle = NULL;
+
+    // set the window properties.
+    memset(&window, 0, sizeof(WNDCLASS));
+    window.lpszClassName = "Accept Window";
+    window.hInstance = NULL;
+    //window.lpfnWndProc = std::bind(&MiscellaneousWinSocket::WindowProcess, this);
+    window.hCursor = NULL;
+    window.hIcon = NULL;
+    window.lpszMenuName = NULL;
+    window.hbrBackground = NULL;
+    window.style = 0;
+    window.cbClsExtra = 0;
+    window.cbWndExtra = 0;
+
+    // register the window class.
+    if (!RegisterClass(&window)) {
+        printf("Registerclass failed %d\n", GetLastError());
+    }
+
+    windowHandle = CreateWindow("Accept Window",
+                                "Accept Window",
+                                WS_OVERLAPPEDWINDOW,    //WS_MINIMIZE,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                (HWND)NULL,
+                                (HMENU)NULL,
+                                (HINSTANCE)NULL,
+                                (LPVOID)NULL);
+    // check if a window was created.
+    if (windowHandle == NULL)
+    {
+        printf("CreateWindow failed %d\n", GetLastError());
+    }
 }
 
 void MiscellaneousWinSocket::Win32AsynchronizeStop()
@@ -108,7 +164,7 @@ void MiscellaneousWinSocket::ThreadFunction()
     while (true)
     {
         ++countLow;
-        if (countLow > 100000000000)
+        if (countLow > 1000)
         {
             break;
         }
@@ -122,6 +178,29 @@ void MiscellaneousWinSocket::ThreadFunction()
         //    }
         //}
     }
+}
+
+LRESULT MiscellaneousWinSocket::WindowProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT res = 0;
+
+    // check what the message type is.
+    switch (message) {
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+        // this is the message that that we gave in WSAAsyncSelect which
+        // winsock will send us back for notifying us of socket events.
+    case WM_USER_ASYNCSELECT_MSG:
+        //ProcessAsyncSelectMessage(wParam, lParam);
+        break;
+    default:
+        res = DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+    }
+
+    return res;
 }
 
 void MiscellaneousWinSocket::on_cbServerMode_currentIndexChanged(int index)
