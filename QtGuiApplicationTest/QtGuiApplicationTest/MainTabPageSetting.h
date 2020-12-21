@@ -18,6 +18,7 @@ private slots:
     void SlotTextDocumentCursorPositionChanged(const QTextCursor &cursor);
     void on_btnGeneratePDF_clicked();
     void on_btnParseDocument_clicked();
+    void on_btnMessageBox_clicked();
     void on_btnChangeItemCount_clicked();
     void on_btnShowVerticalScrollBar_clicked();
     void on_btnDropMenu_clicked();

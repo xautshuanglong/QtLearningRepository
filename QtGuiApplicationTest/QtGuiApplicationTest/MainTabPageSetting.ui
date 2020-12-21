@@ -305,6 +305,19 @@ QPushButton::menu-indicator:closed
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnMessageBox">
+   <property name="geometry">
+    <rect>
+     <x>554</x>
+     <y>10</y>
+     <width>71</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>MsgBox</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="QtGuiApplicationTest.qrc"/>

@@ -13,6 +13,7 @@
 #include <LogUtil.h>
 
 #include "NotifyWidget.h"
+#include "JcbMessageBox.h"
 
 class Base
 {
@@ -260,6 +261,21 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
     //QString newTimeStr2 = timeTest2.toString("yyyy-MM-dd hh:mm:ss.z");
 
     int i = 0;
+}
+
+void MainTabPageSetting::on_btnMessageBox_clicked()
+{
+    QMessageBox msgBox(this);
+    msgBox.setText("Testing content ... Testing content ... Testing content ... Testing content ... Testing content ... Testing content ...");
+    msgBox.setWindowTitle("Window Title");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.exec();
+
+    JcbMessageBox jcbMsgBox(this);
+    jcbMsgBox.setText("Testing content ... Testing content ... Testing content ...\nTesting content ... Testing content ... Testing content ...");
+    jcbMsgBox.setWindowTitle("Window Title");
+    jcbMsgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    jcbMsgBox.exec();
 }
 
 void MainTabPageSetting::on_btnChangeItemCount_clicked()

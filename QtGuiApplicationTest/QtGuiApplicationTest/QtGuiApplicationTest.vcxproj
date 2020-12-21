@@ -161,6 +161,7 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </ClCompile>
+    <ClCompile Include="JcbMessageBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
@@ -225,6 +226,7 @@
     <QtUic Include="DicomDownloadWigdet.ui" />
     <QtUic Include="DicomServerBrowserWidget.ui" />
     <QtUic Include="DicomWindow.ui" />
+    <QtUic Include="JcbMessageBox.ui" />
     <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
@@ -300,6 +302,7 @@
     <QtMoc Include="DicomServerBrowserWidget.h">
     </QtMoc>
     <ClInclude Include="FopReportProtocol.h" />
+    <QtMoc Include="JcbMessageBox.h" />
     <ClInclude Include="MessageTest.pb.h" />
     <QtMoc Include="NotifyWidget.h">
     </QtMoc>
