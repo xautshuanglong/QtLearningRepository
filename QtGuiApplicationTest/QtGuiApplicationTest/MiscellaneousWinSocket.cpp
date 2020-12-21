@@ -1,7 +1,9 @@
 #include "MiscellaneousWinSocket.h"
 
-#include <thread>
+#define FD_SETSIZE 64 // to increase max socket size in fdset
+#include <WinSock2.h>
 #include <limits.h>
+#include <thread>
 
 #include <QWindow>
 

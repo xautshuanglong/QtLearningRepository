@@ -4,9 +4,9 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousWinSocket.h"
 
-//#define FD_SETSIZE 64 // to increase max socket size in fdset
-//#include <WinSock2.h>
-#include <windows.h>
+#define _WINSOCKAPI_
+#include <Windows.h>
+#include <thread>
 
 namespace std
 {
