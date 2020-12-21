@@ -29,14 +29,15 @@ enum class MiscellaneousTestItem
     QT_Signal_Slot,                   // QT 信号槽测试：传递自定义类型
     QT_Printer_PDF,                   // QT 输出 PDF
     QT_Printer_Widget,                // QT 将 QWidget 输出到 PDF
+    QT_Custom_TextEdit,               // QT 自定义文本编辑框
     QT_Image_QImage,                  // QT 图像操作 QImage
     QT_Image_QPixmap,                 // QT 图像操作 QPixmap
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     QT_Regular_Expression,            // QT 正则表达式训练
     QT_Mime_Type,                     // QT 文件类型检测 MIME（多用途互联网邮件扩展类型）
     QT_Excel_ReadWrite,               // QT Excel 文件读写
-    QT_WEBSOCKET_CLIENT,              // QT QWebSocket 客户端测试
-    QT_TCPSOCKET_CLIENT,              // QT QTcpSocket 客户端测试
+    QT_WebSocket_Client,              // QT QWebSocket 客户端测试
+    QT_TcpSocket_Client,              // QT QTcpSocket 客户端测试
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
     Database_Postgresql,              // 数据库操作 postgresql

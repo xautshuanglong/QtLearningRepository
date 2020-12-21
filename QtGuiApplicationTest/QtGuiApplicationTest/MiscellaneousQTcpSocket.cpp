@@ -55,7 +55,7 @@ MiscellaneousTestGroup MiscellaneousQTcpSocket::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousQTcpSocket::GetItemID()
 {
-    return MiscellaneousTestItem::QT_TCPSOCKET_CLIENT;
+    return MiscellaneousTestItem::QT_TcpSocket_Client;
 }
 
 void MiscellaneousQTcpSocket::SlotConnected()

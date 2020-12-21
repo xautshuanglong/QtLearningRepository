@@ -162,6 +162,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
     </ClCompile>
     <ClCompile Include="JcbMessageBox.cpp" />
+    <ClCompile Include="JcbTextEdit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="MessageTest.pb.cc" />
     <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp" />
     <ClCompile Include="MiscellaneousBase.cpp" />
+    <ClCompile Include="MiscellaneousCustomTextEdit.cpp" />
     <ClCompile Include="MiscellaneousStdCLanguageFeatures.cpp" />
     <ClCompile Include="MiscellaneousDefines.cpp" />
     <ClCompile Include="MiscellaneousExcelReadWrite.cpp" />
@@ -226,10 +228,10 @@
     <QtUic Include="DicomDownloadWigdet.ui" />
     <QtUic Include="DicomServerBrowserWidget.ui" />
     <QtUic Include="DicomWindow.ui" />
-    <QtUic Include="JcbMessageBox.ui" />
     <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
+    <QtUic Include="MiscellaneousCustomTextEdit.ui" />
     <QtUic Include="MiscellaneousPrinterPDF.ui">
     </QtUic>
     <QtUic Include="MiscellaneousPrinterWidget.ui">
@@ -303,6 +305,7 @@
     </QtMoc>
     <ClInclude Include="FopReportProtocol.h" />
     <QtMoc Include="JcbMessageBox.h" />
+    <QtMoc Include="JcbTextEdit.h" />
     <ClInclude Include="MessageTest.pb.h" />
     <QtMoc Include="NotifyWidget.h">
     </QtMoc>
@@ -311,6 +314,7 @@
     <ClInclude Include="MiscellaneousBase.h" />
     <QtMoc Include="MiscellaneousStdCLanguageFeatures.h">
     </QtMoc>
+    <QtMoc Include="MiscellaneousCustomTextEdit.h" />
     <ClInclude Include="MiscellaneousDefines.h" />
     <QtMoc Include="MiscellaneousPrinterPDF.h">
     </QtMoc>

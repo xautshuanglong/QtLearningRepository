@@ -269,7 +269,13 @@
       <Filter>Miscellaneous</Filter>
     </ClCompile>
     <ClCompile Include="JcbMessageBox.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JcbTextEdit.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscellaneousCustomTextEdit.cpp">
+      <Filter>Miscellaneous</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,8 +375,8 @@
     <QtUic Include="MiscellaneousWinSocket.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
-    <QtUic Include="JcbMessageBox.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="MiscellaneousCustomTextEdit.ui">
+      <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -533,7 +539,13 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="JcbMessageBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="JcbTextEdit.h">
+      <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousCustomTextEdit.h">
+      <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

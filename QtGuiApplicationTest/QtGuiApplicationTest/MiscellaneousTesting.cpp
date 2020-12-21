@@ -20,6 +20,7 @@
 #include "MiscellaneousPrinterPDF.h"
 #include "MiscellaneousSignalSlot.h"
 #include "MiscellaneousPrinterWidget.h"
+#include "MiscellaneousCustomTextEdit.h"
 #include "MiscellaneousImageQImage.h"
 #include "MiscellaneousImageQPixmap.h"
 #include "MiscellaneousQObjectCast.h"
@@ -89,6 +90,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousSignalSlot(this));
     this->AppendTestPage(new MiscellaneousPrinterPDF(this));
     this->AppendTestPage(new MiscellaneousPrinterWidget(this));
+    this->AppendTestPage(new MiscellaneousCustomTextEdit(this));
     this->AppendTestPage(new MiscellaneousImageQImage(this));
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
     this->AppendTestPage(new MiscellaneousQObjectCast(this));

@@ -64,7 +64,7 @@ MiscellaneousTestGroup MiscellaneousQWebSocket::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousQWebSocket::GetItemID()
 {
-    return MiscellaneousTestItem::QT_WEBSOCKET_CLIENT;
+    return MiscellaneousTestItem::QT_WebSocket_Client;
 }
 
 void MiscellaneousQWebSocket::SlotAboutToClose()
