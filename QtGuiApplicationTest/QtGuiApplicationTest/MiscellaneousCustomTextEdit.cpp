@@ -32,6 +32,8 @@ MiscellaneousTestItem MiscellaneousCustomTextEdit::GetItemID()
 
 void MiscellaneousCustomTextEdit::on_btnAppendText_clicked()
 {
+    this->windowHandle();
+
     QString appendText = ui.leAppendText->text();
     appendText.replace("\\n", "\n");
     appendText.replace("\\t", "\t");
