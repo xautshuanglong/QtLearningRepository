@@ -29,10 +29,56 @@ MiscellaneousTestItem MiscellaneousCustomTextEdit::GetItemID()
 {
     return MiscellaneousTestItem::QT_Custom_TextEdit;
 }
+ 
+void MiscellaneousCustomTextEdit::paintEvent(QPaintEvent* pEvent)
+{
+    QWidget::paintEvent(pEvent);
+}
 
 void MiscellaneousCustomTextEdit::on_btnAppendText_clicked()
 {
-    this->windowHandle();
+    HWND pHwnd = NULL;
+    HWND ppHwnd = NULL;
+    HWND pppHwnd = NULL;
+    HWND ppppHwnd = NULL;
+    HWND pppppHwnd = NULL;
+    HWND hwnd = (HWND)this->winId();
+    QString pObjName;
+    QString ppObjName;
+    QString pppObjName;
+    QString ppppObjName;
+    QString pppppObjName;
+    QString objName = this->objectName();
+    if (this->parentWidget())
+    {
+        pHwnd = (HWND)this->parentWidget()->winId();
+        pObjName = this->parentWidget()->objectName();
+
+        if (this->parentWidget()->parentWidget())
+        {
+            ppHwnd = (HWND)this->parentWidget()->parentWidget()->winId();
+            ppObjName = this->parentWidget()->parentWidget()->objectName();
+
+            if (this->parentWidget()->parentWidget()->parentWidget())
+            {
+                pppHwnd = (HWND)this->parentWidget()->parentWidget()->parentWidget()->winId();
+                pppObjName= this->parentWidget()->parentWidget()->parentWidget()->objectName();
+
+                if (this->parentWidget()->parentWidget()->parentWidget()->parentWidget())
+                {
+                    ppppHwnd = (HWND)this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->winId();
+                    pppppObjName = this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->objectName();
+
+                    if (this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->parentWidget())
+                    {
+                        pppppHwnd = (HWND)this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->parentWidget()->winId();
+                        pppppObjName = this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->parentWidget()->objectName();
+                    }
+                }
+            }
+        }
+    }
+    QWindow *pThisWindow = this->windowHandle();
 
     QString appendText = ui.leAppendText->text();
     appendText.replace("\\n", "\n");

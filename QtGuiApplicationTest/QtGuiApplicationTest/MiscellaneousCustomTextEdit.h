@@ -4,6 +4,8 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousCustomTextEdit.h"
 
+class QPaintEvent;
+
 class MiscellaneousCustomTextEdit : public MiscellaneousBase
 {
     Q_OBJECT
@@ -16,6 +18,9 @@ public:
     virtual QString GetTitleTooltip() override;
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
+
+protected:
+    virtual void paintEvent(QPaintEvent* pEvent) override;
 
 private slots:
     void on_btnAppendText_clicked();
