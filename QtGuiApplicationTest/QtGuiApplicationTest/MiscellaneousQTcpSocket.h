@@ -9,6 +9,7 @@
 
 class QTcpServer;
 class QTcpSocket;
+class QTcpServerThread;
 
 class MiscellaneousQTcpSocket : public MiscellaneousBase
 {
@@ -54,6 +55,7 @@ private:
     Ui::MiscellaneousQTcpSocket ui;
     QTcpServer                 *mpTcpServer;
     QTcpSocket                 *mpTcpSocket;
+    QTcpServerThread           *mpTcpServerThread;
     bool                        mAutoConnectFlag;
     int                         mConnectCount;
     int                         mDisconnectCount;
@@ -61,7 +63,30 @@ private:
 
 class QTcpServerThread : public QThread
 {
-    ;
+    Q_OBJECT
+
+public:
+    QTcpServerThread(QObject *parent = Q_NULLPTR);
+    ~QTcpServerThread();
+
+    void ClearCount();
+
+protected:
+    virtual void run() override;
+
+private slots:
+    void SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerThreadNewConnection();
+
+    void SlotTcpServerThreadClientReadyRead();
+    void SlotTcpServerThreadClientDisconnected();
+    void SlotTcpServerThreadClientError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerThreadStateChanged(QAbstractSocket::SocketState state);
+    void SlotTcpServerThreadClientDestroyed(QObject *pObj);
+
+private:
+    int mConnectCount;
+    int mDisconnectCount;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H
