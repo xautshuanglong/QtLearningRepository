@@ -13,7 +13,7 @@
 #define KEY_FILE_NAME   "server.key"
 #define KEY_FILE_PHRASE "testing"
 #define SSL_SECRET_PATH "/tlskey/"
-#define ENABLE_SECURE_MODE 0 // 启用安全模式 SSL/TLS
+#define ENABLE_SECURE_MODE 1 // 启用安全模式 SSL/TLS
 
 MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -60,11 +60,9 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
 
     // 初始化客户端
     mpWebSocket = new QWebSocket(QString("QWebSocket client testing"), QWebSocketProtocol::VersionLatest, this);
-#if ENABLE_SECURE_MODE
     QSslConfiguration sslConfig = mpWebSocket->sslConfiguration();
     sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
     mpWebSocket->setSslConfiguration(sslConfig);
-#endif
     mpWebSocket->setProxy(QNetworkProxy::NoProxy);
     this->connect(mpWebSocket, SIGNAL(aboutToClose()),                                                       this, SLOT(SlotAboutToClose()));
     this->connect(mpWebSocket, SIGNAL(binaryFrameReceived(const QByteArray &, bool)),                        this, SLOT(SlotBinaryFrameReceived(const QByteArray &, bool)));
