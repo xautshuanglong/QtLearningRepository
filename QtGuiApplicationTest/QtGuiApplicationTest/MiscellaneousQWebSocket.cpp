@@ -8,7 +8,7 @@
 
 #include <LogUtil.h>
 
-#define WEBSOCKET_PORT  1259
+#define WEBSOCKET_SERVER_PORT  1259
 #define CERT_FILE_NAME  "server.crt"
 #define KEY_FILE_NAME   "server.key"
 #define KEY_FILE_PHRASE "testing"
@@ -25,6 +25,8 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     ui.setupUi(this);
 
     ui.leServerUrl->setText("wss://127.0.0.1:1259");
+    ui.leServerIP->setText("0.0.0.0");
+    ui.leServerPort->setText("1259");
 
     // 初始化服务端
     QSslConfiguration sslConfiguration;
@@ -243,7 +245,12 @@ void MiscellaneousQWebSocket::SlotWebSocketTimeout()
 
 void MiscellaneousQWebSocket::on_btnListen_clicked()
 {
-    bool listenFlag = mpWebSocketServer->listen(QHostAddress::Any, WEBSOCKET_PORT);
+    QString serverIpStr = ui.leServerIP->text();
+    QString serverPortStr = ui.leServerPort->text();
+    quint16 serverPort = serverPortStr.isEmpty() ? WEBSOCKET_SERVER_PORT : serverPortStr.toInt();
+    QHostAddress hostAddress = serverIpStr.isEmpty() ? QHostAddress::Any : QHostAddress(serverIpStr);
+
+    bool listenFlag = mpWebSocketServer->listen(hostAddress, serverPort);
     if (listenFlag)
     {
         int i = 0;

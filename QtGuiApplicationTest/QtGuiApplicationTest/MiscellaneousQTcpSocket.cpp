@@ -7,6 +7,8 @@
 
 #include <LogUtil.h>
 
+#define TCP_SERVER_PORT  1259
+
 MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     : MiscellaneousBase(parent)
     , mpTcpServer(new QTcpServer(this))
@@ -19,6 +21,8 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
 
     ui.leServerIP->setText("127.0.0.1");
     ui.leServerPort->setText("1259");
+    ui.leListenIP->setText("0.0.0.0");
+    ui.leListenPort->setText("1259");
 
     // 初始化服务端 QTcpServer
     this->connect(mpTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerAcceptError(QAbstractSocket::SocketError)));
@@ -175,7 +179,12 @@ void MiscellaneousQTcpSocket::SlotSocketTimeout()
 
 void MiscellaneousQTcpSocket::on_btnListen_clicked()
 {
-    bool listenFlag = mpTcpServer->listen(QHostAddress::Any, 1259);
+    QString serverIpStr = ui.leServerIP->text();
+    QString serverPortStr = ui.leServerPort->text();
+    quint16 serverPort = serverPortStr.isEmpty() ? TCP_SERVER_PORT : serverPortStr.toInt();
+    QHostAddress hostAddress = serverIpStr.isEmpty() ? QHostAddress::Any : QHostAddress(serverIpStr);
+
+    bool listenFlag = mpTcpServer->listen(hostAddress, serverPort);
     if (listenFlag)
     {
         int i = 0;
