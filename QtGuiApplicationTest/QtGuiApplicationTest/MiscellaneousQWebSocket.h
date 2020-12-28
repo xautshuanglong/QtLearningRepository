@@ -59,9 +59,9 @@ private slots:
 
 private:
     Ui::MiscellaneousQWebSocket ui;
-    QWebSocket                 *m_pWebSocket;
-    QWebSocketServer           *m_pWebSocketServer;
-    bool                        m_autoConnectFlag;
+    QWebSocket                 *mpWebSocket;
+    QWebSocketServer           *mpWebSocketServer;
+    bool                        mAutoConnectFlag;
 };
 
 #endif // MISCELLANEOUSQ_QWEBSOCKET_H

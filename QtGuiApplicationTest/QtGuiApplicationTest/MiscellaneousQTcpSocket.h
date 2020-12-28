@@ -6,6 +6,7 @@
 
 #include <QAbstractSocket>
 
+class QTcpServer;
 class QTcpSocket;
 
 class MiscellaneousQTcpSocket : public MiscellaneousBase
@@ -22,6 +23,10 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
+    void SlotTcpServerAcceptError(QAbstractSocket::SocketError error);
+    void SlotTcpServerNewConnection();
+    void SlotTcpSocketClientDisconnected();
+
     void SlotConnected();
     void SlotDisconnected();
     void SlotError(QAbstractSocket::SocketError socketError);
@@ -45,8 +50,9 @@ private slots:
 
 private:
     Ui::MiscellaneousQTcpSocket ui;
-    QTcpSocket                 *m_pTcpSocket;
-    bool                        m_autoConnectFlag;
+    QTcpServer                 *mpTcpServer;
+    QTcpSocket                 *mpTcpSocket;
+    bool                        mAutoConnectFlag;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H

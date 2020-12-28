@@ -16,9 +16,9 @@
 
 MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     : MiscellaneousBase(parent)
-    , m_pWebSocket(Q_NULLPTR)
-    , m_pWebSocketServer(Q_NULLPTR)
-    , m_autoConnectFlag(false)
+    , mpWebSocket(Q_NULLPTR)
+    , mpWebSocketServer(Q_NULLPTR)
+    , mAutoConnectFlag(false)
 {
     ui.setupUi(this);
 
@@ -39,37 +39,37 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     sslConfiguration.setLocalCertificate(certificate);
     sslConfiguration.setPrivateKey(sslKey);
     sslConfiguration.setProtocol(QSsl::TlsV1SslV3);
-    m_pWebSocketServer = new QWebSocketServer(QString("QWebSocket server testing"), QWebSocketServer::SecureMode, this);
-    m_pWebSocketServer->setMaxPendingConnections(5000);
-    m_pWebSocketServer->setSslConfiguration(sslConfiguration);
-    connect(m_pWebSocketServer, SIGNAL(acceptError(QAbstractSocket::SocketError)),  this, SLOT(SlotAcceptError(QAbstractSocket::SocketError)));
-    connect(m_pWebSocketServer, SIGNAL(sslErrors(const QList<QSslError> &)),        this, SLOT(SlotServerSslErrors(const QList<QSslError> &)));
-    connect(m_pWebSocketServer, SIGNAL(serverError(QWebSocketProtocol::CloseCode)), this, SLOT(SlotServerError(QWebSocketProtocol::CloseCode)));
-    connect(m_pWebSocketServer, SIGNAL(peerVerifyError(const QSslError &)),         this, SLOT(SlotPeerVerifyError(const QSslError &)));
-    connect(m_pWebSocketServer, SIGNAL(closed()),                                   this, SLOT(SlotClosed()));
-    connect(m_pWebSocketServer, SIGNAL(newConnection()),                            this, SLOT(SlotNewConnection()));
+    mpWebSocketServer = new QWebSocketServer(QString("QWebSocket server testing"), QWebSocketServer::SecureMode, this);
+    mpWebSocketServer->setMaxPendingConnections(5000);
+    mpWebSocketServer->setSslConfiguration(sslConfiguration);
+    connect(mpWebSocketServer, SIGNAL(acceptError(QAbstractSocket::SocketError)),  this, SLOT(SlotAcceptError(QAbstractSocket::SocketError)));
+    connect(mpWebSocketServer, SIGNAL(sslErrors(const QList<QSslError> &)),        this, SLOT(SlotServerSslErrors(const QList<QSslError> &)));
+    connect(mpWebSocketServer, SIGNAL(serverError(QWebSocketProtocol::CloseCode)), this, SLOT(SlotServerError(QWebSocketProtocol::CloseCode)));
+    connect(mpWebSocketServer, SIGNAL(peerVerifyError(const QSslError &)),         this, SLOT(SlotPeerVerifyError(const QSslError &)));
+    connect(mpWebSocketServer, SIGNAL(closed()),                                   this, SLOT(SlotClosed()));
+    connect(mpWebSocketServer, SIGNAL(newConnection()),                            this, SLOT(SlotNewConnection()));
 
     // 初始化客户端
-    m_pWebSocket = new QWebSocket(QString("QWebSocket client testing"), QWebSocketProtocol::VersionLatest, this);
-    QSslConfiguration sslConfig = m_pWebSocket->sslConfiguration();
+    mpWebSocket = new QWebSocket(QString("QWebSocket client testing"), QWebSocketProtocol::VersionLatest, this);
+    QSslConfiguration sslConfig = mpWebSocket->sslConfiguration();
     sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
-    m_pWebSocket->setProxy(QNetworkProxy::NoProxy);
-    m_pWebSocket->setSslConfiguration(sslConfig);
-    this->connect(m_pWebSocket, SIGNAL(aboutToClose()),                                                       this, SLOT(SlotAboutToClose()));
-    this->connect(m_pWebSocket, SIGNAL(binaryFrameReceived(const QByteArray &, bool)),                        this, SLOT(SlotBinaryFrameReceived(const QByteArray &, bool)));
-    this->connect(m_pWebSocket, SIGNAL(binaryMessageReceived(const QByteArray &)),                            this, SLOT(SlotBinaryMessageReceived(const QByteArray &)));
-    this->connect(m_pWebSocket, SIGNAL(bytesWritten(qint64)),                                                 this, SLOT(SlotBytesWritten(qint64)));
-    this->connect(m_pWebSocket, SIGNAL(connected()),                                                          this, SLOT(SlotConnected()));
-    this->connect(m_pWebSocket, SIGNAL(disconnected()),                                                       this, SLOT(SlotDisconnected()));
-    this->connect(m_pWebSocket, SIGNAL(error(QAbstractSocket::SocketError)),                                  this, SLOT(SlotError(QAbstractSocket::SocketError)));
-    this->connect(m_pWebSocket, SIGNAL(pong(quint64, const QByteArray &)),                                    this, SLOT(SlotPong(quint64, const QByteArray &)));
-    this->connect(m_pWebSocket, SIGNAL(preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *)),  this, SLOT(SlotPreSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *)));
-    this->connect(m_pWebSocket, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), this, SLOT(SlotProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
-    this->connect(m_pWebSocket, SIGNAL(readChannelFinished()),                                                this, SLOT(SlotReadChannelFinished()));
-    this->connect(m_pWebSocket, SIGNAL(sslErrors(const QList<QSslError> &)),                                  this, SLOT(SlotClientSslErrors(const QList<QSslError> &)));
-    this->connect(m_pWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),                           this, SLOT(SlotStateChanged(QAbstractSocket::SocketState)));
-    this->connect(m_pWebSocket, SIGNAL(textFrameReceived(const QString &, bool)),                             this, SLOT(SlotTextFrameReceived(const QString &, bool)));
-    this->connect(m_pWebSocket, SIGNAL(textMessageReceived(const QString &)),                                 this, SLOT(SlotTextMessageReceived(const QString &)));
+    mpWebSocket->setProxy(QNetworkProxy::NoProxy);
+    mpWebSocket->setSslConfiguration(sslConfig);
+    this->connect(mpWebSocket, SIGNAL(aboutToClose()),                                                       this, SLOT(SlotAboutToClose()));
+    this->connect(mpWebSocket, SIGNAL(binaryFrameReceived(const QByteArray &, bool)),                        this, SLOT(SlotBinaryFrameReceived(const QByteArray &, bool)));
+    this->connect(mpWebSocket, SIGNAL(binaryMessageReceived(const QByteArray &)),                            this, SLOT(SlotBinaryMessageReceived(const QByteArray &)));
+    this->connect(mpWebSocket, SIGNAL(bytesWritten(qint64)),                                                 this, SLOT(SlotBytesWritten(qint64)));
+    this->connect(mpWebSocket, SIGNAL(connected()),                                                          this, SLOT(SlotConnected()));
+    this->connect(mpWebSocket, SIGNAL(disconnected()),                                                       this, SLOT(SlotDisconnected()));
+    this->connect(mpWebSocket, SIGNAL(error(QAbstractSocket::SocketError)),                                  this, SLOT(SlotError(QAbstractSocket::SocketError)));
+    this->connect(mpWebSocket, SIGNAL(pong(quint64, const QByteArray &)),                                    this, SLOT(SlotPong(quint64, const QByteArray &)));
+    this->connect(mpWebSocket, SIGNAL(preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *)),  this, SLOT(SlotPreSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *)));
+    this->connect(mpWebSocket, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), this, SLOT(SlotProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    this->connect(mpWebSocket, SIGNAL(readChannelFinished()),                                                this, SLOT(SlotReadChannelFinished()));
+    this->connect(mpWebSocket, SIGNAL(sslErrors(const QList<QSslError> &)),                                  this, SLOT(SlotClientSslErrors(const QList<QSslError> &)));
+    this->connect(mpWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),                           this, SLOT(SlotStateChanged(QAbstractSocket::SocketState)));
+    this->connect(mpWebSocket, SIGNAL(textFrameReceived(const QString &, bool)),                             this, SLOT(SlotTextFrameReceived(const QString &, bool)));
+    this->connect(mpWebSocket, SIGNAL(textMessageReceived(const QString &)),                                 this, SLOT(SlotTextMessageReceived(const QString &)));
 
     // 自动连接测试定时器
     QTimer *pSocketTimer = new QTimer(this);
@@ -129,13 +129,13 @@ void MiscellaneousQWebSocket::SlotClosed()
 void MiscellaneousQWebSocket::SlotNewConnection()
 {
     static int connectCount = 0;
-    while (m_pWebSocketServer->hasPendingConnections())
+    while (mpWebSocketServer->hasPendingConnections())
     {
-        QWebSocket *pTempSocket = m_pWebSocketServer->nextPendingConnection();
+        QWebSocket *pTempSocket = mpWebSocketServer->nextPendingConnection();
         if (pTempSocket)
         {
             ++connectCount;
-            LogUtil::Debug(CODE_LOCATION, "QWebSocketClient connect count: %d", connectCount);
+            LogUtil::Debug(CODE_LOCATION, "QWebSocket client connect count: %d", connectCount);
             this->connect(pTempSocket, SIGNAL(disconnected()), SLOT(SlotClientDisconnected()));
         }
     }
@@ -145,7 +145,7 @@ void MiscellaneousQWebSocket::SlotClientDisconnected()
 {
     static int disconnectCount = 0;
     ++disconnectCount;
-    LogUtil::Debug(CODE_LOCATION, "QWebSocketClient disconnect count: %d", disconnectCount);
+    LogUtil::Debug(CODE_LOCATION, "QWebSocket client disconnect count: %d", disconnectCount);
 }
 
 void MiscellaneousQWebSocket::SlotAboutToClose()
@@ -232,7 +232,7 @@ void MiscellaneousQWebSocket::SlotTextMessageReceived(const QString &message)
 
 void MiscellaneousQWebSocket::SlotWebSocketTimeout()
 {
-    if (m_autoConnectFlag)
+    if (mAutoConnectFlag)
     {
         this->on_btnConnect_clicked();
     }
@@ -240,7 +240,7 @@ void MiscellaneousQWebSocket::SlotWebSocketTimeout()
 
 void MiscellaneousQWebSocket::on_btnListen_clicked()
 {
-    bool listenFlag = m_pWebSocketServer->listen(QHostAddress::Any, WEBSOCKET_PORT);
+    bool listenFlag = mpWebSocketServer->listen(QHostAddress::Any, WEBSOCKET_PORT);
     if (listenFlag)
     {
         int i = 0;
@@ -249,7 +249,7 @@ void MiscellaneousQWebSocket::on_btnListen_clicked()
 
 void MiscellaneousQWebSocket::on_btnShutdown_clicked()
 {
-    m_pWebSocketServer->close();
+    mpWebSocketServer->close();
 }
 
 void MiscellaneousQWebSocket::on_btnConnect_clicked()
@@ -265,11 +265,11 @@ void MiscellaneousQWebSocket::on_btnConnect_clicked()
     if (serverUrl.isValid())
     {
         QString testStr = serverUrl.errorString();
-        if (m_pWebSocket->isValid())
+        if (mpWebSocket->isValid())
         {
-            m_pWebSocket->close();
+            mpWebSocket->close();
         }
-        m_pWebSocket->open(serverUrl);
+        mpWebSocket->open(serverUrl);
     }
     else
     {
@@ -279,13 +279,13 @@ void MiscellaneousQWebSocket::on_btnConnect_clicked()
 
 void MiscellaneousQWebSocket::on_btnDisconnect_clicked()
 {
-    if (m_pWebSocket->isValid())
+    if (mpWebSocket->isValid())
     {
-        m_pWebSocket->close();
+        mpWebSocket->close();
     }
 }
 
 void MiscellaneousQWebSocket::on_cbAutoConnect_stateChanged(int state)
 {
-    m_autoConnectFlag = state == Qt::Checked;
+    mAutoConnectFlag = state == Qt::Checked;
 }
