@@ -134,9 +134,18 @@ void MiscellaneousQWebSocket::SlotNewConnection()
         QWebSocket *pTempSocket = m_pWebSocketServer->nextPendingConnection();
         if (pTempSocket)
         {
-            // TODO: ¹Û²ì pTempSocket Çé¿ö
+            ++connectCount;
+            LogUtil::Debug(CODE_LOCATION, "QWebSocketClient connect count: %d", connectCount);
+            this->connect(pTempSocket, SIGNAL(disconnected()), SLOT(SlotClientDisconnected()));
         }
     }
+}
+
+void MiscellaneousQWebSocket::SlotClientDisconnected()
+{
+    static int disconnectCount = 0;
+    ++disconnectCount;
+    LogUtil::Debug(CODE_LOCATION, "QWebSocketClient disconnect count: %d", disconnectCount);
 }
 
 void MiscellaneousQWebSocket::SlotAboutToClose()

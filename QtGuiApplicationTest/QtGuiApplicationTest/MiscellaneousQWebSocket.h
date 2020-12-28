@@ -32,6 +32,7 @@ private slots:
     void SlotPeerVerifyError(const QSslError &error);
     void SlotClosed();
     void SlotNewConnection();
+    void SlotClientDisconnected();
 
     void SlotAboutToClose();
     void SlotBinaryFrameReceived(const QByteArray &frame, bool isLastFrame);
