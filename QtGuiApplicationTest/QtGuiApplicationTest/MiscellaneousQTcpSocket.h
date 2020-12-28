@@ -5,6 +5,7 @@
 #include "ui_MiscellaneousQTcpSocket.h"
 
 #include <QAbstractSocket>
+#include <QThread>
 
 class QTcpServer;
 class QTcpSocket;
@@ -56,6 +57,11 @@ private:
     bool                        mAutoConnectFlag;
     int                         mConnectCount;
     int                         mDisconnectCount;
+};
+
+class QTcpServerThread : public QThread
+{
+    ;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H
