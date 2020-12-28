@@ -3,12 +3,14 @@
 
 #include <QSslError>
 #include <QSslPreSharedKeyAuthenticator>
+#include <QWebSocketProtocol>
 #include <QNetworkProxy>
 
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousQWebSocket.h"
 
 class QWebSocket;
+class QWebSocketServer;
 
 class MiscellaneousQWebSocket : public MiscellaneousBase
 {
@@ -24,6 +26,13 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
+    void SlotAcceptError(QAbstractSocket::SocketError socketError);
+    void SlotServerSslErrors(const QList<QSslError> &errors);
+    void SlotServerError(QWebSocketProtocol::CloseCode closeCode);
+    void SlotPeerVerifyError(const QSslError &error);
+    void SlotClosed();
+    void SlotNewConnection();
+
     void SlotAboutToClose();
     void SlotBinaryFrameReceived(const QByteArray &frame, bool isLastFrame);
     void SlotBinaryMessageReceived(const QByteArray &message);
@@ -35,12 +44,14 @@ private slots:
     void SlotPreSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *authenticator);
     void SlotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
     void SlotReadChannelFinished();
-    void SlotSslErrors(const QList<QSslError> &errors);
+    void SlotClientSslErrors(const QList<QSslError> &errors);
     void SlotStateChanged(QAbstractSocket::SocketState state);
     void SlotTextFrameReceived(const QString &frame, bool isLastFrame);
     void SlotTextMessageReceived(const QString &message);
     void SlotWebSocketTimeout();
 
+    void on_btnListen_clicked();
+    void on_btnShutdown_clicked();
     void on_btnConnect_clicked();
     void on_btnDisconnect_clicked();
     void on_cbAutoConnect_stateChanged(int state);
@@ -48,6 +59,7 @@ private slots:
 private:
     Ui::MiscellaneousQWebSocket ui;
     QWebSocket                 *m_pWebSocket;
+    QWebSocketServer           *m_pWebSocketServer;
     bool                        m_autoConnectFlag;
 };
 
