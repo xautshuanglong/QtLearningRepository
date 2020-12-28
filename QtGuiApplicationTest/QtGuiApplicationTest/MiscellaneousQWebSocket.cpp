@@ -13,6 +13,7 @@
 #define KEY_FILE_NAME   "server.key"
 #define KEY_FILE_PHRASE "testing"
 #define SSL_SECRET_PATH "/tlskey/"
+#define ENABLE_SECURE_MODE 0 // 启用安全模式 SSL/TLS
 
 MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -43,9 +44,13 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     sslConfiguration.setLocalCertificate(certificate);
     sslConfiguration.setPrivateKey(sslKey);
     sslConfiguration.setProtocol(QSsl::TlsV1SslV3);
+#if ENABLE_SECURE_MODE
     mpWebSocketServer = new QWebSocketServer(QString("QWebSocket server testing"), QWebSocketServer::SecureMode, this);
-    mpWebSocketServer->setMaxPendingConnections(5000);
     mpWebSocketServer->setSslConfiguration(sslConfiguration);
+#else
+    mpWebSocketServer = new QWebSocketServer(QString("QWebSocket server testing"), QWebSocketServer::NonSecureMode, this);
+#endif
+    mpWebSocketServer->setMaxPendingConnections(5000);
     connect(mpWebSocketServer, SIGNAL(acceptError(QAbstractSocket::SocketError)),  this, SLOT(SlotAcceptError(QAbstractSocket::SocketError)));
     connect(mpWebSocketServer, SIGNAL(sslErrors(const QList<QSslError> &)),        this, SLOT(SlotServerSslErrors(const QList<QSslError> &)));
     connect(mpWebSocketServer, SIGNAL(serverError(QWebSocketProtocol::CloseCode)), this, SLOT(SlotServerError(QWebSocketProtocol::CloseCode)));
@@ -55,10 +60,12 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
 
     // 初始化客户端
     mpWebSocket = new QWebSocket(QString("QWebSocket client testing"), QWebSocketProtocol::VersionLatest, this);
+#if ENABLE_SECURE_MODE
     QSslConfiguration sslConfig = mpWebSocket->sslConfiguration();
     sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
-    mpWebSocket->setProxy(QNetworkProxy::NoProxy);
     mpWebSocket->setSslConfiguration(sslConfig);
+#endif
+    mpWebSocket->setProxy(QNetworkProxy::NoProxy);
     this->connect(mpWebSocket, SIGNAL(aboutToClose()),                                                       this, SLOT(SlotAboutToClose()));
     this->connect(mpWebSocket, SIGNAL(binaryFrameReceived(const QByteArray &, bool)),                        this, SLOT(SlotBinaryFrameReceived(const QByteArray &, bool)));
     this->connect(mpWebSocket, SIGNAL(binaryMessageReceived(const QByteArray &)),                            this, SLOT(SlotBinaryMessageReceived(const QByteArray &)));
