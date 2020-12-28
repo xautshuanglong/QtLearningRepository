@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
+    <width>893</width>
     <height>886</height>
    </rect>
   </property>
@@ -82,13 +82,35 @@
         </property>
         <item>
          <widget class="QLabel" name="lbUrl">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Server URL:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="leServerUrl"/>
+         <widget class="QLineEdit" name="leServerUrl">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>340</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="btnConnect">
@@ -156,6 +178,9 @@
      <item row="0" column="0" colspan="2">
       <widget class="QWidget" name="ServerClientButtonWidget" native="true">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>5</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -170,8 +195,17 @@
         </property>
         <item>
          <widget class="QLabel" name="lbServerIP">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Server IP:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -185,7 +219,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>200</width>
             <height>0</height>
            </size>
           </property>
@@ -193,8 +227,17 @@
         </item>
         <item>
          <widget class="QLabel" name="lbServerPort">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Server Port:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>

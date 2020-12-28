@@ -83,7 +83,7 @@ MiscellaneousQWebSocket::~MiscellaneousQWebSocket()
 
 QString MiscellaneousQWebSocket::GetTitle()
 {
-    return QObject::tr("QWebSocket Client");
+    return QObject::tr("QWebSocket Server & Client");
 }
 
 QString MiscellaneousQWebSocket::GetTitleTooltip()

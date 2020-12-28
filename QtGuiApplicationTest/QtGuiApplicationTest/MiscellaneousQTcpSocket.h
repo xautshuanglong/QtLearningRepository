@@ -37,6 +37,8 @@ private slots:
 
     void SlotSocketTimeout();
 
+    void on_btnListen_clicked();
+    void on_btnShutdown_clicked();
     void on_btnConnect_clicked();
     void on_btnDisconnect_clicked();
     void on_cbAutoConnect_stateChanged(int state);

@@ -14,7 +14,7 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     ui.setupUi(this);
 
     ui.leServerIP->setText("127.0.0.1");
-    ui.leServerPort->setText("7893");
+    ui.leServerPort->setText("1259");
 
     this->connect(m_pTcpSocket, SIGNAL(connected()), this, SLOT(SlotConnected()));
     this->connect(m_pTcpSocket, SIGNAL(disconnected()), this, SLOT(SlotDisconnected()));
@@ -40,7 +40,7 @@ MiscellaneousQTcpSocket::~MiscellaneousQTcpSocket()
 
 QString MiscellaneousQTcpSocket::GetTitle()
 {
-    return QObject::tr("QTcpSocket Client");
+    return QObject::tr("QTcpSocket Server & Client");
 }
 
 QString MiscellaneousQTcpSocket::GetTitleTooltip()
@@ -123,6 +123,16 @@ void MiscellaneousQTcpSocket::SlotSocketTimeout()
     {
         this->on_btnConnect_clicked();
     }
+}
+
+void MiscellaneousQTcpSocket::on_btnListen_clicked()
+{
+    int i = 0;
+}
+
+void MiscellaneousQTcpSocket::on_btnShutdown_clicked()
+{
+    int i = 0;
 }
 
 void MiscellaneousQTcpSocket::on_btnConnect_clicked()
