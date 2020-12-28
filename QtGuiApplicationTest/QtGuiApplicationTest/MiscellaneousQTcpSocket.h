@@ -44,6 +44,7 @@ private slots:
 
     void on_btnListen_clicked();
     void on_btnShutdown_clicked();
+    void on_btnClearCount_clicked();
     void on_btnConnect_clicked();
     void on_btnDisconnect_clicked();
     void on_cbAutoConnect_stateChanged(int state);
@@ -53,6 +54,8 @@ private:
     QTcpServer                 *mpTcpServer;
     QTcpSocket                 *mpTcpSocket;
     bool                        mAutoConnectFlag;
+    int                         mConnectCount;
+    int                         mDisconnectCount;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H

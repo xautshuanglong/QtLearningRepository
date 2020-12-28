@@ -19,6 +19,8 @@ MiscellaneousQWebSocket::MiscellaneousQWebSocket(QWidget *parent)
     , mpWebSocket(Q_NULLPTR)
     , mpWebSocketServer(Q_NULLPTR)
     , mAutoConnectFlag(false)
+    , mConnectCount(0)
+    , mDisconnectCount(0)
 {
     ui.setupUi(this);
 
@@ -128,14 +130,13 @@ void MiscellaneousQWebSocket::SlotClosed()
 
 void MiscellaneousQWebSocket::SlotNewConnection()
 {
-    static int connectCount = 0;
     while (mpWebSocketServer->hasPendingConnections())
     {
         QWebSocket *pTempSocket = mpWebSocketServer->nextPendingConnection();
         if (pTempSocket)
         {
-            ++connectCount;
-            LogUtil::Debug(CODE_LOCATION, "QWebSocket client connect count: %d", connectCount);
+            ++mConnectCount;
+            LogUtil::Debug(CODE_LOCATION, "QWebSocket client connect count: %d", mConnectCount);
             this->connect(pTempSocket, SIGNAL(disconnected()), SLOT(SlotClientDisconnected()));
         }
     }
@@ -143,9 +144,11 @@ void MiscellaneousQWebSocket::SlotNewConnection()
 
 void MiscellaneousQWebSocket::SlotClientDisconnected()
 {
-    static int disconnectCount = 0;
-    ++disconnectCount;
-    LogUtil::Debug(CODE_LOCATION, "QWebSocket client disconnect count: %d", disconnectCount);
+    ++mDisconnectCount;
+
+    QWebSocket *pWebSocket = reinterpret_cast<QWebSocket *>(sender());
+    pWebSocket->deleteLater();
+    LogUtil::Debug(CODE_LOCATION, "QWebSocket client disconnect count: %d", mDisconnectCount);
 }
 
 void MiscellaneousQWebSocket::SlotAboutToClose()
@@ -250,6 +253,12 @@ void MiscellaneousQWebSocket::on_btnListen_clicked()
 void MiscellaneousQWebSocket::on_btnShutdown_clicked()
 {
     mpWebSocketServer->close();
+}
+
+void MiscellaneousQWebSocket::on_btnClearCount_clicked()
+{
+    mConnectCount = 0;
+    mDisconnectCount = 0;
 }
 
 void MiscellaneousQWebSocket::on_btnConnect_clicked()

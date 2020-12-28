@@ -12,6 +12,8 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     , mpTcpServer(new QTcpServer(this))
     , mpTcpSocket(new QTcpSocket(this))
     , mAutoConnectFlag(false)
+    , mConnectCount(0)
+    , mDisconnectCount(0)
 {
     ui.setupUi(this);
 
@@ -75,8 +77,7 @@ void MiscellaneousQTcpSocket::SlotTcpServerAcceptError(QAbstractSocket::SocketEr
 
 void MiscellaneousQTcpSocket::SlotTcpServerNewConnection()
 {
-    static int connectCount = 0;
-    ++connectCount;
+    ++mConnectCount;
 
     while (mpTcpServer->hasPendingConnections())
     {
@@ -85,7 +86,7 @@ void MiscellaneousQTcpSocket::SlotTcpServerNewConnection()
         {
             QString peerAddr = pTempSocket->peerAddress().toString();
             quint16 peerPort = pTempSocket->peerPort();
-            LogUtil::Info(CODE_LOCATION, "QTcpServer client connect count: %d 0x%08X", connectCount, pTempSocket);
+            LogUtil::Info(CODE_LOCATION, "QTcpServer client connect count: %d 0x%08X", mConnectCount, pTempSocket);
             //this->connect(pTempSocket, SIGNAL(readyRead()), this, SLOT(SlotTcpClientReadyRead()));
             this->connect(pTempSocket, SIGNAL(disconnected()), this, SLOT(SlotTcpSocketClientDisconnected()));
             //this->connect(pTempSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(SlotTcpError(QAbstractSocket::SocketError)));
@@ -98,11 +99,11 @@ void MiscellaneousQTcpSocket::SlotTcpServerNewConnection()
 
 void MiscellaneousQTcpSocket::SlotTcpSocketClientDisconnected()
 {
-    static int disconnectCount = 0;
-    ++disconnectCount;
+    ++mDisconnectCount;
 
     QTcpSocket *pTcpSocket = reinterpret_cast<QTcpSocket *>(sender());
-    LogUtil::Info(CODE_LOCATION, "QTcpServer client disconnect count: %d 0x%08X", disconnectCount, pTcpSocket);
+    pTcpSocket->deleteLater();
+    LogUtil::Info(CODE_LOCATION, "QTcpServer client disconnect count: %d 0x%08X", mDisconnectCount, pTcpSocket);
 }
 
 void MiscellaneousQTcpSocket::SlotConnected()
@@ -184,6 +185,12 @@ void MiscellaneousQTcpSocket::on_btnListen_clicked()
 void MiscellaneousQTcpSocket::on_btnShutdown_clicked()
 {
     mpTcpServer->close();
+}
+
+void MiscellaneousQTcpSocket::on_btnClearCount_clicked()
+{
+    mConnectCount = 0;
+    mDisconnectCount = 0;
 }
 
 void MiscellaneousQTcpSocket::on_btnConnect_clicked()
