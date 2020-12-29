@@ -361,7 +361,7 @@ void QTcpServerWorker::SlotTcpServerWorkerClientDestroyed(QObject *pObj)
 
 QTcpServerThread::QTcpServerThread(QObject *parent /* = Q_NULLPTR */)
     : QThread(parent)
-    , mpTcpServer(new QTcpServer(this))
+    , mpTcpServer(Q_NULLPTR)
     , mConnectCount(0)
     , mDisconnectCount(0)
 {
@@ -379,6 +379,10 @@ void QTcpServerThread::ClearCount()
 
 void QTcpServerThread::run()
 {
+    if (mpTcpServer == Q_NULLPTR)
+    {
+        mpTcpServer = new QTcpServer(this);
+    }
     mpTcpServer->listen(QHostAddress::Any, TCP_SERVER_THREAD_PORT);
 #if SIGNAL_SLOT_DIRECT_CONNECTION
     this->connect(mpTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError)), Qt::DirectConnection);
@@ -409,6 +413,7 @@ void QTcpServerThread::SlotTcpServerThreadNewConnection()
             LogUtil::Info(CODE_LOCATION, "QTcpServerThread client connect count: %d 0x%08X", ++mConnectCount, pTempSocket);
 #if SIGNAL_SLOT_DIRECT_CONNECTION
             //this->connect(pTempSocket, SIGNAL(readyRead()), this, SLOT(SlotTcpServerThreadClientReadyRead()));
+            this->connect(pTempSocket, SIGNAL(disconnected()), pTempSocket, SLOT(deleteLater()));
             this->connect(pTempSocket, SIGNAL(disconnected()), this, SLOT(SlotTcpServerThreadClientDisconnected()), Qt::DirectConnection);
             this->connect(pTempSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadClientError(QAbstractSocket::SocketError)), Qt::DirectConnection);
             this->connect(pTempSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(SlotTcpServerThreadStateChanged(QAbstractSocket::SocketState)), Qt::DirectConnection);
@@ -430,8 +435,11 @@ void QTcpServerThread::SlotTcpServerThreadClientReadyRead()
 
 void QTcpServerThread::SlotTcpServerThreadClientDisconnected()
 {
-    QTcpSocket *pTempSocket = reinterpret_cast<QTcpSocket *>(sender());
-    pTempSocket->deleteLater();
+    QTcpSocket *pTempSocket = qobject_cast<QTcpSocket*>(this->sender());
+    if (pTempSocket != Q_NULLPTR)
+    {
+        pTempSocket->deleteLater();
+    }
     LogUtil::Info(CODE_LOCATION, "QTcpServerThread client disconnect count: %d 0x%08X", ++mDisconnectCount, pTempSocket);
 }
 
