@@ -202,7 +202,7 @@ void MiscellaneousQTcpSocket::on_btnListen_clicked()
     QString listenIpStr = ui.leListenIP->text();
     QString listenPortStr = ui.leListenPort->text();
     quint16 listenPort = listenPortStr.isEmpty() ? TCP_SERVER_PORT : listenPortStr.toInt();
-    QHostAddress hostAddress = listenIpStr.isEmpty() ? QHostAddress::Any : QHostAddress(listenPort);
+    QHostAddress hostAddress = listenIpStr.isEmpty() ? QHostAddress::Any : QHostAddress(listenIpStr);
 
     bool listenFlag = mpTcpServer->listen(hostAddress, listenPort);
     if (listenFlag)
