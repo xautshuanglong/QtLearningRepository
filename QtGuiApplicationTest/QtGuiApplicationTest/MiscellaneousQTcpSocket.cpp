@@ -9,12 +9,17 @@
 
 #define TCP_SERVER_PORT         1259
 #define TCP_SERVER_THREAD_PORT  1258
+#define TCP_SERVER_WORKER_PORT  1257
+
+#define SIGNAL_SLOT_DIRECT_CONNECTION 0
 
 MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     : MiscellaneousBase(parent)
     , mpTcpServer(new QTcpServer(this))
     , mpTcpSocket(new QTcpSocket(this))
     , mpTcpServerThread(new QTcpServerThread(this))
+    , mpTcpServerWorker(new QTcpServerWorker())
+    , mpWorkerThread(new QThread(this))
     , mAutoConnectFlag(false)
     , mConnectCount(0)
     , mDisconnectCount(0)
@@ -44,6 +49,10 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     this->connect(mpTcpSocket, SIGNAL(readChannelFinished()), this, SLOT(SlotReadChannelFinished()));
     this->connect(mpTcpSocket, SIGNAL(readyRead()), this, SLOT(SlotReadyRead()));
 
+    // QTcpServerWorker moveToThread 测试
+    mpTcpServerWorker->moveToThread(mpWorkerThread);
+    this->connect(this, SIGNAL(SignalInitServer(QString, quint16)), mpTcpServerWorker, SLOT(SlotInitServer(QString, quint16)));
+
     // 定时连接断开
     QTimer *pSocketTimer = new QTimer(this);
     this->connect(pSocketTimer, SIGNAL(timeout()), this, SLOT(SlotSocketTimeout()));
@@ -52,8 +61,15 @@ MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
 
 MiscellaneousQTcpSocket::~MiscellaneousQTcpSocket()
 {
+    mpTcpServer->close();
+
     mpTcpServerThread->quit();
     mpTcpServerThread->wait();
+
+    mpTcpServerWorker->deleteLater();
+
+    mpWorkerThread->quit();
+    mpWorkerThread->wait();
 }
 
 QString MiscellaneousQTcpSocket::GetTitle()
@@ -196,7 +212,14 @@ void MiscellaneousQTcpSocket::on_btnListen_clicked()
 
     if (!mpTcpServerThread->isRunning())
     {
+        mpTcpServerThread->setObjectName("Q_TcpServer_Thread");
         mpTcpServerThread->start();
+    }
+    if (!mpWorkerThread->isRunning())
+    {
+        mpWorkerThread->setObjectName("Q_TcpServer_Worker_Thread");
+        mpWorkerThread->start();
+        emit SignalInitServer("0.0.0.0", TCP_SERVER_WORKER_PORT);
     }
 }
 
@@ -206,6 +229,9 @@ void MiscellaneousQTcpSocket::on_btnShutdown_clicked()
     
     mpTcpServerThread->quit();
     mpTcpServerThread->wait();
+
+    mpWorkerThread->quit();
+    mpWorkerThread->wait();
 
     int i = 0;
 }
@@ -258,8 +284,84 @@ void MiscellaneousQTcpSocket::on_cbAutoConnect_stateChanged(int state)
     mAutoConnectFlag = state == Qt::Checked;
 }
 
+/*========================================== QTcpServerWorker =========================================*/
+
+QTcpServerWorker::QTcpServerWorker(QObject *parrent /* = Q_NULLPTR*/)
+    : QObject(parrent)
+    , mpTcpServer(new QTcpServer(this))
+    , mConnectCount(0)
+    , mDisconnectCount(0)
+{
+    this->connect(mpTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerWorkerAcceptError(QAbstractSocket::SocketError)));
+    this->connect(mpTcpServer, SIGNAL(newConnection()), this, SLOT(SlotTcpServerWorkerNewConnection()));
+}
+
+QTcpServerWorker::~QTcpServerWorker()
+{
+}
+
+void QTcpServerWorker::SlotInitServer(QString listenIP, quint16 listenPort)
+{
+    bool listenFlag = mpTcpServer->listen(QHostAddress(listenIP), listenPort);
+    if (listenFlag)
+    {
+        int i = 0;
+    }
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerAcceptError(QAbstractSocket::SocketError socketError)
+{
+    int i = 0;
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerNewConnection()
+{
+    QTcpServer *pTcpServer = reinterpret_cast<QTcpServer *>(sender());
+    while (pTcpServer->hasPendingConnections())
+    {
+        QTcpSocket *pTempSocket = pTcpServer->nextPendingConnection();
+        if (pTempSocket)
+        {
+            QString peerAddr = pTempSocket->peerAddress().toString();
+            quint16 peerPort = pTempSocket->peerPort();
+            LogUtil::Info(CODE_LOCATION, "QTcpServerWorker client connect count: %d 0x%08X", ++mConnectCount, pTempSocket);
+            //this->connect(pTempSocket, SIGNAL(readyRead()), this, SLOT(SlotTcpServerWorkerClientReadyRead()));
+            this->connect(pTempSocket, SIGNAL(disconnected()), this, SLOT(SlotTcpServerWorkerClientDisconnected()));
+            this->connect(pTempSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerWorkerClientError(QAbstractSocket::SocketError)));
+            this->connect(pTempSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(SlotTcpServerWorkerStateChanged(QAbstractSocket::SocketState)));
+            this->connect(pTempSocket, SIGNAL(destroyed(QObject *)), this, SLOT(SlotTcpServerWorkerClientDestroyed(QObject *)));
+        }
+    }
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerClientReadyRead()
+{
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerClientDisconnected()
+{
+    QTcpSocket *pTempSocket = reinterpret_cast<QTcpSocket *>(sender());
+    pTempSocket->deleteLater();
+    LogUtil::Info(CODE_LOCATION, "QTcpServerWorker client disconnect count: %d 0x%08X", ++mDisconnectCount, pTempSocket);
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerClientError(QAbstractSocket::SocketError socketError)
+{
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerStateChanged(QAbstractSocket::SocketState state)
+{
+}
+
+void QTcpServerWorker::SlotTcpServerWorkerClientDestroyed(QObject *pObj)
+{
+}
+
+/*========================================== QTcpServerThread =========================================*/
+
 QTcpServerThread::QTcpServerThread(QObject *parent /* = Q_NULLPTR */)
     : QThread(parent)
+    , mpTcpServer(new QTcpServer(this))
     , mConnectCount(0)
     , mDisconnectCount(0)
 {
@@ -277,13 +379,16 @@ void QTcpServerThread::ClearCount()
 
 void QTcpServerThread::run()
 {
-    QTcpServer *pTcpServer = new QTcpServer(this);
-    pTcpServer->listen(QHostAddress::Any, TCP_SERVER_THREAD_PORT);
-    this->connect(pTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError)));
-    this->connect(pTcpServer, SIGNAL(newConnection()), this, SLOT(SlotTcpServerThreadNewConnection()));
-
+    mpTcpServer->listen(QHostAddress::Any, TCP_SERVER_THREAD_PORT);
+#if SIGNAL_SLOT_DIRECT_CONNECTION
+    this->connect(mpTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError)), Qt::DirectConnection);
+    this->connect(mpTcpServer, SIGNAL(newConnection()), this, SLOT(SlotTcpServerThreadNewConnection()), Qt::DirectConnection);
+#else
+    this->connect(mpTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError)));
+    this->connect(mpTcpServer, SIGNAL(newConnection()), this, SLOT(SlotTcpServerThreadNewConnection()));
+#endif
     this->exec();
-    pTcpServer->close();
+    mpTcpServer->close();
 }
 
 void QTcpServerThread::SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError socketError)
@@ -293,20 +398,28 @@ void QTcpServerThread::SlotTcpServerThreadAcceptError(QAbstractSocket::SocketErr
 
 void QTcpServerThread::SlotTcpServerThreadNewConnection()
 {
-    QTcpServer *pTcpServer = reinterpret_cast<QTcpServer*>(sender());
-    while (pTcpServer->hasPendingConnections())
+    //QTcpServer *pTcpServer = reinterpret_cast<QTcpServer*>(sender()); // 直连信号槽，无法获取发送者。
+    while (mpTcpServer->hasPendingConnections())
     {
-        QTcpSocket *pTempSocket = pTcpServer->nextPendingConnection();
+        QTcpSocket *pTempSocket = mpTcpServer->nextPendingConnection();
         if (pTempSocket)
         {
             QString peerAddr = pTempSocket->peerAddress().toString();
             quint16 peerPort = pTempSocket->peerPort();
             LogUtil::Info(CODE_LOCATION, "QTcpServerThread client connect count: %d 0x%08X", ++mConnectCount, pTempSocket);
+#if SIGNAL_SLOT_DIRECT_CONNECTION
+            //this->connect(pTempSocket, SIGNAL(readyRead()), this, SLOT(SlotTcpServerThreadClientReadyRead()));
+            this->connect(pTempSocket, SIGNAL(disconnected()), this, SLOT(SlotTcpServerThreadClientDisconnected()), Qt::DirectConnection);
+            this->connect(pTempSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadClientError(QAbstractSocket::SocketError)), Qt::DirectConnection);
+            this->connect(pTempSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(SlotTcpServerThreadStateChanged(QAbstractSocket::SocketState)), Qt::DirectConnection);
+            this->connect(pTempSocket, SIGNAL(destroyed(QObject*)), this, SLOT(SlotTcpServerThreadClientDestroyed(QObject*)), Qt::DirectConnection);
+#else
             //this->connect(pTempSocket, SIGNAL(readyRead()), this, SLOT(SlotTcpServerThreadClientReadyRead()));
             this->connect(pTempSocket, SIGNAL(disconnected()), this, SLOT(SlotTcpServerThreadClientDisconnected()));
             this->connect(pTempSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(SlotTcpServerThreadClientError(QAbstractSocket::SocketError)));
             this->connect(pTempSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(SlotTcpServerThreadStateChanged(QAbstractSocket::SocketState)));
-            this->connect(pTempSocket, SIGNAL(destroyed(QObject*)), this, SLOT(SlotTcpServerThreadClientDestroyed(QObject*)));
+            this->connect(pTempSocket, SIGNAL(destroyed(QObject *)), this, SLOT(SlotTcpServerThreadClientDestroyed(QObject *)));
+#endif
         }
     }
 }

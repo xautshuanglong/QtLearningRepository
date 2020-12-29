@@ -9,6 +9,7 @@
 
 class QTcpServer;
 class QTcpSocket;
+class QTcpServerWorker;
 class QTcpServerThread;
 
 class MiscellaneousQTcpSocket : public MiscellaneousBase
@@ -51,14 +52,44 @@ private slots:
     void on_btnDisconnect_clicked();
     void on_cbAutoConnect_stateChanged(int state);
 
+signals:
+    void SignalInitServer(QString listenIP, quint16 listenPort);
+
 private:
     Ui::MiscellaneousQTcpSocket ui;
     QTcpServer                 *mpTcpServer;
     QTcpSocket                 *mpTcpSocket;
     QTcpServerThread           *mpTcpServerThread;
+    QTcpServerWorker           *mpTcpServerWorker;
+    QThread                    *mpWorkerThread;
     bool                        mAutoConnectFlag;
     int                         mConnectCount;
     int                         mDisconnectCount;
+};
+
+class QTcpServerWorker : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit QTcpServerWorker(QObject *parrent = Q_NULLPTR);
+    ~QTcpServerWorker();
+
+private slots:
+    void SlotInitServer(QString listenIP, quint16 listenPort);
+    void SlotTcpServerWorkerAcceptError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerWorkerNewConnection();
+
+    void SlotTcpServerWorkerClientReadyRead();
+    void SlotTcpServerWorkerClientDisconnected();
+    void SlotTcpServerWorkerClientError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerWorkerStateChanged(QAbstractSocket::SocketState state);
+    void SlotTcpServerWorkerClientDestroyed(QObject *pObj);
+
+private:
+    QTcpServer *mpTcpServer;
+    int         mConnectCount;
+    int         mDisconnectCount;
 };
 
 class QTcpServerThread : public QThread
@@ -85,8 +116,9 @@ private slots:
     void SlotTcpServerThreadClientDestroyed(QObject *pObj);
 
 private:
-    int mConnectCount;
-    int mDisconnectCount;
+    QTcpServer *mpTcpServer;
+    int         mConnectCount;
+    int         mDisconnectCount;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H
