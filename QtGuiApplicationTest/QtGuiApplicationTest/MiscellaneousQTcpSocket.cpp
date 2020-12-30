@@ -12,12 +12,17 @@
 #define TCP_SERVER_WORKER_PORT  1257
 
 #define SIGNAL_SLOT_DIRECT_CONNECTION 0
+#define MOVE_QTHREAD_TO_ITSELF        1
 
 MiscellaneousQTcpSocket::MiscellaneousQTcpSocket(QWidget *parent)
     : MiscellaneousBase(parent)
     , mpTcpServer(new QTcpServer(this))
     , mpTcpSocket(new QTcpSocket(this))
+#if MOVE_QTHREAD_TO_ITSELF
+    , mpTcpServerThread(new QTcpServerThread()) // 要移动到线程内部的对象不能有父对象
+#else
     , mpTcpServerThread(new QTcpServerThread(this))
+#endif
     , mpTcpServerWorker(new QTcpServerWorker())
     , mpWorkerThread(new QThread(this))
     , mAutoConnectFlag(false)
@@ -65,6 +70,10 @@ MiscellaneousQTcpSocket::~MiscellaneousQTcpSocket()
 
     mpTcpServerThread->quit();
     mpTcpServerThread->wait();
+#if MOVE_QTHREAD_TO_ITSELF
+    delete mpTcpServerThread; // 移动到线程内部，没有父对象，需手动删除。
+    mpTcpServerThread = Q_NULLPTR;
+#endif
 
     mpTcpServerWorker->deleteLater();
 
@@ -365,6 +374,7 @@ QTcpServerThread::QTcpServerThread(QObject *parent /* = Q_NULLPTR */)
     , mConnectCount(0)
     , mDisconnectCount(0)
 {
+    this->moveToThread(this); // 继承 QThread 且确保自身槽函数运行在子线程中
 }
 
 QTcpServerThread::~QTcpServerThread()
