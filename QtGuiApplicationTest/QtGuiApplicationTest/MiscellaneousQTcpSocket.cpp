@@ -374,7 +374,9 @@ QTcpServerThread::QTcpServerThread(QObject *parent /* = Q_NULLPTR */)
     , mConnectCount(0)
     , mDisconnectCount(0)
 {
+#if MOVE_QTHREAD_TO_ITSELF
     this->moveToThread(this); // 继承 QThread 且确保自身槽函数运行在子线程中
+#endif
 }
 
 QTcpServerThread::~QTcpServerThread()
