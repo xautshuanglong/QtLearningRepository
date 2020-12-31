@@ -11,6 +11,7 @@ class QTcpServer;
 class QTcpSocket;
 class QTcpServerWorker;
 class QTcpServerThread;
+class QTcpSocketSlotTester;
 
 class MiscellaneousQTcpSocket : public MiscellaneousBase
 {
@@ -116,9 +117,34 @@ private slots:
     void SlotTcpServerThreadClientDestroyed(QObject *pObj);
 
 private:
-    QTcpServer *mpTcpServer;
-    int         mConnectCount;
-    int         mDisconnectCount;
+    QTcpServer           *mpTcpServer;
+    QTcpSocketSlotTester *mpSlotTester;
+    int                   mConnectCount;
+    int                   mDisconnectCount;
+};
+
+class QTcpSocketSlotTester : public QObject
+{
+    Q_OBJECT
+public:
+    QTcpSocketSlotTester(QObject *parent = Q_NULLPTR);
+    ~QTcpSocketSlotTester();
+
+    void ClearCount();
+
+private slots:
+    void SlotTcpServerThreadAcceptError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerThreadNewConnection();
+
+    void SlotTcpServerThreadClientReadyRead();
+    void SlotTcpServerThreadClientDisconnected();
+    void SlotTcpServerThreadClientError(QAbstractSocket::SocketError socketError);
+    void SlotTcpServerThreadStateChanged(QAbstractSocket::SocketState state);
+    void SlotTcpServerThreadClientDestroyed(QObject *pObj);
+
+private:
+    int mConnectCount;
+    int mDisconnectCount;
 };
 
 #endif // MISCELLANEOUSQ_QTCPSOCKET_H
