@@ -18,7 +18,7 @@ QWidget#customWidget {
 
 /**********子界面中央背景**********/
 QWidget#centralWidget {
-        border: 1px solid rgb(111, 156, 207);
+        border: 2px solid rgb(111, 156, 207);
         border-top: none;
         background: rgb(187, 212, 238);
 }
@@ -31,7 +31,7 @@ QWidget#titleBarContainer {
 
 /**********主界面样式**********/
 QWidget#mainWindow {
-        border: 1px solid rgb(111, 156, 207);
+        border: 2px solid rgb(111, 156, 207);
         background: rgb(232, 241, 252);
 }
 
@@ -54,7 +54,7 @@ QWidget#remoteWidget {
 }
 
 TitleBarWidget {
-    border: 1px solid rgb(111, 156, 207);
+    border: 2px solid rgb(111, 156, 207);
     background: rgb(187, 212, 238);
 }
 
@@ -199,7 +199,7 @@ QToolBar {
 
 /**********标题栏**********/
 QToolBar#winTitleBar {
-        border: 1px solid rgb(111, 156, 207);
+        border: 2px solid rgb(111, 156, 207);
         border-bottom: none;
         background: rgb(187, 212, 238);
         padding: 5px;
@@ -214,6 +214,17 @@ QTabWidget::pane {
 QTabWidget::tab-bar {
         border: none;
 }
+
+QTabWidget#mainTabWidget::pane {
+        border-top: 3px solid rgb(0, 78, 161, 200);
+}
+
+QTabWidget#tabWidget::pane {
+        border: 1px solid rgb(111, 156, 207);
+        background: rgb(232, 241, 252);
+        margin-top: -1px;
+}
+
 QTabBar::tab {
         border: none;
         border-top-left-radius: 4px;
@@ -234,9 +245,6 @@ QTabBar::tab:selected {
         background: rgb(0, 78, 161);
 }
 
-QTabWidget#mainTabWidget::pane {
-        border-top: 3px solid rgb(0, 78, 161, 200);
-}
 QTabBar#mainTabWidget_TabBar::tab {
         border: none;
         border-top-left-radius: 0px;
@@ -255,12 +263,6 @@ QTabBar#mainTabWidget_TabBar::tab:hover {
 QTabBar#mainTabWidget_TabBar::tab:selected {
         color: white;
         background: rgb(0, 78, 161, 200);
-}
-
-QTabWidget#tabWidget::pane {
-        border: 1px solid rgb(111, 156, 207);
-        background: rgb(232, 241, 252);
-        margin-top: -1px;
 }
 
 QTabBar#tabBar::tab {

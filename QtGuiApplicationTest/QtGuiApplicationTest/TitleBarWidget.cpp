@@ -14,7 +14,7 @@
 
 TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)
-    , mnBorderWidth(5)
+    , mnBorderWidth(3)
 {
     mpWidgetParent = parent;
     mpRubberBand = new QRubberBand(QRubberBand::Rectangle);
