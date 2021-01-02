@@ -153,8 +153,11 @@ void MiscellaneousQWebSocket::SlotClientDisconnected()
 {
     ++mDisconnectCount;
 
-    QWebSocket *pWebSocket = reinterpret_cast<QWebSocket *>(sender());
-    pWebSocket->deleteLater();
+    QWebSocket *pWebSocket = qobject_cast<QWebSocket *>(sender());
+    if (pWebSocket)
+    {
+        pWebSocket->deleteLater();
+    }
     LogUtil::Debug(CODE_LOCATION, "QWebSocket client disconnect count: %d", mDisconnectCount);
 }
 
