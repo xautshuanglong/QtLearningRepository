@@ -1,5 +1,7 @@
 #include "MiscellaneousCustomTextEdit.h"
 
+#include <windows.h>
+
 MiscellaneousCustomTextEdit::MiscellaneousCustomTextEdit(QWidget *parent)
     : MiscellaneousBase(parent)
 {
@@ -37,6 +39,21 @@ void MiscellaneousCustomTextEdit::paintEvent(QPaintEvent* pEvent)
 
 void MiscellaneousCustomTextEdit::on_btnAppendText_clicked()
 {
+    //DWORD fileAttributes = ::GetFileAttributesA("E:/Temp/CreateFileA_Test/");
+    ////HANDLE hDevice = ::CreateFileA("E:/test.json", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    //HANDLE hDevice = ::CreateFileA("E:\\Temp\\CreateFileA_Test", GENERIC_ALL, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    ////HANDLE hDevice = ::CreateFileA("\\\\.\\PHYSICALDRIVE0", GENERIC_ALL, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    //if (hDevice == INVALID_HANDLE_VALUE)
+    //{
+    //    DWORD resCode = ::GetLastError();
+    //    int i = 0;
+    //}
+    //else
+    //{
+    //    ::CloseHandle(hDevice);
+    //}
+    //return;
+
     HWND pHwnd = NULL;
     HWND ppHwnd = NULL;
     HWND pppHwnd = NULL;
