@@ -3,6 +3,9 @@
 
 #include <QThread>
 #include <QMetaType>
+#include <QMetaMethod>
+
+#include "LogUtil.h"
 
 MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -368,6 +371,34 @@ void MiscellaneousSignalSlot::on_btnEmitSignalSubThreadQVariant_clicked()
 
     // 槽函数中会将 pTestVariant 指针删除
     emit SignalSubThreadQVariantPointer(pTestVariant);
+}
+
+void MiscellaneousSignalSlot::on_btnAllSignalWatcher_clicked()
+{
+    QObject *pSender = qobject_cast<QObject *>(sender());
+    if (pSender == Q_NULLPTR) return;
+
+    QMetaMethod metaMethod;
+    for (int i = 0; i < pSender->metaObject()->methodCount(); ++i)
+    {
+        metaMethod = pSender->metaObject()->method(i);
+        if (metaMethod.methodType() == QMetaMethod::Signal)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Signal --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Slot)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Slot --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Method)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Method --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Constructor)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Constructor --> %s", metaMethod.methodSignature().data());
+        }
+    }
 }
 
 QString MiscellaneousSignalSlot::GetTitle()

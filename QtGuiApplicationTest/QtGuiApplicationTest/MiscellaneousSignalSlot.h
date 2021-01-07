@@ -140,6 +140,7 @@ private slots:
     void on_btnEmitSignalSubThreadCustomClass_clicked();
     void on_btnEmitSignalMainThreadQVariant_clicked();
     void on_btnEmitSignalSubThreadQVariant_clicked();
+    void on_btnAllSignalWatcher_clicked();
 
 signals:
     // primitive data type testing
