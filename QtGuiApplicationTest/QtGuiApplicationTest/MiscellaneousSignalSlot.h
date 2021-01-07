@@ -112,6 +112,9 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void TraverseMetaMethod(QObject *pObj);
+
 private slots:
     // primitive data type testing
     void SlotMainThreadVoid();

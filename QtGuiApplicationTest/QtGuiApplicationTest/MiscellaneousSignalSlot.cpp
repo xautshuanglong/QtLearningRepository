@@ -378,27 +378,10 @@ void MiscellaneousSignalSlot::on_btnAllSignalWatcher_clicked()
     QObject *pSender = qobject_cast<QObject *>(sender());
     if (pSender == Q_NULLPTR) return;
 
-    QMetaMethod metaMethod;
-    for (int i = 0; i < pSender->metaObject()->methodCount(); ++i)
-    {
-        metaMethod = pSender->metaObject()->method(i);
-        if (metaMethod.methodType() == QMetaMethod::Signal)
-        {
-            LogUtil::Debug(CODE_LOCATION, "Signal --> %s", metaMethod.methodSignature().data());
-        }
-        else if (metaMethod.methodType() == QMetaMethod::Slot)
-        {
-            LogUtil::Debug(CODE_LOCATION, "Slot --> %s", metaMethod.methodSignature().data());
-        }
-        else if (metaMethod.methodType() == QMetaMethod::Method)
-        {
-            LogUtil::Debug(CODE_LOCATION, "Method --> %s", metaMethod.methodSignature().data());
-        }
-        else if (metaMethod.methodType() == QMetaMethod::Constructor)
-        {
-            LogUtil::Debug(CODE_LOCATION, "Constructor --> %s", metaMethod.methodSignature().data());
-        }
-    }
+    LogUtil::Debug(CODE_LOCATION, "================== QPushButton ================");
+    TraverseMetaMethod(pSender);
+    LogUtil::Debug(CODE_LOCATION, "================== MiscellaneousSignalSlot ================");
+    TraverseMetaMethod(this);
 }
 
 QString MiscellaneousSignalSlot::GetTitle()
@@ -419,6 +402,31 @@ MiscellaneousTestGroup MiscellaneousSignalSlot::GetGroupID()
 MiscellaneousTestItem MiscellaneousSignalSlot::GetItemID()
 {
     return MiscellaneousTestItem::QT_Signal_Slot;
+}
+
+void MiscellaneousSignalSlot::TraverseMetaMethod(QObject *pObj)
+{
+    QMetaMethod metaMethod;
+    for (int i = 0; i < pObj->metaObject()->methodCount(); ++i)
+    {
+        metaMethod = pObj->metaObject()->method(i);
+        if (metaMethod.methodType() == QMetaMethod::Signal)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Signal --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Slot)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Slot --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Method)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Method --> %s", metaMethod.methodSignature().data());
+        }
+        else if (metaMethod.methodType() == QMetaMethod::Constructor)
+        {
+            LogUtil::Debug(CODE_LOCATION, "Constructor --> %s", metaMethod.methodSignature().data());
+        }
+    }
 }
 
 void SignalTestWorker::SlotSubThreadVoid()
