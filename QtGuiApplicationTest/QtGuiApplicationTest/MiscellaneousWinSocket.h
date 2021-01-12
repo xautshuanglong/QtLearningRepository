@@ -38,6 +38,8 @@ private:
     void CStyleSelectStop();
     void Win32AsynchronizeStart();
     void Win32AsynchronizeStop();
+    void Win32PollStart();
+    void Win32PollStop();
     void CompletionPortStart();
     void CompletionPortStop();
     void ThreadFunction();

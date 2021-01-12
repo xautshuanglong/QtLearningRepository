@@ -147,6 +147,18 @@ void MiscellaneousWinSocket::Win32AsynchronizeStop()
     int i = 0;
 }
 
+void MiscellaneousWinSocket::Win32PollStart()
+{
+    // https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsapoll
+    // demo : Windows-classic-samples/Samples/Win7Samples/netds/winsock/wsapoll/poll.cpp
+
+}
+
+void MiscellaneousWinSocket::Win32PollStop()
+{
+    ;
+}
+
 void MiscellaneousWinSocket::CompletionPortStart()
 {
     uint hardwareConcurrentcy = std::thread::hardware_concurrency();
