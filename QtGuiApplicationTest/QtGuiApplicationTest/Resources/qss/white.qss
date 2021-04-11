@@ -604,19 +604,22 @@ QComboBox::down-arrow
 }
 QComboBox::down-arrow:on {
         /**top: 1px;**/
+       image: url(:/AppImages/Resources/images/white/arrow_up.png);
 }
 QComboBox QAbstractItemView {
         border: 1px solid rgb(111, 156, 207);
-        background: white;
+        background-color: white;
+        border: 2px solid green;
+        border-radius: 10px;
 }
 QComboBox QAbstractItemView::item {
         height: 30px;
         color: rgb(73, 73, 73);
+        background-color: gray;
+        border-radius: 10px;
         outline: none;
 }
-
-QComboBox QAbstractItemView::item:selected
-{
+QComboBox QAbstractItemView::item:selected {
         background: rgb(111, 156, 207);
         color: white;
 }

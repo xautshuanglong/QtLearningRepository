@@ -65,28 +65,13 @@ QComboBox::down-arrow:on
 	image: url(:/AppImages/Resources/images/white/arrow_up.png);
 }
 
-QComboBox QAbstractScrollArea
-{
-	border: 1px solid yellow;
-}
-
 QComboBox QAbstractItemView
 {
 	margin-top: 0px;
 	color: rgb(75,75,75);
-	background-color: lightgreen;
-	background-color: transparent;
-	border: 2px solid red;
-	border-radius: 10px;
 	selection-background-color: gray;
 	selection-color: rgb(255, 255, 255);
 	outline: none;
-}
-
-QComboBox QAbstractItemView::item
-{
-	color: red;
-	border: 1px solid yellow;
 }
 </string>
    </property>

@@ -74,12 +74,16 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
 
     QStyledItemDelegate *pItemDelegate = new QStyledItemDelegate();
     ui.cbTest->setItemDelegate(pItemDelegate);
-    QWidget *pShadow = qobject_cast<QWidget*>(ui.cbTest->view()->parent());
-    if (pShadow != Q_NULLPTR)
-    {
-        pShadow->setWindowFlags(pShadow->windowFlags() | Qt::NoDropShadowWindowHint);
-        //pShadow->setAttribute(Qt::WA_TranslucentBackground);
-    }
+    // 组合下拉框阴影消除
+    ui.cbTest->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    //QWidget *pShadow = qobject_cast<QWidget*>(ui.cbTest->view()->parent());
+    //if (pShadow != Q_NULLPTR)
+    //{
+    //    pShadow->setWindowFlags(pShadow->windowFlags() | Qt::NoDropShadowWindowHint);
+    //    //pShadow->setAttribute(Qt::WA_TranslucentBackground);
+    //}
+    // 组合下拉框圆角处理
+    ui.cbTest->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
 
     this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainTabPageSetting::SlotListVScrollBarValueChanged);
     this->connect(ui.lwTest->verticalScrollBar(), &QScrollBar::rangeChanged, this, &MainTabPageSetting::SlotListVScrollBarRangeChanged);
