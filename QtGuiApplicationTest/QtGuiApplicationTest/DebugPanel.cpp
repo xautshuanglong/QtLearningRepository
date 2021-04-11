@@ -367,8 +367,9 @@ void DebugPanel::HandleUpdateRate(int menuID)
         }
 
         QAction *pCurAction = Q_NULLPTR;
-        foreach(int menuIdIndex, vecMenuID)
+        for (int i = 0; i < vecMenuID.size(); ++i)
         {
+            int menuIdIndex = vecMenuID[i];
             pCurAction = (QAction*)mMapMenuIdItem[menuIdIndex];
             pCurAction->setChecked(menuIdIndex == menuID);
         }

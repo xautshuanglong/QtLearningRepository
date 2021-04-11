@@ -68,7 +68,7 @@ void MiscellaneousRegularExpression::LogFilenameCaptureTest(const QString& targe
                        regExpLogFilename.pattern().toLocal8Bit().data(), captureCount, targetStr.toLocal8Bit().data());
 
         QStringList capturedTexts = regExpLogFilename.capturedTexts();
-        for each(QString capturedText in capturedTexts)
+        for (QString capturedText : capturedTexts)
         {
             LogUtil::Debug(CODE_LOCATION, "Regular Expression Test captured: %s", capturedText.toLocal8Bit().data());
         }
@@ -141,7 +141,7 @@ void MiscellaneousRegularExpression::on_btnDoMatch_clicked()
         QString matchResultPrefix;
         QStringList targetLines = matchTargetStr.split("\n");
         QStringList capturedTexts;
-        for each (QString targetLine in targetLines)
+        for (QString targetLine : targetLines)
         {
             if (regExpression.exactMatch(targetLine))
             {

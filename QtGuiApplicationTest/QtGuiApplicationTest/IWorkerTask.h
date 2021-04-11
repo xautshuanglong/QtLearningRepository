@@ -9,8 +9,8 @@
 class IWorkerTask
 {
 public:
-    IWorkerTask::IWorkerTask() {}
-    virtual IWorkerTask::~IWorkerTask() {}
+    IWorkerTask() {}
+    virtual ~IWorkerTask() {}
 
     virtual void DoWorkerTask() = 0;
 };

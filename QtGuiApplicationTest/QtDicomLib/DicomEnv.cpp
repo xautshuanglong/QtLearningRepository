@@ -96,13 +96,15 @@ void DicomEnv::ConfigureLog4CplusFormFile()
 
     char tempFilePath[MAX_PATH] = { 0 };
     std::memcpy(tempFilePath, appFilePath.toStdString().c_str(), appFilePath.length());
+    char logConfig[4] = { 0 };
+    std::memcpy(logConfig, "-lc", 3);
     char tempConfigPath[MAX_PATH] = { 0 };
     appDirPath.append("/config/log4cplus.properties");
     std::memcpy(tempConfigPath, appDirPath.toStdString().c_str(), appDirPath.length());
     char *argValues[] =
     {
         tempFilePath,
-        "-lc", // "--log-config",
+        logConfig, // "--log-config",
         tempConfigPath
     };
     int argc = sizeof(argValues) / sizeof(char*);

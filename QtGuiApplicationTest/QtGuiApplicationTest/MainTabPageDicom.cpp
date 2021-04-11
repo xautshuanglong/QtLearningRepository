@@ -635,34 +635,83 @@ void MainTabPageDicom::GetDicomElementValue(QString &outStrValue, DcmObject *pIn
     case EVR_UT: /// unlimited text
     case EVR_UI: /// unique identifier
         res = pTempElement->getString(pTempString);
-        res.good() ? outStrValue = QString::fromLocal8Bit(pTempString) : LogUtil::Debug(CODE_LOCATION, "getString error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString::fromLocal8Bit(pTempString);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getString error: %s", res.text());
+        }
         break;
     case EVR_FL: /// float single-precision
     case EVR_OF: /// other float
         res = pTempElement->getFloat32(tempFloat32);
-        res.good() ? outStrValue = QString("%1").arg(tempFloat32) : LogUtil::Debug(CODE_LOCATION, "getFloat32 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempFloat32);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getFloat32 error: %s", res.text());
+        }
         break;
     case EVR_FD: /// float double-precision
     case EVR_OD: /// other double
         res = pTempElement->getFloat64(tempFloat64);
-        res.good() ? outStrValue = QString("%1").arg(tempFloat64) : LogUtil::Debug(CODE_LOCATION, "getFloat64 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempFloat64);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getFloat64 error: %s", res.text());
+        }
         break;
     case EVR_SS: /// signed short
         res = pTempElement->getSint16(tempSint16);
-        res.good() ? outStrValue = QString("%1").arg(tempSint16) : LogUtil::Debug(CODE_LOCATION, "getSint16 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempSint16);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getSint16 error: %s", res.text());
+        }
         break;
     case EVR_OL: /// other long
     case EVR_SL: /// signed long
         res = pTempElement->getSint32(tempSint32);
-        res.good() ? outStrValue = QString("%1").arg(tempFloat32) : LogUtil::Debug(CODE_LOCATION, "getSint32 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempFloat32);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getSint32 error: %s", res.text());
+        }
         break;
     case EVR_US: /// unsigned short
         res = pTempElement->getUint16(tempUint16);
-        res.good() ? outStrValue = QString("%1").arg(tempUint16) : LogUtil::Debug(CODE_LOCATION, "getUint16 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempUint16);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getUint16 error: %s", res.text());
+        }
         break;
     case EVR_UL: /// unsigned long
         res = pTempElement->getUint32(tempUint32);
-        res.good() ? outStrValue = QString("%1").arg(tempUint32) : LogUtil::Debug(CODE_LOCATION, "getUint32 error: %s", res.text());
+        if (res.good())
+        {
+            outStrValue = QString("%1").arg(tempUint32);
+        }
+        else
+        {
+            LogUtil::Debug(CODE_LOCATION, "getUint32 error: %s", res.text());
+        }
         break;
     case EVR_OW: /// other word
     case EVR_SQ: /// sequence of items

@@ -199,7 +199,7 @@ void MiscellaneousSignalSlot::SlotMainThreadQVariantPointer(const QVariant* pVar
 
 void MiscellaneousSignalSlot::SlotMainThreadQVariantList(const QVariantList variantList)
 {
-    for each (QVariant variantData in variantList)
+    for (QVariant variantData : variantList)
     {
         ToBeWrappedDaata testData = variantData.value<ToBeWrappedDaata>();
         int i = 0;
@@ -529,7 +529,7 @@ void SignalTestWorker::SlotSubThreadQVariantPointer(const QVariant* pVariantData
 
 void SignalTestWorker::SlotSubThreadQVariantList(const QVariantList variantList)
 {
-    for each (QVariant variantData in variantList)
+    for (QVariant variantData : variantList)
     {
         ToBeWrappedDaata testData = variantData.value<ToBeWrappedDaata>();
         int i = 0;

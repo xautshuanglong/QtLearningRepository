@@ -88,7 +88,7 @@ void MiscellaneousPrinterPDF::SlotPreviewPaintRequested(QPrinter* printer)
 void MiscellaneousPrinterPDF::on_btnPrinterInfo_clicked()
 {
     QList<QPrinterInfo> printerList = QPrinterInfo::availablePrinters();
-    for each (QPrinterInfo printerInfo in printerList)
+    for (QPrinterInfo printerInfo : printerList)
     {
         LogUtil::Debug(CODE_LOCATION, "Printer:%s IsRemote:%s IsDefault:%s",
                        printerInfo.printerName().toUtf8().data(),

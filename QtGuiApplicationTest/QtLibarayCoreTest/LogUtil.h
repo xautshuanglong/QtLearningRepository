@@ -15,7 +15,7 @@
 
 #define DEAFAULT_LOG_BUFFER_LENGTH 1024
 
-#define CODE_LOCATION CodeLocation(__FILE__,__FUNCTION__,__LINE__)
+#define CODE_LOCATION        CodeLocation(__FILE__,__FUNCTION__,__LINE__)
 #define CODE_LOCATION_STRING CodeLocation(__FILE__,__FUNCTION__,__LINE__).ToString()
 
 #ifdef WIN32

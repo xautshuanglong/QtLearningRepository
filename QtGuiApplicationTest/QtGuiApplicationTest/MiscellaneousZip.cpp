@@ -437,7 +437,7 @@ void MiscellaneousZip::ArchiveFilesToZip_SourceFiles(const QStringList sourceFil
         return;
     }
 
-    for each(QString sourceFile in sourceFiles)
+    for (QString sourceFile : sourceFiles)
     {
         tempFileInfo.setFile(sourceFile);
         pSourceFile = zip_source_file_create(sourceFile.toUtf8().data(), 0, 0, pSourceFileError);
@@ -488,7 +488,7 @@ void MiscellaneousZip::ArchiveFilesToZip_SourceDir(const QString sourceDir, cons
         {
             sourceDirList.setPath(tempFileInfo.filePath());
             sourceFileInfos = sourceDirList.entryInfoList(sourceDirList.filter() | QDir::NoDotAndDotDot);
-            for each (QFileInfo fileInfo in sourceFileInfos)
+            for (QFileInfo fileInfo : sourceFileInfos)
             {
                 sourceFileInfoStack.push(fileInfo);
             }
@@ -519,7 +519,7 @@ void MiscellaneousZip::on_btnFilesArchive_clicked()
     HZIP hZipFile;
     hZipFile = CreateZip(targetFile.toUtf8().data(), 0);
 
-    for each (QString filename in sourceFiles)
+    for (QString filename : sourceFiles)
     {
         tempFileInfo.setFile(filename);
         zres = ZipAdd(hZipFile, tempFileInfo.fileName().toUtf8().data(), filename.toUtf8().data());

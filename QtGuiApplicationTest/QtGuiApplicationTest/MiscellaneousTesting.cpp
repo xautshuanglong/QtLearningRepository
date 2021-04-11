@@ -169,8 +169,9 @@ void MiscellaneousTesting::on_twMiscellaneousTesting_itemClicked(QTreeWidgetItem
     else if (item->type() == TYPE_GROUP)
     {
         QList<QTreeWidgetItem*> testGroupList = mMapTestGroup.values();
-        for each (QTreeWidgetItem* pItem in testGroupList)
+        for (int i = 0; i < testGroupList.size(); ++i)
         {
+            QTreeWidgetItem *pItem = testGroupList[i];
             if (pItem == item)
             {
                 if (pItem->isExpanded())

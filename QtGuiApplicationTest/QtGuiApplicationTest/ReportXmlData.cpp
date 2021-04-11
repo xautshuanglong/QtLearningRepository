@@ -219,8 +219,9 @@ void ReportXmlData::CreatePatientInfos(QDomDocument *pXmlDoc, QDomElement *pRoot
     title.appendChild(pXmlDoc->createTextNode(QStringLiteral("病人信息：")));
     patientInfos.appendChild(title);
 
-    for each (PatientInfoItem patient in mListPatientInfo)
+    for (int i = 0; i < mListPatientInfo.size(); ++i)
     {
+        PatientInfoItem patient = mListPatientInfo[i];
         QDomElement info = pXmlDoc->createElement("PatientInfo");
         info.setAttribute("remark", patient.strRemark);
         QDomElement infoLabel = pXmlDoc->createElement("Label");
@@ -249,8 +250,9 @@ void ReportXmlData::CreateUltrasoundImages(QDomDocument *pXmlDoc, QDomElement *p
     ultrasoundImage.appendChild(countPerLine);
 
     // 图片路径
-    for each (QString imagePath in mListUsImagePath)
+    for (int i = 0; i < mListUsImagePath.size(); ++i)
     {
+        QString imagePath = mListUsImagePath[i];
         QDomElement usImage = pXmlDoc->createElement("USImage");
         usImage.appendChild(pXmlDoc->createTextNode(imagePath));
         ultrasoundImage.appendChild(usImage);

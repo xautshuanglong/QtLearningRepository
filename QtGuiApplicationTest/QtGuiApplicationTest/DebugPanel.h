@@ -6,6 +6,7 @@
 #include <QMap>
 #include <typeinfo>
 #include <typeindex>
+#include <LogUtil.h>
 
 class QMenu;
 class QMenuBar;

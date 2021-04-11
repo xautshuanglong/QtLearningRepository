@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>508</height>
+    <width>880</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,6 +45,7 @@
     <string notr="true">QComboBox
 {
 	border: 1px solid gray;
+	border-radius: 10px;
     color: rgb(75, 75, 75);
 }
 
@@ -59,34 +60,54 @@ QComboBox::down-arrow
 	image: url(:/AppImages/Resources/images/white/arrow_down.png);
 }
 
+QComboBox::down-arrow:on
+{
+	image: url(:/AppImages/Resources/images/white/arrow_up.png);
+}
+
+QComboBox QAbstractScrollArea
+{
+	border: 1px solid yellow;
+}
+
 QComboBox QAbstractItemView
 {
+	margin-top: 0px;
 	color: rgb(75,75,75);
-	border: 1px solid gray;
+	background-color: lightgreen;
+	background-color: transparent;
+	border: 2px solid red;
+	border-radius: 10px;
 	selection-background-color: gray;
 	selection-color: rgb(255, 255, 255);
 	outline: none;
+}
+
+QComboBox QAbstractItemView::item
+{
+	color: red;
+	border: 1px solid yellow;
 }
 </string>
    </property>
    <item>
     <property name="text">
-     <string>新建项目</string>
+     <string>新建项目 1</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>新建项目</string>
+     <string>新建项目 2</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>新建项目</string>
+     <string>新建项目 3</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>新建项目</string>
+     <string>新建项目 4</string>
     </property>
    </item>
   </widget>

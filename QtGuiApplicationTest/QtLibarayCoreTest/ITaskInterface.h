@@ -4,11 +4,11 @@
 
 namespace SL::Core
 {
-    class QTLIBARAYCORETEST_EXPORT ITaskInterface
+    class ITaskInterface
     {
     public:
-        ITaskInterface::ITaskInterface() {}
-        virtual ITaskInterface::~ITaskInterface() {}
+        ITaskInterface() {}
+        virtual ~ITaskInterface() {}
 
         virtual void DoWork() = 0;
     };
