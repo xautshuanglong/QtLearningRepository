@@ -3,12 +3,19 @@
 #include <QWidget>
 #include "ui_MainTabPageSetting.h"
 
+namespace Ui
+{
+    class MainTabPageSetting;
+}
+
 class MainTabPageSetting : public QWidget
 {
     Q_OBJECT
 
 private:
     Ui::MainTabPageSetting ui;
+    QPushButton *confirm;
+    QPushButton *cancel;
 
 private slots:
     void SlotListVScrollBarRangeChanged(int min, int max);

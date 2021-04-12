@@ -42,11 +42,23 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">QComboBox
+    <string notr="true">
+QComboBox
 {
 	border: 1px solid gray;
 	border-radius: 10px;
     color: rgb(75, 75, 75);
+	background-color: white;
+}
+
+QComboBox[lightGreenFlag='true']
+{
+	background-color: lightgreen;
+}
+
+QComboBox[lightGreenFlag='false']
+{
+	background-color: lightblue;
 }
 
 QComboBox::drop-down

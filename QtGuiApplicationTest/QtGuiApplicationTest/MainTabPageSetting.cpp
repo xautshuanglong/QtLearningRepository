@@ -104,6 +104,22 @@ MainTabPageSetting::MainTabPageSetting(QWidget *parent /* = Q_NULLPTR */)
     // TextEdit 测试
     QTextDocument *pTextDoc = ui.tePdfTest->document();
     connect(pTextDoc, SIGNAL(cursorPositionChanged(const QTextCursor &)), this, SLOT(SlotTextDocumentCursorPositionChanged(const QTextCursor &)));
+
+    // 动态属性控制样式
+    confirm = new QPushButton(this);
+    confirm->setText("confirm");
+    confirm->setProperty("level", "dangrous");
+    confirm->move(10, 10);
+
+    cancel = new QPushButton(this);
+    cancel->setText("cancel");
+    cancel->setProperty("level", "normal");
+    cancel->setProperty("urgent", true);
+    cancel->move(150, 10);
+
+    this->setStyleSheet("QPushButton { color: #FFF; border: 0; height: 30px; width: 100px; }"
+        "QPushButton[level='dangrous'] { background-color: red; }"
+        "QPushButton[level='normal'] { background-color: blue; }");
 }
 
 MainTabPageSetting::~MainTabPageSetting()
@@ -269,6 +285,29 @@ void MainTabPageSetting::on_btnParseDocument_clicked()
 
 void MainTabPageSetting::on_btnMessageBox_clicked()
 {
+    QString lightGreenFlag = ui.cbTest->property("lightGreenFlag").toString();
+    if (lightGreenFlag == "true")
+    {
+        ui.cbTest->setProperty("lightGreenFlag", "false");
+        confirm->setProperty("level", "dangrous");
+        cancel->setProperty("level", "normal");
+    } 
+    else
+    {
+        ui.cbTest->setProperty("lightGreenFlag", "true");
+        confirm->setProperty("level", "normal");
+        cancel->setProperty("level", "dangrous");
+    }
+
+    style()->unpolish(ui.cbTest);
+    style()->polish(ui.cbTest);
+
+    style()->unpolish(confirm);
+    style()->polish(confirm);
+
+    style()->unpolish(cancel);
+    style()->polish(cancel);
+
     QMessageBox msgBox(this);
     msgBox.setText("Testing content ... Testing content ... Testing content ... Testing content ... Testing content ... Testing content ...");
     msgBox.setWindowTitle("Window Title");
