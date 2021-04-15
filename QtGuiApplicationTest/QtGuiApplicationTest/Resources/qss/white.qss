@@ -72,7 +72,7 @@ QProgressIndicator {
 /*********** ≤‚ ‘œÓƒø‘”ºØ ***********/
 QTreeWidget#twMiscellaneousTesting
 {
-    border: 1px solid rgb(111, 156, 207);
+    border: 2px solid rgb(111, 156, 207);
     indentation: 0px;
 }
 
