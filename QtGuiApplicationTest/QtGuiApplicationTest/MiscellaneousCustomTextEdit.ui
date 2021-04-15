@@ -66,12 +66,26 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="btnTestEntry">
+       <property name="text">
+        <string>测试入口</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="JcbTextEdit" name="teCustom"/>
+      <widget class="JcbTextEdit" name="teCustom">
+       <property name="styleSheet">
+        <string notr="true">QTextEdit
+{
+	background-color: lightgreen;
+}</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QTextEdit" name="teOriginal"/>

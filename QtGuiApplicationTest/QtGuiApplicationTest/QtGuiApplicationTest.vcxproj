@@ -65,7 +65,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>WIN32;WIN64;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtWidgets\$(QtVersion);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -74,6 +74,7 @@
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

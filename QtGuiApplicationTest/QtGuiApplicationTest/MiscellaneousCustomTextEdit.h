@@ -19,11 +19,17 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void AppendRichText(QTextEdit* pTextEdit);
+
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
 
 private slots:
+    void on_teCustom_cursorPositionChanged();
+    void on_teCustom_currentCharFormatChanged(const QTextCharFormat& format);
     void on_btnAppendText_clicked();
+    void on_btnTestEntry_clicked();
 
 private:
     Ui::MiscellaneousCustomTextEdit ui;

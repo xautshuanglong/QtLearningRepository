@@ -2,6 +2,12 @@
 
 #include <windows.h>
 
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QDateTime>
+
+#include <LogUtil.h>
+
 MiscellaneousCustomTextEdit::MiscellaneousCustomTextEdit(QWidget *parent)
     : MiscellaneousBase(parent)
 {
@@ -35,6 +41,67 @@ MiscellaneousTestItem MiscellaneousCustomTextEdit::GetItemID()
 void MiscellaneousCustomTextEdit::paintEvent(QPaintEvent* pEvent)
 {
     QWidget::paintEvent(pEvent);
+}
+
+void MiscellaneousCustomTextEdit::AppendRichText(QTextEdit* pTextEdit)
+{
+    QTextDocument* pDocument = pTextEdit->document();
+    QTextFrame* pRootFrame = pDocument->rootFrame();
+    int blockCount = pDocument->blockCount();
+    QTextBlock tempBlock = pDocument->firstBlock();
+    QTextBlock endBlock = pDocument->lastBlock();
+    while (tempBlock.isValid())
+    {
+        QString text = tempBlock.text();
+        tempBlock = tempBlock.next();
+    }
+
+    QTextCursor tempCursor = pTextEdit->textCursor();
+    tempCursor.insertText(QString("Insert Text Test %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzz"))); // 2019-07-06T17:52:02.017578
+    tempCursor.insertBlock();
+
+    QFont linkFont("Times", 25);
+    linkFont.setUnderline(true);
+    QTextCharFormat charFormatOld = tempCursor.blockCharFormat();
+    QTextCharFormat charFormatNew = charFormatOld;
+    charFormatNew.setFont(linkFont);
+    charFormatNew.setForeground(QBrush(Qt::blue));
+    tempCursor.setCharFormat(charFormatNew);
+    tempCursor.insertText("CharFormatTesting,");
+    tempCursor.insertText("AnotherInsert");
+    tempCursor.insertText(" white space split");
+    tempCursor.insertBlock();
+    tempCursor.insertText("The text inside new block");
+    tempCursor.setCharFormat(charFormatOld);
+    tempCursor.insertBlock();
+    tempCursor.insertText("Recover to old format");
+
+    QTextFrameFormat frameFormat;
+    QTextFrame* pCurFrame = tempCursor.insertFrame(frameFormat);
+    QTextCursor curFrameCursor = pCurFrame->firstCursorPosition();
+    curFrameCursor.insertText("Text inside new frame");
+    curFrameCursor.insertText("append text");
+
+    tempCursor.insertText("Old Cursor Text");
+}
+
+void MiscellaneousCustomTextEdit::on_teCustom_cursorPositionChanged()
+{
+     QTextBlock cursorBlock = ui.teCustom->textCursor().block();
+     LogUtil::Debug(CODE_LOCATION, "Cursor text : %s", cursorBlock.text().toUtf8().data());
+     if (cursorBlock.charFormat().font().underline())
+     {
+         LogUtil::Debug(CODE_LOCATION, "Underline text : %s", cursorBlock.text().toUtf8().data());
+     }
+}
+
+void MiscellaneousCustomTextEdit::on_teCustom_currentCharFormatChanged(const QTextCharFormat& format)
+{
+    if (format.font().underline())
+    {
+        QString cursorText = ui.teCustom->textCursor().block().text();
+        LogUtil::Debug(CODE_LOCATION, "FormateChanged : %s", cursorText.toUtf8().data());
+    }
 }
 
 void MiscellaneousCustomTextEdit::on_btnAppendText_clicked()
@@ -104,5 +171,26 @@ void MiscellaneousCustomTextEdit::on_btnAppendText_clicked()
     {
         ui.teOriginal->append(appendText);
         ui.teCustom->append(appendText);
+    }
+}
+
+void MiscellaneousCustomTextEdit::on_btnTestEntry_clicked()
+{
+    this->AppendRichText(ui.teCustom);
+    this->AppendRichText(ui.teOriginal);
+
+    // ÎÄµµÔªËØ±éÀú
+    int blockNum = 1;
+    QTextDocument* pDocument = ui.teCustom->document();
+    int blockCount = pDocument->blockCount();
+    QTextBlock pBlock = pDocument->firstBlock();
+    while (pBlock.isValid())
+    {
+        int lineCount = pBlock.lineCount();
+        int charLength = pBlock.length();
+
+        LogUtil::Debug(CODE_LOCATION, "Block[%d]   lines:%d   length:%d   blockNum:%d  %s", blockNum, lineCount, charLength, pBlock.blockNumber(), pBlock.text().toUtf8().data());
+        pBlock = pBlock.next();
+        ++blockNum;
     }
 }
