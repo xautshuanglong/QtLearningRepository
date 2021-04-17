@@ -83,6 +83,59 @@ void MiscellaneousCustomTextEdit::AppendRichText(QTextEdit* pTextEdit)
     curFrameCursor.insertText("append text");
 
     tempCursor.insertText("Old Cursor Text");
+
+    // 插入列表测试
+    QTextBlockFormat oldFormat = tempCursor.blockFormat();
+    QTextListFormat listFormat;
+    listFormat.setStyle(QTextListFormat::ListDecimal);
+    listFormat.setNumberPrefix("[");
+    listFormat.setNumberSuffix("]");
+    tempCursor.insertList(listFormat);
+    tempCursor.insertText("List Item 1");
+    tempCursor.insertBlock();
+    tempCursor.insertText("List Item 2");
+    tempCursor.insertBlock();
+    tempCursor.insertText("List Item 3");
+    tempCursor.insertBlock();
+    tempCursor.setBlockFormat(oldFormat);
+    tempCursor.insertText("out of the list");
+}
+
+void MiscellaneousCustomTextEdit::AppendCalendarTxet(QTextEdit* pTextEdit)
+{
+    QTextCursor cursor(pTextEdit->textCursor());
+    cursor.movePosition(QTextCursor::End);
+    QTextCharFormat format(cursor.charFormat());
+    format.setFontFamily("Courier");
+    QTextCharFormat boldFormat = format;
+    boldFormat.setFontWeight(QFont::Bold);
+    cursor.insertBlock();
+    cursor.insertText(" ", boldFormat);
+    QDate date = QDate::currentDate();
+    int year = date.year(), month = date.month();
+    for (int weekDay = 1; weekDay <= 7; ++weekDay)
+    {
+        cursor.insertText(QString("%1 ").arg(QLocale::system().dayName(weekDay), 3), boldFormat);
+    }
+    cursor.insertBlock();
+    cursor.insertText(" ", format);
+    for (int column = 1; column < QDate(year, month, 1).dayOfWeek(); ++column)
+    {
+        cursor.insertText("    ", format);
+    }
+    for (int day = 1; day <= date.daysInMonth(); ++day)
+    {
+        int weekDay = QDate(year, month, day).dayOfWeek();
+        if (QDate(year, month, day) == date)
+            cursor.insertText(QString("%1 ").arg(day, 3), boldFormat);
+        else
+            cursor.insertText(QString("%1 ").arg(day, 3), format);
+        if (weekDay == 7)
+        {
+            cursor.insertBlock();
+            cursor.insertText(" ", format);
+        }
+    }
 }
 
 void MiscellaneousCustomTextEdit::on_teCustom_cursorPositionChanged()
@@ -178,6 +231,13 @@ void MiscellaneousCustomTextEdit::on_btnTestEntry_clicked()
 {
     this->AppendRichText(ui.teCustom);
     this->AppendRichText(ui.teOriginal);
+
+    // 日历参考
+    for (int i = 0; i < 10; ++i)
+    {
+        this->AppendCalendarTxet(ui.teCustom);
+        this->AppendCalendarTxet(ui.teOriginal);
+    }
 
     // 文档元素遍历
     int blockNum = 1;

@@ -21,6 +21,7 @@ public:
 
 private:
     void AppendRichText(QTextEdit* pTextEdit);
+    void AppendCalendarTxet(QTextEdit* pTextEdit);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
