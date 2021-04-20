@@ -23,6 +23,7 @@ enum class MiscellaneousTestItem
     WinAPI_Thread_WinPrintDlg,        // Windows API 打印机设置对话框
     WinAPI_Thread_WinSocket,          // Windows API socket 网络编程
     StdCpp_Shared_Pointer,            // 标准库 共享指针
+    StdCpp_STL_Container,             // 标准库 容器
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值
     StdCpp_C_Language_Features,       // C 语言特性测试
     Algorithm_LeetCode,               // LeetCode 力扣练习题
@@ -46,6 +47,7 @@ enum class MiscellaneousTestItem
     Others_ZLib,                      // 使用 ZLib 压缩/解压文件
     Max_Size
 };
+
 Q_DECLARE_METATYPE(MiscellaneousTestItem)
 
 struct MiscellaneousGroupTitle

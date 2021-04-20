@@ -65,7 +65,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>WIN32;WIN64;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;$(QTDIR)\include\QtWidgets\$(QtVersion);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)QtDicomLib;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(SolutionDIr)libs\include\wxsqlite3;$(SolutionDIr)libs\include\libpq;$(SolutionDIr)libs\include\libzip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -189,6 +189,7 @@
     <ClCompile Include="MiscellaneousSignalSlot.cpp" />
     <ClCompile Include="MiscellaneousSqlCipher.cpp" />
     <ClCompile Include="MiscellaneousStdConstructor.cpp" />
+    <ClCompile Include="MiscellaneousStdContainer.cpp" />
     <ClCompile Include="MiscellaneousStdSharedPointer.cpp" />
     <ClCompile Include="MiscellaneousStringUtil.cpp" />
     <ClCompile Include="MiscellaneousTesting.cpp" />
@@ -241,6 +242,7 @@
     </QtUic>
     <QtUic Include="MiscellaneousImageQPixmap.ui">
     </QtUic>
+    <QtUic Include="MiscellaneousStdContainer.ui" />
     <QtUic Include="MiscellaneousStdSharedPointer.ui">
     </QtUic>
     <QtUic Include="MiscellaneousAlgorithmLeetCode.ui" />
@@ -359,6 +361,7 @@
     </QtMoc>
     <QtMoc Include="MiscellaneousWinPrintDlg.h" />
     <QtMoc Include="MiscellaneousWinSocket.h" />
+    <QtMoc Include="MiscellaneousStdContainer.h" />
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
     </QtMoc>

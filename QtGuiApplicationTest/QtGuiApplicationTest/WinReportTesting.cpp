@@ -168,7 +168,7 @@ void WinReportTesting::on_btnSavePDF_clicked()
 void WinReportTesting::on_btnPreviewFOP_clicked()
 {
     QList<QNetworkInterface> interfaceList = QNetworkInterface::allInterfaces();
-    for (int i = 0; i < interfaceList.size(); +i)
+    for (int i = 0; i < interfaceList.size(); ++i)
     {
         QNetworkInterface netInterface = interfaceList[i];
         QString name = netInterface.name();

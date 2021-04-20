@@ -277,6 +277,9 @@
     <ClCompile Include="MiscellaneousCustomTextEdit.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="MiscellaneousStdContainer.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -376,6 +379,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="MiscellaneousCustomTextEdit.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="MiscellaneousStdContainer.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -545,6 +551,9 @@
       <Filter>Core</Filter>
     </QtMoc>
     <QtMoc Include="MiscellaneousCustomTextEdit.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="MiscellaneousStdContainer.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

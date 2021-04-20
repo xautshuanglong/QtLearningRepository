@@ -12,6 +12,7 @@
 #include "MiscellaneousWinSocket.h"
 // Standard CPP
 #include "MiscellaneousStdSharedPointer.h"
+#include "MiscellaneousStdContainer.h"
 #include "MiscellaneousStdConstructor.h"
 #include "MiscellaneousStdCLanguageFeatures.h"
 // Algorithm
@@ -84,6 +85,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousWinPrintDlg(this));
     this->AppendTestPage(new MiscellaneousWinSocket(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
+    this->AppendTestPage(new MiscellaneousStdContainer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
     this->AppendTestPage(new MiscellaneousStdCLanguageFeatures(this));
     this->AppendTestPage(new MiscellaneousAlgorithmLeetCode(this));

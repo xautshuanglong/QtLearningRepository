@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QTextEdit>
-//#include <QtWidgets/private/qtextedit_p.h>
 
 class QComboBox;
 
@@ -20,21 +19,3 @@ protected:
 private:
     QComboBox                 *m_pKeywordOption;
 };
-
-//class JcbTextEditPrivate : public QTextEditPrivate
-//{
-//public:
-//    JcbTextEditPrivate();
-//    ~JcbTextEditPrivate();
-//
-//private:
-//
-//};
-//
-//JcbTextEditPrivate::JcbTextEditPrivate()
-//{
-//}
-//
-//JcbTextEditPrivate::~JcbTextEditPrivate()
-//{
-//}
