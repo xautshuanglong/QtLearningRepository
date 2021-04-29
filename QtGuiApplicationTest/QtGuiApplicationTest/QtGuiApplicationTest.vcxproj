@@ -138,6 +138,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AAAAAAAAAAAAAAA.cpp" />
     <ClCompile Include="AppListIcon.cpp" />
     <ClCompile Include="AppListItemDelegate.cpp" />
     <ClCompile Include="AppListItemWidget.cpp" />
