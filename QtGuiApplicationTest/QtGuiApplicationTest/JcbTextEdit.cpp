@@ -47,14 +47,16 @@ void JcbTextEdit::paintEvent(QPaintEvent* e)
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(qRgb(229, 49, 32), Qt::SolidPattern));
 
+    const qreal horizontalHeight = 10.0f;
     QRectF horizontal(flagRect);
-    horizontal.setHeight(10);
-    horizontal.moveTo(flagRect.left(), flagRect.height() / 2 + flagRect.top());
+    horizontal.setHeight(horizontalHeight);
+    horizontal.moveTo(flagRect.left(), flagRect.height() / 2 + flagRect.top() - horizontalHeight / 2);
     painter.drawRoundedRect(horizontal, 5, 5);
 
+    const qreal verticalWidth = 10.0f;
     QRectF vertical(flagRect);
-    vertical.setWidth(10);
-    vertical.moveTo(flagRect.width() / 2 + flagRect.left(), flagRect.top());
+    vertical.setWidth(verticalWidth);
+    vertical.moveTo(flagRect.width() / 2 + flagRect.left() - verticalWidth / 2, flagRect.top());
     painter.drawRoundedRect(vertical, 5, 5);
 
     painter.restore();
