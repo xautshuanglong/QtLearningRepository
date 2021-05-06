@@ -174,6 +174,7 @@
     <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp" />
     <ClCompile Include="MiscellaneousBase.cpp" />
     <ClCompile Include="MiscellaneousCustomTextEdit.cpp" />
+    <ClCompile Include="MiscellaneousQVirtualKeyboard.cpp" />
     <ClCompile Include="MiscellaneousStdCLanguageFeatures.cpp" />
     <ClCompile Include="MiscellaneousDefines.cpp" />
     <ClCompile Include="MiscellaneousExcelReadWrite.cpp" />
@@ -243,6 +244,7 @@
     </QtUic>
     <QtUic Include="MiscellaneousImageQPixmap.ui">
     </QtUic>
+    <QtUic Include="MiscellaneousQVirtualKeyboard.ui" />
     <QtUic Include="MiscellaneousStdContainer.ui" />
     <QtUic Include="MiscellaneousStdSharedPointer.ui">
     </QtUic>
@@ -363,6 +365,7 @@
     <QtMoc Include="MiscellaneousWinPrintDlg.h" />
     <QtMoc Include="MiscellaneousWinSocket.h" />
     <QtMoc Include="MiscellaneousStdContainer.h" />
+    <QtMoc Include="MiscellaneousQVirtualKeyboard.h" />
     <ClInclude Include="ReportXmlData.h" />
     <QtMoc Include="TitleBarWidget.h">
     </QtMoc>

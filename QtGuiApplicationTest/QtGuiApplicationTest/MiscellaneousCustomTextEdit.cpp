@@ -58,6 +58,7 @@ void MiscellaneousCustomTextEdit::AppendRichText(QTextEdit* pTextEdit)
 
     QTextCursor tempCursor = pTextEdit->textCursor();
     tempCursor.insertText(QString("Insert Text Test %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzz"))); // 2019-07-06T17:52:02.017578
+    tempCursor.insertText(QStringLiteral("¡Â4+¡Á()¡Á¡Â"));
     tempCursor.insertBlock();
 
     QFont linkFont("Times", 25);

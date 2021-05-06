@@ -25,6 +25,9 @@ void ExitCallback()
 int main(int argc, char *argv[])
 {
     atexit(ExitCallback);
+
+    //bool putFlag = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+    //QByteArray imModule = qgetenv("QT_IM_MODULE");
     MyApplication app(argc, argv);
 
 #ifdef QT_DEBUG

@@ -1,5 +1,5 @@
-#ifndef MISCELLANEOUSQ_QWEBSOCKET_H
-#define MISCELLANEOUSQ_QWEBSOCKET_H
+#ifndef MISCELLANEOUS_QWEBSOCKET_H
+#define MISCELLANEOUS_QWEBSOCKET_H
 
 #include <QSslError>
 #include <QSslPreSharedKeyAuthenticator>
@@ -67,4 +67,4 @@ private:
     int                         mDisconnectCount;
 };
 
-#endif // MISCELLANEOUSQ_QWEBSOCKET_H
+#endif // MISCELLANEOUS_QWEBSOCKET_H

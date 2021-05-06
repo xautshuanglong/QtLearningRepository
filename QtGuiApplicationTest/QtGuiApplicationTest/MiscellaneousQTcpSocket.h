@@ -1,5 +1,5 @@
-#ifndef MISCELLANEOUSQ_QTCPSOCKET_H
-#define MISCELLANEOUSQ_QTCPSOCKET_H
+#ifndef MISCELLANEOUS_QTCPSOCKET_H
+#define MISCELLANEOUS_QTCPSOCKET_H
 
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousQTcpSocket.h"
@@ -147,4 +147,4 @@ private:
     int mDisconnectCount;
 };
 
-#endif // MISCELLANEOUSQ_QTCPSOCKET_H
+#endif // MISCELLANEOUS_QTCPSOCKET_H

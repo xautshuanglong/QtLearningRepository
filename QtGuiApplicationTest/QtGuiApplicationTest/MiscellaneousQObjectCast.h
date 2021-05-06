@@ -1,5 +1,5 @@
-#ifndef MISCELLANEOUSQ_OBJECT_CAST_H
-#define MISCELLANEOUSQ_OBJECT_CAST_H
+#ifndef MISCELLANEOUS_OBJECT_CAST_H
+#define MISCELLANEOUS_OBJECT_CAST_H
 
 #include "MiscellaneousBase.h"
 #include <QSharedPointer>
@@ -46,7 +46,7 @@ private:
     QSharedPointer<DllCastBaseQObjectExtra> m_spDllBaseExtra;
 };
 
-#endif // !MISCELLANEOUSQ_OBJECT_CAST_H
+#endif // !MISCELLANEOUS_OBJECT_CAST_H
 
 class CastBaseQObject : public QObject
 {

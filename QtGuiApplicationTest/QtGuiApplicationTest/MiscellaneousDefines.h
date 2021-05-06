@@ -31,6 +31,7 @@ enum class MiscellaneousTestItem
     QT_Printer_PDF,                   // QT 输出 PDF
     QT_Printer_Widget,                // QT 将 QWidget 输出到 PDF
     QT_Custom_TextEdit,               // QT 自定义文本编辑框
+    QT_Virtual_Keyboard,              // QT 自定义文本编辑框
     QT_Image_QImage,                  // QT 图像操作 QImage
     QT_Image_QPixmap,                 // QT 图像操作 QPixmap
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
