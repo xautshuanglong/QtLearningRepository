@@ -26,8 +26,9 @@ int main(int argc, char *argv[])
 {
     atexit(ExitCallback);
 
-    //bool putFlag = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
-    //QByteArray imModule = qgetenv("QT_IM_MODULE");
+    // 使用 QT 内嵌输入法，需要配合：QtQML QtQuick 使用，独立打包：qml及其子目录Qt,QtQuick,QtQuick.2
+    // 有输入焦点时弹出软键盘，失去输入焦点，软键盘自动消失。
+    //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     MyApplication app(argc, argv);
 
 #ifdef QT_DEBUG
