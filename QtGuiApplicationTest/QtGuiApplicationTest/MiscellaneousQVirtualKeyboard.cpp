@@ -16,11 +16,18 @@ DEFINE_GUID(IID_ITipInvocation, 0x37c994e7, 0x432b, 0x4834, 0xa2, 0xf7, 0xdc, 0x
 #include <QTextBlock>
 #include <QDateTime>
 #include <QMetaEnum>
+#include <QTimer>
+#include <QEvent>
+#include <QKeyEvent>
+#include <QRandomGenerator>
 
 #include <LogUtil.h>
 
 MiscellaneousQVirtualKeyboard::MiscellaneousQVirtualKeyboard(QWidget *parent)
     : MiscellaneousBase(parent)
+    , mbNumbers(false)
+    , mbLetters(false)
+    , mbSymbols(false)
 {
     ui.setupUi(this);
 
@@ -30,6 +37,10 @@ MiscellaneousQVirtualKeyboard::MiscellaneousQVirtualKeyboard(QWidget *parent)
     this->connect(&mProcessOSK, SIGNAL(readyReadStandardOutput()), this, SLOT(SlotReadyReadStandardOutput()));
     this->connect(&mProcessOSK, SIGNAL(started()), this, SLOT(SlotStarted()));
     this->connect(&mProcessOSK, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(SlotStateChanged(QProcess::ProcessState)));
+
+    QTimer* pKeyboardTimer = new QTimer(this);
+    pKeyboardTimer->start(1000);
+    this->connect(pKeyboardTimer, SIGNAL(timeout()), this, SLOT(SlotTimerTimeout()));
 }
 
 MiscellaneousQVirtualKeyboard::~MiscellaneousQVirtualKeyboard()
@@ -54,6 +65,27 @@ MiscellaneousTestGroup MiscellaneousQVirtualKeyboard::GetGroupID()
 MiscellaneousTestItem MiscellaneousQVirtualKeyboard::GetItemID()
 {
     return MiscellaneousTestItem::QT_Virtual_Keyboard;
+}
+
+void MiscellaneousQVirtualKeyboard::keyPressEvent(QKeyEvent* event)
+{
+    int key = event->key();
+    if (Qt::Key_0 <= key && key <= Qt::Key_9)
+    {
+        ui.teRichText->append(QString('0' + key - Qt::Key_0));
+    }
+    else if (Qt::Key_A <= key && key <= Qt::Key_Z)
+    {
+        if (event->modifiers() & Qt::ShiftModifier )
+        {
+            ui.teRichText->append(QString('A' + key - Qt::Key_A));
+        }
+        else
+        {
+            ui.teRichText->append(QString('a' + key - Qt::Key_A));
+        }
+    }
+    MiscellaneousBase::keyPressEvent(event);
 }
 
 void MiscellaneousQVirtualKeyboard::SlotErrorOccurred(QProcess::ProcessError error)
@@ -92,6 +124,48 @@ void MiscellaneousQVirtualKeyboard::SlotStateChanged(QProcess::ProcessState newS
     LogUtil::Error(CODE_LOCATION, "QProcess new Status: %s", processStateStr.toUtf8().data());
 }
 
+void MiscellaneousQVirtualKeyboard::SlotTimerTimeout()
+{
+    QRandomGenerator random(time(NULL));
+    if (mbNumbers)
+    {
+        int numKeyOffset = random.bounded(0, 10);
+        //QCoreApplication::postEvent(this, new QKeyEvent(QEvent::KeyPress, Qt::Key_0 + numKeyOffset, Qt::NoModifier));
+        //QKeyEvent numberKey(QEvent::KeyPress, Qt::Key_0 + numKeyOffset, Qt::NoModifier);
+        //QCoreApplication::sendEvent(ui.teRichText, &numberKey);
+
+        ::PostMessageA(HWND_BROADCAST, WM_KEYDOWN, 0x30 + numKeyOffset, 0);
+    }
+    if (mbLetters)
+    {
+        int letterKeyOffset = random.bounded(0, 26);
+        //int shiftFlag = random.bounded(0, 100);
+        //if (shiftFlag < 50)
+        //{
+        //    QKeyEvent letterKeyEvent(QEvent::KeyPress, Qt::Key_A + letterKeyOffset, Qt::NoModifier);
+        //    QCoreApplication::sendEvent(this, &letterKeyEvent);
+        //    //qApp->postEvent(this, new QKeyEvent(QEvent::KeyPress, Qt::Key_0 + letterKeyOffset, Qt::NoModifier));
+        //}
+        //else
+        //{
+        //    QKeyEvent letterKeyEvent(QEvent::KeyPress, Qt::Key_A + letterKeyOffset, Qt::ShiftModifier);
+        //    QCoreApplication::sendEvent(this, &letterKeyEvent);
+        //}
+
+        ::PostMessageA(HWND_TOPMOST, WM_KEYDOWN, VK_SHIFT, 0);
+        ::PostMessageA(HWND_TOPMOST, WM_KEYDOWN, 0x41 + letterKeyOffset, 0);
+        //::PostMessageA(HWND_BROADCAST, WM_KEYUP, 0x41 + letterKeyOffset, 0);
+        //::PostMessageA(HWND_BROADCAST, WM_KEYUP, VK_SHIFT, 0);
+    }
+    if (mbSymbols)
+    {
+        //int letterKeyOffset = random.bounded(0, 26);
+        ////qApp->postEvent(this, new QKeyEvent(QEvent::KeyPress, Qt::Key_0 + letterKeyOffset, Qt::ShiftModifier));
+        //QKeyEvent letterKeyEvent(QEvent::KeyPress, Qt::Key_A + letterKeyOffset, Qt::ShiftModifier);
+        //QCoreApplication::sendEvent(this, &letterKeyEvent);
+    }
+}
+
 void MiscellaneousQVirtualKeyboard::on_btnOSK_clicked()
 {
     QString filename = "C:\\Windows\\System32\\osk.exe";
@@ -121,4 +195,65 @@ void MiscellaneousQVirtualKeyboard::on_btnTabtip_clicked()
         tip->Release();
     }
     CoUninitialize();
+}
+
+void MiscellaneousQVirtualKeyboard::on_btnNumbers_clicked()
+{
+    mbNumbers = !mbNumbers;
+}
+
+void MiscellaneousQVirtualKeyboard::on_btnLetters_clicked()
+{
+    mbLetters = !mbLetters;
+}
+
+void MiscellaneousQVirtualKeyboard::on_btnSymbols_clicked()
+{
+    mbSymbols = !mbSymbols;
+}
+
+void MiscellaneousQVirtualKeyboard::on_btnNumLock_clicked()
+{
+    static BOOL bState = FALSE;
+    BYTE keyState[256];
+
+    BOOL resFlag = ::GetKeyboardState((LPBYTE)&keyState);
+    if ((bState && !(keyState[VK_NUMLOCK] & 1)) || (!bState && (keyState[VK_NUMLOCK] & 1)))
+    {
+        bState = !bState;
+        // Simulate a key press
+        keybd_event(VK_NUMLOCK, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
+        // Simulate a key release
+        keybd_event(VK_NUMLOCK, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+    }
+
+    this->ShowDesktop();
+}
+
+void MiscellaneousQVirtualKeyboard::ShowDesktop()
+{
+    OutputDebugStringW(L"Sending 'Win-D'\r\n");
+    INPUT inputs[4] = {};
+    ZeroMemory(inputs, sizeof(inputs));
+
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_LWIN;
+
+    inputs[1].type = INPUT_KEYBOARD;
+    inputs[1].ki.wVk = 0x44; // VK_D
+
+    inputs[2].type = INPUT_KEYBOARD;
+    inputs[2].ki.wVk = 0x44; // VK_D
+    inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    inputs[3].type = INPUT_KEYBOARD;
+    inputs[3].ki.wVk = VK_LWIN;
+    inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+    if (uSent != ARRAYSIZE(inputs))
+    {
+        //OutputStringW(L"SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError()));
+        OutputDebugStringW(L"SendInput failed!\n");
+    }
 }

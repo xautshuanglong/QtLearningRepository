@@ -21,6 +21,9 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+protected:
+    virtual void keyPressEvent(QKeyEvent* event) override;
+
 private slots:
     void SlotErrorOccurred(QProcess::ProcessError error);
     void SlotFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -28,13 +31,24 @@ private slots:
     void SlotReadyReadStandardOutput();
     void SlotStarted();
     void SlotStateChanged(QProcess::ProcessState newStatus);
+    void SlotTimerTimeout();
 
     void on_btnOSK_clicked();
     void on_btnTabtip_clicked();
+    void on_btnNumbers_clicked();
+    void on_btnLetters_clicked();
+    void on_btnSymbols_clicked();
+    void on_btnNumLock_clicked();
+
+private:
+    void ShowDesktop();
 
 private:
     Ui::MiscellaneousQVirtualKeyboard ui;
     QProcess                          mProcessOSK;
+    bool                              mbNumbers;
+    bool                              mbLetters;
+    bool                              mbSymbols;
 };
 
 #endif // MISCELLANEOUS_QVIRTUALKEYBOARD_H
