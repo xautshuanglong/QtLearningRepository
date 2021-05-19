@@ -39,9 +39,11 @@ private slots:
     void on_btnLetters_clicked();
     void on_btnSymbols_clicked();
     void on_btnNumLock_clicked();
+    void on_btnSendInput_clicked();
 
 private:
     void ShowDesktop();
+    void SimulateInput(const QString &inputString, bool englishFlag);
 
 private:
     Ui::MiscellaneousQVirtualKeyboard ui;

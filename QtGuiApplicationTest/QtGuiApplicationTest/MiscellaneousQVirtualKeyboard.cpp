@@ -69,22 +69,22 @@ MiscellaneousTestItem MiscellaneousQVirtualKeyboard::GetItemID()
 
 void MiscellaneousQVirtualKeyboard::keyPressEvent(QKeyEvent* event)
 {
-    int key = event->key();
-    if (Qt::Key_0 <= key && key <= Qt::Key_9)
-    {
-        ui.teRichText->append(QString('0' + key - Qt::Key_0));
-    }
-    else if (Qt::Key_A <= key && key <= Qt::Key_Z)
-    {
-        if (event->modifiers() & Qt::ShiftModifier )
-        {
-            ui.teRichText->append(QString('A' + key - Qt::Key_A));
-        }
-        else
-        {
-            ui.teRichText->append(QString('a' + key - Qt::Key_A));
-        }
-    }
+    //int key = event->key();
+    //if (Qt::Key_0 <= key && key <= Qt::Key_9)
+    //{
+    //    ui.teRichText->append(QString('0' + key - Qt::Key_0));
+    //}
+    //else if (Qt::Key_A <= key && key <= Qt::Key_Z)
+    //{
+    //    if (event->modifiers() & Qt::ShiftModifier )
+    //    {
+    //        ui.teRichText->append(QString('A' + key - Qt::Key_A));
+    //    }
+    //    else
+    //    {
+    //        ui.teRichText->append(QString('a' + key - Qt::Key_A));
+    //    }
+    //}
     MiscellaneousBase::keyPressEvent(event);
 }
 
@@ -230,6 +230,15 @@ void MiscellaneousQVirtualKeyboard::on_btnNumLock_clicked()
     this->ShowDesktop();
 }
 
+void MiscellaneousQVirtualKeyboard::on_btnSendInput_clicked()
+{
+    QTimer::singleShot(2000, [&]()
+        {
+            this->SimulateInput("Shuanglong", true);
+            this->SimulateInput("shuanglong", false);
+        });
+}
+
 void MiscellaneousQVirtualKeyboard::ShowDesktop()
 {
     OutputDebugStringW(L"Sending 'Win-D'\r\n");
@@ -255,5 +264,86 @@ void MiscellaneousQVirtualKeyboard::ShowDesktop()
     {
         //OutputStringW(L"SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError()));
         OutputDebugStringW(L"SendInput failed!\n");
+    }
+}
+
+void MiscellaneousQVirtualKeyboard::SimulateInput(const QString& inputString, bool englishFlag)
+{
+    OutputDebugStringW(L"Sending ---> SimulateInput\r\n");
+    INPUT inputs[4] = {};
+
+    int strLen = inputString.length();
+    for (int i = 0; i < strLen; ++i)
+    {
+        ZeroMemory(inputs, sizeof(inputs));
+        const QChar tempChar = inputString.at(i);
+        if ('a' <= tempChar && tempChar <= 'z')
+        {
+            WORD charOffset = tempChar.toLatin1() - 'a';
+            WORD virtualKey = 0x41 + charOffset;
+            inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = virtualKey;
+
+            inputs[1].type = INPUT_KEYBOARD;
+            inputs[1].ki.wVk = virtualKey;
+            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+            UINT uSent = SendInput(2, inputs, sizeof(INPUT));
+            if (uSent != 2)
+            {
+                OutputDebugStringW(L"SendInput failed!\n");
+            }
+        }
+        else if ('A' <= tempChar && tempChar <= 'Z')
+        {
+            WORD charOffset = tempChar.toLatin1() - 'A';
+            WORD virtualKey = 0x41 + charOffset;
+            inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = VK_SHIFT;
+
+            inputs[1].type = INPUT_KEYBOARD;
+            inputs[1].ki.wVk = virtualKey;
+
+            inputs[2].type = INPUT_KEYBOARD;
+            inputs[2].ki.wVk = virtualKey;
+            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+            inputs[3].type = INPUT_KEYBOARD;
+            inputs[3].ki.wVk = VK_SHIFT;
+            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+            UINT uSent = SendInput(4, inputs, sizeof(INPUT));
+            if (uSent != 4)
+            {
+                OutputDebugStringW(L"SendInput failed!\n");
+            }
+        }
+        Sleep(200);
+    }
+    if (englishFlag)
+    {
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = VK_RETURN;
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = VK_RETURN;
+        inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+        UINT uSent = SendInput(2, inputs, sizeof(INPUT));
+        if (uSent != 2)
+        {
+            OutputDebugStringW(L"SendInput failed!\n");
+        }
+    } 
+    else
+    {
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = VK_SPACE;
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = VK_SPACE;
+        inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+        UINT uSent = SendInput(2, inputs, sizeof(INPUT));
+        if (uSent != 2)
+        {
+            OutputDebugStringW(L"SendInput failed!\n");
+        }
     }
 }
