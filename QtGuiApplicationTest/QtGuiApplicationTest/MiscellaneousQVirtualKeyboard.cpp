@@ -126,6 +126,7 @@ void MiscellaneousQVirtualKeyboard::SlotStateChanged(QProcess::ProcessState newS
 
 void MiscellaneousQVirtualKeyboard::SlotTimerTimeout()
 {
+    char msgBuffer[1024] = { 0 };
     QRandomGenerator random(time(NULL));
     if (mbNumbers)
     {
@@ -134,7 +135,18 @@ void MiscellaneousQVirtualKeyboard::SlotTimerTimeout()
         //QKeyEvent numberKey(QEvent::KeyPress, Qt::Key_0 + numKeyOffset, Qt::NoModifier);
         //QCoreApplication::sendEvent(ui.teRichText, &numberKey);
 
-        ::PostMessageA(HWND_BROADCAST, WM_KEYDOWN, 0x30 + numKeyOffset, 0);
+        //HWND activeWin = ::GetActiveWindow();
+        HWND activeWin = ::GetForegroundWindow();
+        if (activeWin != NULL)
+        {
+            ::PostMessageA(activeWin, WM_KEYDOWN, 0x30 + numKeyOffset, 0);
+            sprintf_s(msgBuffer, sizeof(msgBuffer), "Active window is 0x%08p\n", activeWin);
+            OutputDebugStringA(msgBuffer);
+        } 
+        else
+        {
+            OutputDebugStringA("Active window is NULL\r\n");
+        }
     }
     if (mbLetters)
     {
@@ -151,11 +163,21 @@ void MiscellaneousQVirtualKeyboard::SlotTimerTimeout()
         //    QKeyEvent letterKeyEvent(QEvent::KeyPress, Qt::Key_A + letterKeyOffset, Qt::ShiftModifier);
         //    QCoreApplication::sendEvent(this, &letterKeyEvent);
         //}
-
-        ::PostMessageA(HWND_TOPMOST, WM_KEYDOWN, VK_SHIFT, 0);
-        ::PostMessageA(HWND_TOPMOST, WM_KEYDOWN, 0x41 + letterKeyOffset, 0);
-        //::PostMessageA(HWND_BROADCAST, WM_KEYUP, 0x41 + letterKeyOffset, 0);
-        //::PostMessageA(HWND_BROADCAST, WM_KEYUP, VK_SHIFT, 0);
+        //HWND activeWin = ::GetActiveWindow();
+        HWND activeWin = ::GetForegroundWindow();
+        if (activeWin != NULL)
+        {
+            ::PostMessageA(activeWin, WM_KEYDOWN, VK_SHIFT, 0);
+            ::PostMessageA(activeWin, WM_KEYDOWN, 0x41 + letterKeyOffset, 0);
+            //::PostMessageA(HWND_BROADCAST, WM_KEYUP, 0x41 + letterKeyOffset, 0);
+            //::PostMessageA(HWND_BROADCAST, WM_KEYUP, VK_SHIFT, 0);
+            sprintf_s(msgBuffer, sizeof(msgBuffer), "Active window is 0x%08p\n", activeWin);
+            OutputDebugStringA(msgBuffer);
+        } 
+        else
+        {
+            OutputDebugStringA("Active window is NULL\r\n");
+        }
     }
     if (mbSymbols)
     {
