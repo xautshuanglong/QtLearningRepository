@@ -87,7 +87,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <None Include="UI\MainWindow.qml" />
-    <QtRcc Include="qml.qrc" />
+    <QtRcc Include="QtQuickApplicationTest.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
