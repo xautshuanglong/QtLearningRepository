@@ -17,6 +17,9 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{19501651-cdba-4188-a7a5-48bd85337108}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,9 +28,10 @@
     <QtRcc Include="qml.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <None Include="main.qml">
-      <Filter>Source Files</Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UI\MainWindow.qml">
+      <Filter>UI</Filter>
     </None>
-
   </ItemGroup>
 </Project>
