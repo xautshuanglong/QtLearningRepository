@@ -37,6 +37,6 @@ Window {
 
     Text {
         anchors.centerIn: parent
-        text: "Hello World"
+        text: "Hello World __ Shuanglong"
     }
 }
