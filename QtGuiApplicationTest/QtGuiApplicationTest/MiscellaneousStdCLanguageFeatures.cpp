@@ -88,6 +88,39 @@ void MiscellaneousStdCLanguageFeatures::on_btnVirtualInheritance_clicked()
     pUnknownTestB->PureVirtualFunctionB();
 }
 
+void MiscellaneousStdCLanguageFeatures::on_btnCountIncrease_clicked()
+{
+    int count = 0;
+    for (int i = 0; i < 100; ++i)
+    {
+        count = count++;
+    }
+    // Ñ­»·½áÊøÊ± count == 0
+    /*
+    * 00007FF60AED3DC5  sub         rsp,18h
+    int count = 0;
+00007FF60AED3DC9  mov         dword ptr [rsp],0
+    for (int i = 0; i < 100; ++i)
+00007FF60AED3DD0  mov         dword ptr [rsp+4],0
+00007FF60AED3DD8  jmp         IUnknownDrivedTestA::PureVirtualFunctionA+4h (07FF60AED3DE4h)
+00007FF60AED3DDA  mov         eax,dword ptr [rsp+4]
+00007FF60AED3DDE  inc         eax
+00007FF60AED3DE0  mov         dword ptr [rsp+4],eax
+00007FF60AED3DE4  cmp         dword ptr [rsp+4],64h
+00007FF60AED3DE9  jge         IUnknownDrivedTestA::PureVirtualFunctionA+23h (07FF60AED3E03h)
+    {
+        count = count++;
+00007FF60AED3DEB  mov         eax,dword ptr [rsp]
+00007FF60AED3DEE  mov         dword ptr [rsp+8],eax
+00007FF60AED3DF2  mov         eax,dword ptr [rsp]
+00007FF60AED3DF5  inc         eax
+00007FF60AED3DF7  mov         dword ptr [rsp],eax
+00007FF60AED3DFA  mov         eax,dword ptr [rsp+8]
+00007FF60AED3DFE  mov         dword ptr [rsp],eax
+    }
+    */
+}
+
 IUnknownImplementTest::IUnknownImplementTest()
 {
     LogUtil::Debug(CODE_LOCATION, "Inside Func IUnknownImplementTest Construct ...");
