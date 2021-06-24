@@ -1,6 +1,6 @@
 #include "MiscellaneousSqlCipher.h"
 
-#define TEST_FLAG_SQL_CIPHER 1
+#define TEST_FLAG_SQL_CIPHER 0
 #if TEST_FLAG_SQL_CIPHER
 #pragma comment(lib, "sqlite3.lib")
 #endif
