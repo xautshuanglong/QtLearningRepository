@@ -22,6 +22,8 @@ private slots:
     void on_btnConstructorMove_clicked();
     void on_btnConstructorCopy_clicked();
     void on_btnConstructorAssign_clicked();
+    void on_btnIncreasePre_clicked();
+    void on_btnIncreasePost_clicked();
 
 private:
     Ui::MiscellaneousStdConstructor ui;
@@ -30,20 +32,25 @@ private:
 class ConstructorTestBase
 {
 public:
-    ConstructorTestBase();
-    ConstructorTestBase(const ConstructorTestBase& other);
-    ConstructorTestBase(const ConstructorTestBase&& other);
+    ConstructorTestBase() noexcept;
+    ConstructorTestBase(const ConstructorTestBase& other) noexcept;
+    ConstructorTestBase(const ConstructorTestBase&& other) noexcept;
     ~ConstructorTestBase();
     ConstructorTestBase& operator=(const ConstructorTestBase& other);
+    ConstructorTestBase& operator=(ConstructorTestBase& other);
+    ConstructorTestBase& operator++();
+    ConstructorTestBase operator++(int);
 
     void SetIntValue(const int intValue);
     void SetName(const QString& name);
 
     int GetIntValue();
+    int GetIncreaseValue();
     QString GetName();
 
 private:
     int       mIntValue;
+    int       mSelfIncrease;
     QString   mStrName;
 };
 

@@ -65,42 +65,102 @@ void MiscellaneousStdConstructor::on_btnConstructorAssign_clicked()
     int i = 0;
 }
 
-/*------------------------------------------------- ConstructorTestBase -------------------------------------------------*/
-ConstructorTestBase::ConstructorTestBase()
-    : mIntValue(0)
-    , mStrName("NULL")
+void MiscellaneousStdConstructor::on_btnIncreasePre_clicked()
 {
-    LogUtil::Debug(CODE_LOCATION, "Construct Base Class");
+    ConstructorTestBase selfIncreaseTest;
+    for (int i = 0; i < 10; ++i)
+    {
+        ++selfIncreaseTest;
+    }
+    int internalValue = selfIncreaseTest.GetIncreaseValue();
+    LogUtil::Debug(CODE_LOCATION, "internalValue = %d", internalValue);
 }
 
-ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase& other)
+void MiscellaneousStdConstructor::on_btnIncreasePost_clicked()
 {
-    LogUtil::Debug(CODE_LOCATION, "Construct-Copy Base Class");
+    ConstructorTestBase selfIncreaseTest;
+    for (int i = 0; i < 10; ++i)
+    {
+        selfIncreaseTest++;
+    }
+    int internalValue = selfIncreaseTest.GetIncreaseValue();
+    LogUtil::Debug(CODE_LOCATION, "internalValue = %d", internalValue);
+}
+
+/*------------------------------------------------- ConstructorTestBase -------------------------------------------------*/
+ConstructorTestBase::ConstructorTestBase() noexcept
+    : mIntValue(0)
+    , mSelfIncrease(0)
+    , mStrName("NULL")
+{
+    LogUtil::Debug(CODE_LOCATION, "Construct Base Class Pointer:0x%p", this);
+}
+
+ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase& other) noexcept
+{
+    LogUtil::Debug(CODE_LOCATION, "Construct-Copy Base Class ThisPointer:0x%p OtherPointer:0x%p", this, &other);
     mIntValue = other.mIntValue;
     mStrName = other.mStrName;
 }
 
-ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase&& other)
+ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase&& other) noexcept
 {
-    LogUtil::Debug(CODE_LOCATION, "Construct-Move Base Class");
+    LogUtil::Debug(CODE_LOCATION, "Construct-Move Base Class ThisPointer:0x%p OtherPointer:0x%p", this, &other);
     mIntValue = other.mIntValue;
     mStrName = other.mStrName;
 }
 
 ConstructorTestBase::~ConstructorTestBase()
 {
-    LogUtil::Debug(CODE_LOCATION, "Destruct Base Class");
+    LogUtil::Debug(CODE_LOCATION, "Destruct Base Class Pointer:0x%p", this);
 }
 
 ConstructorTestBase& ConstructorTestBase::operator=(const ConstructorTestBase& other)
 {
-    LogUtil::Debug(CODE_LOCATION, "Assign Base Class");
+    LogUtil::Debug(CODE_LOCATION, "Assign Base Class const Pointer:0x%p", this);
     if (this != &other)
     {
         mIntValue = other.mIntValue;
         mStrName = other.mStrName;
     }
     return *this;
+}
+
+ConstructorTestBase& ConstructorTestBase::operator=(ConstructorTestBase& other)
+{
+    LogUtil::Debug(CODE_LOCATION, "Assign Base Class non const Pointer:0x%p", this);
+    if (this != &other)
+    {
+        mIntValue = other.mIntValue;
+        mStrName = other.mStrName;
+    }
+    return *this;
+}
+
+/**
+ * Ç°ÖÃ ++
+ */
+ConstructorTestBase& ConstructorTestBase::operator++()
+{
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() before ThisPointer=0x%p  mSelfIncrease=%d", this, mSelfIncrease);
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() during ThisPointer=0x%p  mSelfIncrease=%d", this, ++mSelfIncrease);
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() after ThisPointer=0x%p  mSelfIncrease=%d", this, mSelfIncrease);
+
+    return *this;
+}
+
+/**
+ * ºóÖÃ ++
+ */
+ConstructorTestBase ConstructorTestBase::operator++(int)
+{
+    ConstructorTestBase retValue(*this);
+
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() before ThisPointer=0x%p  mSelfIncrease=%d", this, mSelfIncrease);
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() during ThisPointer=0x%p  mSelfIncrease=%d", this, mSelfIncrease++);
+    LogUtil::Debug(CODE_LOCATION, "ConstructorTestBase::operator++() after ThisPointer=0x%p  mSelfIncrease=%d", this, mSelfIncrease);
+
+    return retValue;
 }
 
 void ConstructorTestBase::SetIntValue(const int intValue)
@@ -116,6 +176,11 @@ void ConstructorTestBase::SetName(const QString& name)
 int ConstructorTestBase::GetIntValue()
 {
     return mIntValue;
+}
+
+int ConstructorTestBase::GetIncreaseValue()
+{
+    return mSelfIncrease;
 }
 
 QString ConstructorTestBase::GetName()
