@@ -100,3 +100,34 @@ void MiscellaneousStdContainer::on_btnDequeueTest_clicked()
 {
     int i = 0;
 }
+
+void MiscellaneousStdContainer::on_btnMapTest_clicked()
+{
+    std::pair<int, int> inputItem = std::make_pair(1, 2);
+    std::pair<int, int> findItem = std::make_pair(1, 2);
+    if (inputItem == findItem)
+    {
+        int i = 0;
+    }
+    else
+    {
+        int i = 0;
+    }
+
+    std::map<std::pair<int, int>, int> testMap;
+    testMap.insert(std::make_pair(inputItem, 100));
+    auto target = testMap.find(findItem);
+    if (target == testMap.end())
+    {
+        int i = 0;
+    } 
+    else
+    {
+        int i = 0;
+    }
+}
+
+void MiscellaneousStdContainer::on_btnPairTest_clicked()
+{
+    int i = 0;
+}

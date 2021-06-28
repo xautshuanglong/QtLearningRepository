@@ -28,6 +28,8 @@ private slots:
     void on_btnQueueTest_clicked();
     void on_btnPriorityQueueTest_clicked();
     void on_btnDequeueTest_clicked();
+    void on_btnMapTest_clicked();
+    void on_btnPairTest_clicked();
 
 private:
     Ui::MiscellaneousStdContainer*ui;
