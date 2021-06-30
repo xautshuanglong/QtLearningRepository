@@ -316,6 +316,7 @@ dmypy.json
 # QT generated files
 **/GeneratedFiles/**
 **/.vs/**
+*.autosave
 
 # VLD report
 **/memory_leak_report.txt

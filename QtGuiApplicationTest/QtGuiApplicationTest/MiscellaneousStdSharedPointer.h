@@ -18,8 +18,23 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private slots:
+    void on_btnResetTest_clicked();
+    void on_btnRefCountTest_clicked();
+
 private:
     Ui::MiscellaneousStdSharedPointer *ui;
+};
+
+class AutoDestuctTest
+{
+public:
+    AutoDestuctTest(const std::string& name, int value);
+    ~AutoDestuctTest();
+
+private:
+    std::string   mName;
+    int           mValue;
 };
 
 #endif // MISCELLANEOUS_STD_SHARED_POINTER_H
