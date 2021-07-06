@@ -138,86 +138,63 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AAAAAAAAAAAAAAA.cpp" />
-    <ClCompile Include="AppListIcon.cpp" />
     <ClCompile Include="AppListItemDelegate.cpp" />
     <ClCompile Include="AppListItemWidget.cpp" />
-    <ClCompile Include="DebugInfoHardwareWidget.cpp" />
-    <ClCompile Include="DebugInfoNetworkWidget.cpp" />
-    <ClCompile Include="DebugInfoTestWidget.cpp" />
-    <ClCompile Include="DebugMenuEvent.cpp" />
-    <ClCompile Include="DebugInfoBaseWidget.cpp" />
-    <ClCompile Include="DebugPanel.cpp" />
-    <ClCompile Include="DicomDownloadWigdet.cpp" />
-    <ClCompile Include="DicomServerBrowserWidget.cpp" />
-    <ClCompile Include="DicomWindow.cpp" />
-    <ClCompile Include="FopReportClient.cpp" />
-    <ClCompile Include="FopReportProtocol.cpp" />
-    <ClCompile Include="FramelessWindowHelper.cpp">
-      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)libs\include</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY</Define>
-    </ClCompile>
-    <ClCompile Include="JcbMessageBox.cpp" />
-    <ClCompile Include="JcbTextEdit.cpp" />
+    <ClCompile Include="Config\AppListIcon.cpp" />
+    <ClCompile Include="Core\FramelessWindowHelper.cpp" />
+    <ClCompile Include="Core\JcbMessageBox.cpp" />
+    <ClCompile Include="Core\JcbTextEdit.cpp" />
+    <ClCompile Include="Core\MyBackgroundWorker.cpp" />
+    <ClCompile Include="Core\MyWorkerThread.cpp" />
+    <ClCompile Include="Core\MyWorkerThreadPool.cpp" />
+    <ClCompile Include="Core\SuspendedScrollBar.cpp" />
+    <ClCompile Include="Core\ThreadWaitCondition.cpp" />
+    <ClCompile Include="Core\TitleBarWidget.cpp" />
+    <ClCompile Include="Core\WorkerTaskBase.cpp" />
+    <ClCompile Include="DICOM\DicomDownloadWigdet.cpp" />
+    <ClCompile Include="DICOM\DicomServerBrowserWidget.cpp" />
+    <ClCompile Include="DICOM\DicomWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
     <ClCompile Include="MainTabPageSetting.cpp" />
-    <ClCompile Include="MessageInfo.pb.cc" />
-    <ClCompile Include="MessageTest.pb.cc" />
-    <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp" />
-    <ClCompile Include="MiscellaneousBase.cpp" />
-    <ClCompile Include="MiscellaneousCustomTextEdit.cpp" />
-    <ClCompile Include="MiscellaneousQVirtualKeyboard.cpp" />
-    <ClCompile Include="MiscellaneousStdCLanguageFeatures.cpp" />
-    <ClCompile Include="MiscellaneousDefines.cpp" />
-    <ClCompile Include="MiscellaneousExcelReadWrite.cpp" />
-    <ClCompile Include="MiscellaneousImageQImage.cpp" />
-    <ClCompile Include="MiscellaneousImageQPixmap.cpp" />
-    <ClCompile Include="MiscellaneousPostgresql.cpp" />
-    <ClCompile Include="MiscellaneousPrinterPDF.cpp" />
-    <ClCompile Include="MiscellaneousPrinterWidget.cpp" />
-    <ClCompile Include="MiscellaneousQMimeType.cpp" />
-    <ClCompile Include="MiscellaneousQObjectCast.cpp" />
-    <ClCompile Include="MiscellaneousQTcpSocket.cpp" />
-    <ClCompile Include="MiscellaneousQWebSocket.cpp" />
-    <ClCompile Include="MiscellaneousRegularExpression.cpp" />
-    <ClCompile Include="MiscellaneousSignalSlot.cpp" />
-    <ClCompile Include="MiscellaneousSqlCipher.cpp" />
-    <ClCompile Include="MiscellaneousStdConstructor.cpp" />
-    <ClCompile Include="MiscellaneousStdContainer.cpp" />
-    <ClCompile Include="MiscellaneousStdSharedPointer.cpp" />
-    <ClCompile Include="MiscellaneousStringUtil.cpp" />
-    <ClCompile Include="MiscellaneousTesting.cpp" />
-    <ClCompile Include="MiscellaneousWinBeginThreadEx.cpp" />
-    <ClCompile Include="MiscellaneousWinPrintDlg.cpp" />
-    <ClCompile Include="MiscellaneousWinSocket.cpp" />
-    <ClCompile Include="MiscellaneousWxSqlite3.cpp" />
-    <ClCompile Include="MiscellaneousZip.cpp" />
-    <ClCompile Include="MiscellaneousZLib.cpp" />
-    <ClCompile Include="MuPDF.cpp" />
+    <ClCompile Include="Miscellaneous\AAAAAAAAAAAAAAA.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousBase.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousCustomTextEdit.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousImageQImage.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousImageQPixmap.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousPostgresql.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousPrinterPDF.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousPrinterWidget.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQMimeType.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQObjectCast.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQTcpSocket.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQVirtualKeyboard.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQWebSocket.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousRegularExpression.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousSignalSlot.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousSqlCipher.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousStdConstructor.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousStdContainer.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousStdSharedPointer.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousStringUtil.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousTesting.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinBeginThreadEx.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWxSqlite3.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousZip.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousZLib.cpp" />
     <ClCompile Include="MyApplication.cpp" />
-    <ClCompile Include="MyBackgroundWorker.cpp" />
     <ClCompile Include="MyMainWindow.cpp" />
-    <ClCompile Include="MyWorkerThread.cpp" />
-    <ClCompile Include="MyWorkerThreadPool.cpp" />
     <ClCompile Include="NotifyWidget.cpp" />
-    <ClCompile Include="ReportXmlData.cpp" />
-    <ClCompile Include="StringUtil.cpp" />
-    <ClCompile Include="SuspendedScrollBar.cpp" />
-    <ClCompile Include="ThreadWaitCondition.cpp" />
-    <ClCompile Include="TitleBarWidget.cpp" />
-    <ClCompile Include="UrlUtil.cpp" />
-    <ClCompile Include="Win32PerformanceUtil.cpp" />
-    <ClCompile Include="WinReportTesting.cpp" />
-    <ClCompile Include="WorkerTaskBase.cpp" />
-    <ClCompile Include="XmlReportGenerator.cpp" />
+    <ClCompile Include="Utils\StringUtil.cpp" />
+    <ClCompile Include="Utils\UrlUtil.cpp" />
+    <ClCompile Include="Utils\Win32PerformanceUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyMainWindow.h">
@@ -225,184 +202,112 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AppListItemWidget.ui" />
-    <QtUic Include="DebugInfoHardwareWidget.ui" />
-    <QtUic Include="DebugInfoNetworkWidget.ui" />
-    <QtUic Include="DebugInfoTestWidget.ui" />
-    <QtUic Include="DebugPanel.ui" />
-    <QtUic Include="DicomDownloadWigdet.ui" />
-    <QtUic Include="DicomServerBrowserWidget.ui" />
-    <QtUic Include="DicomWindow.ui" />
+    <QtUic Include="DICOM\DicomDownloadWigdet.ui" />
+    <QtUic Include="DICOM\DicomServerBrowserWidget.ui" />
+    <QtUic Include="DICOM\DicomWindow.ui" />
     <QtUic Include="MainTabPageDicom.ui" />
     <QtUic Include="MainTabPageFirst.ui" />
     <QtUic Include="MainTabPageSetting.ui" />
-    <QtUic Include="MiscellaneousCustomTextEdit.ui" />
-    <QtUic Include="MiscellaneousPrinterPDF.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousPrinterWidget.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousImageQImage.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousImageQPixmap.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousQVirtualKeyboard.ui" />
-    <QtUic Include="MiscellaneousStdContainer.ui" />
-    <QtUic Include="MiscellaneousStdSharedPointer.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousAlgorithmLeetCode.ui" />
-    <QtUic Include="MiscellaneousStdCLanguageFeatures.ui" />
-    <QtUic Include="MiscellaneousExcelReadWrite.ui" />
-    <QtUic Include="MiscellaneousPostgresql.ui" />
-    <QtUic Include="MiscellaneousQMimeType.ui" />
-    <QtUic Include="MiscellaneousQObjectCast.ui" />
-    <QtUic Include="MiscellaneousQTcpSocket.ui" />
-    <QtUic Include="MiscellaneousQWebSocket.ui" />
-    <QtUic Include="MiscellaneousRegularExpression.ui" />
-    <QtUic Include="MiscellaneousSignalSlot.ui" />
-    <QtUic Include="MiscellaneousSqlCipher.ui" />
-    <QtUic Include="MiscellaneousStdConstructor.ui">
-      <SubType>Designer</SubType>
-    </QtUic>
-    <QtUic Include="MiscellaneousStringUtil.ui" />
-    <QtUic Include="MiscellaneousTesting.ui" />
-    <QtUic Include="MiscellaneousWinPrintDlg.ui" />
-    <QtUic Include="MiscellaneousWinSocket.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousImageQImage.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousImageQPixmap.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousPostgresql.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousPrinterPDF.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousPrinterWidget.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQMimeType.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQObjectCast.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQTcpSocket.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQVirtualKeyboard.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQWebSocket.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousRegularExpression.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousSignalSlot.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousSqlCipher.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousStdConstructor.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousStdContainer.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousStdSharedPointer.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousStringUtil.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousTesting.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinBeginThreadEx.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWxSqlite3.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousZip.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousZLib.ui" />
     <QtUic Include="NotifyWidget.ui">
     </QtUic>
-    <QtUic Include="MiscellaneousWinBeginThreadEx.ui" />
-    <QtUic Include="MiscellaneousWxSqlite3.ui">
-    </QtUic>
-    <QtUic Include="MiscellaneousZip.ui" />
-    <QtUic Include="MiscellaneousZLib.ui" />
     <QtUic Include="QtGuiApplicationTest.ui" />
-    <QtUic Include="WinReportTesting.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtGuiApplicationTest.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppListIcon.h" />
-    <QtMoc Include="MuPDF.h">
-    </QtMoc>
-    <QtMoc Include="FopReportClient.h">
-    </QtMoc>
-    <QtMoc Include="DebugPanel.h">
-    </QtMoc>
-    <QtMoc Include="DebugInfoBaseWidget.h">
-    </QtMoc>
-    <QtMoc Include="DebugInfoHardwareWidget.h">
-    </QtMoc>
     <QtMoc Include="AppListItemDelegate.h">
-    </QtMoc>
-    <QtMoc Include="DebugInfoTestWidget.h">
     </QtMoc>
     <QtMoc Include="AppListItemWidget.h">
     </QtMoc>
-    <QtMoc Include="DebugInfoNetworkWidget.h">
-    </QtMoc>
-    <ClInclude Include="DebugMenuEvent.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(SolutionDir)SharedCode;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)libs\include;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtXmlPatterns</IncludePath>
-      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_PRINTSUPPORT_LIB;QT_NETWORK_LIB;QT_XML_LIB;QT_XMLPATTERNS_LIB;_MBCS</Define>
-    </ClInclude>
-    <QtMoc Include="DicomDownloadWigdet.h">
-    </QtMoc>
-    <QtMoc Include="DicomServerBrowserWidget.h">
-    </QtMoc>
-    <ClInclude Include="FopReportProtocol.h" />
-    <QtMoc Include="JcbMessageBox.h" />
-    <QtMoc Include="JcbTextEdit.h" />
-    <ClInclude Include="MessageTest.pb.h" />
+    <ClInclude Include="Config\AppListIcon.h" />
+    <QtMoc Include="Core\FramelessWindowHelper.h" />
+    <ClInclude Include="Core\IWorkerTask.h" />
+    <QtMoc Include="Core\JcbMessageBox.h" />
+    <QtMoc Include="Core\JcbTextEdit.h" />
+    <ClInclude Include="Core\MyBackgroundWorker.h" />
+    <ClInclude Include="Core\MyWorkerThread.h" />
+    <ClInclude Include="Core\MyWorkerThreadPool.h" />
+    <QtMoc Include="Core\SuspendedScrollBar.h" />
+    <ClInclude Include="Core\ThreadWaitCondition.h" />
+    <QtMoc Include="Core\TitleBarWidget.h" />
+    <ClInclude Include="Core\WorkerTaskBase.h" />
+    <QtMoc Include="DICOM\DicomDownloadWigdet.h" />
+    <QtMoc Include="DICOM\DicomServerBrowserWidget.h" />
+    <QtMoc Include="DICOM\DicomWindow.h" />
     <QtMoc Include="NotifyWidget.h">
     </QtMoc>
-    <QtMoc Include="MiscellaneousAlgorithmLeetCode.h">
-    </QtMoc>
-    <ClInclude Include="MiscellaneousBase.h" />
-    <QtMoc Include="MiscellaneousStdCLanguageFeatures.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousCustomTextEdit.h" />
-    <ClInclude Include="MiscellaneousDefines.h" />
-    <QtMoc Include="MiscellaneousPrinterPDF.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousWinBeginThreadEx.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousPrinterWidget.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousWxSqlite3.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousImageQImage.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousImageQPixmap.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousStdSharedPointer.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousSignalSlot.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousQObjectCast.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousPostgresql.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousZLib.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousZip.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousRegularExpression.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousSqlCipher.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousStringUtil.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousStdConstructor.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousExcelReadWrite.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousQTcpSocket.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousQWebSocket.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousQMimeType.h">
-    </QtMoc>
-    <QtMoc Include="MiscellaneousWinPrintDlg.h" />
-    <QtMoc Include="MiscellaneousWinSocket.h" />
-    <QtMoc Include="MiscellaneousStdContainer.h" />
-    <QtMoc Include="MiscellaneousQVirtualKeyboard.h" />
-    <ClInclude Include="ReportXmlData.h" />
-    <QtMoc Include="TitleBarWidget.h">
-    </QtMoc>
-    <QtMoc Include="SuspendedScrollBar.h">
-    </QtMoc>
-    <ClInclude Include="StringUtil.h" />
-    <ClInclude Include="UrlUtil.h" />
-    <ClInclude Include="Win32PerformanceUtil.h" />
-    <ClInclude Include="XmlReportGenerator.h" />
-    <QtMoc Include="WinReportTesting.h">
-    </QtMoc>
-    <QtMoc Include="MyWorkerThread.h">
-    </QtMoc>
-    <QtMoc Include="WorkerTaskBase.h">
-    </QtMoc>
-    <QtMoc Include="FramelessWindowHelper.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.h" />
+    <ClInclude Include="Miscellaneous\MiscellaneousBase.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousCustomTextEdit.h" />
+    <ClInclude Include="Miscellaneous\MiscellaneousDefines.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousExcelReadWrite.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousImageQImage.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousImageQPixmap.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousPostgresql.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousPrinterPDF.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousPrinterWidget.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQMimeType.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQObjectCast.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQTcpSocket.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQVirtualKeyboard.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQWebSocket.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousRegularExpression.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousSignalSlot.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousSqlCipher.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousStdConstructor.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousStdContainer.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousStdSharedPointer.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousStringUtil.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousTesting.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinBeginThreadEx.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinPrintDlg.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinSocket.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWxSqlite3.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousZip.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousZLib.h" />
+    <ClInclude Include="Utils\StringUtil.h" />
+    <ClInclude Include="Utils\UrlUtil.h" />
+    <ClInclude Include="Utils\Win32PerformanceUtil.h" />
     <QtMoc Include="MainTabPageFirst.h">
     </QtMoc>
     <QtMoc Include="MainTabPageSetting.h">
     </QtMoc>
-    <QtMoc Include="DicomWindow.h">
-    </QtMoc>
     <QtMoc Include="MainTabPageDicom.h">
     </QtMoc>
-    <ClInclude Include="IWorkerTask.h" />
-    <QtMoc Include="MiscellaneousTesting.h">
-    </QtMoc>
-    <ClInclude Include="MessageInfo.pb.h" />
     <ClInclude Include="MyApplication.h" />
-    <ClInclude Include="MyBackgroundWorker.h" />
-    <ClInclude Include="MyWorkerThreadPool.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ThreadWaitCondition.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MessageInfo.proto" />
-    <None Include="MessageTest.proto" />
     <None Include="Resources\qss\black.qss" />
     <None Include="Resources\qss\dark_orange.qss" />
     <None Include="Resources\qss\mainTabWidget.qss" />

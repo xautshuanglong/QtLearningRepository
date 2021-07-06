@@ -28,9 +28,6 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="QThreadTest">
-      <UniqueIdentifier>{cc7bf101-e6f4-475c-af06-3c67237b8f43}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\qss">
       <UniqueIdentifier>{91515bb5-061e-4ed4-bd8c-5ec4c5673f20}</UniqueIdentifier>
     </Filter>
@@ -76,9 +73,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadWaitCondition.cpp">
-      <Filter>QThreadTest</Filter>
-    </ClCompile>
     <ClCompile Include="MyMainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,197 +88,158 @@
     <ClCompile Include="MainTabPageDicom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyBackgroundWorker.cpp">
-      <Filter>QThreadTest</Filter>
-    </ClCompile>
-    <ClCompile Include="MyWorkerThreadPool.cpp">
-      <Filter>QThreadTest</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkerTaskBase.cpp">
-      <Filter>QThreadTest</Filter>
-    </ClCompile>
-    <ClCompile Include="MyWorkerThread.cpp">
-      <Filter>QThreadTest</Filter>
-    </ClCompile>
-    <ClCompile Include="FramelessWindowHelper.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageInfo.pb.cc">
-      <Filter>ProtoBuf</Filter>
-    </ClCompile>
-    <ClCompile Include="XmlReportGenerator.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="UrlUtil.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="AppListIcon.cpp">
-      <Filter>Config</Filter>
-    </ClCompile>
-    <ClCompile Include="MuPDF.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="ReportXmlData.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="FopReportClient.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="FopReportProtocol.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleBarWidget.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32PerformanceUtil.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="AppListItemDelegate.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SuspendedScrollBar.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="AppListItemWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DebugInfoBaseWidget.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugInfoHardwareWidget.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugInfoTestWidget.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugMenuEvent.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugPanel.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="DicomWindow.cpp">
-      <Filter>DICOM</Filter>
-    </ClCompile>
-    <ClCompile Include="WinReportTesting.cpp">
-      <Filter>Reports</Filter>
-    </ClCompile>
-    <ClCompile Include="DicomDownloadWigdet.cpp">
-      <Filter>DICOM</Filter>
-    </ClCompile>
-    <ClCompile Include="DicomServerBrowserWidget.cpp">
-      <Filter>DICOM</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugInfoNetworkWidget.cpp">
-      <Filter>Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageTest.pb.cc">
-      <Filter>ProtoBuf</Filter>
-    </ClCompile>
     <ClCompile Include="NotifyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousTesting.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Config\AppListIcon.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousBase.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\FramelessWindowHelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousDefines.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\JcbMessageBox.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousPrinterPDF.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\JcbTextEdit.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousPrinterWidget.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\MyBackgroundWorker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousWxSqlite3.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\MyWorkerThread.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousImageQImage.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\MyWorkerThreadPool.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousImageQPixmap.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\SuspendedScrollBar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousStdSharedPointer.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\ThreadWaitCondition.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousSignalSlot.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\TitleBarWidget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousQObjectCast.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Core\WorkerTaskBase.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousPostgresql.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="DICOM\DicomDownloadWigdet.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousZLib.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="DICOM\DicomServerBrowserWidget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousZip.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="DICOM\DicomWindow.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousRegularExpression.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\AAAAAAAAAAAAAAA.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousSqlCipher.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringUtil.cpp">
-      <Filter>Utils</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousBase.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousStringUtil.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousCustomTextEdit.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousStdConstructor.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousAlgorithmLeetCode.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousExcelReadWrite.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousImageQImage.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousQTcpSocket.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousImageQPixmap.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousQWebSocket.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousPostgresql.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousQMimeType.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousPrinterPDF.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousWinPrintDlg.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousPrinterWidget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousWinBeginThreadEx.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousQMimeType.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousStdCLanguageFeatures.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousQObjectCast.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousWinSocket.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousQTcpSocket.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JcbMessageBox.cpp">
-      <Filter>Core</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousQVirtualKeyboard.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JcbTextEdit.cpp">
-      <Filter>Core</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousQWebSocket.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousCustomTextEdit.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousRegularExpression.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousStdContainer.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousSignalSlot.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AAAAAAAAAAAAAAA.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousSqlCipher.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiscellaneousQVirtualKeyboard.cpp">
-      <Filter>Miscellaneous</Filter>
+    <ClCompile Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousStdConstructor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousStdContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousStdSharedPointer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousStringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWinBeginThreadEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWxSqlite3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousZip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousZLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\StringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\UrlUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Win32PerformanceUtil.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -303,270 +258,261 @@
     <QtUic Include="AppListItemWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DicomWindow.ui">
-      <Filter>DICOM</Filter>
+    <QtUic Include="DICOM\DicomDownloadWigdet.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DebugInfoTestWidget.ui">
-      <Filter>Debugger</Filter>
+    <QtUic Include="DICOM\DicomServerBrowserWidget.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DebugInfoHardwareWidget.ui">
-      <Filter>Debugger</Filter>
+    <QtUic Include="DICOM\DicomWindow.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DebugPanel.ui">
-      <Filter>Debugger</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="WinReportTesting.ui">
-      <Filter>Reports</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DicomDownloadWigdet.ui">
-      <Filter>DICOM</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DicomServerBrowserWidget.ui">
-      <Filter>DICOM</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousImageQImage.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="DebugInfoNetworkWidget.ui">
-      <Filter>Debugger</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousImageQPixmap.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousTesting.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousPostgresql.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousSignalSlot.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousPrinterPDF.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousQObjectCast.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousPrinterWidget.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousPostgresql.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousQMimeType.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousZLib.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousQObjectCast.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousZip.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousQTcpSocket.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousRegularExpression.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousQVirtualKeyboard.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousSqlCipher.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousQWebSocket.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousStringUtil.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousRegularExpression.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousStdConstructor.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousSignalSlot.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousAlgorithmLeetCode.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousSqlCipher.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousExcelReadWrite.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousQTcpSocket.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousStdConstructor.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousQWebSocket.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousStdContainer.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousQMimeType.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousStdSharedPointer.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousWinPrintDlg.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousStringUtil.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousWinBeginThreadEx.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousTesting.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousStdCLanguageFeatures.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousWinBeginThreadEx.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousWinSocket.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousCustomTextEdit.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousStdContainer.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousWxSqlite3.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MiscellaneousQVirtualKeyboard.ui">
-      <Filter>Miscellaneous</Filter>
+    <QtUic Include="Miscellaneous\MiscellaneousZip.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousZLib.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ThreadWaitCondition.h">
-      <Filter>QThreadTest</Filter>
-    </ClInclude>
     <ClInclude Include="MyApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyBackgroundWorker.h">
-      <Filter>QThreadTest</Filter>
+    <ClInclude Include="Config\AppListIcon.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyWorkerThreadPool.h">
-      <Filter>QThreadTest</Filter>
+    <ClInclude Include="Core\IWorkerTask.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IWorkerTask.h">
-      <Filter>QThreadTest</Filter>
+    <ClInclude Include="Core\MyBackgroundWorker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageInfo.pb.h">
-      <Filter>ProtoBuf</Filter>
+    <ClInclude Include="Core\MyWorkerThread.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmlReportGenerator.h">
-      <Filter>Reports</Filter>
+    <ClInclude Include="Core\MyWorkerThreadPool.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UrlUtil.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Core\ThreadWaitCondition.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppListIcon.h">
-      <Filter>Config</Filter>
+    <ClInclude Include="Core\WorkerTaskBase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReportXmlData.h">
-      <Filter>Reports</Filter>
+    <ClInclude Include="Miscellaneous\MiscellaneousBase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FopReportProtocol.h">
-      <Filter>Reports</Filter>
+    <ClInclude Include="Miscellaneous\MiscellaneousDefines.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Win32PerformanceUtil.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Utils\StringUtil.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DebugMenuEvent.h">
-      <Filter>Debugger</Filter>
+    <ClInclude Include="Utils\UrlUtil.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageTest.pb.h">
-      <Filter>ProtoBuf</Filter>
-    </ClInclude>
-    <ClInclude Include="MiscellaneousBase.h">
-      <Filter>Miscellaneous</Filter>
-    </ClInclude>
-    <ClInclude Include="MiscellaneousDefines.h">
-      <Filter>Miscellaneous</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUtil.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Utils\Win32PerformanceUtil.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainTabPageDicom.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MyWorkerThread.h">
-      <Filter>QThreadTest</Filter>
-    </QtMoc>
-    <QtMoc Include="WorkerTaskBase.h">
-      <Filter>QThreadTest</Filter>
-    </QtMoc>
-    <QtMoc Include="FramelessWindowHelper.h">
-      <Filter>Core</Filter>
-    </QtMoc>
-    <QtMoc Include="MuPDF.h">
-      <Filter>Reports</Filter>
-    </QtMoc>
-    <QtMoc Include="FopReportClient.h">
-      <Filter>Reports</Filter>
-    </QtMoc>
-    <QtMoc Include="TitleBarWidget.h">
-      <Filter>Core</Filter>
-    </QtMoc>
     <QtMoc Include="AppListItemDelegate.h">
       <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="SuspendedScrollBar.h">
-      <Filter>Core</Filter>
     </QtMoc>
     <QtMoc Include="AppListItemWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoTestWidget.h">
-      <Filter>Debugger</Filter>
+    <QtMoc Include="Core\FramelessWindowHelper.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoHardwareWidget.h">
-      <Filter>Debugger</Filter>
+    <QtMoc Include="Core\JcbMessageBox.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoBaseWidget.h">
-      <Filter>Debugger</Filter>
+    <QtMoc Include="Core\JcbTextEdit.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DebugPanel.h">
-      <Filter>Debugger</Filter>
+    <QtMoc Include="Core\SuspendedScrollBar.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="WinReportTesting.h">
-      <Filter>Reports</Filter>
+    <QtMoc Include="Core\TitleBarWidget.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DicomDownloadWigdet.h">
-      <Filter>DICOM</Filter>
+    <QtMoc Include="DICOM\DicomDownloadWigdet.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DebugInfoNetworkWidget.h">
-      <Filter>Debugger</Filter>
+    <QtMoc Include="DICOM\DicomServerBrowserWidget.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousQObjectCast.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="DICOM\DicomWindow.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousPostgresql.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousZLib.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousCustomTextEdit.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousZip.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousExcelReadWrite.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousRegularExpression.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousImageQImage.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousSqlCipher.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousImageQPixmap.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousStringUtil.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousPostgresql.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousStdConstructor.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousPrinterPDF.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousAlgorithmLeetCode.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousPrinterWidget.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousExcelReadWrite.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousQMimeType.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousQTcpSocket.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousQObjectCast.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousQWebSocket.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousQTcpSocket.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousQMimeType.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousQVirtualKeyboard.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousWinPrintDlg.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousQWebSocket.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousWinBeginThreadEx.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousRegularExpression.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousStdCLanguageFeatures.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousSignalSlot.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousWinSocket.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousSqlCipher.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="JcbMessageBox.h">
-      <Filter>Core</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousStdCLanguageFeatures.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="JcbTextEdit.h">
-      <Filter>Core</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousStdConstructor.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousCustomTextEdit.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousStdContainer.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousStdContainer.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousStdSharedPointer.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MiscellaneousQVirtualKeyboard.h">
-      <Filter>Miscellaneous</Filter>
+    <QtMoc Include="Miscellaneous\MiscellaneousStringUtil.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousTesting.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWinBeginThreadEx.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWinPrintDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWinSocket.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWxSqlite3.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousZip.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousZLib.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -587,12 +533,6 @@
     <None Include="Resources\qss\dark_orange.qss">
       <Filter>Resource Files\qss</Filter>
     </None>
-    <None Include="MessageInfo.proto">
-      <Filter>ProtoBuf</Filter>
-    </None>
-    <None Include="MessageTest.proto">
-      <Filter>ProtoBuf</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtGuiApplicationTest.rc" />
@@ -609,62 +549,14 @@
     <QtMoc Include="MainTabPageSetting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="DicomServerBrowserWidget.h">
-      <Filter>DICOM</Filter>
-    </QtMoc>
     <QtMoc Include="NotifyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtUic Include="NotifyWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="DicomWindow.h">
-      <Filter>DICOM</Filter>
-    </QtMoc>
-    <QtMoc Include="MiscellaneousTesting.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousPrinterPDF.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
-    <QtMoc Include="MiscellaneousPrinterPDF.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtMoc Include="MiscellaneousPrinterWidget.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousPrinterWidget.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
-    <QtMoc Include="MiscellaneousWxSqlite3.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousWxSqlite3.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
     <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousImageQImage.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
-    <QtUic Include="MiscellaneousImageQPixmap.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
-    <QtMoc Include="MiscellaneousImageQImage.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtMoc Include="MiscellaneousImageQPixmap.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtMoc Include="MiscellaneousStdSharedPointer.h">
-      <Filter>Miscellaneous</Filter>
-    </QtMoc>
-    <QtUic Include="MiscellaneousStdSharedPointer.ui">
-      <Filter>Miscellaneous</Filter>
-    </QtUic>
-    <QtMoc Include="MiscellaneousSignalSlot.h">
-      <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
