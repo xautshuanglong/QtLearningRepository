@@ -446,16 +446,10 @@
     <ClInclude Include="Core\MyBackgroundWorker.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Core\MyWorkerThread.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Core\MyWorkerThreadPool.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\ThreadWaitCondition.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\WorkerTaskBase.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Utils\UrlUtil.h">
@@ -612,6 +606,12 @@
     </QtMoc>
     <QtMoc Include="DICOM\DicomDownloadWigdet.h">
       <Filter>DICOM</Filter>
+    </QtMoc>
+    <QtMoc Include="Core\MyWorkerThread.h">
+      <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="Core\WorkerTaskBase.h">
+      <Filter>Core</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

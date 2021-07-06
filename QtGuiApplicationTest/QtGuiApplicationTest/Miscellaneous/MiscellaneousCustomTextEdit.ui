@@ -99,13 +99,13 @@
   <customwidget>
    <class>MiscellaneousBase</class>
    <extends>QWidget</extends>
-   <header>miscellaneousbase.h</header>
+   <header>MiscellaneousBase.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>JcbTextEdit</class>
    <extends>QTextEdit</extends>
-   <header>JcbTextEdit.h</header>
+   <header>Core/JcbTextEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -12,8 +12,8 @@
 
 #include <LogUtil.h>
 
+#include "Core/JcbMessageBox.h"
 #include "NotifyWidget.h"
-#include "JcbMessageBox.h"
 
 class Base
 {

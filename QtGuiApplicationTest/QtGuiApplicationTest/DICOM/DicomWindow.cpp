@@ -5,10 +5,11 @@
 
 #include <LogUtil.h>
 #include <DicomEnv.h>
-#include "FramelessWindowHelper.h"
-#include "DicomServerBrowserWidget.h"
-#include "DicomDownloadWigdet.h"
-#include "DebugPanel.h"
+
+#include "Core/FramelessWindowHelper.h"
+#include "DICOM/DicomServerBrowserWidget.h"
+#include "DICOM/DicomDownloadWigdet.h"
+#include "Debugger/DebugPanel.h"
 
 DicomWindow::DicomWindow(QWidget *parent /* = Q_NULLPTR */)
     : QMainWindow(parent)

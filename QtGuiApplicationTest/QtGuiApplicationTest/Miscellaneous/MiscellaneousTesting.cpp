@@ -3,43 +3,43 @@
 #include <LogUtil.h>
 
 #include "ui_MiscellaneousTesting.h"
-#include "FramelessWindowHelper.h"
-#include "MiscellaneousBase.h"
+#include "Core/FramelessWindowHelper.h"
+#include "Miscellaneous/MiscellaneousBase.h"
 
 // WinAPI Test
-#include "MiscellaneousWinBeginThreadEx.h"
-#include "MiscellaneousWinPrintDlg.h"
-#include "MiscellaneousWinSocket.h"
+#include "Miscellaneous/MiscellaneousWinBeginThreadEx.h"
+#include "Miscellaneous/MiscellaneousWinPrintDlg.h"
+#include "Miscellaneous/MiscellaneousWinSocket.h"
 // Standard CPP
-#include "MiscellaneousStdSharedPointer.h"
-#include "MiscellaneousStdContainer.h"
-#include "MiscellaneousStdConstructor.h"
-#include "MiscellaneousStdCLanguageFeatures.h"
+#include "Miscellaneous/MiscellaneousStdSharedPointer.h"
+#include "Miscellaneous/MiscellaneousStdContainer.h"
+#include "Miscellaneous/MiscellaneousStdConstructor.h"
+#include "Miscellaneous/MiscellaneousStdCLanguageFeatures.h"
 // Algorithm
-#include "MiscellaneousAlgorithmLeetCode.h"
+#include "Miscellaneous/MiscellaneousAlgorithmLeetCode.h"
 // QT Test
-#include "MiscellaneousPrinterPDF.h"
-#include "MiscellaneousSignalSlot.h"
-#include "MiscellaneousPrinterWidget.h"
-#include "MiscellaneousCustomTextEdit.h"
-#include "MiscellaneousQVirtualKeyboard.h"
-#include "MiscellaneousImageQImage.h"
-#include "MiscellaneousImageQPixmap.h"
-#include "MiscellaneousQObjectCast.h"
-#include "MiscellaneousRegularExpression.h"
-#include "MiscellaneousQMimeType.h"
-#include "MiscellaneousExcelReadWrite.h"
-#include "MiscellaneousQWebsocket.h"
-#include "MiscellaneousQTcpSocket.h"
+#include "Miscellaneous/MiscellaneousPrinterPDF.h"
+#include "Miscellaneous/MiscellaneousSignalSlot.h"
+#include "Miscellaneous/MiscellaneousPrinterWidget.h"
+#include "Miscellaneous/MiscellaneousCustomTextEdit.h"
+#include "Miscellaneous/MiscellaneousQVirtualKeyboard.h"
+#include "Miscellaneous/MiscellaneousImageQImage.h"
+#include "Miscellaneous/MiscellaneousImageQPixmap.h"
+#include "Miscellaneous/MiscellaneousQObjectCast.h"
+#include "Miscellaneous/MiscellaneousRegularExpression.h"
+#include "Miscellaneous/MiscellaneousQMimeType.h"
+#include "Miscellaneous/MiscellaneousExcelReadWrite.h"
+#include "Miscellaneous/MiscellaneousQWebsocket.h"
+#include "Miscellaneous/MiscellaneousQTcpSocket.h"
 // Database
-#include "MiscellaneousWxSqlite3.h"
-#include "MiscellaneousSqlCipher.h"
-#include "MiscellaneousPostgresql.h"
+#include "Miscellaneous/MiscellaneousWxSqlite3.h"
+#include "Miscellaneous/MiscellaneousSqlCipher.h"
+#include "Miscellaneous/MiscellaneousPostgresql.h"
 // Utility Tools
-#include "MiscellaneousStringUtil.h"
+#include "Miscellaneous/MiscellaneousStringUtil.h"
 // Others
-#include "MiscellaneousZip.h"
-#include "MiscellaneousZLib.h"
+#include "Miscellaneous/MiscellaneousZip.h"
+#include "Miscellaneous/MiscellaneousZLib.h"
 
 enum TreeItemType
 {

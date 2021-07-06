@@ -273,12 +273,11 @@
     <QtMoc Include="Core\JcbMessageBox.h" />
     <QtMoc Include="Core\JcbTextEdit.h" />
     <ClInclude Include="Core\MyBackgroundWorker.h" />
-    <ClInclude Include="Core\MyWorkerThread.h" />
+    <QtMoc Include="Core\MyWorkerThread.h" />
     <ClInclude Include="Core\MyWorkerThreadPool.h" />
     <QtMoc Include="Core\SuspendedScrollBar.h" />
     <ClInclude Include="Core\ThreadWaitCondition.h" />
     <QtMoc Include="Core\TitleBarWidget.h" />
-    <ClInclude Include="Core\WorkerTaskBase.h" />
     <QtMoc Include="DICOM\DicomDownloadWigdet.h" />
     <QtMoc Include="DICOM\DicomServerBrowserWidget.h" />
     <QtMoc Include="DICOM\DicomWindow.h" />
@@ -289,6 +288,7 @@
     <QtMoc Include="Debugger\DebugInfoHardwareWidget.h" />
     <QtMoc Include="Debugger\DebugInfoNetworkWidget.h" />
     <QtMoc Include="Debugger\DebugInfoTestWidget.h" />
+    <QtMoc Include="Core\WorkerTaskBase.h" />
     <ClInclude Include="Debugger\DebugMenuEvent.h" />
     <QtMoc Include="Debugger\DebugPanel.h" />
     <ClInclude Include="Miscellaneous\MiscellaneousBase.h" />

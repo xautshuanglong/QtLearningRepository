@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DebugInfoBaseWidget.h>
+#include "Debugger/DebugInfoBaseWidget.h"
 
 namespace Ui
 {

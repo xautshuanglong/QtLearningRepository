@@ -5,9 +5,9 @@
 #include <QTimer>
 
 #include <LogUtil.h>
-#include "DebugMenuEvent.h"
-#include "DebugPanel.h"
-#include "Win32PerformanceUtil.h"
+#include "Debugger/DebugMenuEvent.h"
+#include "Debugger/DebugPanel.h"
+#include "Utils/Win32PerformanceUtil.h"
 
 DebugInfoTestWidget::DebugInfoTestWidget(QWidget *parent /* = 0 */)
     : DebugInfoBaseWidget(parent)

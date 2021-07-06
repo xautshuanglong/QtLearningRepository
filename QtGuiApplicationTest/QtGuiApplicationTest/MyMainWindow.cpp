@@ -20,14 +20,14 @@
 
 #include <LogUtil.h>
 
-#include "FramelessWindowHelper.h"
+#include "Core/FramelessWindowHelper.h"
+#include "Debugger/DebugPanel.h"
+#include "Debugger/DebugInfoHardwareWidget.h"
+#include "Debugger/DebugInfoNetworkWidget.h"
+#include "Debugger/DebugInfoTestWidget.h"
 #include "MainTabPageFirst.h"
 #include "MainTabPageSetting.h"
 #include "MainTabPageDicom.h"
-#include "DebugPanel.h"
-#include "DebugInfoHardwareWidget.h"
-#include "DebugInfoNetworkWidget.h"
-#include "DebugInfoTestWidget.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent)
     : QMainWindow(parent)

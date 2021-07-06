@@ -4,7 +4,7 @@
 #include <QListWidget>
 #include <QCheckBox>
 
-#include <StringUtil.h>
+#include "Utils/StringUtil.h"
 
 struct CharacterTypes
 {

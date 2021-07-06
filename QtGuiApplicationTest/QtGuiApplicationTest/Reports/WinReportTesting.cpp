@@ -19,16 +19,16 @@
 #include <mupdf/pdf.h>
 
 // Protocol Buffer
-#include "MessageInfo.pb.h"
+#include "ProtocolBuffers/MessageInfo.pb.h"
 
 // Self Define
 #include <MemUtil.h>
 #include <LogUtil.h>
-#include "FramelessWindowHelper.h"
-#include "XmlReportGenerator.h"
-#include "ReportXmlData.h"
-#include "FopReportProtocol.h"
-#include "SuspendedScrollBar.h"
+#include "Core/FramelessWindowHelper.h"
+#include "Core/SuspendedScrollBar.h"
+#include "Reports/XmlReportGenerator.h"
+#include "Reports/ReportXmlData.h"
+#include "Reports/FopReportProtocol.h"
 
 using namespace SL::Util;
 using namespace com::genomics::protobuf;

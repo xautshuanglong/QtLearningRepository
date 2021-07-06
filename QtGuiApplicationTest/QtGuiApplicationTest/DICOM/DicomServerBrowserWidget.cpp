@@ -18,7 +18,7 @@
 #include <DicomTest.h>
 #include <DicomClient.h>
 
-#include "TitleBarWidget.h"
+#include "Core/TitleBarWidget.h"
 
 DicomServerBrowserWidget::DicomServerBrowserWidget(QWidget *parent)
     : QWidget(parent)

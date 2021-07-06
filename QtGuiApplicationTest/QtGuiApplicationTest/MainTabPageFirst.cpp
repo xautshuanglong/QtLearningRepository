@@ -40,17 +40,17 @@
 #include <BackgroundWorkerTest.h>
 #include <TaskBase.h>
 
-#include "DicomWindow.h"
+#include "DICOM/DicomWindow.h"
 #include "AppListItemDelegate.h"
 #include "AppListItemWidget.h"
-#include "MyBackgroundWorker.h"
-#include "MyWorkerThreadPool.h"
-#include "WorkerTaskBase.h"
-#include "MiscellaneousTesting.h"
-#include "WinReportTesting.h"
-#include "SuspendedScrollBar.h"
-#include "UrlUtil.h"
-#include "MessageTest.pb.h"
+#include "Core/MyBackgroundWorker.h"
+#include "Core/MyWorkerThreadPool.h"
+#include "Core/WorkerTaskBase.h"
+#include "Core/SuspendedScrollBar.h"
+#include "Miscellaneous/MiscellaneousTesting.h"
+#include "Reports/WinReportTesting.h"
+#include "Utils/UrlUtil.h"
+#include "ProtocolBuffers/MessageTest.pb.h"
 
 //static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 

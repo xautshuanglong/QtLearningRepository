@@ -12,10 +12,10 @@
 #include <QValueAxis>
 
 #include <LogUtil.h>
-#include "DebugMenuEvent.h"
-#include "DebugPanel.h"
-#include "Win32PerformanceUtil.h"
-#include "DebugInfoTestWidget.h"
+#include "Debugger/DebugMenuEvent.h"
+#include "Debugger/DebugPanel.h"
+#include "Debugger/DebugInfoTestWidget.h"
+#include "Utils/Win32PerformanceUtil.h"
 
 QT_CHARTS_USE_NAMESPACE
 

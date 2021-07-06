@@ -5,7 +5,7 @@
 #include <LogUtil.h>
 
 // Protocol Buffer
-#include "MessageInfo.pb.h"
+#include "ProtocolBuffers/MessageInfo.pb.h"
 using namespace com::genomics::protobuf;
 
 int FopReportClient::gMsgID = 1;

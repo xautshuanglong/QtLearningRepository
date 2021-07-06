@@ -14,9 +14,9 @@
 #include <QTimer>
 
 #include <LogUtil.h>
-#include "DebugMenuEvent.h"
-#include "DebugInfoBaseWidget.h"
-#include "TitleBarWidget.h"
+#include "Debugger/DebugMenuEvent.h"
+#include "Debugger/DebugInfoBaseWidget.h"
+#include "Core/TitleBarWidget.h"
 
 QAtomicPointer<DebugPanel> DebugPanel::mInstance = Q_NULLPTR;
 QMutex DebugPanel::mMutexInstance;
