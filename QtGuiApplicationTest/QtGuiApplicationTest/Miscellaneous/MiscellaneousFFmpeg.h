@@ -1,5 +1,5 @@
-#ifndef MiscellaneousFFmpeg
-#define MISCELLANEOUS_STD_SHARED_POINTER_H
+#ifndef MISCELLANEOUS_FFMPEG_H
+#define MISCELLANEOUS_FFMPEG_H
 
 #include "MiscellaneousBase.h"
 
@@ -28,4 +28,4 @@ private:
     Ui::MiscellaneousFFmpeg *ui;
 };
 
-#endif // MISCELLANEOUS_STD_SHARED_POINTER_H
+#endif // MISCELLANEOUS_FFMPEG_H

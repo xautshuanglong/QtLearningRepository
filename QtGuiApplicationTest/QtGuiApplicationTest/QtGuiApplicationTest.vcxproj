@@ -191,6 +191,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousStdSharedPointer.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousStringUtil.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousTesting.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousTimeCode.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinBeginThreadEx.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
@@ -252,6 +253,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousStdSharedPointer.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousStringUtil.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousTesting.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousTimeCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinBeginThreadEx.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
@@ -327,6 +329,7 @@
     <QtMoc Include="Reports\FopReportClient.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousDirectShow.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousFFmpeg.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousTimeCode.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

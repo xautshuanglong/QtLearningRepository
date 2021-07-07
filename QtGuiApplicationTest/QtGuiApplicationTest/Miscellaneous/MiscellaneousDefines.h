@@ -48,6 +48,7 @@ enum class MiscellaneousTestItem
     Others_ZLib,                      // 使用 ZLib 压缩/解压文件
     Others_DirectShow,                // 使用 DirectShow 处理硬件媒体设备
     Others_FFmpeg,                    // 使用 FFmpeg 音视频接口测试
+    Others_TimeCode,                  // 使用 TimeCode 时间码学习
     Max_Size
 };
 

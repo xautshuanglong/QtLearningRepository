@@ -42,6 +42,7 @@
 #include "Miscellaneous/MiscellaneousZLib.h"
 #include "Miscellaneous/MiscellaneousDirectShow.h"
 #include "Miscellaneous/MiscellaneousFFmpeg.h"
+#include "Miscellaneous/MiscellaneousTimeCode.h"
 
 enum TreeItemType
 {
@@ -112,6 +113,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousZLib(this));
     this->AppendTestPage(new MiscellaneousDirectShow(this));
     this->AppendTestPage(new MiscellaneousFFmpeg(this));
+    this->AppendTestPage(new MiscellaneousTimeCode(this));
     this->AppendTestPage(new MiscellaneousStringUtil(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
