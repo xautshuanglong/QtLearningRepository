@@ -169,7 +169,9 @@
     <ClCompile Include="Miscellaneous\MiscellaneousBase.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousCustomTextEdit.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousDirectShow.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageQImage.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageQPixmap.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousPostgresql.cpp" />
@@ -228,7 +230,9 @@
     <QtUic Include="MainTabPageSetting.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousDirectShow.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageQImage.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageQPixmap.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousPostgresql.ui" />
@@ -321,6 +325,8 @@
     <QtMoc Include="Miscellaneous\MiscellaneousZip.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousZLib.h" />
     <QtMoc Include="Reports\FopReportClient.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousDirectShow.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousFFmpeg.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

@@ -46,6 +46,8 @@ enum class MiscellaneousTestItem
     Utility_StringUtil,               // 工具类 - 字符串操作
     Others_Zip,                       // 使用 ZLib 归档/提取文件
     Others_ZLib,                      // 使用 ZLib 压缩/解压文件
+    Others_DirectShow,                // 使用 DirectShow 处理硬件媒体设备
+    Others_FFmpeg,                    // 使用 FFmpeg 音视频接口测试
     Max_Size
 };
 

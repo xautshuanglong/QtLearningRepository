@@ -283,6 +283,12 @@
     <ClCompile Include="Config\AppListIcon.cpp">
       <Filter>Config</Filter>
     </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousDirectShow.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -407,6 +413,12 @@
     </QtUic>
     <QtUic Include="DICOM\DicomDownloadWigdet.ui">
       <Filter>DICOM</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousDirectShow.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui">
+      <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -612,6 +624,12 @@
     </QtMoc>
     <QtMoc Include="Core\WorkerTaskBase.h">
       <Filter>Core</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousDirectShow.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousFFmpeg.h">
+      <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

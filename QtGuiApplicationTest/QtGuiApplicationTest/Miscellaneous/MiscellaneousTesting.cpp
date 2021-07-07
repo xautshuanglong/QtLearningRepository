@@ -40,6 +40,8 @@
 // Others
 #include "Miscellaneous/MiscellaneousZip.h"
 #include "Miscellaneous/MiscellaneousZLib.h"
+#include "Miscellaneous/MiscellaneousDirectShow.h"
+#include "Miscellaneous/MiscellaneousFFmpeg.h"
 
 enum TreeItemType
 {
@@ -108,6 +110,8 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousPostgresql(this));
     this->AppendTestPage(new MiscellaneousZip(this));
     this->AppendTestPage(new MiscellaneousZLib(this));
+    this->AppendTestPage(new MiscellaneousDirectShow(this));
+    this->AppendTestPage(new MiscellaneousFFmpeg(this));
     this->AppendTestPage(new MiscellaneousStringUtil(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
