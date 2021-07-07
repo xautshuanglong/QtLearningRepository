@@ -4,6 +4,9 @@
 #include "MiscellaneousBase.h"
 #include "ui_MiscellaneousStdConstructor.h"
 
+class ConstructorTestBase;
+class ConstructorTestDerived;
+
 class MiscellaneousStdConstructor : public MiscellaneousBase
 {
     Q_OBJECT
@@ -16,6 +19,9 @@ public:
     virtual QString GetTitleTooltip() override;
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
+
+private:
+    ConstructorTestBase GetLocalVariable();
 
 private slots:
     void on_btnConstructorCommon_clicked();
@@ -47,6 +53,8 @@ public:
     int GetIntValue();
     int GetIncreaseValue();
     QString GetName();
+
+    std::string toString();
 
 private:
     int       mIntValue;

@@ -32,6 +32,17 @@ MiscellaneousTestItem MiscellaneousStdConstructor::GetItemID()
     return MiscellaneousTestItem::StdCpp_Constructor;
 }
 
+ConstructorTestBase MiscellaneousStdConstructor::GetLocalVariable()
+{
+    ConstructorTestBase localVariable;
+    localVariable.SetIntValue(101);
+    localVariable.SetName("local variable");
+    std::string localVariableStr = localVariable.toString();
+    LogUtil::Debug(CODE_LOCATION, "localVariable (0x%p): %s", &localVariable, localVariableStr.c_str());
+
+    return localVariable;
+}
+
 void MiscellaneousStdConstructor::on_btnConstructorCommon_clicked()
 {
     ConstructorTestBase testBase1;
@@ -46,13 +57,25 @@ void MiscellaneousStdConstructor::on_btnConstructorCommon_clicked()
     int baseIntValueNew = testBase1.GetIntValue();
     int derivedIntValueNew = testDerived1.GetIntValue();
     int baseValueInDerivedNew = testDerived1.ConstructorTestBase::GetIntValue();
-
-    int i = 0;
 }
 
 void MiscellaneousStdConstructor::on_btnConstructorMove_clicked()
 {
-    int i = 0;
+    ConstructorTestBase getLocalVar = this->GetLocalVariable();
+    ConstructorTestBase test1(getLocalVar);  // 拷贝构造
+    ConstructorTestBase test2 = getLocalVar; // 拷贝构造
+    ConstructorTestBase test3 = test1;       // 拷贝构造
+
+    ConstructorTestBase test4;
+    test4 = test1; // 赋值操作符
+
+    std::string getLocalVarStr = getLocalVar.toString();
+    std::string test1Str = test1.toString();
+    std::string test2Str = test1.toString();
+
+    LogUtil::Debug(CODE_LOCATION, "getLocalVar (0x%p): %s", &getLocalVar, getLocalVarStr.c_str());
+    LogUtil::Debug(CODE_LOCATION, "test1 (0x%p): %s", &test1, test1Str.c_str());
+    LogUtil::Debug(CODE_LOCATION, "test2 (0x%p): %s", &test2, test2Str.c_str());
 }
 
 void MiscellaneousStdConstructor::on_btnConstructorCopy_clicked()
@@ -186,6 +209,18 @@ int ConstructorTestBase::GetIncreaseValue()
 QString ConstructorTestBase::GetName()
 {
     return mStrName;
+}
+
+std::string ConstructorTestBase::toString()
+{
+    std::string retValue;
+
+    retValue += "name:";
+    retValue += mStrName.toStdString();
+    retValue += " value:";
+    retValue += std::to_string(mIntValue);
+
+    return retValue;
 }
 
 /*------------------------------------------------- ConstructorTestDerived -------------------------------------------------*/
