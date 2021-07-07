@@ -21,6 +21,10 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+private:
+    void PriorityQueueTest_1();
+    void PriorityQueueTest_CustomClass();
+
 private slots:
     void on_btnVectorTest_clicked();
     void on_btnListTest_clicked();
@@ -33,6 +37,29 @@ private slots:
 
 private:
     Ui::MiscellaneousStdContainer*ui;
+};
+
+class InterObjPriorityQueue
+{
+public:
+    InterObjPriorityQueue() noexcept;
+    InterObjPriorityQueue(int hour, int minute, int second, int frame) noexcept;
+    InterObjPriorityQueue(InterObjPriorityQueue& other) noexcept;
+    InterObjPriorityQueue(InterObjPriorityQueue&& other) noexcept;
+    ~InterObjPriorityQueue();
+
+    bool operator <(const InterObjPriorityQueue& other);
+    bool operator >(const InterObjPriorityQueue& other);
+    bool operator ==(InterObjPriorityQueue& other);
+    bool operator ==(const InterObjPriorityQueue& other);
+    bool operator <=(const InterObjPriorityQueue& other);
+    bool operator >=(const InterObjPriorityQueue& other);
+    std::ostream& operator<<(std::ostream& output);
+
+    int m_iHour;
+    int m_iMinute;
+    int m_iSecond;
+    int m_iFrame;
 };
 
 #endif // MISCELLANEOUS_STD_CONTAINER_H
