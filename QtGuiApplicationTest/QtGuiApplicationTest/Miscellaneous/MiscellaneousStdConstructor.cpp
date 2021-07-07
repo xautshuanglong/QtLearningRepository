@@ -81,7 +81,7 @@ void MiscellaneousStdConstructor::on_btnConstructorMove_clicked()
     moveBefore.SetIntValue(111);
     moveBefore.SetName("moveTest");
 
-    ConstructorTestBase&& moveAfter = std::move(moveBefore); // https://zhuanlan.zhihu.com/p/94588204
+    ConstructorTestBase moveAfter = std::move(moveBefore); // https://zhuanlan.zhihu.com/p/94588204
 
     std::string moveBeforeName = moveBefore.GetName();
     std::string moveAfterName = moveAfter.GetName();
@@ -141,7 +141,7 @@ ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase&& other) noex
     LogUtil::Debug(CODE_LOCATION, "Construct-Move Base Class ThisPointer:0x%p OtherPointer:0x%p", this, &other);
     mIntValue = other.mIntValue;
     mSelfIncrease = other.mSelfIncrease;
-    mStrName = other.mStrName;
+    mStrName = std::move(other.mStrName);
 }
 
 ConstructorTestBase::~ConstructorTestBase()
