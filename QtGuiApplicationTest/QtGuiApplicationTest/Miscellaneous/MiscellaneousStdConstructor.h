@@ -48,18 +48,18 @@ public:
     ConstructorTestBase operator++(int);
 
     void SetIntValue(const int intValue);
-    void SetName(const QString& name);
+    void SetName(const std::string & name);
 
     int GetIntValue();
     int GetIncreaseValue();
-    QString GetName();
+    std::string GetName();
 
     std::string toString();
 
 private:
-    int       mIntValue;
-    int       mSelfIncrease;
-    QString   mStrName;
+    int           mIntValue;
+    int           mSelfIncrease;
+    std::string   mStrName;
 };
 
 class ConstructorTestDerived : public ConstructorTestBase

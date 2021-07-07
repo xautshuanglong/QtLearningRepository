@@ -76,6 +76,15 @@ void MiscellaneousStdConstructor::on_btnConstructorMove_clicked()
     LogUtil::Debug(CODE_LOCATION, "getLocalVar (0x%p): %s", &getLocalVar, getLocalVarStr.c_str());
     LogUtil::Debug(CODE_LOCATION, "test1 (0x%p): %s", &test1, test1Str.c_str());
     LogUtil::Debug(CODE_LOCATION, "test2 (0x%p): %s", &test2, test2Str.c_str());
+
+    ConstructorTestBase moveBefore;
+    moveBefore.SetIntValue(111);
+    moveBefore.SetName("moveTest");
+
+    ConstructorTestBase&& moveAfter = std::move(moveBefore); // https://zhuanlan.zhihu.com/p/94588204
+
+    std::string moveBeforeName = moveBefore.GetName();
+    std::string moveAfterName = moveAfter.GetName();
 }
 
 void MiscellaneousStdConstructor::on_btnConstructorCopy_clicked()
@@ -123,6 +132,7 @@ ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase& other) noexc
 {
     LogUtil::Debug(CODE_LOCATION, "Construct-Copy Base Class ThisPointer:0x%p OtherPointer:0x%p", this, &other);
     mIntValue = other.mIntValue;
+    mSelfIncrease = other.mSelfIncrease;
     mStrName = other.mStrName;
 }
 
@@ -130,6 +140,7 @@ ConstructorTestBase::ConstructorTestBase(const ConstructorTestBase&& other) noex
 {
     LogUtil::Debug(CODE_LOCATION, "Construct-Move Base Class ThisPointer:0x%p OtherPointer:0x%p", this, &other);
     mIntValue = other.mIntValue;
+    mSelfIncrease = other.mSelfIncrease;
     mStrName = other.mStrName;
 }
 
@@ -144,6 +155,7 @@ ConstructorTestBase& ConstructorTestBase::operator=(const ConstructorTestBase& o
     if (this != &other)
     {
         mIntValue = other.mIntValue;
+        mSelfIncrease = other.mSelfIncrease;
         mStrName = other.mStrName;
     }
     return *this;
@@ -155,6 +167,7 @@ ConstructorTestBase& ConstructorTestBase::operator=(ConstructorTestBase& other)
     if (this != &other)
     {
         mIntValue = other.mIntValue;
+        mSelfIncrease = other.mSelfIncrease;
         mStrName = other.mStrName;
     }
     return *this;
@@ -191,7 +204,7 @@ void ConstructorTestBase::SetIntValue(const int intValue)
     mIntValue = intValue;
 }
 
-void ConstructorTestBase::SetName(const QString& name)
+void ConstructorTestBase::SetName(const std::string & name)
 {
     mStrName = name;
 }
@@ -206,7 +219,7 @@ int ConstructorTestBase::GetIncreaseValue()
     return mSelfIncrease;
 }
 
-QString ConstructorTestBase::GetName()
+std::string ConstructorTestBase::GetName()
 {
     return mStrName;
 }
@@ -216,7 +229,7 @@ std::string ConstructorTestBase::toString()
     std::string retValue;
 
     retValue += "name:";
-    retValue += mStrName.toStdString();
+    retValue += mStrName;
     retValue += " value:";
     retValue += std::to_string(mIntValue);
 
