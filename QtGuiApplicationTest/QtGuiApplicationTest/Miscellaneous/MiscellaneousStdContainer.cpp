@@ -7,7 +7,7 @@
 
 #include "LogUtil.h"
 
-template<typename T>
+template<class T>
 void print_queue(T q)
 {
     std::stringstream ss;
@@ -71,7 +71,7 @@ void MiscellaneousStdContainer::on_btnQueueTest_clicked()
     int i = 0;
 }
 
-void MiscellaneousStdContainer::PriorityQueueTest_1()
+void MiscellaneousStdContainer::PriorityQueueTest_BaseType()
 {
     std::priority_queue<int> q;
     const auto data = { 1,8,5,6,3,4,0,9,7,2 };
@@ -98,7 +98,7 @@ void MiscellaneousStdContainer::PriorityQueueTest_1()
 
 void MiscellaneousStdContainer::PriorityQueueTest_CustomClass()
 {
-    InterObjPriorityQueue lessTest1(1, 2, 3, 3);
+    InterObjPriorityQueue lessTest1(2, 1, 3, 3);
     InterObjPriorityQueue lessTest2(1, 2, 3, 4);
     bool resLess1 = lessTest1 < lessTest2;
     bool resLess2 = lessTest2 < lessTest1;
@@ -131,10 +131,25 @@ void MiscellaneousStdContainer::PriorityQueueTest_CustomClass()
     bool resGreatEqual4 = greatEqualTest3 >= greatEqualTest1;
 }
 
+void MiscellaneousStdContainer::PriorityQueueTest_CustomClass_Sort()
+{
+    std::priority_queue<InterObjPriorityQueue, std::vector<InterObjPriorityQueue>, std::greater<InterObjPriorityQueue>> sortedQueue;
+    sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 4));
+    sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 5));
+    sortedQueue.push(InterObjPriorityQueue(0, 2, 3, 4));
+    sortedQueue.push(InterObjPriorityQueue(0, 1, 3, 4));
+    sortedQueue.push(InterObjPriorityQueue(0, 3, 3, 4));
+    sortedQueue.push(InterObjPriorityQueue(1, 2, 2, 4));
+    sortedQueue.push(InterObjPriorityQueue(1, 2, 4, 4));
+    sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 5));
+    print_queue(sortedQueue);
+}
+
 void MiscellaneousStdContainer::on_btnPriorityQueueTest_clicked()
 {
-    //this->PriorityQueueTest_1();
-    this->PriorityQueueTest_CustomClass();
+    //this->PriorityQueueTest_BaseType();
+    //this->PriorityQueueTest_CustomClass();
+    this->PriorityQueueTest_CustomClass_Sort();
 }
 
 void MiscellaneousStdContainer::on_btnDequeueTest_clicked()
@@ -211,19 +226,40 @@ InterObjPriorityQueue::InterObjPriorityQueue(InterObjPriorityQueue&& other) noex
 InterObjPriorityQueue::~InterObjPriorityQueue()
 {}
 
-bool InterObjPriorityQueue::operator <(const InterObjPriorityQueue& other)
+InterObjPriorityQueue& InterObjPriorityQueue::operator=(const InterObjPriorityQueue &other)
+{
+    m_iHour = other.m_iHour;
+    m_iMinute = other.m_iMinute;
+    m_iSecond = other.m_iSecond;
+    m_iFrame = other.m_iFrame;
+    return *this;
+}
+
+bool InterObjPriorityQueue::operator <(const InterObjPriorityQueue& other) const
 {
     if (m_iHour < other.m_iHour)
     {
         return true;
     }
+    else if (m_iHour > other.m_iHour)
+    {
+        return false;
+    }
     if (m_iMinute < other.m_iMinute)
     {
         return true;
     }
+    else if (m_iMinute > other.m_iMinute)
+    {
+        return false;
+    }
     if (m_iSecond < other.m_iSecond)
     {
         return true;
+    }
+    else if (m_iSecond > other.m_iSecond)
+    {
+        return false;
     }
     if (m_iFrame < other.m_iFrame)
     {
@@ -232,19 +268,31 @@ bool InterObjPriorityQueue::operator <(const InterObjPriorityQueue& other)
     return false;
 }
 
-bool InterObjPriorityQueue::operator >(const InterObjPriorityQueue& other)
+bool InterObjPriorityQueue::operator >(const InterObjPriorityQueue& other) const
 {
     if (m_iHour > other.m_iHour)
     {
         return true;
     }
+    else if (m_iHour < other.m_iHour)
+    {
+        return false;
+    }
     if (m_iMinute > other.m_iMinute)
     {
         return true;
     }
+    else if (m_iMinute < other.m_iMinute)
+    {
+        return false;
+    }
     if (m_iSecond > other.m_iSecond)
     {
         return true;
+    }
+    else if (m_iSecond < other.m_iSecond)
+    {
+        return false;
     }
     if (m_iFrame > other.m_iFrame)
     {
@@ -253,7 +301,7 @@ bool InterObjPriorityQueue::operator >(const InterObjPriorityQueue& other)
     return false;
 }
 
-bool InterObjPriorityQueue::operator ==(InterObjPriorityQueue& other)
+bool InterObjPriorityQueue::operator ==(const InterObjPriorityQueue& other) const
 {
     if (m_iHour == other.m_iHour &&
         m_iMinute == other.m_iMinute &&
@@ -265,19 +313,7 @@ bool InterObjPriorityQueue::operator ==(InterObjPriorityQueue& other)
     return false;
 }
 
-bool InterObjPriorityQueue::operator ==(const InterObjPriorityQueue& other)
-{
-    if (m_iHour == other.m_iHour &&
-        m_iMinute == other.m_iMinute &&
-        m_iSecond == other.m_iSecond &&
-        m_iFrame == other.m_iFrame)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool InterObjPriorityQueue::operator <=(const InterObjPriorityQueue& other)
+bool InterObjPriorityQueue::operator <=(const InterObjPriorityQueue& other) const
 {
     if (*this > other)
     {
@@ -286,7 +322,7 @@ bool InterObjPriorityQueue::operator <=(const InterObjPriorityQueue& other)
     return true;
 }
 
-bool InterObjPriorityQueue::operator >=(const InterObjPriorityQueue& other)
+bool InterObjPriorityQueue::operator >=(const InterObjPriorityQueue& other) const
 {
     if (*this < other)
     {
@@ -295,8 +331,8 @@ bool InterObjPriorityQueue::operator >=(const InterObjPriorityQueue& other)
     return true;
 }
 
-std::ostream& InterObjPriorityQueue::operator<<(std::ostream& output)
+std::ostream& operator<<(std::ostream& output, const InterObjPriorityQueue& obj)
 {
-    output << m_iHour << ":" << m_iMinute << ":" << m_iSecond << ":" << m_iFrame;
+    output << obj.m_iHour << ":" << obj.m_iMinute << ":" << obj.m_iSecond << ":" << obj.m_iFrame;
     return output;
 }
