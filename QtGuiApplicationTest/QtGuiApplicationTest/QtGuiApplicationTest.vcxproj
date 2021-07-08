@@ -337,6 +337,8 @@
     <ClInclude Include="Reports\ReportXmlData.h" />
     <QtMoc Include="Reports\WinReportTesting.h" />
     <ClInclude Include="Reports\XmlReportGenerator.h" />
+    <ClInclude Include="Utils\PrintUtil.h" />
+    <ClInclude Include="Utils\StreamUtil.h" />
     <ClInclude Include="Utils\StringUtil.h" />
     <ClInclude Include="Utils\UrlUtil.h" />
     <ClInclude Include="Utils\Win32PerformanceUtil.h" />

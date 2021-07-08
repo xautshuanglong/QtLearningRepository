@@ -8,18 +8,7 @@
 #include <map>
 
 #include "LogUtil.h"
-
-template<class T>
-void print_queue(T q)
-{
-    std::stringstream ss;
-    while (!q.empty())
-    {
-        ss << q.top() << ' ';
-        q.pop();
-    }
-    LogUtil::Debug(CODE_LOCATION, "PriorityQueue : %s", ss.str().c_str());
-}
+#include "Utils/PrintUtil.h"
 
 MiscellaneousStdContainer::MiscellaneousStdContainer(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -228,6 +217,46 @@ void MiscellaneousStdContainer::MapTest_CustomClassKey()
     }
 }
 
+void MiscellaneousStdContainer::MapTest_ModifyValue()
+{
+    std::map<int, std::list<std::string>> intStringMap;
+    intStringMap.insert(std::make_pair(1, std::list<std::string>{"Hello", "shuang", "long"}));
+    intStringMap.insert(std::make_pair(2, std::list<std::string>{"I", "love", "coding"}));
+
+    std::list<std::string> mapValue1 = intStringMap[1];
+    print_list(mapValue1);
+    mapValue1.push_back("append");
+    print_list(mapValue1);
+    mapValue1 = intStringMap[1];
+    print_list(mapValue1);
+
+    std::list<std::string>& mapValueRef1 = intStringMap[1];
+    print_list(mapValueRef1);
+    mapValueRef1.push_back("AppendRef");
+    print_list(mapValueRef1);
+    mapValueRef1 = intStringMap[1];
+    print_list(mapValueRef1);
+
+
+    std::unordered_map<int, std::list<std::string>> intStringUnorderedMap;
+    intStringUnorderedMap.insert(std::make_pair(1, std::list<std::string>{"Hello", "chuan", "biao"}));
+    intStringUnorderedMap.insert(std::make_pair(2, std::list<std::string>{"I", "love", "programming"}));
+
+    std::list<std::string> unorderedMapValue1 = intStringUnorderedMap[1];
+    print_list(unorderedMapValue1);
+    unorderedMapValue1.push_back("append");
+    print_list(unorderedMapValue1);
+    unorderedMapValue1 = intStringUnorderedMap[1];
+    print_list(unorderedMapValue1);
+
+    std::list<std::string> &unorderedMapValueRef1 = intStringUnorderedMap[1];
+    print_list(unorderedMapValueRef1);
+    unorderedMapValueRef1.push_back("AppendRef");
+    print_list(unorderedMapValueRef1);
+    unorderedMapValueRef1 = intStringUnorderedMap[1];
+    print_list(unorderedMapValueRef1);
+}
+
 void MiscellaneousStdContainer::on_btnPriorityQueueTest_clicked()
 {
     //this->PriorityQueueTest_BaseType();
@@ -243,7 +272,8 @@ void MiscellaneousStdContainer::on_btnDequeueTest_clicked()
 void MiscellaneousStdContainer::on_btnMapTest_clicked()
 {
     //this->MapTest_CommonUse();
-    this->MapTest_CustomClassKey();
+    //this->MapTest_CustomClassKey();
+    this->MapTest_ModifyValue();
 }
 
 void MiscellaneousStdContainer::on_btnMultimapTest_clicked()

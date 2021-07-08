@@ -482,6 +482,12 @@
     <ClInclude Include="Config\AppListIcon.h">
       <Filter>Config</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\StreamUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\PrintUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainTabPageDicom.h">

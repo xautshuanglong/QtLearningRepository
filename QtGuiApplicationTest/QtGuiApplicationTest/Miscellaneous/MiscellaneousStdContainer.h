@@ -27,6 +27,7 @@ private:
     void PriorityQueueTest_CustomClass_Sort();
     void MapTest_CommonUse();
     void MapTest_CustomClassKey();
+    void MapTest_ModifyValue();
 
 private slots:
     void on_btnVectorTest_clicked();
