@@ -84,17 +84,12 @@ string to_string(const InterObjPriorityQueue& obj);
 _STD_END
 
 // https://blog.csdn.net/y109y/article/details/82669620
-// 方案一
+// 方案一：使用仿函数包装 hash 计算函数（为了达到 operator() 的效果）
 size_t InterObj_Hash(const InterObjPriorityQueue& obj);
-// 方案二
+// 方案二: 自定义 hash 就算方法
 class InterObjHasher // : public std::hash<InterObjPriorityQueue>
 {
 public:
-    //static size_t _Do_hash(const InterObjPriorityQueue& obj) noexcept
-    //{
-    //    return std::hash<int>::_Do_hash(obj.GetHour());
-    //}
-
     size_t operator()(const InterObjPriorityQueue& obj) const
     {
         std::hash<int> intHash;
@@ -105,7 +100,7 @@ public:
             intHash(obj.GetFrame());
     }
 };
-// 
+// 方案三: 特化 std::hash<T>
 _STD_BEGIN
 template<>
 class hash<InterObjPriorityQueue>
