@@ -134,7 +134,8 @@ void MiscellaneousStdContainer::PriorityQueueTest_CustomClass()
 
 void MiscellaneousStdContainer::PriorityQueueTest_CustomClass_Sort()
 {
-    std::priority_queue<InterObjPriorityQueue, std::vector<InterObjPriorityQueue>, std::greater<InterObjPriorityQueue>> sortedQueue;
+    //std::priority_queue<InterObjPriorityQueue, std::vector<InterObjPriorityQueue>, std::greater<InterObjPriorityQueue>> sortedQueue;
+    std::priority_queue<InterObjPriorityQueue> sortedQueue;
     sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 4));
     sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 5));
     sortedQueue.push(InterObjPriorityQueue(0, 2, 3, 4));
@@ -144,6 +145,11 @@ void MiscellaneousStdContainer::PriorityQueueTest_CustomClass_Sort()
     sortedQueue.push(InterObjPriorityQueue(1, 2, 4, 4));
     sortedQueue.push(InterObjPriorityQueue(1, 2, 3, 5));
     print_queue(sortedQueue);
+
+    // clear test
+    std::priority_queue<InterObjPriorityQueue> emptyQueue;
+    std::swap(sortedQueue, emptyQueue);
+    //sortedQueue.swap(emptyQueue);
 }
 
 void MiscellaneousStdContainer::MapTest_CommonUse()
