@@ -199,20 +199,26 @@ void MiscellaneousStdContainer::MapTest_CustomClassKey()
     {
         std::string keyStr = std::to_string(pairItem.first);
         std::string valueStr = pairItem.second;
-        LogUtil::Debug(CODE_LOCATION, "std::<InterObjPriorityQueue, std::string>   %s = %s", keyStr.c_str(), valueStr.c_str());
+        LogUtil::Debug(CODE_LOCATION, "std::map<InterObjPriorityQueue, std::string>   %s = %s", keyStr.c_str(), valueStr.c_str());
     }
-
-    //std::unordered_map<InterObjPriorityQueue, std::string> customKeyMap;
-    //customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(1, 2, 3, 4), "Hello"));
-    //customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(0, 2, 3, 4), "World"));
-    //customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(3, 2, 3, 4), "Test"));
-    //customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(3, 2, 3, 4), "Test_overwrite"));
-    //for (auto pairItem : customKeyMap)
-    //{
-    //    std::string keyStr = std::to_string(pairItem.first);
-    //    std::string valueStr = pairItem.second;
-    //    LogUtil::Debug(CODE_LOCATION, "std::unordered_map<InterObjPriorityQueue, std::string>   %s = %s", keyStr.c_str(), valueStr.c_str());
-    //}
+    
+    // 方案一
+    //std::unordered_map<InterObjPriorityQueue, std::string, std::function<size_t(const InterObjPriorityQueue& obj)>> customKeyMap(10, InterObj_Hash);
+    // 方案二
+    //std::unordered_map<InterObjPriorityQueue, std::string, InterObjHasher> customKeyMap;
+    // 方案三 （特化 std::hash<T>）
+    std::unordered_map<InterObjPriorityQueue, std::string> customKeyMap;
+    customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(1, 2, 3, 4), "Hello"));
+    customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(1, 2, 3, 5), "SameHour"));
+    customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(0, 2, 3, 4), "World"));
+    customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(3, 2, 3, 4), "Test"));
+    customKeyMap.insert(std::make_pair<InterObjPriorityQueue, std::string>(InterObjPriorityQueue(3, 2, 3, 4), "Test_overwrite"));
+    for (auto pairItem : customKeyMap)
+    {
+        std::string keyStr = std::to_string(pairItem.first);
+        std::string valueStr = pairItem.second;
+        LogUtil::Debug(CODE_LOCATION, "std::unordered_map<InterObjPriorityQueue, std::string>   %s = %s", keyStr.c_str(), valueStr.c_str());
+    }
 }
 
 void MiscellaneousStdContainer::on_btnPriorityQueueTest_clicked()
@@ -398,3 +404,12 @@ string to_string(const InterObjPriorityQueue& obj)
     return retValue;
 }
 _STD_END
+
+size_t InterObj_Hash(const InterObjPriorityQueue& obj)
+{
+    return
+        std::hash<int>()(obj.GetHour()) ^
+        std::hash<int>()(obj.GetMinute()) ^
+        std::hash<int>()(obj.GetSecond()) ^
+        std::hash<int>()(obj.GetFrame());
+}

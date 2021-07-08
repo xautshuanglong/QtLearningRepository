@@ -83,4 +83,43 @@ _STD_BEGIN
 string to_string(const InterObjPriorityQueue& obj);
 _STD_END
 
+// https://blog.csdn.net/y109y/article/details/82669620
+// 方案一
+size_t InterObj_Hash(const InterObjPriorityQueue& obj);
+// 方案二
+class InterObjHasher // : public std::hash<InterObjPriorityQueue>
+{
+public:
+    //static size_t _Do_hash(const InterObjPriorityQueue& obj) noexcept
+    //{
+    //    return std::hash<int>::_Do_hash(obj.GetHour());
+    //}
+
+    size_t operator()(const InterObjPriorityQueue& obj) const
+    {
+        std::hash<int> intHash;
+        return
+            intHash(obj.GetHour()) ^
+            intHash(obj.GetMinute()) ^
+            intHash(obj.GetSecond()) ^
+            intHash(obj.GetFrame());
+    }
+};
+// 
+_STD_BEGIN
+template<>
+class hash<InterObjPriorityQueue>
+{
+public:
+    size_t operator()(const InterObjPriorityQueue& obj) const
+    {
+        return
+            hash<int>()(obj.GetHour()) ^
+            hash<int>()(obj.GetMinute()) ^
+            hash<int>()(obj.GetSecond()) ^
+            hash<int>()(obj.GetFrame());
+    }
+};
+_STD_END
+
 #endif // MISCELLANEOUS_STD_CONTAINER_H
