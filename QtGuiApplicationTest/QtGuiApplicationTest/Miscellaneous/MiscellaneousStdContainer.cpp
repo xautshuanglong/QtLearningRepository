@@ -5,6 +5,7 @@
 #include <queue>
 #include <deque>
 #include <utility>
+#include <map>
 
 #include "LogUtil.h"
 
@@ -245,7 +246,46 @@ void MiscellaneousStdContainer::on_btnMapTest_clicked()
     this->MapTest_CustomClassKey();
 }
 
+void MiscellaneousStdContainer::on_btnMultimapTest_clicked()
+{
+    std::multimap<int, std::string> multimapTest;
+    multimapTest.insert(std::make_pair(1, "Hello"));
+    multimapTest.insert(std::make_pair(1, "Shuang"));
+    multimapTest.insert(std::make_pair(1, "long"));
+    multimapTest.insert(std::make_pair(2, "I"));
+    multimapTest.insert(std::make_pair(2, "Love"));
+    multimapTest.insert(std::make_pair(2, "Coding"));
+    multimapTest.insert(std::make_pair(3, "OnlyOne"));
+
+    for (auto multimapItem : multimapTest)
+    {
+        LogUtil::Debug(CODE_LOCATION, "multimapItem : %d --> %s", multimapItem.first, multimapItem.second.c_str());
+    }
+
+    std::pair<std::multimap<int, std::string>::iterator, std::multimap<int, std::string>::iterator> valueRange1 = multimapTest.equal_range(1);
+    for (std::multimap<int, std::string>::iterator value1 = valueRange1.first; value1 != valueRange1.second; ++value1)
+    {
+        LogUtil::Debug(CODE_LOCATION, "value1 : %d --> %s", value1->first, value1->second.c_str());
+    }
+
+    std::pair<std::multimap<int, std::string>::iterator, std::multimap<int, std::string>::iterator> valueRange2 = multimapTest.equal_range(2);
+    for (std::multimap<int, std::string>::iterator value2 = valueRange2.first; value2 != valueRange2.second; ++value2)
+    {
+        LogUtil::Debug(CODE_LOCATION, "value2 : %d --> %s", value2->first, value2->second.c_str());
+    }
+
+    std::pair<std::multimap<int, std::string>::iterator, std::multimap<int, std::string>::iterator> valueRange3 = multimapTest.equal_range(3);
+    for (std::multimap<int, std::string>::iterator value3 = valueRange3.first; value3 != valueRange3.second; ++value3)
+    {
+        LogUtil::Debug(CODE_LOCATION, "value3 : %d --> %s", value3->first, value3->second.c_str());
+    }
+}
+
 void MiscellaneousStdContainer::on_btnPairTest_clicked()
+{
+}
+
+void MiscellaneousStdContainer::on_btnHeapTest_clicked()
 {
     int i = 0;
 }

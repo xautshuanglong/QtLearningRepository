@@ -30,7 +30,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Standard CPP Constructor</string>
+      <string>Standard CPP Class Constructor</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
