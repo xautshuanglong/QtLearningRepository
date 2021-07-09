@@ -292,6 +292,9 @@
     <ClCompile Include="Miscellaneous\MiscellaneousTimeCode.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\TimeUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -486,6 +489,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\PrintUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\TimeUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
