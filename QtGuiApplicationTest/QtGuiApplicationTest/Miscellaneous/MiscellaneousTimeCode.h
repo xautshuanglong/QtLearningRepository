@@ -5,6 +5,8 @@
 
 namespace Ui {class MiscellaneousTimeCode;};
 
+class QTimer;
+
 class MiscellaneousTimeCode : public MiscellaneousBase
 {
     Q_OBJECT
@@ -19,13 +21,19 @@ public:
     virtual MiscellaneousTestItem GetItemID() override;
 
 private slots:
+    void TimeCodeEmiter_TimeOut();
+
     void on_btnTransferTest_clicked();
     void on_btnEventMapTest_clicked();
-    void on_btnEmptyTest_1_clicked();
+    void on_btnTimeEmiterTest_clicked();
     void on_btnEmptyTest_2_clicked();
 
 private:
     Ui::MiscellaneousTimeCode *ui;
+    QTimer                    *mpTimeCodeEmiter;
+    bool                       mbTimeCodeEnable;
+    QString                    mBtnTimeEmiterText;
+    long long                  mCurFrequency;
 };
 
 #endif // MISCELLANEOUS_TIME_CODE_H

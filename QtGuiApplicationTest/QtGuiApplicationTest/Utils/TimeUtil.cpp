@@ -123,7 +123,7 @@ namespace Shuanglong::Utils
         typedef NTSTATUS(CALLBACK * NTSETTIMERRESOLUTION)(IN ULONG DesiredTime, IN BOOLEAN SetResolution, OUT PULONG ActualTime);
         typedef NTSTATUS(CALLBACK * NTQUERYTIMERRESOLUTION)(OUT PULONG MaximumTime, OUT PULONG MinimumTime, OUT PULONG CurrentTime);
 
-        HINSTANCE hNtDll = ::LoadLibrary(L"NTDLL.dll");
+        HINSTANCE hNtDll = ::LoadLibrary(TEXT("NTDLL.dll"));
         if (hNtDll != NULL)
         {
             ULONG MinimumResolution = 0;

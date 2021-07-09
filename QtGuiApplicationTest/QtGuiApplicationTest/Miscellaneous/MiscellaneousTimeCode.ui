@@ -91,7 +91,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QPushButton" name="btnEmptyTest_1">
+      <widget class="QPushButton" name="btnTimeEmiterTest">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -99,7 +99,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Empty 1</string>
+        <string>Time Code Emiter</string>
        </property>
       </widget>
      </item>
