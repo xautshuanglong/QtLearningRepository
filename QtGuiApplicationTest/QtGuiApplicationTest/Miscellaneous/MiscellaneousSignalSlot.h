@@ -18,7 +18,7 @@ public:
         , m_strName(other.m_strName)
     {
     }
-    SelfDefinedClass(SelfDefinedClass&& other)
+    SelfDefinedClass(SelfDefinedClass&& other) noexcept
         : m_intValue(other.m_intValue)
         , m_strName(other.m_strName)
     {
