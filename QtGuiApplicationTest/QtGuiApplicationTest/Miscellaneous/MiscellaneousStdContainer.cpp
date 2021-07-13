@@ -260,8 +260,8 @@ void MiscellaneousStdContainer::MapTest_ModifyValue()
 void MiscellaneousStdContainer::on_btnPriorityQueueTest_clicked()
 {
     //this->PriorityQueueTest_BaseType();
-    this->PriorityQueueTest_CustomClass();
-    //this->PriorityQueueTest_CustomClass_Sort();
+    //this->PriorityQueueTest_CustomClass();
+    this->PriorityQueueTest_CustomClass_Sort();
 }
 
 void MiscellaneousStdContainer::on_btnDequeueTest_clicked()

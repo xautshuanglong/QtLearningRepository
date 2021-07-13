@@ -33,19 +33,19 @@ public:
     }
     bool operator <(const SelfDefinedClass& other) const
     {
-        if (m_intValue == other.m_intValue)
+        if (m_intValue != other.m_intValue)
         {
-            return m_strName < other.m_strName;
+            return m_intValue < other.m_intValue;
         }
-        return m_intValue < other.m_intValue;
+        return m_strName < other.m_strName;
     }
     bool operator >(const SelfDefinedClass& other) const
     {
-        if (m_intValue == other.m_intValue)
+        if (m_intValue != other.m_intValue)
         {
-            return m_strName > other.m_strName;
+            return m_intValue > other.m_intValue;
         }
-        return m_intValue > other.m_intValue;
+        return m_strName > other.m_strName;
     }
     bool operator ==(const SelfDefinedClass& other) const
     {
