@@ -260,8 +260,8 @@ void MiscellaneousStdContainer::MapTest_ModifyValue()
 void MiscellaneousStdContainer::on_btnPriorityQueueTest_clicked()
 {
     //this->PriorityQueueTest_BaseType();
-    //this->PriorityQueueTest_CustomClass();
-    this->PriorityQueueTest_CustomClass_Sort();
+    this->PriorityQueueTest_CustomClass();
+    //this->PriorityQueueTest_CustomClass_Sort();
 }
 
 void MiscellaneousStdContainer::on_btnDequeueTest_clicked()
@@ -369,68 +369,36 @@ InterObjPriorityQueue& InterObjPriorityQueue::operator=(const InterObjPriorityQu
 
 bool InterObjPriorityQueue::operator <(const InterObjPriorityQueue& other) const
 {
-    if (m_iHour < other.m_iHour)
+    if (m_iHour != other.m_iHour)
     {
-        return true;
+        return m_iHour < other.m_iHour;
     }
-    else if (m_iHour > other.m_iHour)
+    if (m_iMinute != other.m_iMinute)
     {
-        return false;
+        return m_iMinute < other.m_iMinute;
     }
-    if (m_iMinute < other.m_iMinute)
+    if (m_iSecond != other.m_iSecond)
     {
-        return true;
+        return m_iSecond < other.m_iSecond;
     }
-    else if (m_iMinute > other.m_iMinute)
-    {
-        return false;
-    }
-    if (m_iSecond < other.m_iSecond)
-    {
-        return true;
-    }
-    else if (m_iSecond > other.m_iSecond)
-    {
-        return false;
-    }
-    if (m_iFrame < other.m_iFrame)
-    {
-        return true;
-    }
-    return false;
+    return m_iFrame < other.m_iFrame;
 }
 
 bool InterObjPriorityQueue::operator >(const InterObjPriorityQueue& other) const
 {
-    if (m_iHour > other.m_iHour)
+    if (m_iHour != other.m_iHour)
     {
-        return true;
+        return m_iHour > other.m_iHour;
     }
-    else if (m_iHour < other.m_iHour)
+    if (m_iMinute != other.m_iMinute)
     {
-        return false;
+        return m_iMinute > other.m_iMinute;
     }
-    if (m_iMinute > other.m_iMinute)
+    if (m_iSecond != other.m_iSecond)
     {
-        return true;
+        return m_iSecond > other.m_iSecond;
     }
-    else if (m_iMinute < other.m_iMinute)
-    {
-        return false;
-    }
-    if (m_iSecond > other.m_iSecond)
-    {
-        return true;
-    }
-    else if (m_iSecond < other.m_iSecond)
-    {
-        return false;
-    }
-    if (m_iFrame > other.m_iFrame)
-    {
-        return true;
-    }
-    return false;
+    return m_iFrame > other.m_iFrame;
 }
 
 bool InterObjPriorityQueue::operator ==(const InterObjPriorityQueue& other) const
