@@ -46,7 +46,7 @@
       <number>0</number>
      </property>
      <item row="1" column="1">
-      <widget class="QPushButton" name="btnEmptyTest_2">
+      <widget class="QPushButton" name="btnEnumerateMIDI">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -54,7 +54,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Empty 2</string>
+        <string>Enumerate MIDI</string>
        </property>
       </widget>
      </item>
