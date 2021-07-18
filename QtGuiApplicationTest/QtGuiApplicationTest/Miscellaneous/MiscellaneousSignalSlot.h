@@ -14,10 +14,48 @@ public:
         : m_intValue(0)
     {}
     SelfDefinedClass(const SelfDefinedClass& other)
+        : m_intValue(other.m_intValue)
+        , m_strName(other.m_strName)
     {
-        int i = 0;
+    }
+    SelfDefinedClass(SelfDefinedClass&& other) noexcept
+        : m_intValue(other.m_intValue)
+        , m_strName(other.m_strName)
+    {
     }
     ~SelfDefinedClass(){}
+
+    SelfDefinedClass& operator=(const SelfDefinedClass& other)
+    {
+        m_intValue = other.m_intValue;
+        m_strName = other.m_strName;
+        return *this;
+    }
+    bool operator <(const SelfDefinedClass& other) const
+    {
+        if (m_intValue != other.m_intValue)
+        {
+            return m_intValue < other.m_intValue;
+        }
+        return m_strName < other.m_strName;
+    }
+    bool operator >(const SelfDefinedClass& other) const
+    {
+        if (m_intValue != other.m_intValue)
+        {
+            return m_intValue > other.m_intValue;
+        }
+        return m_strName > other.m_strName;
+    }
+    bool operator ==(const SelfDefinedClass& other) const
+    {
+        if (m_intValue == other.m_intValue &&
+            m_strName == other.m_strName)
+        {
+            return true;
+        }
+        return false;
+    }
 
     void SetValue(const int value) { m_intValue = value; }
     int GetValue() { return m_intValue; }

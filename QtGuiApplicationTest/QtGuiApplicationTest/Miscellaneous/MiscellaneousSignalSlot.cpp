@@ -497,6 +497,13 @@ void SignalTestWorker::SlotSubThreadSelfDefinedClass(const SelfDefinedClass& tes
 {
     int testInt = testObj.GetValue();
     QString objName = testObj.GetName();
+
+    SelfDefinedClass compareTest;
+    compareTest.SetValue(100);
+    compareTest.SetName("compare test");
+
+    bool testRes = compareTest < testObj;
+
     int i = 0;
 }
 
