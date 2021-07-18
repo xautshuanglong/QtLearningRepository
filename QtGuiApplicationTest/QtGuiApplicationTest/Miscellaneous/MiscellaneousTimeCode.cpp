@@ -24,6 +24,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     // 时间码触发器
     mpTimeCodeEmiter = new QTimer(this);
     mpTimeCodeEmiter->setInterval(std::chrono::milliseconds(1));
+    mpTimeCodeEmiter->setTimerType(Qt::PreciseTimer);
+    Qt::TimerType timerType = mpTimeCodeEmiter->timerType();
     connect(mpTimeCodeEmiter, SIGNAL(timeout()), this, SLOT(TimeCodeEmiter_TimeOut()));
 
     // 高性能计数器
