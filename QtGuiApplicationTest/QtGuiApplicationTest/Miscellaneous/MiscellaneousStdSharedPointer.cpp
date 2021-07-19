@@ -37,11 +37,19 @@ MiscellaneousTestItem MiscellaneousStdSharedPointer::GetItemID()
 
 void MiscellaneousStdSharedPointer::on_btnResetTest_clicked()
 {
-    std::shared_ptr<AutoDestuctTest> p1 = std::make_shared<AutoDestuctTest>("aaa", 100);
-    p1 = std::make_shared<AutoDestuctTest>("bbb", 200);
+    //std::shared_ptr<AutoDestuctTest> p1 = std::make_shared<AutoDestuctTest>("aaa", 100);
+    //p1 = std::make_shared<AutoDestuctTest>("bbb", 200);
 
-    p1.reset(new AutoDestuctTest("reset", 300));
-    p1 = std::make_shared<AutoDestuctTest>("assign", 400);
+    //p1.reset(new AutoDestuctTest("reset", 300));
+    //p1 = std::make_shared<AutoDestuctTest>("assign", 400);
+
+    AutoDestuctTest* pOriginal = new AutoDestuctTest("original", 500);
+    //std::shared_ptr<AutoDestuctTest> p2(pOriginal);
+    //p2.reset(pOriginal); // 重置为原指针，会导致指针悬挂
+
+    //std::shared_ptr<AutoDestuctTest> p3(pOriginal);
+    //std::shared_ptr<AutoDestuctTest> p4(pOriginal);
+    //p3 = p4; // 与 p2.reset(pOriginal) 相同，同样导致指针悬挂
 }
 
 void MiscellaneousStdSharedPointer::on_btnRefCountTest_clicked()
