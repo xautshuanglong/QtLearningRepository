@@ -35,6 +35,7 @@ enum class MiscellaneousTestItem
     QT_Image_QImage,                  // QT 图像操作 QImage
     QT_Image_QPixmap,                 // QT 图像操作 QPixmap
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
+    QT_Timer,                         // QT Timer 定时器测试
     QT_Regular_Expression,            // QT 正则表达式训练
     QT_Mime_Type,                     // QT 文件类型检测 MIME（多用途互联网邮件扩展类型）
     QT_Excel_ReadWrite,               // QT Excel 文件读写
