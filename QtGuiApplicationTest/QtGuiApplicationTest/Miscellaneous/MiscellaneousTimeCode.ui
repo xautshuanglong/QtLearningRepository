@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>640</width>
+    <height>514</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,19 +45,6 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnEnumerateMIDI">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Enumerate MIDI</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="btnTransferTest">
        <property name="sizePolicy">
@@ -77,6 +64,19 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnTimeEmiterTest">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Time Code Emiter</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="btnEventMapTest">
        <property name="sizePolicy">
@@ -90,8 +90,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnTimeEmiterTest">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnEnumerateMIDI">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -99,9 +99,96 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Time Code Emiter</string>
+        <string>Enumerate MIDI</string>
        </property>
       </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QComboBox" name="cbMidiDevicesIn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QComboBox
+{
+	border: 1px solid gray;
+	border-radius: 10px;
+    color: rgb(75, 75, 75);
+	background-color: white;
+}
+
+QComboBox::drop-down
+{
+	width: 40px;
+	border-left: 1px solid gray;
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbMidiDevicesOut">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QComboBox
+{
+	border: 1px solid gray;
+	border-radius: 10px;
+    color: rgb(75, 75, 75);
+	background-color: white;
+}
+
+QComboBox::drop-down
+{
+	width: 40px;
+	border-left: 1px solid gray;
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSendCmd">
+           <property name="text">
+            <string>Send Cmd</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="pteMidiData">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>MIDI data viewer</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

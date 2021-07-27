@@ -16,16 +16,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // UI 控件初始化
-    mBtnTimeEmiterText = ui->btnTimeEmiterTest->text();
-    ui->btnTimeEmiterTest->setText(QString("%1 (disable)").arg(mBtnTimeEmiterText));
-
-    // 时间码触发器
-    mpTimeCodeEmiter = new QTimer(this);
-    mpTimeCodeEmiter->setInterval(std::chrono::milliseconds(1));
-    mpTimeCodeEmiter->setTimerType(Qt::PreciseTimer);
-    Qt::TimerType timerType = mpTimeCodeEmiter->timerType();
-    connect(mpTimeCodeEmiter, SIGNAL(timeout()), this, SLOT(TimeCodeEmiter_TimeOut()));
+    this->MidiEnumerateDevices();
+    this->InitUI();
 
     // 高性能计数器
     mCurFrequency = TimeUtil::QueryPerformanceFrequency();
@@ -54,6 +46,80 @@ MiscellaneousTestGroup MiscellaneousTimeCode::GetGroupID()
 MiscellaneousTestItem MiscellaneousTimeCode::GetItemID()
 {
     return MiscellaneousTestItem::Others_TimeCode;
+}
+
+void MiscellaneousTimeCode::InitUI()
+{
+    // UI 控件初始化
+    mBtnTimeEmiterText = ui->btnTimeEmiterTest->text();
+    ui->btnTimeEmiterTest->setText(QString("%1 (disable)").arg(mBtnTimeEmiterText));
+
+    // 时间码触发器
+    mpTimeCodeEmiter = new QTimer(this);
+    mpTimeCodeEmiter->setInterval(std::chrono::milliseconds(1));
+    mpTimeCodeEmiter->setTimerType(Qt::PreciseTimer);
+    Qt::TimerType timerType = mpTimeCodeEmiter->timerType();
+    connect(mpTimeCodeEmiter, SIGNAL(timeout()), this, SLOT(TimeCodeEmiter_TimeOut()));
+
+    // MIDI 设备列表选项
+    ui->cbMidiDevicesIn->clear();
+    for (int i = 0; i < mMidiDevPairIn.size(); ++i)
+    {
+        ui->cbMidiDevicesIn->addItem(mMidiDevPairIn[i].second, QVariant::fromValue(mMidiDevPairIn[i].first));
+    }
+    ui->cbMidiDevicesOut->clear();
+    for (int i = 0; i < mMidiDevPairOut.size(); ++i)
+    {
+        ui->cbMidiDevicesOut->addItem(mMidiDevPairOut[i].second, QVariant::fromValue(mMidiDevPairOut[i].first));
+    }
+}
+
+bool MiscellaneousTimeCode::MidiEnumerateDevices()
+{
+    bool retValue = false;
+
+    /*
+    Header file Mmddk.h defines the following system-intercepted device messages:
+    DRV_QUERYDEVICEINTERFACE          For more information, see Obtaining a Device Interface Name.
+    DRV_QUERYDEVICEINTERFACESIZE      For more information, see Obtaining a Device Interface Name.
+    DRV_QUERYDEVNODE                  Queries for a device's devnode number.
+    DRV_QUERYMAPPABLE                 Queries whether a device can be used by a mapper.
+    DRVM_MAPPER_CONSOLEVOICECOM_GET   For more information, see Preferred Voice-Communications Device ID.
+    DRVM_MAPPER_PREFERRED_GET         For more information, see Accessing the Preferred Device ID.
+    */
+    mMidiDevPairIn.clear();
+    UINT midiInNum = midiInGetNumDevs();
+    for (UINT i = 0; i < midiInNum; ++i)
+    {
+        MIDIINCAPS midiCaps;
+        midiInGetDevCaps(i, &midiCaps, sizeof(MIDIINCAPS));
+        mMidiDevPairIn.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
+        // 输出 MIDI 输入设备信息
+        LogUtil::Debug(CODE_LOCATION, "MIDI IN : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
+        LogUtil::Debug(CODE_LOCATION, "MIDI IN : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
+        LogUtil::Debug(CODE_LOCATION, "MIDI IN : NAME=%s", midiCaps.szPname);
+        LogUtil::Debug(CODE_LOCATION, "MIDI IN : SUPPORT=%s", this->MidiSupportToString(midiCaps.dwSupport).c_str());
+    }
+
+    mMidiDevPairOut.clear();
+    UINT midiOutNum = midiOutGetNumDevs();
+    for (UINT i = 0; i < midiOutNum; ++i)
+    {
+        MIDIOUTCAPS midiCaps;
+        midiOutGetDevCaps(i, &midiCaps, sizeof(MIDIOUTCAPS));
+        mMidiDevPairOut.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
+        // 输出 MIDI 输出设备信息
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : NAME=%s", midiCaps.szPname);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : TECHNOLOGY=%s", this->MidiTechnologyToString(midiCaps.wTechnology).c_str());
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : VOICES=%u", midiCaps.wVoices);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MAX_NOTES=%u", midiCaps.wNotes);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : CHANNEL=%u", midiCaps.wChannelMask);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : SUPPORT=%s", this->MidiSupportToString(midiCaps.dwSupport).c_str());
+    }
+
+    return retValue;
 }
 
 std::string MiscellaneousTimeCode::MidiTechnologyToString(WORD wTechnology)
@@ -361,6 +427,9 @@ void MiscellaneousTimeCode::on_btnTimeEmiterTest_clicked()
 
 void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
 {
+    this->MidiEnumerateDevices();
+    return;
+
     /*
     Header file Mmddk.h defines the following system-intercepted device messages:
     DRV_QUERYDEVICEINTERFACE          For more information, see Obtaining a Device Interface Name.
@@ -375,6 +444,7 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
     {
         MIDIINCAPS midiCaps;
         midiInGetDevCaps(i, &midiCaps, sizeof(MIDIINCAPS));
+        mMidiDevPairIn.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
         // 输出 MIDI 输入设备信息
         LogUtil::Debug(CODE_LOCATION, "MIDI IN : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
         LogUtil::Debug(CODE_LOCATION, "MIDI IN : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
@@ -387,6 +457,7 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
     {
         MIDIOUTCAPS midiCaps;
         midiOutGetDevCaps(i, &midiCaps, sizeof(MIDIOUTCAPS));
+        mMidiDevPairOut.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
         // 输出 MIDI 输出设备信息
         LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
         LogUtil::Debug(CODE_LOCATION, "MIDI OUT : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
@@ -433,4 +504,9 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
             midiOutClose(hLoopMIDI);
         }
     }
+}
+
+void MiscellaneousTimeCode::on_btnSendCmd_clicked()
+{
+    ui->pteMidiData->appendPlainText("aaa");
 }
