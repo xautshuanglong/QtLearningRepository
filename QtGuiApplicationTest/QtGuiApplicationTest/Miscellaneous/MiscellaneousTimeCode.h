@@ -2,6 +2,7 @@
 #define MISCELLANEOUS_TIME_CODE_H
 
 #include <Windows.h>
+#include <Mmddk.h>
 #include <QList>
 
 #include "MiscellaneousBase.h"
@@ -32,6 +33,10 @@ public:
 private:
     void InitUI();
     bool MidiEnumerateDevices();
+    bool MidiDevicesCloseIn();
+    bool MidiDevicesCloseOut();
+    bool MidiDevicesOpenIn(UINT deviceID);
+    bool MidiDevicesOpenOut(UINT deviceID);
 
     std::string MidiTechnologyToString(WORD wTechnology);
     std::string MidiSupportToString(DWORD dwSupport);
@@ -43,11 +48,15 @@ private:
 private slots:
     void TimeCodeEmiter_TimeOut();
 
+    void on_cbMidiDevicesIn_currentIndexChanged(int index);
+    void on_cbMidiDevicesOut_currentIndexChanged(int index);
     void on_btnTransferTest_clicked();
     void on_btnEventMapTest_clicked();
     void on_btnTimeEmiterTest_clicked();
     void on_btnEnumerateMIDI_clicked();
-    void on_btnSendCmd_clicked();
+    void on_btnMtcStart_clicked();
+    void on_btnMtcPause_clicked();
+    void on_btnMtcStop_clicked();
 
 private:
     Ui::MiscellaneousTimeCode       *ui;
@@ -57,6 +66,8 @@ private:
     long long                        mCurFrequency;
     QList<QPair<UINT, QString>>      mMidiDevPairIn;
     QList<QPair<UINT, QString>>      mMidiDevPairOut;
+    HMIDIIN                          mHandleMidiIn;
+    HMIDIOUT                         mHandleMidiOut;
 };
 
 #endif // MISCELLANEOUS_TIME_CODE_H

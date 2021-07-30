@@ -1,8 +1,8 @@
 #include "MiscellaneousTimeCode.h"
 #include "ui_MiscellaneousTimeCode.h"
 
-#include <Mmddk.h>
 #include <QTimer>
+#include <QDateTime>
 
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
@@ -13,6 +13,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousTimeCode())
     , mbTimeCodeEnable(false)
+    , mHandleMidiIn(NULL)
+    , mHandleMidiOut(NULL)
 {
     ui->setupUi(this);
 
@@ -76,7 +78,7 @@ void MiscellaneousTimeCode::InitUI()
 
 bool MiscellaneousTimeCode::MidiEnumerateDevices()
 {
-    bool retValue = false;
+    bool retValue = true;
 
     /*
     Header file Mmddk.h defines the following system-intercepted device messages:
@@ -117,6 +119,88 @@ bool MiscellaneousTimeCode::MidiEnumerateDevices()
         LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MAX_NOTES=%u", midiCaps.wNotes);
         LogUtil::Debug(CODE_LOCATION, "MIDI OUT : CHANNEL=%u", midiCaps.wChannelMask);
         LogUtil::Debug(CODE_LOCATION, "MIDI OUT : SUPPORT=%s", this->MidiSupportToString(midiCaps.dwSupport).c_str());
+    }
+
+    return retValue;
+}
+
+bool MiscellaneousTimeCode::MidiDevicesCloseIn()
+{
+    bool retValue = true;
+    if (mHandleMidiIn)
+    {
+        MMRESULT res = midiInClose(mHandleMidiIn);
+        if (res == MMSYSERR_NOERROR)
+        {
+            mHandleMidiIn = NULL;
+        }
+        else
+        {
+            retValue = false;
+            LogUtil::Debug(CODE_LOCATION, "midiInClose failed: %s", this->MidiErrorCodeToString(res).c_str());
+        }
+    }
+    return retValue;
+}
+
+bool MiscellaneousTimeCode::MidiDevicesCloseOut()
+{
+    bool retValue = true;
+    if (mHandleMidiOut)
+    {
+        MMRESULT res = midiOutClose(mHandleMidiOut);
+        if (res == MMSYSERR_NOERROR)
+        {
+            mHandleMidiOut = NULL;
+        }
+        else
+        {
+            retValue = false;
+            LogUtil::Debug(CODE_LOCATION, "midiOutClose failed: %s", this->MidiErrorCodeToString(res).c_str());
+        }
+    }
+    return retValue;
+}
+
+bool MiscellaneousTimeCode::MidiDevicesOpenIn(UINT deviceID)
+{
+    bool retValue = this->MidiDevicesCloseIn();
+    if (!retValue)
+    {
+        return retValue;
+    }
+
+    MMRESULT res = midiInOpen(&mHandleMidiIn, deviceID, (DWORD_PTR)MiscellaneousTimeCode::MidiInProcedure, (DWORD_PTR)this, CALLBACK_FUNCTION);
+    if (res == MMSYSERR_NOERROR)
+    {
+        retValue = true;
+    }
+    else
+    {
+        retValue = false;
+        LogUtil::Debug(CODE_LOCATION, "midiInOpen failed: %s", this->MidiErrorCodeToString(res).c_str());
+    }
+
+    return retValue;
+}
+
+bool MiscellaneousTimeCode::MidiDevicesOpenOut(UINT deviceID)
+{
+    bool retValue = this->MidiDevicesCloseOut();
+    if (!retValue)
+    {
+        return retValue;
+    }
+
+    MMRESULT res = midiOutOpen(&mHandleMidiOut, deviceID, (DWORD_PTR)MiscellaneousTimeCode::MidiOutProcedure, (DWORD_PTR)this, CALLBACK_FUNCTION);
+    if (res == MMSYSERR_NOERROR)
+    {
+        retValue = true;
+    }
+    else
+    {
+        retValue = false;
+        LogUtil::Debug(CODE_LOCATION, "midiOutOpen failed: %s", this->MidiErrorCodeToString(res).c_str());
     }
 
     return retValue;
@@ -306,7 +390,10 @@ void MiscellaneousTimeCode::MidiInProcedure(HMIDIIN hMidiOut, UINT wMsg, DWORD_P
     if (dwInstance == NULL) return;
 
     MiscellaneousTimeCode* pInstance = static_cast<MiscellaneousTimeCode*>((void*)dwInstance);
-    LogUtil::Debug(CODE_LOCATION, "MIDI IN : MESSAGE --> %s", pInstance->MidiMsgTypeToString(wMsg).c_str());
+    if (wMsg != MIM_DATA)
+    {
+        LogUtil::Debug(CODE_LOCATION, "MIDI IN : MESSAGE --> %s", pInstance->MidiMsgTypeToString(wMsg).c_str());
+    }
 
     switch (wMsg)
     {
@@ -315,7 +402,15 @@ void MiscellaneousTimeCode::MidiInProcedure(HMIDIIN hMidiOut, UINT wMsg, DWORD_P
     case MIM_CLOSE:
         break;
     case MIM_DATA:
+    {
+        unsigned char *pMidiData = (unsigned char *)&dwParam1;
+        DWORD64 dwTimestamp = dwParam2;
+        QDateTime startTime = QDateTime::fromMSecsSinceEpoch(dwTimestamp, Qt::LocalTime);
+        QString startTimeStr = startTime.toString("yyyy-MM-dd hh:mm:ss");
+        LogUtil::Debug(CODE_LOCATION, "MessageData %02X %02X %02X %02X  TimeStamp %s",
+            pMidiData[0], pMidiData[1], pMidiData[2], pMidiData[3], startTimeStr.toUtf8().data());
         break;
+    }
     case MIM_LONGDATA:
         break;
     case MIM_ERROR:
@@ -392,6 +487,22 @@ void MiscellaneousTimeCode::TimeCodeEmiter_TimeOut()
         LogUtil::Debug(CODE_LOCATION, "curFrequency: %lld    diffTickCount: %lld    %llf ms",
             mCurFrequency, diffTickCount, microSecond);
     }
+}
+
+void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    UINT deviceID = ui->cbMidiDevicesIn->itemData(index).toUInt();
+    this->MidiDevicesOpenIn(deviceID);
+}
+
+void MiscellaneousTimeCode::on_cbMidiDevicesOut_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    UINT deviceID = ui->cbMidiDevicesOut->itemData(index).toUInt();
+    this->MidiDevicesOpenOut(deviceID);
 }
 
 void MiscellaneousTimeCode::on_btnTransferTest_clicked()
@@ -506,7 +617,65 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
     }
 }
 
-void MiscellaneousTimeCode::on_btnSendCmd_clicked()
+void MiscellaneousTimeCode::on_btnMtcStart_clicked()
 {
-    ui->pteMidiData->appendPlainText("aaa");
+    ui->pteMidiData->appendPlainText("MTC start ......");
+
+    if (mHandleMidiIn == NULL)
+    {
+        UINT deviceID = ui->cbMidiDevicesIn->currentData().toUInt();
+        this->MidiDevicesOpenIn(deviceID);
+    }
+
+    if (mHandleMidiIn != NULL)
+    {
+        MMRESULT res = midiInStart(mHandleMidiIn);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
+    }
+
+    if (mHandleMidiOut == NULL)
+    {
+        UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
+        this->MidiDevicesOpenOut(deviceID);
+    }
+
+    if (mHandleMidiOut)
+    {
+        midiOutShortMsg(mHandleMidiOut, 131);
+    }
+}
+
+void MiscellaneousTimeCode::on_btnMtcPause_clicked()
+{
+    ui->pteMidiData->appendPlainText("MTC pause ......");
+
+    if (mHandleMidiOut == NULL)
+    {
+        UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
+        this->MidiDevicesOpenOut(deviceID);
+    }
+
+    if (mHandleMidiOut)
+    {
+        midiOutShortMsg(mHandleMidiOut, 0x00400090 | (UINT)1 << 8);
+    }
+}
+
+void MiscellaneousTimeCode::on_btnMtcStop_clicked()
+{
+    ui->pteMidiData->appendPlainText("MTC stop ......");
+
+    if (mHandleMidiOut == NULL)
+    {
+        UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
+        this->MidiDevicesOpenOut(deviceID);
+    }
+
+    if (mHandleMidiOut)
+    {
+        midiOutShortMsg(mHandleMidiOut, 130);
+    }
 }
