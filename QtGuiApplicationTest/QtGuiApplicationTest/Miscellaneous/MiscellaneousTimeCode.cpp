@@ -644,7 +644,32 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
 
     if (mHandleMidiOut)
     {
-        midiOutShortMsg(mHandleMidiOut, 131);
+        // 0x01 Stop
+        // 0x02 Play
+        // 0x03 Deferred Play
+        // 0x04 Fast Forward
+        // 0x05 Rewind
+        // 0x06 Record Strobe(Punch In)
+        // 0x07 Record Exit(Punch out)
+        // 0x09 Pause
+
+        union MidiMSG
+        {
+            DWORD dwMsg;
+            CHAR chBytes[4];
+        };
+
+        MidiMSG msg;
+        msg.chBytes[0] = 0x90;
+        msg.chBytes[1] = 0x3C;
+        msg.chBytes[2] = 0x40;
+        msg.chBytes[3] = 0x00;
+
+        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
     }
 }
 
@@ -660,13 +685,70 @@ void MiscellaneousTimeCode::on_btnMtcPause_clicked()
 
     if (mHandleMidiOut)
     {
-        midiOutShortMsg(mHandleMidiOut, 0x00400090 | (UINT)1 << 8);
+        // 0x01 Stop
+        // 0x02 Play
+        // 0x03 Deferred Play
+        // 0x04 Fast Forward
+        // 0x05 Rewind
+        // 0x06 Record Strobe(Punch In)
+        // 0x07 Record Exit(Punch out)
+        // 0x09 Pause
+
+        union MidiMSG
+        {
+            DWORD dwMsg;
+            CHAR chBytes[4];
+        };
+
+        MidiMSG msg;
+        msg.chBytes[0] = 0x90;
+        msg.chBytes[1] = 0x40;
+        msg.chBytes[2] = 0x40;
+        msg.chBytes[3] = 0x00;
+
+        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
     }
 }
 
 void MiscellaneousTimeCode::on_btnMtcStop_clicked()
 {
     ui->pteMidiData->appendPlainText("MTC stop ......");
+
+    if (mHandleMidiIn)
+    {
+        MMRESULT res = midiInStop(mHandleMidiIn);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStop failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
+
+        union MidiMSG
+        {
+            DWORD dwMsg;
+            CHAR chBytes[4];
+        };
+
+        MidiMSG msg;
+        msg.chBytes[0] = 0x90;
+        msg.chBytes[1] = 0x43;
+        msg.chBytes[2] = 0x40;
+        msg.chBytes[3] = 0x00;
+
+        // 0x403C90
+
+        DWORD_PTR dwParam1 = 0;
+        DWORD_PTR dwParam2 = 0;
+
+        res = midiInMessage(mHandleMidiIn, MIM_DATA, dwParam1, dwParam2);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
+    }
 
     if (mHandleMidiOut == NULL)
     {
@@ -676,6 +758,45 @@ void MiscellaneousTimeCode::on_btnMtcStop_clicked()
 
     if (mHandleMidiOut)
     {
-        midiOutShortMsg(mHandleMidiOut, 130);
+        // 0x01 Stop
+        // 0x02 Play
+        // 0x03 Deferred Play
+        // 0x04 Fast Forward
+        // 0x05 Rewind
+        // 0x06 Record Strobe(Punch In)
+        // 0x07 Record Exit(Punch out)
+        // 0x09 Pause
+
+        union MidiMSG
+        {
+            DWORD dwMsg;
+            CHAR chBytes[4];
+        };
+
+        MidiMSG msg;
+        msg.chBytes[0] = 0x90;
+        msg.chBytes[1] = 0x43;
+        msg.chBytes[2] = 0x40;
+        msg.chBytes[3] = 0x00;
+
+        // 0x403C90
+
+        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
+        if (res != MMSYSERR_NOERROR)
+        {
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+        }
+
+        // ºúÂÒ²âÊÔ
+        DWORD bufferSize = 0;
+        MMRESULT outMsgRes = midiOutMessage(mHandleMidiOut, DRV_QUERYDEVICEINTERFACESIZE, (DWORD_PTR)&bufferSize, 0);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACESIZE --> %s  bufferSize=%lu",
+            this->MidiErrorCodeToString(outMsgRes).c_str(), bufferSize);
+        TCHAR* pNameBuffer = new TCHAR[bufferSize];
+        ZeroMemory(pNameBuffer, bufferSize);
+        outMsgRes = midiOutMessage(mHandleMidiOut, DRV_QUERYDEVICEINTERFACE, (DWORD_PTR)pNameBuffer, bufferSize - 1);
+        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACE --> %s interfaceName=%s",
+            this->MidiErrorCodeToString(outMsgRes).c_str(), pNameBuffer);
+        delete[]pNameBuffer;
     }
 }
