@@ -1,16 +1,16 @@
-#ifndef MISCELLANEOUS_WIN_BEGIN_THREAD_EX_H
-#define MISCELLANEOUS_WIN_BEGIN_THREAD_EX_H
+#ifndef MISCELLANEOUS_WIN_THREAD_H
+#define MISCELLANEOUS_WIN_THREAD_H
 
 #include "MiscellaneousBase.h"
-#include "ui_MiscellaneousWinBeginThreadEx.h"
+#include "ui_MiscellaneousWinThread.h"
 
-class MiscellaneousWinBeginThreadEx : public MiscellaneousBase
+class MiscellaneousWinThread : public MiscellaneousBase
 {
     Q_OBJECT
 
 public:
-    MiscellaneousWinBeginThreadEx(QWidget *parent = Q_NULLPTR);
-    ~MiscellaneousWinBeginThreadEx();
+    MiscellaneousWinThread(QWidget *parent = Q_NULLPTR);
+    ~MiscellaneousWinThread();
 
     virtual QString GetTitle() override;
     virtual QString GetTitleTooltip() override;
@@ -26,9 +26,9 @@ private slots:
     void on_btnWinApiThreadStop_clicked();
 
 private:
-    Ui::MiscellaneousWinBeginThreadEx ui;
+    Ui::MiscellaneousWinThread ui;
     unsigned long long             m_beginThreadHandle; // _beginthreadex 返回值，线程具备，用于 WaitForSingleObject
     volatile bool                  m_threadStopFlag;
 };
 
-#endif // MISCELLANEOUS_WIN_BEGIN_THREAD_EX_H
+#endif // MISCELLANEOUS_WIN_THREAD_H

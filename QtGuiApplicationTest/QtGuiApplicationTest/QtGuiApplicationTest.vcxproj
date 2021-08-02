@@ -193,7 +193,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousTesting.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousTimeCode.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQTimerTest.cpp" />
-    <ClCompile Include="Miscellaneous\MiscellaneousWinBeginThreadEx.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinThread.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWxSqlite3.cpp" />
@@ -257,7 +257,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousTesting.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousTimeCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQTimerTest.ui" />
-    <QtUic Include="Miscellaneous\MiscellaneousWinBeginThreadEx.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinThread.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWxSqlite3.ui" />
@@ -323,7 +323,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousStdSharedPointer.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousStringUtil.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousTesting.h" />
-    <QtMoc Include="Miscellaneous\MiscellaneousWinBeginThreadEx.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinThread.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinPrintDlg.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinSocket.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWxSqlite3.h" />

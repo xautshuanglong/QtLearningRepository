@@ -1,16 +1,16 @@
-#include "MiscellaneousWinBeginThreadEx.h"
+#include "MiscellaneousWinThread.h"
 
 #include <windows.h>
 #include <process.h>
 
-MiscellaneousWinBeginThreadEx::MiscellaneousWinBeginThreadEx(QWidget *parent /* = Q_NULLPTR */)
+MiscellaneousWinThread::MiscellaneousWinThread(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
     , m_threadStopFlag(true)
 {
     ui.setupUi(this);
 }
 
-MiscellaneousWinBeginThreadEx::~MiscellaneousWinBeginThreadEx()
+MiscellaneousWinThread::~MiscellaneousWinThread()
 {
     if (m_threadStopFlag)
     {
@@ -22,43 +22,43 @@ MiscellaneousWinBeginThreadEx::~MiscellaneousWinBeginThreadEx()
     }
 }
 
-QString MiscellaneousWinBeginThreadEx::GetTitle()
+QString MiscellaneousWinThread::GetTitle()
 {
     return QObject::tr("BeginThreadEx");
 }
 
-QString MiscellaneousWinBeginThreadEx::GetTitleTooltip()
+QString MiscellaneousWinThread::GetTitleTooltip()
 {
     return QObject::tr("How to use windows API create sub thread.");
 }
 
-MiscellaneousTestGroup MiscellaneousWinBeginThreadEx::GetGroupID()
+MiscellaneousTestGroup MiscellaneousWinThread::GetGroupID()
 {
     return MiscellaneousTestGroup::WinAPI_Test;
 }
 
-MiscellaneousTestItem MiscellaneousWinBeginThreadEx::GetItemID()
+MiscellaneousTestItem MiscellaneousWinThread::GetItemID()
 {
     return MiscellaneousTestItem::WinAPI_Thread_BeginThreadEx;
 }
 
-void MiscellaneousWinBeginThreadEx::on_btnWinApiThreadStart_clicked()
+void MiscellaneousWinThread::on_btnWinApiThreadStart_clicked()
 {
     if (m_threadStopFlag)
     {
         m_threadStopFlag = false;
-        m_beginThreadHandle = _beginthreadex(NULL, 0, MiscellaneousWinBeginThreadEx::ThreadProc, (void*)this, 0, NULL);
+        m_beginThreadHandle = _beginthreadex(NULL, 0, MiscellaneousWinThread::ThreadProc, (void*)this, 0, NULL);
     }
 }
 
-void MiscellaneousWinBeginThreadEx::on_btnWinApiThreadStop_clicked()
+void MiscellaneousWinThread::on_btnWinApiThreadStop_clicked()
 {
     m_threadStopFlag = true;
     ::WaitForSingleObject((HANDLE)m_beginThreadHandle, INFINITE);
     int i = 0;
 }
 
-void MiscellaneousWinBeginThreadEx::Run()
+void MiscellaneousWinThread::Run()
 {
     int count = 0;
     while (count < 1000)
@@ -73,9 +73,9 @@ void MiscellaneousWinBeginThreadEx::Run()
     m_threadStopFlag = true;
 }
 
-unsigned int _stdcall MiscellaneousWinBeginThreadEx::ThreadProc(void *pArg)
+unsigned int _stdcall MiscellaneousWinThread::ThreadProc(void *pArg)
 {
-    MiscellaneousWinBeginThreadEx *pMiscellaneous = (MiscellaneousWinBeginThreadEx*)pArg;
+    MiscellaneousWinThread *pMiscellaneous = (MiscellaneousWinThread*)pArg;
     pMiscellaneous->Run();
     return 0;
 }

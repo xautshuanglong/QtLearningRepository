@@ -627,14 +627,14 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
     {
         UINT deviceID = ui->cbMidiDevicesIn->currentData().toUInt();
         this->MidiDevicesOpenIn(deviceID);
+    }
 
-        if (mHandleMidiIn != NULL)
+    if (mHandleMidiIn != NULL)
+    {
+        MMRESULT res = midiInStart(mHandleMidiIn);
+        if (res != MMSYSERR_NOERROR)
         {
-            MMRESULT res = midiInStart(mHandleMidiIn);
-            if (res != MMSYSERR_NOERROR)
-            {
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
-            }
+            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
         }
     }
 
@@ -691,6 +691,9 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
     }
 }
 
+/*
+ * mif4 不支持暂停操作
+ */
 void MiscellaneousTimeCode::on_btnMtcPause_clicked()
 {
     ui->pteMidiData->appendPlainText("MTC pause ......");
