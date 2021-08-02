@@ -27,6 +27,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
 
 MiscellaneousTimeCode::~MiscellaneousTimeCode()
 {
+    this->MidiDevicesCloseOut();
+    this->MidiDevicesCloseIn();
     delete ui;
 }
 
@@ -625,14 +627,14 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
     {
         UINT deviceID = ui->cbMidiDevicesIn->currentData().toUInt();
         this->MidiDevicesOpenIn(deviceID);
-    }
 
-    if (mHandleMidiIn != NULL)
-    {
-        MMRESULT res = midiInStart(mHandleMidiIn);
-        if (res != MMSYSERR_NOERROR)
+        if (mHandleMidiIn != NULL)
         {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            MMRESULT res = midiInStart(mHandleMidiIn);
+            if (res != MMSYSERR_NOERROR)
+            {
+                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            }
         }
     }
 
@@ -653,23 +655,39 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
         // 0x07 Record Exit(Punch out)
         // 0x09 Pause
 
-        union MidiMSG
-        {
-            DWORD dwMsg;
-            CHAR chBytes[4];
-        };
 
-        MidiMSG msg;
-        msg.chBytes[0] = 0x90;
-        msg.chBytes[1] = 0x3C;
-        msg.chBytes[2] = 0x40;
-        msg.chBytes[3] = 0x00;
-
-        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
-        if (res != MMSYSERR_NOERROR)
+        HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
+        CHAR* pMidiBuffer = NULL;
+        if (gMidiBuffer != NULL)
         {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            pMidiBuffer = (CHAR*)::GlobalLock(gMidiBuffer);
         }
+
+        if (pMidiBuffer != NULL)
+        {
+            MIDIHDR midiHeader = { 0 };
+            midiHeader.lpData = pMidiBuffer;
+            midiHeader.dwBufferLength = 6;
+            midiHeader.lpData[0] = 0xF0;
+            midiHeader.lpData[1] = 0x7F;
+            midiHeader.lpData[2] = 0x7F;
+            midiHeader.lpData[3] = 0x06;
+            midiHeader.lpData[4] = 0x02;
+            midiHeader.lpData[5] = 0xF7;
+            midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            if (res != MMSYSERR_NOERROR)
+            {
+                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            }
+            midiOutUnprepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+        }
+
+        if (gMidiBuffer != NULL)
+        {
+            ::GlobalUnlock(gMidiBuffer);
+        }
+        ::GlobalFree(gMidiBuffer);
     }
 }
 
@@ -694,61 +712,45 @@ void MiscellaneousTimeCode::on_btnMtcPause_clicked()
         // 0x07 Record Exit(Punch out)
         // 0x09 Pause
 
-        union MidiMSG
-        {
-            DWORD dwMsg;
-            CHAR chBytes[4];
-        };
 
-        MidiMSG msg;
-        msg.chBytes[0] = 0x90;
-        msg.chBytes[1] = 0x40;
-        msg.chBytes[2] = 0x40;
-        msg.chBytes[3] = 0x00;
-
-        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
-        if (res != MMSYSERR_NOERROR)
+        HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
+        CHAR* pMidiBuffer = NULL;
+        if (gMidiBuffer != NULL)
         {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            pMidiBuffer = (CHAR*)::GlobalLock(gMidiBuffer);
         }
+
+        if (pMidiBuffer != NULL)
+        {
+            MIDIHDR midiHeader = { 0 };
+            midiHeader.lpData = pMidiBuffer;
+            midiHeader.dwBufferLength = 6;
+            midiHeader.lpData[0] = 0xF0;
+            midiHeader.lpData[1] = 0x7F;
+            midiHeader.lpData[2] = 0x7F;
+            midiHeader.lpData[3] = 0x06;
+            midiHeader.lpData[4] = 0x09;
+            midiHeader.lpData[5] = 0xF7;
+            midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            if (res != MMSYSERR_NOERROR)
+            {
+                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            }
+            midiOutUnprepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+        }
+
+        if (gMidiBuffer != NULL)
+        {
+            ::GlobalUnlock(gMidiBuffer);
+        }
+        ::GlobalFree(gMidiBuffer);
     }
 }
 
 void MiscellaneousTimeCode::on_btnMtcStop_clicked()
 {
     ui->pteMidiData->appendPlainText("MTC stop ......");
-
-    if (mHandleMidiIn)
-    {
-        MMRESULT res = midiInStop(mHandleMidiIn);
-        if (res != MMSYSERR_NOERROR)
-        {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStop failed --> %s", this->MidiErrorCodeToString(res).c_str());
-        }
-
-        union MidiMSG
-        {
-            DWORD dwMsg;
-            CHAR chBytes[4];
-        };
-
-        MidiMSG msg;
-        msg.chBytes[0] = 0x90;
-        msg.chBytes[1] = 0x43;
-        msg.chBytes[2] = 0x40;
-        msg.chBytes[3] = 0x00;
-
-        // 0x403C90
-
-        DWORD_PTR dwParam1 = 0;
-        DWORD_PTR dwParam2 = 0;
-
-        res = midiInMessage(mHandleMidiIn, MIM_DATA, dwParam1, dwParam2);
-        if (res != MMSYSERR_NOERROR)
-        {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
-        }
-    }
 
     if (mHandleMidiOut == NULL)
     {
@@ -767,36 +769,37 @@ void MiscellaneousTimeCode::on_btnMtcStop_clicked()
         // 0x07 Record Exit(Punch out)
         // 0x09 Pause
 
-        union MidiMSG
+        HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
+        CHAR* pMidiBuffer = NULL;
+        if (gMidiBuffer != NULL)
         {
-            DWORD dwMsg;
-            CHAR chBytes[4];
-        };
-
-        MidiMSG msg;
-        msg.chBytes[0] = 0x90;
-        msg.chBytes[1] = 0x43;
-        msg.chBytes[2] = 0x40;
-        msg.chBytes[3] = 0x00;
-
-        // 0x403C90
-
-        MMRESULT res = midiOutShortMsg(mHandleMidiOut, msg.dwMsg);
-        if (res != MMSYSERR_NOERROR)
-        {
-            LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            pMidiBuffer = (CHAR*)::GlobalLock(gMidiBuffer);
         }
 
-        // ºúÂÒ²âÊÔ
-        DWORD bufferSize = 0;
-        MMRESULT outMsgRes = midiOutMessage(mHandleMidiOut, DRV_QUERYDEVICEINTERFACESIZE, (DWORD_PTR)&bufferSize, 0);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACESIZE --> %s  bufferSize=%lu",
-            this->MidiErrorCodeToString(outMsgRes).c_str(), bufferSize);
-        TCHAR* pNameBuffer = new TCHAR[bufferSize];
-        ZeroMemory(pNameBuffer, bufferSize);
-        outMsgRes = midiOutMessage(mHandleMidiOut, DRV_QUERYDEVICEINTERFACE, (DWORD_PTR)pNameBuffer, bufferSize - 1);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACE --> %s interfaceName=%s",
-            this->MidiErrorCodeToString(outMsgRes).c_str(), pNameBuffer);
-        delete[]pNameBuffer;
+        if (pMidiBuffer != NULL)
+        {
+            MIDIHDR midiHeader = { 0 };
+            midiHeader.lpData = pMidiBuffer;
+            midiHeader.dwBufferLength = 6;
+            midiHeader.lpData[0] = 0xF0;
+            midiHeader.lpData[1] = 0x7F;
+            midiHeader.lpData[2] = 0x7F;
+            midiHeader.lpData[3] = 0x06;
+            midiHeader.lpData[4] = 0x01;
+            midiHeader.lpData[5] = 0xF7;
+            midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+            if (res != MMSYSERR_NOERROR)
+            {
+                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+            }
+            midiOutUnprepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+        }
+
+        if (gMidiBuffer != NULL)
+        {
+            ::GlobalUnlock(gMidiBuffer);
+        }
+        ::GlobalFree(gMidiBuffer);
     }
 }
