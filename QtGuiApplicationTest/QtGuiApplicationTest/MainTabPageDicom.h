@@ -49,10 +49,10 @@ protected:
     virtual void contextMenuEvent(QContextMenuEvent *event) override;
 
 private slots:
-    void on_action_open();
-    void on_action_save();
-    void on_action_previous();
-    void on_action_next();
+    void slot_action_open();
+    void slot_action_save();
+    void slot_action_previous();
+    void slot_action_next();
 
 private:
     void LoadDicomFile(const QString& inDcmFilename);

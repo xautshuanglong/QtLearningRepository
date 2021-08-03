@@ -28,8 +28,8 @@ MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     pMenuLibZipArchiveOpen->addAction(pActionArchiveFiles);
     pMenuLibZipArchiveOpen->addAction(pActionArchiveDir);
     pMenuLibZipArchiveOpen->setWindowFlags(pMenuLibZipArchiveOpen->windowFlags() | Qt::NoDropShadowWindowHint);
-    this->connect(pActionArchiveFiles, SIGNAL(triggered(bool)), SLOT(on_actionArchiveFiles_triggered(bool)));
-    this->connect(pActionArchiveDir, SIGNAL(triggered(bool)), SLOT(on_actionArchiveDir_triggered(bool)));
+    this->connect(pActionArchiveFiles, SIGNAL(triggered(bool)), SLOT(slot_actionArchiveFiles_triggered(bool)));
+    this->connect(pActionArchiveDir, SIGNAL(triggered(bool)), SLOT(slot_actionArchiveDir_triggered(bool)));
     ui.btnLibZipArchiveOpen->setMenu(pMenuLibZipArchiveOpen);
 }
 
@@ -645,14 +645,14 @@ void MiscellaneousZip::on_btnLibZipArchive_clicked()
     }
 }
 
-void MiscellaneousZip::on_actionArchiveFiles_triggered(bool checked)
+void MiscellaneousZip::slot_actionArchiveFiles_triggered(bool checked)
 {
     m_libZipArchiveType = ELZAOT_FILES;
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open files"), qApp->applicationDirPath(), "All (*);;Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)");
     ui.leLibZipArchive->setText(files.join(";"));;
 }
 
-void MiscellaneousZip::on_actionArchiveDir_triggered(bool checked)
+void MiscellaneousZip::slot_actionArchiveDir_triggered(bool checked)
 {
     m_libZipArchiveType = ELZAOT_DIR;
     QString sourceDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), qApp->applicationDirPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);

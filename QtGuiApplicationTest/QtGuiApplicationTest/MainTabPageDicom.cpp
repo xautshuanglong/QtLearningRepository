@@ -64,10 +64,10 @@ MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     mpMainSpliter->setStretchFactor(0, 75);
     mpMainSpliter->setStretchFactor(1, 25);
 
-    this->connect(mpActionOpen, SIGNAL(triggered()), SLOT(on_action_open()));
-    this->connect(mpActionSave, SIGNAL(triggered()), SLOT(on_action_save()));
-    this->connect(mpActionPrevious, SIGNAL(triggered()), SLOT(on_action_previous()));
-    this->connect(mpActionNext, SIGNAL(triggered()), SLOT(on_action_next()));
+    this->connect(mpActionOpen, SIGNAL(triggered()), SLOT(slot_action_open()));
+    this->connect(mpActionSave, SIGNAL(triggered()), SLOT(slot_action_save()));
+    this->connect(mpActionPrevious, SIGNAL(triggered()), SLOT(slot_action_previous()));
+    this->connect(mpActionNext, SIGNAL(triggered()), SLOT(slot_action_next()));
 
     QStringList header;
     header << "DcmTagKey" << "DcmTagName" << "ElementValue";
@@ -111,7 +111,7 @@ void MainTabPageDicom::contextMenuEvent(QContextMenuEvent *event)
     pMenu->exec(globalPoint);
 }
 
-void MainTabPageDicom::on_action_open()
+void MainTabPageDicom::slot_action_open()
 {
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString dcmFileName = QFileDialog::getOpenFileName(this, tr("Open File"), curAppPath, tr("DICOM (*.dcm)"));
@@ -125,7 +125,7 @@ void MainTabPageDicom::on_action_open()
     }
 }
 
-void MainTabPageDicom::on_action_save()
+void MainTabPageDicom::slot_action_save()
 {
     QString curAppPath = QCoreApplication::applicationDirPath();
     QString saveFilename = QFileDialog::getSaveFileName(this, tr("Save File"), curAppPath, tr("Images (*.png *.jpg)"));
@@ -135,7 +135,7 @@ void MainTabPageDicom::on_action_save()
     }
 }
 
-void MainTabPageDicom::on_action_previous()
+void MainTabPageDicom::slot_action_previous()
 {
     if (mDcmFrameIndex > 0)
     {
@@ -146,7 +146,7 @@ void MainTabPageDicom::on_action_previous()
     }
 }
 
-void MainTabPageDicom::on_action_next()
+void MainTabPageDicom::slot_action_next()
 {
     if (mDcmFrameIndex < mDcmFrameCount - 1)
     {

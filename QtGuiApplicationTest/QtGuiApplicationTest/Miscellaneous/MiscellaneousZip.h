@@ -47,9 +47,9 @@ private slots:
     void on_btnDirectoryExtractOpen_clicked();
     void on_btnDirectoryExtractBrowse_clicked();
 
+    void slot_actionArchiveFiles_triggered(bool checked);
+    void slot_actionArchiveDir_triggered(bool checked);
     void on_btnLibZipArchive_clicked();
-    void on_actionArchiveFiles_triggered(bool checked);
-    void on_actionArchiveDir_triggered(bool checked);
     void on_btnLibZipArchiveBrowse_clicked();
     void on_btnLibZipExtract_clicked();
     void on_btnLibZipExtractOpen_clicked();
