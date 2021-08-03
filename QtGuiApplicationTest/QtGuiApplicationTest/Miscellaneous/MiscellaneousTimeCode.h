@@ -6,10 +6,12 @@
 #include <QList>
 
 #include "MiscellaneousBase.h"
+#include "Core/TimeCodeObj.h"
 
 namespace Ui {class MiscellaneousTimeCode;};
 
 class QTimer;
+class QSpinBox;
 
 //struct MidiDeviceInfo
 //{
@@ -37,6 +39,7 @@ private:
     bool MidiDevicesCloseOut();
     bool MidiDevicesOpenIn(UINT deviceID);
     bool MidiDevicesOpenOut(UINT deviceID);
+    TimeCodeObj GetTimeCodeFromUI(QSpinBox* pSpbHour, QSpinBox* pSpbMinute, QSpinBox* pSpbSecond, QSpinBox* pSpbFrame);
 
     std::string MidiTechnologyToString(WORD wTechnology);
     std::string MidiSupportToString(DWORD dwSupport);
@@ -54,14 +57,15 @@ private slots:
     void on_btnEventMapTest_clicked();
     void on_btnTimeEmiterTest_clicked();
     void on_btnEnumerateMIDI_clicked();
-    void on_btnMtcStart_clicked();
-    void on_btnMtcPause_clicked();
-    void on_btnMtcStop_clicked();
+    void on_btnMtcStartStop_clicked();
+    void on_btnMtcLocate_clicked();
 
 private:
     Ui::MiscellaneousTimeCode       *ui;
     QTimer                          *mpTimeCodeEmiter;
-    bool                             mbTimeCodeEnable;
+    bool                             mbTimeCodeEnable; // ·¢ÉúÆ÷
+    bool                             mbTimeCodeStarted;
+    bool                             mbTimeCodeInputOn;
     QString                          mBtnTimeEmiterText;
     long long                        mCurFrequency;
     QList<QPair<UINT, QString>>      mMidiDevPairIn;

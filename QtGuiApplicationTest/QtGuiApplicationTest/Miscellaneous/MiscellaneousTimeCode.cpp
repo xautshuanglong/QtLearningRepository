@@ -13,6 +13,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousTimeCode())
     , mbTimeCodeEnable(false)
+    , mbTimeCodeStarted(false)
+    , mbTimeCodeInputOn(false)
     , mHandleMidiIn(NULL)
     , mHandleMidiOut(NULL)
 {
@@ -206,6 +208,16 @@ bool MiscellaneousTimeCode::MidiDevicesOpenOut(UINT deviceID)
     }
 
     return retValue;
+}
+
+TimeCodeObj MiscellaneousTimeCode::GetTimeCodeFromUI(QSpinBox* pSpbHour, QSpinBox* pSpbMinute, QSpinBox* pSpbSecond, QSpinBox* pSpbFrame)
+{
+    int frameRate = 0;
+    int hour = pSpbHour->value();
+    int minute = pSpbMinute->value();
+    int second = pSpbSecond->value();
+    int frame = pSpbFrame->value();
+    return TimeCodeObj(hour, minute, second, frame, frameRate);
 }
 
 std::string MiscellaneousTimeCode::MidiTechnologyToString(WORD wTechnology)
@@ -619,25 +631,31 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
     }
 }
 
-void MiscellaneousTimeCode::on_btnMtcStart_clicked()
+void MiscellaneousTimeCode::on_btnMtcStartStop_clicked()
 {
-    ui->pteMidiData->appendPlainText("MTC start ......");
+    ui->pteMidiData->appendPlainText(QString("MTC %1 ......").arg(mbTimeCodeStarted ? "stop" : "start"));
 
+    // MIDI 输入设备
     if (mHandleMidiIn == NULL)
     {
         UINT deviceID = ui->cbMidiDevicesIn->currentData().toUInt();
         this->MidiDevicesOpenIn(deviceID);
     }
 
-    if (mHandleMidiIn != NULL)
+    if (mHandleMidiIn != NULL && !mbTimeCodeInputOn)
     {
         MMRESULT res = midiInStart(mHandleMidiIn);
-        if (res != MMSYSERR_NOERROR)
+        if (res == MMSYSERR_NOERROR)
+        {
+            mbTimeCodeInputOn = true;
+        }
+        else
         {
             LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiInStart failed --> %s", this->MidiErrorCodeToString(res).c_str());
         }
     }
 
+    // MIDI 输出设备
     if (mHandleMidiOut == NULL)
     {
         UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
@@ -655,7 +673,6 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
         // 0x07 Record Exit(Punch out)
         // 0x09 Pause
 
-
         HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
         CHAR* pMidiBuffer = NULL;
         if (gMidiBuffer != NULL)
@@ -672,11 +689,17 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
             midiHeader.lpData[1] = 0x7F;
             midiHeader.lpData[2] = 0x7F;
             midiHeader.lpData[3] = 0x06;
-            midiHeader.lpData[4] = 0x02;
+            midiHeader.lpData[4] = mbTimeCodeStarted ? 0x01 : 0x02; // 0x01:Stop  0x02:Play
             midiHeader.lpData[5] = 0xF7;
+
             midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
             MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
-            if (res != MMSYSERR_NOERROR)
+            if (res == MMSYSERR_NOERROR)
+            {
+                mbTimeCodeStarted = !mbTimeCodeStarted; // 启动 或 停止 成功，切换状态
+                ui->btnMtcStartStop->setText(mbTimeCodeStarted ? "Stop" : "Start");
+            }
+            else
             {
                 LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
             }
@@ -694,9 +717,12 @@ void MiscellaneousTimeCode::on_btnMtcStart_clicked()
 /*
  * mif4 不支持暂停操作
  */
-void MiscellaneousTimeCode::on_btnMtcPause_clicked()
+void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
 {
-    ui->pteMidiData->appendPlainText("MTC pause ......");
+    TimeCodeObj locateTimeCode = this->GetTimeCodeFromUI(ui->spbLocateHour, ui->spbLocateMinute, ui->spbLocateSecond, ui->spbLocateFrame);
+    std::cout << "format testing 1 " << locateTimeCode << std::endl;
+    std::cout << "format testing 2 " << std::to_string(locateTimeCode) << std::endl;
+    ui->pteMidiData->appendPlainText(QString("MTC locate at %1 ......").arg(QString::fromStdString(std::to_string(locateTimeCode))));
 
     if (mHandleMidiOut == NULL)
     {
@@ -751,58 +777,58 @@ void MiscellaneousTimeCode::on_btnMtcPause_clicked()
     }
 }
 
-void MiscellaneousTimeCode::on_btnMtcStop_clicked()
-{
-    ui->pteMidiData->appendPlainText("MTC stop ......");
-
-    if (mHandleMidiOut == NULL)
-    {
-        UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
-        this->MidiDevicesOpenOut(deviceID);
-    }
-
-    if (mHandleMidiOut)
-    {
-        // 0x01 Stop
-        // 0x02 Play
-        // 0x03 Deferred Play
-        // 0x04 Fast Forward
-        // 0x05 Rewind
-        // 0x06 Record Strobe(Punch In)
-        // 0x07 Record Exit(Punch out)
-        // 0x09 Pause
-
-        HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
-        CHAR* pMidiBuffer = NULL;
-        if (gMidiBuffer != NULL)
-        {
-            pMidiBuffer = (CHAR*)::GlobalLock(gMidiBuffer);
-        }
-
-        if (pMidiBuffer != NULL)
-        {
-            MIDIHDR midiHeader = { 0 };
-            midiHeader.lpData = pMidiBuffer;
-            midiHeader.dwBufferLength = 6;
-            midiHeader.lpData[0] = 0xF0;
-            midiHeader.lpData[1] = 0x7F;
-            midiHeader.lpData[2] = 0x7F;
-            midiHeader.lpData[3] = 0x06;
-            midiHeader.lpData[4] = 0x01;
-            midiHeader.lpData[5] = 0xF7;
-            midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
-            MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
-            if (res != MMSYSERR_NOERROR)
-            {
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
-            }
-            midiOutUnprepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
-        }
-
-        if (gMidiBuffer != NULL)
-        {
-            ::GlobalUnlock(gMidiBuffer);
-        }
-        ::GlobalFree(gMidiBuffer);
-    }
-}
+//void MiscellaneousTimeCode::on_btnMtcStop_clicked()
+//{
+//    ui->pteMidiData->appendPlainText("MTC stop ......");
+//
+//    if (mHandleMidiOut == NULL)
+//    {
+//        UINT deviceID = ui->cbMidiDevicesOut->currentData().toUInt();
+//        this->MidiDevicesOpenOut(deviceID);
+//    }
+//
+//    if (mHandleMidiOut)
+//    {
+//        // 0x01 Stop
+//        // 0x02 Play
+//        // 0x03 Deferred Play
+//        // 0x04 Fast Forward
+//        // 0x05 Rewind
+//        // 0x06 Record Strobe(Punch In)
+//        // 0x07 Record Exit(Punch out)
+//        // 0x09 Pause
+//
+//        HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
+//        CHAR* pMidiBuffer = NULL;
+//        if (gMidiBuffer != NULL)
+//        {
+//            pMidiBuffer = (CHAR*)::GlobalLock(gMidiBuffer);
+//        }
+//
+//        if (pMidiBuffer != NULL)
+//        {
+//            MIDIHDR midiHeader = { 0 };
+//            midiHeader.lpData = pMidiBuffer;
+//            midiHeader.dwBufferLength = 6;
+//            midiHeader.lpData[0] = 0xF0;
+//            midiHeader.lpData[1] = 0x7F;
+//            midiHeader.lpData[2] = 0x7F;
+//            midiHeader.lpData[3] = 0x06;
+//            midiHeader.lpData[4] = 0x01;
+//            midiHeader.lpData[5] = 0xF7;
+//            midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+//            MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+//            if (res != MMSYSERR_NOERROR)
+//            {
+//                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
+//            }
+//            midiOutUnprepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
+//        }
+//
+//        if (gMidiBuffer != NULL)
+//        {
+//            ::GlobalUnlock(gMidiBuffer);
+//        }
+//        ::GlobalFree(gMidiBuffer);
+//    }
+//}
