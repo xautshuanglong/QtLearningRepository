@@ -720,6 +720,7 @@ void MiscellaneousTimeCode::on_btnMtcStartStop_clicked()
 void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
 {
     TimeCodeObj locateTimeCode = this->GetTimeCodeFromUI(ui->spbLocateHour, ui->spbLocateMinute, ui->spbLocateSecond, ui->spbLocateFrame);
+    ui->lcdTimeCode->display(QString::fromStdString(std::to_string(locateTimeCode)));
     ui->pteMidiData->appendPlainText(QString("MTC locate at %1 ......").arg(QString::fromStdString(std::to_string(locateTimeCode))));
 
     if (mHandleMidiOut == NULL)

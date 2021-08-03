@@ -199,6 +199,31 @@ QComboBox::drop-down
           </widget>
          </item>
          <item>
+          <widget class="QLCDNumber" name="lcdTimeCode">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>160</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="digitCount">
+            <number>11</number>
+           </property>
+           <property name="mode">
+            <enum>QLCDNumber::Dec</enum>
+           </property>
+           <property name="intValue" stdset="0">
+            <number>1234567890</number>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="btnMtcStartStop">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
