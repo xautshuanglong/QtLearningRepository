@@ -572,6 +572,7 @@ void MiscellaneousTimeCode::TimeCodeEmiter_TimeOut()
 void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
 {
     ui->lcdTimeCode->display(QString::fromStdString(std::to_string(timecode)));
+    ui->lcdFrameRate->display(timecode.getFrameRate());
 }
 
 void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)

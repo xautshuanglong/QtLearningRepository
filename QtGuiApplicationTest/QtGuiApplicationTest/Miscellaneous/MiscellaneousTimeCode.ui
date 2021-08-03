@@ -541,6 +541,25 @@ QComboBox::drop-down
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdFrameRate">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="digitCount">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
