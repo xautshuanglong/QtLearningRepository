@@ -67,7 +67,8 @@ void MiscellaneousWinThread::Run()
         ++count;
         if (m_threadStopFlag)
         {
-            break;
+            ::_endthreadex(0);
+            //break;
         }
     }
     m_threadStopFlag = true;
