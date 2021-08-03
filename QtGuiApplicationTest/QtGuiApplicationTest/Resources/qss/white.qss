@@ -811,8 +811,6 @@ QSpinBox::up-button:enabled:hover {
 }
 QSpinBox::down-button {
         border-left: 1px solid rgb(111, 156, 207);
-        width: 18px;
-        height: 12px;
         border-bottom-right-radius: 4px;
         image: url(:/AppImages/Resources/images/white/spinbox_down_24.png);
 }

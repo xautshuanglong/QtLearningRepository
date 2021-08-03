@@ -14,10 +14,10 @@ namespace std
         int second = obj.getSecond();
         int frame = obj.getFrame();
 
-        retValue += ":" + std::string(hour <= 9 ? "0" : "") + to_string(hour);
-        retValue += ":" + std::string(minute <= 9 ? "0" : "") + to_string(minute);
-        retValue += ":" + std::string(second <= 9 ? "0" : "") + to_string(second);
-        retValue += ":" + std::string(frame <= 9 ? "0" : "") + to_string(frame);
+        retValue += std::string(hour <= 9 ? "0" : "") + to_string(hour) + ":";
+        retValue += std::string(minute <= 9 ? "0" : "") + to_string(minute) + ":";
+        retValue += std::string(second <= 9 ? "0" : "") + to_string(second) + ":";
+        retValue += std::string(frame <= 9 ? "0" : "") + to_string(frame);
 
         return retValue;
     }
@@ -140,7 +140,9 @@ bool TimeCodeObj::operator >=(const TimeCodeObj& other) const
 
 std::ostream& operator<<(std::ostream& output, const TimeCodeObj& obj)
 {
-    output << std::setw(2) << std::setfill('0')
-        << obj.m_iHour << ":" << obj.m_iMinute << ":" << obj.m_iSecond << ":" << obj.m_iFrame;
+    output << std::setw(2) << std::setfill('0') << obj.m_iHour << ":"
+        << std::setw(2) << std::setfill('0') << obj.m_iMinute << ":"
+        << std::setw(2) << std::setfill('0') << obj.m_iSecond << ":"
+        << std::setw(2) << std::setfill('0') << obj.m_iFrame;
     return output;
 }

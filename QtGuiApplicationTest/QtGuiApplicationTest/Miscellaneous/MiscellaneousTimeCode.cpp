@@ -720,8 +720,6 @@ void MiscellaneousTimeCode::on_btnMtcStartStop_clicked()
 void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
 {
     TimeCodeObj locateTimeCode = this->GetTimeCodeFromUI(ui->spbLocateHour, ui->spbLocateMinute, ui->spbLocateSecond, ui->spbLocateFrame);
-    std::cout << "format testing 1 " << locateTimeCode << std::endl;
-    std::cout << "format testing 2 " << std::to_string(locateTimeCode) << std::endl;
     ui->pteMidiData->appendPlainText(QString("MTC locate at %1 ......").arg(QString::fromStdString(std::to_string(locateTimeCode))));
 
     if (mHandleMidiOut == NULL)
@@ -741,7 +739,6 @@ void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
         // 0x07 Record Exit(Punch out)
         // 0x09 Pause
 
-
         HGLOBAL gMidiBuffer = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE, 128);
         CHAR* pMidiBuffer = NULL;
         if (gMidiBuffer != NULL)
@@ -753,16 +750,28 @@ void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
         {
             MIDIHDR midiHeader = { 0 };
             midiHeader.lpData = pMidiBuffer;
-            midiHeader.dwBufferLength = 6;
-            midiHeader.lpData[0] = 0xF0;
-            midiHeader.lpData[1] = 0x7F;
-            midiHeader.lpData[2] = 0x7F;
-            midiHeader.lpData[3] = 0x06;
-            midiHeader.lpData[4] = 0x09;
-            midiHeader.lpData[5] = 0xF7;
+            midiHeader.dwBufferLength = 13;
+            midiHeader.lpData[0]  = 0xF0;
+            midiHeader.lpData[1]  = 0x7F;
+            midiHeader.lpData[2]  = 0x7F;
+            midiHeader.lpData[3]  = 0x06;
+            midiHeader.lpData[4]  = 0x44;
+            midiHeader.lpData[5]  = 0x06;
+            midiHeader.lpData[6]  = 0x01;
+            midiHeader.lpData[7]  = locateTimeCode.getHour()   & 0xFF;
+            midiHeader.lpData[8]  = locateTimeCode.getMinute() & 0xFF;
+            midiHeader.lpData[9]  = locateTimeCode.getSecond() & 0xFF;
+            midiHeader.lpData[10] = locateTimeCode.getFrame()  & 0xFF;
+            midiHeader.lpData[11] = 0x00;
+            midiHeader.lpData[12] = 0xF7;
             midiOutPrepareHeader(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
             MMRESULT res = midiOutLongMsg(mHandleMidiOut, &midiHeader, sizeof(MIDIHDR));
-            if (res != MMSYSERR_NOERROR)
+            if (res == MMSYSERR_NOERROR)
+            {
+                mbTimeCodeStarted = false; // 重定位后处于已停止状态，按钮设置为可启动状态
+                ui->btnMtcStartStop->setText("Start");
+            }
+            else
             {
                 LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg failed --> %s", this->MidiErrorCodeToString(res).c_str());
             }

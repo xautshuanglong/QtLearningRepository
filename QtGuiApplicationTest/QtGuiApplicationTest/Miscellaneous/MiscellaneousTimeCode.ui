@@ -234,6 +234,12 @@ QComboBox::drop-down
            </property>
            <item>
             <widget class="QSpinBox" name="spbBeginHour">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -250,6 +256,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbBeginMinute">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>59</number>
              </property>
@@ -260,6 +272,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbBeginSecond">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>59</number>
              </property>
@@ -270,6 +288,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbBeginFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>30</number>
              </property>
@@ -294,6 +318,12 @@ QComboBox::drop-down
            </property>
            <item>
             <widget class="QSpinBox" name="spbEndHour">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -310,6 +340,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbEndMinute">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>59</number>
              </property>
@@ -320,6 +356,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbEndSecond">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>59</number>
              </property>
@@ -330,6 +372,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbEndFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>30</number>
              </property>
@@ -360,6 +408,12 @@ QComboBox::drop-down
            </property>
            <item>
             <widget class="QSpinBox" name="spbLocateHour">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>23</number>
              </property>
@@ -370,6 +424,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbLocateMinute">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="maximum">
               <number>59</number>
              </property>
@@ -380,6 +440,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbLocateSecond">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -396,6 +462,12 @@ QComboBox::drop-down
            </item>
            <item>
             <widget class="QSpinBox" name="spbLocateFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="specialValueText">
               <string/>
              </property>
