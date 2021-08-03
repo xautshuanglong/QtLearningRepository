@@ -12,6 +12,7 @@ using namespace Shuanglong::Utils;
 MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousTimeCode())
+    , mMtcByteIndex(0)
     , mbTimeCodeEnable(false)
     , mbTimeCodeStarted(false)
     , mbTimeCodeInputOn(false)
@@ -25,6 +26,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
 
     // 高性能计数器
     mCurFrequency = TimeUtil::QueryPerformanceFrequency();
+
+    this->connect(this, SIGNAL(SignalTimeCodeChanged(const TimeCodeObj)), this, SLOT(SlotTimeCodeChanged(const TimeCodeObj)));
 }
 
 MiscellaneousTimeCode::~MiscellaneousTimeCode()
@@ -403,6 +406,11 @@ void MiscellaneousTimeCode::MidiInProcedure(HMIDIIN hMidiOut, UINT wMsg, DWORD_P
 {
     if (dwInstance == NULL) return;
 
+    static int gRealtimeMtcHour = 0;
+    static int gRealtimeMtcMinute = 0;
+    static int gRealtimeMtcSecond = 0;
+    static int gRealtimeMtcFrame = 0;
+
     MiscellaneousTimeCode* pInstance = static_cast<MiscellaneousTimeCode*>((void*)dwInstance);
     if (wMsg != MIM_DATA)
     {
@@ -417,12 +425,70 @@ void MiscellaneousTimeCode::MidiInProcedure(HMIDIIN hMidiOut, UINT wMsg, DWORD_P
         break;
     case MIM_DATA:
     {
-        unsigned char *pMidiData = (unsigned char *)&dwParam1;
-        DWORD64 dwTimestamp = dwParam2;
-        QDateTime startTime = QDateTime::fromMSecsSinceEpoch(dwTimestamp, Qt::LocalTime);
-        QString startTimeStr = startTime.toString("yyyy-MM-dd hh:mm:ss");
-        LogUtil::Debug(CODE_LOCATION, "MessageData %02X %02X %02X %02X  TimeStamp %s",
-            pMidiData[0], pMidiData[1], pMidiData[2], pMidiData[3], startTimeStr.toUtf8().data());
+        BYTE *pMidiData = (BYTE *)&dwParam1;
+        if (pMidiData[0] != 0xF1) break;
+
+        BYTE mtcByte = pMidiData[1];
+        int byteValue = mtcByte & 0x0F;
+        int byteIndex = (mtcByte >> 4 & 0x0F);
+
+        if (byteIndex == 0)      // 帧数 低位
+        {
+            gRealtimeMtcFrame = byteValue & 0x0F;
+        }
+        else if (byteIndex == 1) // 帧数 高位
+        {
+            gRealtimeMtcFrame = gRealtimeMtcFrame | (byteValue << 4);
+        }
+        else if (byteIndex == 2) // 秒钟 低位
+        {
+            gRealtimeMtcSecond = byteValue & 0x0F;
+        }
+        else if (byteIndex == 3) // 秒钟 高位
+        {
+            gRealtimeMtcSecond = gRealtimeMtcSecond | (byteValue << 4);
+        }
+        else if (byteIndex == 4) // 分钟 低位
+        {
+            gRealtimeMtcMinute = byteValue & 0x0F;
+        }
+        else if (byteIndex == 5) // 分钟 高位
+        {
+            gRealtimeMtcMinute = gRealtimeMtcMinute | (byteValue << 4);
+        }
+        else if (byteIndex == 6) // 小时 低位
+        {
+            gRealtimeMtcHour = byteValue & 0x0F;
+        }
+        else if (byteIndex == 7) // 小时 高位
+        {
+            gRealtimeMtcHour = gRealtimeMtcHour | ((byteValue & 0x01) << 4);
+            int frameRate = 0;
+            int frameType = byteValue >> 1 & 0x03;
+            if (frameType == 0)
+            {
+                frameRate = 24;
+            }
+            else if (frameType == 1)
+            {
+                frameRate = 25;
+            }
+            else if (frameType == 2)
+            {
+                frameRate = 30; // drop frame
+            }
+            else if (frameType == 3)
+            {
+                frameRate = 30;
+            }
+            // 时间码结束
+            emit pInstance->SignalTimeCodeChanged(TimeCodeObj(gRealtimeMtcHour, gRealtimeMtcMinute, gRealtimeMtcSecond, gRealtimeMtcFrame, frameRate));
+        }
+        //DWORD64 dwTimestamp = dwParam2;
+        //QDateTime startTime = QDateTime::fromMSecsSinceEpoch(dwTimestamp, Qt::LocalTime);
+        //QString startTimeStr = startTime.toString("yyyy-MM-dd hh:mm:ss");
+        //LogUtil::Debug(CODE_LOCATION, "MessageData %02X %02X %02X %02X  TimeStamp %s",
+        //    pMidiData[0], pMidiData[1], pMidiData[2], pMidiData[3], startTimeStr.toUtf8().data());
         break;
     }
     case MIM_LONGDATA:
@@ -501,6 +567,11 @@ void MiscellaneousTimeCode::TimeCodeEmiter_TimeOut()
         LogUtil::Debug(CODE_LOCATION, "curFrequency: %lld    diffTickCount: %lld    %llf ms",
             mCurFrequency, diffTickCount, microSecond);
     }
+}
+
+void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
+{
+    ui->lcdTimeCode->display(QString::fromStdString(std::to_string(timecode)));
 }
 
 void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)

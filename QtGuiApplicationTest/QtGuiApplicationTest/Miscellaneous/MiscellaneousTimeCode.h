@@ -50,6 +50,7 @@ private:
 
 private slots:
     void TimeCodeEmiter_TimeOut();
+    void SlotTimeCodeChanged(const TimeCodeObj timecode);
 
     void on_cbMidiDevicesIn_currentIndexChanged(int index);
     void on_cbMidiDevicesOut_currentIndexChanged(int index);
@@ -60,9 +61,13 @@ private slots:
     void on_btnMtcStartStop_clicked();
     void on_btnMtcLocate_clicked();
 
+signals:
+    void SignalTimeCodeChanged(const TimeCodeObj timecode);
+
 private:
     Ui::MiscellaneousTimeCode       *ui;
     QTimer                          *mpTimeCodeEmiter;
+    int                              mMtcByteIndex;
     bool                             mbTimeCodeEnable; // ·¢ÉúÆ÷
     bool                             mbTimeCodeStarted;
     bool                             mbTimeCodeInputOn;
