@@ -51,13 +51,16 @@ private:
 private slots:
     void TimeCodeEmiter_TimeOut();
     void SlotTimeCodeChanged(const TimeCodeObj timecode);
-
-    void on_cbMidiDevicesIn_currentIndexChanged(int index);
-    void on_cbMidiDevicesOut_currentIndexChanged(int index);
+    // Common Button
     void on_btnTransferTest_clicked();
     void on_btnEventMapTest_clicked();
     void on_btnTimeEmiterTest_clicked();
     void on_btnEnumerateMIDI_clicked();
+    // Audio Input Output (LTC)
+    void on_btnLtcStartStop_clicked();
+    // MIDI InputOutput (MTC)
+    void on_cbMidiDevicesIn_currentIndexChanged(int index);
+    void on_cbMidiDevicesOut_currentIndexChanged(int index);
     void on_btnMtcStartStop_clicked();
     void on_btnMtcLocate_clicked();
 

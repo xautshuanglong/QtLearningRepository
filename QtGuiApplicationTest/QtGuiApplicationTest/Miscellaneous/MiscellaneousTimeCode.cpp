@@ -3,6 +3,9 @@
 
 #include <QTimer>
 #include <QDateTime>
+#include <QStyledItemDelegate>
+#include <QAbstractItemView>
+#include <QAudioDeviceInfo>
 
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
@@ -59,6 +62,24 @@ MiscellaneousTestItem MiscellaneousTimeCode::GetItemID()
 
 void MiscellaneousTimeCode::InitUI()
 {
+    // 下拉组合框样式
+    QStyledItemDelegate* pItemDelegate = new QStyledItemDelegate();
+    ui->cbAudioDevicesIn->setItemDelegate(pItemDelegate);
+    ui->cbAudioDevicesIn->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    ui->cbAudioDevicesIn->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->cbAudioDevicesOut->setItemDelegate(pItemDelegate);
+    ui->cbAudioDevicesOut->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    ui->cbAudioDevicesOut->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->cbMidiDevicesIn->setItemDelegate(pItemDelegate);
+    ui->cbMidiDevicesIn->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    ui->cbMidiDevicesIn->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+
+    ui->cbMidiDevicesOut->setItemDelegate(pItemDelegate);
+    ui->cbMidiDevicesOut->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    ui->cbMidiDevicesOut->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+
     // UI 控件初始化
     mBtnTimeEmiterText = ui->btnTimeEmiterTest->text();
     ui->btnTimeEmiterTest->setText(QString("%1 (disable)").arg(mBtnTimeEmiterText));
@@ -571,24 +592,8 @@ void MiscellaneousTimeCode::TimeCodeEmiter_TimeOut()
 
 void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
 {
-    ui->lcdTimeCode->display(QString::fromStdString(std::to_string(timecode)));
+    ui->lcdTimeCodeMTC->display(QString::fromStdString(std::to_string(timecode)));
     ui->lcdFrameRate->display(timecode.getFrameRate());
-}
-
-void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)
-{
-    if (index == -1) return;
-
-    UINT deviceID = ui->cbMidiDevicesIn->itemData(index).toUInt();
-    this->MidiDevicesOpenIn(deviceID);
-}
-
-void MiscellaneousTimeCode::on_cbMidiDevicesOut_currentIndexChanged(int index)
-{
-    if (index == -1) return;
-
-    UINT deviceID = ui->cbMidiDevicesOut->itemData(index).toUInt();
-    this->MidiDevicesOpenOut(deviceID);
 }
 
 void MiscellaneousTimeCode::on_btnTransferTest_clicked()
@@ -703,6 +708,30 @@ void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
     }
 }
 
+void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
+{
+    ui->lcdTimeCodeLTC->display(QTime::currentTime().toString("hh:mm:ss"));
+
+    QList<QAudioDeviceInfo> audioInput = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    QList<QAudioDeviceInfo> audioOutput = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+}
+
+void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    UINT deviceID = ui->cbMidiDevicesIn->itemData(index).toUInt();
+    this->MidiDevicesOpenIn(deviceID);
+}
+
+void MiscellaneousTimeCode::on_cbMidiDevicesOut_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    UINT deviceID = ui->cbMidiDevicesOut->itemData(index).toUInt();
+    this->MidiDevicesOpenOut(deviceID);
+}
+
 void MiscellaneousTimeCode::on_btnMtcStartStop_clicked()
 {
     ui->pteMidiData->appendPlainText(QString("MTC %1 ......").arg(mbTimeCodeStarted ? "stop" : "start"));
@@ -792,7 +821,7 @@ void MiscellaneousTimeCode::on_btnMtcStartStop_clicked()
 void MiscellaneousTimeCode::on_btnMtcLocate_clicked()
 {
     TimeCodeObj locateTimeCode = this->GetTimeCodeFromUI(ui->spbLocateHour, ui->spbLocateMinute, ui->spbLocateSecond, ui->spbLocateFrame);
-    ui->lcdTimeCode->display(QString::fromStdString(std::to_string(locateTimeCode)));
+    ui->lcdTimeCodeMTC->display(QString::fromStdString(std::to_string(locateTimeCode)));
     ui->pteMidiData->appendPlainText(QString("MTC locate at %1 ......").arg(QString::fromStdString(std::to_string(locateTimeCode))));
 
     if (mHandleMidiOut == NULL)
