@@ -598,6 +598,23 @@ void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
 
 void MiscellaneousTimeCode::on_btnTransferTest_clicked()
 {
+    QDateTime testTime(QDate(2021, 8, 4), QTime(15, 30, 20, 0));
+    QString timeString_1 = testTime.toString("yyyy-MM-dd hh:mm:ss");
+
+    QDateTime testTimeBig(QDate(2021, 8, 4), QTime(16, 32, 25, 0));
+    int secondDiff = testTimeBig.secsTo(testTime);
+
+    testTime.addSecs(50);
+    QString timeString_2 = testTime.toString("yyyy-MM-dd hh:mm:ss");
+
+    TimeCodeObj test1(1, 2, 3, 0, 0);
+    test1.addSecond(3667);
+    std::string testStr1 = std::to_string(test1);
+
+    TimeCodeObj test2(1, 2, 3, 0, 0);
+    test2.subSecond(53);
+    std::string testStr2 = std::to_string(test2);
+
     int i = 0;
 }
 

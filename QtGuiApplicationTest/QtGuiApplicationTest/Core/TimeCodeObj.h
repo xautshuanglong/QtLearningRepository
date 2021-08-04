@@ -20,8 +20,6 @@ public:
     bool operator <=(const TimeCodeObj& other) const;
     bool operator >=(const TimeCodeObj& other) const;
 
-    friend std::ostream& operator<<(std::ostream& output, const TimeCodeObj& obj);
-
     inline void setHour(int hour) { m_iHour = hour; }
     inline void setMinute(int minute) { m_iMinute = minute; }
     inline void setSecond(int second) { m_iSecond = second; }
@@ -33,6 +31,14 @@ public:
     inline int getSecond() const { return m_iSecond; }
     inline int getFrame() const { return m_iFrame; }
     inline int getFrameRate() const { return m_iFrameRate; }
+
+    void addSecond(int second);
+    void subSecond(int second);
+    void fromSecond(int second);
+    int  toSecond() const;
+    int  secondsTo(const TimeCodeObj& other) const;
+
+    friend std::ostream& operator<<(std::ostream& output, const TimeCodeObj& obj);
 
 private:
     int m_iHour;

@@ -3,6 +3,13 @@
 #include <iomanip>
 #include <QMetaType>
 
+#define HOUR_PER_DATY     24    // 1 * 24
+#define MINUTE_PER_DAY    1440  // 1 * 24 * 60
+#define MINUTE_PER_HOUR   60    // 1 * 60
+#define SECOND_PER_DAY    86400 // 1 * 24 * 60 * 60
+#define SECOND_PER_HOUR   3600  // 1 * 60 * 60
+#define SECOND_PER_MINUTE 60    // 1 * 60
+
 namespace std
 {
     string to_string(const TimeCodeObj& obj)
@@ -136,6 +143,48 @@ bool TimeCodeObj::operator >=(const TimeCodeObj& other) const
         return false;
     }
     return true;
+}
+
+void TimeCodeObj::addSecond(int second)
+{
+    int secondThis = this->toSecond();
+    secondThis += second;
+    this->fromSecond(secondThis);
+}
+
+void TimeCodeObj::subSecond(int second)
+{
+    int secondThis = this->toSecond();
+    secondThis -= second;
+    this->fromSecond(secondThis);
+}
+
+void TimeCodeObj::fromSecond(int second)
+{
+    int tempSecond = second;
+    m_iFrame = 0;
+    m_iFrameRate = 0;
+
+    m_iHour = tempSecond / SECOND_PER_HOUR;
+    tempSecond -= m_iHour * SECOND_PER_HOUR;
+    m_iHour = m_iHour % 24;
+    m_iMinute = tempSecond / SECOND_PER_MINUTE;
+    m_iSecond = tempSecond - m_iMinute * SECOND_PER_MINUTE;
+}
+
+int TimeCodeObj::toSecond() const
+{
+    int retValue = m_iSecond;
+    retValue += m_iMinute * SECOND_PER_MINUTE;
+    retValue += m_iHour * SECOND_PER_HOUR;
+    return retValue;
+}
+
+int TimeCodeObj::secondsTo(const TimeCodeObj& other) const
+{
+    int secondThis = this->toSecond();
+    int secondOther = other.toSecond();
+    return secondThis - secondOther;
 }
 
 std::ostream& operator<<(std::ostream& output, const TimeCodeObj& obj)
