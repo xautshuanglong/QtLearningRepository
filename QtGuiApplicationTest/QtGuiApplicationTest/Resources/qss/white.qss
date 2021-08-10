@@ -73,7 +73,6 @@ QProgressIndicator {
 QTreeWidget#twMiscellaneousTesting
 {
     border: 2px solid rgb(111, 156, 207);
-    indentation: 0px;
 }
 
 QTreeWidget#twMiscellaneousTesting QHeaderView::section:horizontal
