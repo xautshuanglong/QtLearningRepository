@@ -33,9 +33,9 @@ signals:
     void SignalClosed();
 
 private slots:
-    void on_action_dicom_open();
-    void on_action_dicom_save();
-    void on_action_dicom_pull();
+    void slot_action_dicom_open();
+    void slot_action_dicom_save();
+    void slot_action_dicom_pull();
 
 private:
     QToolBar                          *mpToolBar;

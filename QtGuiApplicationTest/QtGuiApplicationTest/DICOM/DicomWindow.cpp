@@ -58,9 +58,9 @@ void DicomWindow::InitToolBar()
     mpToolBar->addAction(pActionOpen);
     mpToolBar->addAction(pActionSave);
     mpToolBar->addAction(pActionPull);
-    this->connect(pActionOpen, SIGNAL(triggered()), SLOT(on_action_dicom_open()));
-    this->connect(pActionSave, SIGNAL(triggered()), SLOT(on_action_dicom_save()));
-    this->connect(pActionPull, SIGNAL(triggered()), SLOT(on_action_dicom_pull()));
+    this->connect(pActionOpen, SIGNAL(triggered()), SLOT(slot_action_dicom_open()));
+    this->connect(pActionSave, SIGNAL(triggered()), SLOT(slot_action_dicom_save()));
+    this->connect(pActionPull, SIGNAL(triggered()), SLOT(slot_action_dicom_pull()));
 }
 
 void DicomWindow::closeEvent(QCloseEvent *event)
@@ -74,17 +74,17 @@ void DicomWindow::resizeEvent(QResizeEvent *event)
 {
 }
 
-void DicomWindow::on_action_dicom_open()
+void DicomWindow::slot_action_dicom_open()
 {
     LogUtil::Debug(CODE_LOCATION, "Dicom open ...");
 }
 
-void DicomWindow::on_action_dicom_save()
+void DicomWindow::slot_action_dicom_save()
 {
     LogUtil::Debug(CODE_LOCATION, "Dicom save ...");
 }
 
-void DicomWindow::on_action_dicom_pull()
+void DicomWindow::slot_action_dicom_pull()
 {
     //LogUtil::Debug(CODE_LOCATION, "Dicom pull ...");
     mPointerDcmServerBroswer->show();
