@@ -119,21 +119,24 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousStringUtil(this));
 
     MiscellaneousBase *pCurMiscellaneousTest = static_cast<MiscellaneousBase*>(ui->swTestPageWidget->currentWidget());
-    MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();
-    MiscellaneousTestItem itemID = pCurMiscellaneousTest->GetItemID();
-    if (mMapTestGroup.contains(groupID))
+    if (pCurMiscellaneousTest != Q_NULLPTR)
     {
-        QTreeWidgetItem *pChild = Q_NULLPTR;
-        QTreeWidgetItem *parrent = mMapTestGroup[groupID];
-        parrent->setExpanded(true);
-        int childCount = parrent->childCount();
-        for (int i = 0; i < childCount; ++i)
+        MiscellaneousTestGroup groupID = pCurMiscellaneousTest->GetGroupID();
+        MiscellaneousTestItem itemID = pCurMiscellaneousTest->GetItemID();
+        if (mMapTestGroup.contains(groupID))
         {
-            pChild = parrent->child(i);
-            if (itemID == pChild->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>())
+            QTreeWidgetItem* pChild = Q_NULLPTR;
+            QTreeWidgetItem* parrent = mMapTestGroup[groupID];
+            parrent->setExpanded(true);
+            int childCount = parrent->childCount();
+            for (int i = 0; i < childCount; ++i)
             {
-                pChild->setSelected(true);
-                break;
+                pChild = parrent->child(i);
+                if (itemID == pChild->data(0, USER_DATA_ITEM_ID).value<MiscellaneousTestItem>())
+                {
+                    pChild->setSelected(true);
+                    break;
+                }
             }
         }
     }

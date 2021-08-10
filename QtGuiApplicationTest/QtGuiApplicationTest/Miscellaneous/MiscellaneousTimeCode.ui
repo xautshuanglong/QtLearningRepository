@@ -164,7 +164,7 @@
 {
 	border: 1px solid gray;
 	border-radius: 10px;
-    color: rgb(75, 75, 75);
+	color: rgb(75, 75, 75);
 	background-color: white;
 }
 
@@ -211,7 +211,7 @@ QComboBox::drop-down
 {
 	border: 1px solid gray;
 	border-radius: 10px;
-    color: rgb(75, 75, 75);
+	color: rgb(75, 75, 75);
 	background-color: white;
 }
 
@@ -689,7 +689,7 @@ QComboBox::drop-down
 {
 	border: 1px solid gray;
 	border-radius: 10px;
-    color: rgb(75, 75, 75);
+	color: rgb(75, 75, 75);
 	background-color: white;
 }
 
@@ -736,7 +736,7 @@ QComboBox::drop-down
 {
 	border: 1px solid gray;
 	border-radius: 10px;
-    color: rgb(75, 75, 75);
+	color: rgb(75, 75, 75);
 	background-color: white;
 }
 

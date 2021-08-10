@@ -68,9 +68,9 @@ private:
     void EnableTrayIconFlash(bool flashFlag);
 
 private slots:
-    void on_trayIconFlashTimeout();
-    void on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
-    void on_trayActionShow_triggered(bool checked);
-    void on_trayActionHide_triggered(bool checked);
-    void on_trayActionExit_triggered(bool checked);
+    void slot_trayIconFlashTimeout();
+    void slot_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void slot_trayActionShow_triggered(bool checked);
+    void slot_trayActionHide_triggered(bool checked);
+    void slot_trayActionExit_triggered(bool checked);
 };

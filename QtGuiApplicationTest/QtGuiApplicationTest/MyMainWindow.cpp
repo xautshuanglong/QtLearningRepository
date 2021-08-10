@@ -43,7 +43,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
 
     mpTrayIconFlashTimer = new QTimer(this);
     mpTrayIconFlashTimer->setInterval(500);
-    this->connect(mpTrayIconFlashTimer, SIGNAL(timeout()), SLOT(on_trayIconFlashTimeout()));
+    this->connect(mpTrayIconFlashTimer, SIGNAL(timeout()), SLOT(slot_trayIconFlashTimeout()));
 
     // 调试面板
     DebugPanel::GetInstance()->ListenKeyboard(this);
@@ -72,9 +72,9 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpSystemTrayMenu->addAction(mpTrayActionHide);
     mpSystemTrayMenu->addAction(mpTrayActionExit);
     mpSystemTrayMenu->setWindowFlags(mpSystemTrayMenu->windowFlags() | Qt::NoDropShadowWindowHint);
-    this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(on_trayActionShow_triggered(bool)));
-    this->connect(mpTrayActionHide, SIGNAL(triggered(bool)), SLOT(on_trayActionHide_triggered(bool)));
-    this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(on_trayActionExit_triggered(bool)));
+    this->connect(mpTrayActionShow, SIGNAL(triggered(bool)), SLOT(slot_trayActionShow_triggered(bool)));
+    this->connect(mpTrayActionHide, SIGNAL(triggered(bool)), SLOT(slot_trayActionHide_triggered(bool)));
+    this->connect(mpTrayActionExit, SIGNAL(triggered(bool)), SLOT(slot_trayActionExit_triggered(bool)));
 
 
     // 系统托盘
@@ -85,7 +85,7 @@ MyMainWindow::MyMainWindow(QWidget *parent)
     mpSystemTray->show();
     bool test = this->connect(mpSystemTray,
                               SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                              SLOT(on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
+                              SLOT(slot_systemTrayIconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 MyMainWindow::~MyMainWindow()
@@ -295,7 +295,7 @@ void MyMainWindow::EnableTrayIconFlash(bool flashFlag)
     }
 }
 
-void MyMainWindow::on_trayIconFlashTimeout()
+void MyMainWindow::slot_trayIconFlashTimeout()
 {
     if (mbTrayIconVisible)
     {
@@ -309,7 +309,7 @@ void MyMainWindow::on_trayIconFlashTimeout()
     }
 }
 
-void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
+void MyMainWindow::slot_systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
@@ -334,17 +334,17 @@ void MyMainWindow::on_systemTrayIconActivated(QSystemTrayIcon::ActivationReason 
     }
 }
 
-void MyMainWindow::on_trayActionShow_triggered(bool checked)
+void MyMainWindow::slot_trayActionShow_triggered(bool checked)
 {
     this->ShowAndActivateWindow();
 }
 
-void MyMainWindow::on_trayActionHide_triggered(bool checked)
+void MyMainWindow::slot_trayActionHide_triggered(bool checked)
 {
     this->hide();
 }
 
-void MyMainWindow::on_trayActionExit_triggered(bool checked)
+void MyMainWindow::slot_trayActionExit_triggered(bool checked)
 {
     this->close();
 }
