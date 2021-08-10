@@ -211,6 +211,12 @@
     <ClCompile Include="Reports\ReportXmlData.cpp" />
     <ClCompile Include="Reports\WinReportTesting.cpp" />
     <ClCompile Include="Reports\XmlReportGenerator.cpp" />
+    <ClCompile Include="ThirdParty\LTC\decoder.c" />
+    <ClCompile Include="ThirdParty\LTC\encoder.c" />
+    <ClCompile Include="ThirdParty\LTC\ltc.c" />
+    <ClCompile Include="ThirdParty\LTC\main_decoder.c" />
+    <ClCompile Include="ThirdParty\LTC\main_encoder.c" />
+    <ClCompile Include="ThirdParty\LTC\timecode.c" />
     <ClCompile Include="Utils\StringUtil.cpp" />
     <ClCompile Include="Utils\TimeUtil.cpp" />
     <ClCompile Include="Utils\UrlUtil.cpp" />
@@ -343,6 +349,9 @@
     <ClInclude Include="Reports\ReportXmlData.h" />
     <QtMoc Include="Reports\WinReportTesting.h" />
     <ClInclude Include="Reports\XmlReportGenerator.h" />
+    <ClInclude Include="ThirdParty\LTC\decoder.h" />
+    <ClInclude Include="ThirdParty\LTC\encoder.h" />
+    <ClInclude Include="ThirdParty\LTC\ltc.h" />
     <ClInclude Include="Utils\PrintUtil.h" />
     <ClInclude Include="Utils\StreamUtil.h" />
     <ClInclude Include="Utils\StringUtil.h" />

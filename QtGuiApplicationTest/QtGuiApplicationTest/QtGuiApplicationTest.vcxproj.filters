@@ -68,6 +68,12 @@
     <Filter Include="Miscellaneous">
       <UniqueIdentifier>{164de837-644a-4fc6-9899-6e8b6eaca30a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{de149e94-8d6e-4188-8313-8fc12d56100a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\LTC">
+      <UniqueIdentifier>{f753e890-f382-4efb-aa0e-dd9c52eb133f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -301,6 +307,24 @@
     <ClCompile Include="Core\TimeCodeObj.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\decoder.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\encoder.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\ltc.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\main_decoder.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\main_encoder.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\LTC\timecode.c">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplicationTest.ui">
@@ -505,6 +529,15 @@
     </ClInclude>
     <ClInclude Include="Core\TimeCodeObj.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\LTC\decoder.h">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\LTC\encoder.h">
+      <Filter>ThirdParty\LTC</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\LTC\ltc.h">
+      <Filter>ThirdParty\LTC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
