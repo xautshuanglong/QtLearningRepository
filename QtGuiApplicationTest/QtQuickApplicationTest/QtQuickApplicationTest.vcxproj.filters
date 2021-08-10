@@ -20,6 +20,12 @@
     <Filter Include="UI">
       <UniqueIdentifier>{19501651-cdba-4188-a7a5-48bd85337108}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Core">
+      <UniqueIdentifier>{e3f934fb-2d52-4e96-a121-70b4b08248bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Miscellaneous">
+      <UniqueIdentifier>{bacd38ff-9a3f-4085-9274-4d3c82586496}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -28,6 +34,9 @@
     <QtRcc Include="QtQuickApplicationTest.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <ClCompile Include="Miscellaneous\MiscellaneousSignalSlotBinding.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="UI\MainWindow.qml">
@@ -36,5 +45,16 @@
     <None Include="UI\Settings.qml">
       <Filter>UI</Filter>
     </None>
+    <None Include="UI\ChatView.qml">
+      <Filter>UI\Core</Filter>
+    </None>
+    <None Include="UI\Label.qml">
+      <Filter>UI\Core</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Miscellaneous\MiscellaneousSignalSlotBinding.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

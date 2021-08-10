@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.3
 import QtQuick.Controls 2.15
 
 ApplicationWindow {
@@ -8,6 +8,11 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("QML Testing")
+
+    Component.onCompleted: {
+        console.log("MainWindow.qml root onCompleted ...")
+        MiscellaneousSignalSlotBinding.slotMainWindowCompleted(200, "testing from MainWindow Component.onCompleted"); // call directly
+    }
 
     function on_MenuBar_FileOpen() {
         console.log("MenuBar_FileOpen triggered")
@@ -29,7 +34,10 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("Open")
                 onTriggered: on_MenuBar_FileOpen()
-                onClicked: { console.log("onClicked inside MenuBar_FileOpen ...") }
+                onClicked: {
+                    console.log("onClicked inside MenuBar_FileOpen ...")
+                    MiscellaneousSignalSlotBinding.sigFromMainWinToBindingTest(100, "Good"); // emit signal
+                }
             }
             MenuItem {
                 text: qsTr("Save")
@@ -60,6 +68,7 @@ ApplicationWindow {
 
         Component.onCompleted: {
             console.log("MainWindow.qml Text onCompleted ...")
+            MiscellaneousSignalSlotBinding.slotMainWindowCompleted(300, "testing from MainWindow Text item Component.onCompleted"); // call directly
         }
     }
 }

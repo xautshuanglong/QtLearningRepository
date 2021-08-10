@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>UI/MainWindow.qml</file>
         <file>UI/Settings.qml</file>
+        <file>UI/ChatView.qml</file>
+        <file>UI/Label.qml</file>
     </qresource>
 </RCC>

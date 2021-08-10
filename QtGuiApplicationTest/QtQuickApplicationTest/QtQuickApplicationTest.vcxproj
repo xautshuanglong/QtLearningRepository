@@ -58,6 +58,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)QtLibarayCoreTest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -86,9 +91,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousSignalSlotBinding.cpp" />
+    <None Include="UI\ChatView.qml" />
+    <None Include="UI\Label.qml" />
     <None Include="UI\MainWindow.qml" />
     <None Include="UI\Settings.qml" />
     <QtRcc Include="QtQuickApplicationTest.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Miscellaneous\MiscellaneousSignalSlotBinding.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QtLibarayCoreTest\QtLibarayCoreTest.vcxproj">
+      <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
