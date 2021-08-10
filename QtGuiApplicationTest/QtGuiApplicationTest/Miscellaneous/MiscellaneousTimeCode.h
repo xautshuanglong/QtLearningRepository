@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <Mmddk.h>
 #include <QList>
+#include <QHash>
+#include <QAudioDeviceInfo>
 
 #include "MiscellaneousBase.h"
 #include "Core/TimeCodeObj.h"
@@ -34,6 +36,9 @@ public:
 
 private:
     void InitUI();
+    void UpdateComboxAudio();
+    void UpdateComboxMidi();
+    void AudioEnumerateDevices();
     bool MidiEnumerateDevices();
     bool MidiDevicesCloseIn();
     bool MidiDevicesCloseOut();
@@ -55,8 +60,10 @@ private slots:
     void on_btnTransferTest_clicked();
     void on_btnEventMapTest_clicked();
     void on_btnTimeEmiterTest_clicked();
-    void on_btnEnumerateMIDI_clicked();
+    void on_btnEnumerateDevices_clicked();
     // Audio Input Output (LTC)
+    void on_cbAudioDevicesIn_currentIndexChanged(int index);
+    void on_cbAudioDevicesOut_currentIndexChanged(int index);
     void on_btnLtcStartStop_clicked();
     // MIDI InputOutput (MTC)
     void on_cbMidiDevicesIn_currentIndexChanged(int index);
@@ -78,8 +85,12 @@ private:
     long long                        mCurFrequency;
     QList<QPair<UINT, QString>>      mMidiDevPairIn;
     QList<QPair<UINT, QString>>      mMidiDevPairOut;
+    QHash<QString, QAudioDeviceInfo> mHashAudioInput;
+    QHash<QString, QAudioDeviceInfo> mHashAudioOutput;
     HMIDIIN                          mHandleMidiIn;
     HMIDIOUT                         mHandleMidiOut;
+    QAudioDeviceInfo                 mAudioDeviceIn;
+    QAudioDeviceInfo                 mAudioDeviceOut;
 };
 
 #endif // MISCELLANEOUS_TIME_CODE_H

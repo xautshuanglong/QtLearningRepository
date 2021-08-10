@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>794</width>
+    <width>690</width>
     <height>743</height>
    </rect>
   </property>
@@ -133,34 +133,42 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="lbMidiInput">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <property name="text">
-            <string>Input:</string>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbMidiDevicesIn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QComboBox
+           <item>
+            <widget class="QLabel" name="lbMidiInput">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Input:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbMidiDevicesIn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
 {
 	border: 1px solid gray;
 	border-radius: 10px;
@@ -173,41 +181,54 @@ QComboBox::drop-down
 	width: 40px;
 	border-left: 1px solid gray;
 }</string>
-           </property>
-           <property name="placeholderText">
-            <string>MIDI Input</string>
-           </property>
-          </widget>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>MIDI Input</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLabel" name="lbMidiOutput">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <property name="text">
-            <string>Output:</string>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbMidiDevicesOut">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QComboBox
+           <item>
+            <widget class="QLabel" name="lbMidiOutput">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Output:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbMidiDevicesOut">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
 {
 	border: 1px solid gray;
 	border-radius: 10px;
@@ -220,14 +241,16 @@ QComboBox::drop-down
 	width: 40px;
 	border-left: 1px solid gray;
 }</string>
-           </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-           </property>
-           <property name="placeholderText">
-            <string>MIDI Output</string>
-           </property>
-          </widget>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>MIDI Output</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QLCDNumber" name="lcdTimeCodeMTC">
@@ -606,7 +629,7 @@ QComboBox::drop-down
       </layout>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="btnEnumerateMIDI">
+      <widget class="QPushButton" name="btnEnumerateDevices">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -614,7 +637,7 @@ QComboBox::drop-down
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Enumerate MIDI</string>
+        <string>Enumerate Audio and MIDI</string>
        </property>
       </widget>
      </item>
@@ -658,34 +681,42 @@ QComboBox::drop-down
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="lbAudioInput">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <property name="text">
-            <string>Input:</string>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbAudioDevicesIn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QComboBox
+           <item>
+            <widget class="QLabel" name="lbAudioInput">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Input:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbAudioDevicesIn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
 {
 	border: 1px solid gray;
 	border-radius: 10px;
@@ -698,41 +729,54 @@ QComboBox::drop-down
 	width: 40px;
 	border-left: 1px solid gray;
 }</string>
-           </property>
-           <property name="placeholderText">
-            <string>AudioInput</string>
-           </property>
-          </widget>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>AudioInput</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLabel" name="lbAudioOutput">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <property name="text">
-            <string>Output:</string>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbAudioDevicesOut">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QComboBox
+           <item>
+            <widget class="QLabel" name="lbAudioOutput">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Output:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbAudioDevicesOut">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
 {
 	border: 1px solid gray;
 	border-radius: 10px;
@@ -745,14 +789,16 @@ QComboBox::drop-down
 	width: 40px;
 	border-left: 1px solid gray;
 }</string>
-           </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-           </property>
-           <property name="placeholderText">
-            <string>Audio Output</string>
-           </property>
-          </widget>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>Audio Output</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QLCDNumber" name="lcdTimeCodeLTC">

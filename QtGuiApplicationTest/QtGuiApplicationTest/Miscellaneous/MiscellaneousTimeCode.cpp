@@ -5,7 +5,6 @@
 #include <QDateTime>
 #include <QStyledItemDelegate>
 #include <QAbstractItemView>
-#include <QAudioDeviceInfo>
 
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
@@ -24,6 +23,7 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->AudioEnumerateDevices();
     this->MidiEnumerateDevices();
     this->InitUI();
 
@@ -83,6 +83,13 @@ void MiscellaneousTimeCode::InitUI()
     // UI 控件初始化
     mBtnTimeEmiterText = ui->btnTimeEmiterTest->text();
     ui->btnTimeEmiterTest->setText(QString("%1 (disable)").arg(mBtnTimeEmiterText));
+    // 时间码显示 LCD
+    ui->lcdTimeCodeMTC->display("00:00:00:00");
+    ui->lcdTimeCodeLTC->display("00:00:00:00");
+    // 音频输入输出设备
+    this->UpdateComboxAudio();
+    // MIDI 设备列表选项
+    this->UpdateComboxMidi();
 
     // 时间码触发器
     mpTimeCodeEmiter = new QTimer(this);
@@ -90,8 +97,33 @@ void MiscellaneousTimeCode::InitUI()
     mpTimeCodeEmiter->setTimerType(Qt::PreciseTimer);
     Qt::TimerType timerType = mpTimeCodeEmiter->timerType();
     connect(mpTimeCodeEmiter, SIGNAL(timeout()), this, SLOT(TimeCodeEmiter_TimeOut()));
+}
 
-    // MIDI 设备列表选项
+void MiscellaneousTimeCode::UpdateComboxAudio()
+{
+
+    QHash<QString, QAudioDeviceInfo>::const_iterator audioIt = mHashAudioInput.begin();
+    QHash<QString, QAudioDeviceInfo>::const_iterator audioEnd = mHashAudioInput.end();
+    ui->cbAudioDevicesIn->clear();
+    ui->cbAudioDevicesIn->addItem("None", QVariant::fromValue(QAudioDeviceInfo()));
+    while (audioIt != audioEnd)
+    {
+        ui->cbAudioDevicesIn->addItem(audioIt.key(), QVariant::fromValue(audioIt.value()));
+        ++audioIt;
+    }
+
+    QHashIterator<QString, QAudioDeviceInfo> audioOutput(mHashAudioOutput);
+    ui->cbAudioDevicesOut->clear();
+    ui->cbAudioDevicesOut->addItem("None", QVariant::fromValue(QAudioDeviceInfo()));
+    while (audioOutput.hasNext())
+    {
+        audioOutput.next();
+        ui->cbAudioDevicesOut->addItem(audioOutput.key(), QVariant::fromValue(audioOutput.value()));
+    }
+}
+
+void MiscellaneousTimeCode::UpdateComboxMidi()
+{
     ui->cbMidiDevicesIn->clear();
     for (int i = 0; i < mMidiDevPairIn.size(); ++i)
     {
@@ -101,6 +133,23 @@ void MiscellaneousTimeCode::InitUI()
     for (int i = 0; i < mMidiDevPairOut.size(); ++i)
     {
         ui->cbMidiDevicesOut->addItem(mMidiDevPairOut[i].second, QVariant::fromValue(mMidiDevPairOut[i].first));
+    }
+}
+
+void MiscellaneousTimeCode::AudioEnumerateDevices()
+{
+    mHashAudioInput.clear();
+    QList<QAudioDeviceInfo> audioInput = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    for (QAudioDeviceInfo audioInfo : audioInput)
+    {
+        mHashAudioInput.insert(audioInfo.deviceName(), audioInfo);
+    }
+
+    mHashAudioOutput.clear();
+    QList<QAudioDeviceInfo> audioOutput = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    for (QAudioDeviceInfo audioInfo : audioOutput)
+    {
+        mHashAudioOutput.insert(audioInfo.deviceName(), audioInfo);
     }
 }
 
@@ -644,93 +693,41 @@ void MiscellaneousTimeCode::on_btnTimeEmiterTest_clicked()
     }
 }
 
-void MiscellaneousTimeCode::on_btnEnumerateMIDI_clicked()
+void MiscellaneousTimeCode::on_btnEnumerateDevices_clicked()
 {
+    // 重新枚举音频设备
+    this->AudioEnumerateDevices();
+    this->UpdateComboxAudio();
+    // 重新枚举 MIDI 设备
     this->MidiEnumerateDevices();
-    return;
+    this->UpdateComboxMidi();
+}
 
-    /*
-    Header file Mmddk.h defines the following system-intercepted device messages:
-    DRV_QUERYDEVICEINTERFACE          For more information, see Obtaining a Device Interface Name.
-    DRV_QUERYDEVICEINTERFACESIZE      For more information, see Obtaining a Device Interface Name.
-    DRV_QUERYDEVNODE                  Queries for a device's devnode number.
-    DRV_QUERYMAPPABLE                 Queries whether a device can be used by a mapper.
-    DRVM_MAPPER_CONSOLEVOICECOM_GET   For more information, see Preferred Voice-Communications Device ID.
-    DRVM_MAPPER_PREFERRED_GET         For more information, see Accessing the Preferred Device ID.
-    */
-    UINT midiInNum = midiInGetNumDevs();
-    for (UINT i = 0; i < midiInNum; ++i)
+void MiscellaneousTimeCode::on_cbAudioDevicesIn_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    QVariant userData = ui->cbAudioDevicesIn->currentData();
+    if (!userData.isNull() && userData.isValid())
     {
-        MIDIINCAPS midiCaps;
-        midiInGetDevCaps(i, &midiCaps, sizeof(MIDIINCAPS));
-        mMidiDevPairIn.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
-        // 输出 MIDI 输入设备信息
-        LogUtil::Debug(CODE_LOCATION, "MIDI IN : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
-        LogUtil::Debug(CODE_LOCATION, "MIDI IN : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
-        LogUtil::Debug(CODE_LOCATION, "MIDI IN : NAME=%s", midiCaps.szPname);
-        LogUtil::Debug(CODE_LOCATION, "MIDI IN : SUPPORT=%s", this->MidiSupportToString(midiCaps.dwSupport).c_str());
+        mAudioDeviceIn = userData.value<QAudioDeviceInfo>();
     }
+}
 
-    UINT midiOutNum = midiOutGetNumDevs();
-    for (UINT i = 0; i < midiOutNum; ++i)
+void MiscellaneousTimeCode::on_cbAudioDevicesOut_currentIndexChanged(int index)
+{
+    if (index == -1) return;
+
+    QVariant userData = ui->cbAudioDevicesOut->currentData();
+    if (!userData.isNull() && userData.isValid())
     {
-        MIDIOUTCAPS midiCaps;
-        midiOutGetDevCaps(i, &midiCaps, sizeof(MIDIOUTCAPS));
-        mMidiDevPairOut.push_back(qMakePair(i, QString::fromLocal8Bit(midiCaps.szPname)));
-        // 输出 MIDI 输出设备信息
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MID=%u PID=%u", midiCaps.wMid, midiCaps.wPid);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : DRIVER_VERSION=%u.%u", HIBYTE(midiCaps.vDriverVersion), LOBYTE(midiCaps.vDriverVersion));
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : NAME=%s", midiCaps.szPname);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : TECHNOLOGY=%s", this->MidiTechnologyToString(midiCaps.wTechnology).c_str());
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : VOICES=%u", midiCaps.wVoices);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : MAX_NOTES=%u", midiCaps.wNotes);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : CHANNEL=%u", midiCaps.wChannelMask);
-        LogUtil::Debug(CODE_LOCATION, "MIDI OUT : SUPPORT=%s", this->MidiSupportToString(midiCaps.dwSupport).c_str());
-
-        if (strcmp(midiCaps.szPname, "loopMIDI Port") == 0)
-        {
-            HMIDIOUT hLoopMIDI = 0;
-            MMRESULT res = midiOutOpen(&hLoopMIDI, i, (DWORD_PTR)MiscellaneousTimeCode::MidiOutProcedure, (DWORD_PTR)this, CALLBACK_FUNCTION);
-            if (res == MMSYSERR_NOERROR)
-            {
-                // 打开成功 —— 写数据测试
-                DWORD bufferSize = 0;
-                MMRESULT outMsgRes = midiOutMessage(hLoopMIDI, DRV_QUERYDEVICEINTERFACESIZE, (DWORD_PTR)&bufferSize, 0);
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACESIZE --> %s  bufferSize=%lu",
-                    this->MidiErrorCodeToString(outMsgRes).c_str(), bufferSize);
-                TCHAR* pNameBuffer = new TCHAR[bufferSize];
-                ZeroMemory(pNameBuffer, bufferSize);
-                outMsgRes = midiOutMessage(hLoopMIDI, DRV_QUERYDEVICEINTERFACE, (DWORD_PTR)pNameBuffer, bufferSize - 1);
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutMessage result DRV_QUERYDEVICEINTERFACE --> %s interfaceName=%s",
-                    this->MidiErrorCodeToString(outMsgRes).c_str(), pNameBuffer);
-                delete[]pNameBuffer;
-
-                MIDIHDR midiMsgBuffer;
-                outMsgRes = midiOutLongMsg(hLoopMIDI, &midiMsgBuffer, sizeof(MIDIHDR));
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutLongMsg result --> %s",
-                    this->MidiErrorCodeToString(outMsgRes).c_str());
-
-                DWORD dwMessage = 0x01010101;
-                outMsgRes = midiOutShortMsg(hLoopMIDI, dwMessage);
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutShortMsg result --> %s",
-                    this->MidiErrorCodeToString(outMsgRes).c_str());
-            }
-            else
-            {
-                // 打开失败 —— 输出错误码
-                LogUtil::Debug(CODE_LOCATION, "MIDI OUT : midiOutOpen failed --> %s", this->MidiErrorCodeToString(res).c_str());
-            }
-            midiOutClose(hLoopMIDI);
-        }
+        mAudioDeviceOut = userData.value<QAudioDeviceInfo>();
     }
 }
 
 void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
 {
-    ui->lcdTimeCodeLTC->display(QTime::currentTime().toString("hh:mm:ss"));
-
-    QList<QAudioDeviceInfo> audioInput = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-    QList<QAudioDeviceInfo> audioOutput = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    ;
 }
 
 void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)
