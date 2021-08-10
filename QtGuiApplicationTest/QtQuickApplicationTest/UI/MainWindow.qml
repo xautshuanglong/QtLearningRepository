@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.15
 
-import MiscellaneousSignalSlotBindingType 1.0
+import JcbQuickTest 1.0
 
 ApplicationWindow {
     visible: true
