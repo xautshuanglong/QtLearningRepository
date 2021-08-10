@@ -1,6 +1,8 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.15
 
+import MiscellaneousSignalSlotBindingType 1.0
+
 ApplicationWindow {
     visible: true
     color: "#ffffff"
@@ -11,7 +13,8 @@ ApplicationWindow {
 
     Component.onCompleted: {
         console.log("MainWindow.qml root onCompleted ...")
-        MiscellaneousSignalSlotBinding.slotMainWindowCompleted(200, "testing from MainWindow Component.onCompleted"); // call directly
+        bindTest.slotMainWindowCompleted(200, "testing from MainWindow Component.onCompleted call directly")
+        signalSlotBindTest.slotMainWindowCompleted(201, "testing from MainWindow Component.onCompleted call directly")
     }
 
     function on_MenuBar_FileOpen() {
@@ -36,7 +39,7 @@ ApplicationWindow {
                 onTriggered: on_MenuBar_FileOpen()
                 onClicked: {
                     console.log("onClicked inside MenuBar_FileOpen ...")
-                    MiscellaneousSignalSlotBinding.sigFromMainWinToBindingTest(100, "Good"); // emit signal
+                    bindTest.sigFromMainWinToBindingTest(100, "Good")
                 }
             }
             MenuItem {
@@ -48,6 +51,7 @@ ApplicationWindow {
                 onTriggered: on_MenuBar_FileExit()
             }
         }
+
         Menu {
             title: qsTr("View")
             MenuItem {
@@ -68,7 +72,15 @@ ApplicationWindow {
 
         Component.onCompleted: {
             console.log("MainWindow.qml Text onCompleted ...")
-            MiscellaneousSignalSlotBinding.slotMainWindowCompleted(300, "testing from MainWindow Text item Component.onCompleted"); // call directly
+            bindTest.slotMainWindowCompleted(300, "testing from MainWindow Text item Component.onCompleted")
+        }
+    }
+
+    MiscellaneousSignalSlotBinding {
+        id: signalSlotBindTest
+        Component.onCompleted: {
+            sigFromMainWinToBindingTest(501, "MiscellaneousSignalSlotBinding Component.onCompleted emit signal ......")
+            slotMainWindowCompleted(502, "MiscellaneousSignalSlotBinding Component.onCompleted call slot directly ......")
         }
     }
 }

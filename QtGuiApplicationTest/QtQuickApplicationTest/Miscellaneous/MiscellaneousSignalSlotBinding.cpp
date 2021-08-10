@@ -1,10 +1,19 @@
 #include "MiscellaneousSignalSlotBinding.h"
 
+#include <QQmlEngine>
+
 #include "LogUtil.h"
 
 MiscellaneousSignalSlotBinding::MiscellaneousSignalSlotBinding(QObject *parent /* = Q_NULLPTR */)
     : QObject(parent)
 {
+    qmlRegisterType<MiscellaneousSignalSlotBinding>("MiscellaneousSignalSlotBindingType", 1, 0, "MiscellaneousSignalSlotBinding");
+    // Once this is registered, the type can be used in QML by importing the specified type namespace and version number:
+    // import MiscellaneousSignalSlotBindingType 1.0 // import com.mycompany.qmlcomponents 1.0
+    // MiscellaneousSignalSlotBinding{
+    //     // ...
+    // }
+
     this->connect(this, &MiscellaneousSignalSlotBinding::sigFromMainWinToBindingTest, this, &MiscellaneousSignalSlotBinding::slotFromMainWinToBindingTest, Qt::QueuedConnection);
 }
 

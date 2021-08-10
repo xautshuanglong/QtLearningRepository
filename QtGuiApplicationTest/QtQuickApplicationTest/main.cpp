@@ -28,11 +28,23 @@ int main(int argc, char *argv[])
     LogUtil::Info(CODE_LOCATION, "================== Application started ==================");
 
     MiscellaneousSignalSlotBinding bindTest;
+    QUrl mainWndUrl(QStringLiteral("qrc:/UI/MainWindow.qml"));
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("MiscellaneousSignalSlotBinding", &bindTest);
-    engine.load(QUrl(QStringLiteral("qrc:/UI/MainWindow.qml")));
+    
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [mainWndUrl](QObject* obj, const QUrl& objUrl)
+        {
+            if (!obj && mainWndUrl == objUrl)
+            {
+                QCoreApplication::exit(-1);
+            }
+        }, Qt::QueuedConnection);
+
+    engine.rootContext()->setContextProperty("bindTest", &bindTest);
+    engine.load(mainWndUrl);
     if (engine.rootObjects().isEmpty())
-        return -1;
+    {
+        QCoreApplication::exit(-1);
+    }
 
     int appRetValue = app.exec();
     LogUtil::Info(CODE_LOCATION, "================== Application will exiting: %d ==================", appRetValue);
