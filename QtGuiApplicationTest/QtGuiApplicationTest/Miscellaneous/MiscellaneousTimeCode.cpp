@@ -1,10 +1,14 @@
 #include "MiscellaneousTimeCode.h"
 #include "ui_MiscellaneousTimeCode.h"
 
+#include <QDir>
+#include <QMetaEnum>
 #include <QTimer>
 #include <QDateTime>
 #include <QStyledItemDelegate>
 #include <QAbstractItemView>
+#include <QAudioInput>
+#include <QAudioOutput>
 
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
@@ -18,15 +22,20 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     , mbTimeCodeEnable(false)
     , mbTimeCodeStarted(false)
     , mbTimeCodeInputOn(false)
+    , mbAudioInputStarted(false)
+    , mbAudioInputChanged(false)
+    , mbAudioOutputChanged(false)
     , mHandleMidiIn(NULL)
     , mHandleMidiOut(NULL)
+    , mpAudioInput(Q_NULLPTR)
+    , mpAudioOutput(Q_NULLPTR)
+    , mpAudioDeviceIO(Q_NULLPTR)
 {
     ui->setupUi(this);
 
     this->AudioEnumerateDevices();
     this->MidiEnumerateDevices();
     this->InitUI();
-
     // 高性能计数器
     mCurFrequency = TimeUtil::QueryPerformanceFrequency();
 
@@ -37,6 +46,13 @@ MiscellaneousTimeCode::~MiscellaneousTimeCode()
 {
     this->MidiDevicesCloseOut();
     this->MidiDevicesCloseIn();
+    // 关闭音频输入设备读取操作
+    if (mpAudioInput && mpAudioInput->state() != QAudio::StoppedState)
+    {
+        mpAudioInput->stop();
+    }
+    this->CloseFile(mpFilePcmAudioIn);
+
     delete ui;
 }
 
@@ -134,6 +150,34 @@ void MiscellaneousTimeCode::UpdateComboxMidi()
     {
         ui->cbMidiDevicesOut->addItem(mMidiDevPairOut[i].second, QVariant::fromValue(mMidiDevPairOut[i].first));
     }
+}
+
+void MiscellaneousTimeCode::CloseFile(QFile& file)
+{
+    if (file.isOpen())
+    {
+        file.flush();
+        file.close();
+    }
+}
+
+void MiscellaneousTimeCode::OpenFile(QFile& file)
+{
+    QString dirPath = qApp->applicationDirPath();
+    dirPath += "/audio_pcm";
+    QDir dir(dirPath);
+    if (!dir.exists())
+    {
+        dir.mkpath(dirPath);
+    }
+
+    QString filename = dirPath;
+    filename += "/LTC_PCM_";
+    filename += QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
+    filename += ".raw";
+
+    file.setFileName(filename);
+    file.open(QIODevice::WriteOnly);
 }
 
 void MiscellaneousTimeCode::AudioEnumerateDevices()
@@ -291,6 +335,33 @@ TimeCodeObj MiscellaneousTimeCode::GetTimeCodeFromUI(QSpinBox* pSpbHour, QSpinBo
     int second = pSpbSecond->value();
     int frame = pSpbFrame->value();
     return TimeCodeObj(hour, minute, second, frame, frameRate);
+}
+
+std::string MiscellaneousTimeCode::AudioErrorToString(QAudio::Error error)
+{
+    std::string strAudioError;
+    switch (error)
+    {
+    case QAudio::NoError:
+        strAudioError = "QAudio::NoError";
+        break;
+    case QAudio::OpenError:
+        strAudioError = "QAudio::OpenError";
+        break;
+    case QAudio::IOError:
+        strAudioError = "QAudio::IOError";
+        break;
+    case QAudio::UnderrunError:
+        strAudioError = "QAudio::UnderrunError";
+        break;
+    case QAudio::FatalError:
+        strAudioError = "QAudio::FatalError";
+        break;
+    default:
+        strAudioError = "UNKONWN";
+        break;
+    }
+    return strAudioError;
 }
 
 std::string MiscellaneousTimeCode::MidiTechnologyToString(WORD wTechnology)
@@ -645,6 +716,79 @@ void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
     ui->lcdFrameRate->display(timecode.getFrameRate());
 }
 
+void MiscellaneousTimeCode::SlotAudioInputDestroyed(QObject* pObj)
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device input destroyed 0x%08X", pObj);
+}
+
+void MiscellaneousTimeCode::SlotAudioInputStateChanged(QAudio::State state)
+{
+    QString strAudioState;
+    switch (state)
+    {
+    case QAudio::ActiveState:
+        strAudioState = "QAudio::ActiveState";
+        break;
+    case QAudio::SuspendedState:
+        strAudioState = "QAudio::SuspendedState";
+        break;
+    case QAudio::StoppedState:
+        strAudioState = "QAudio::StoppedState";
+        break;
+    case QAudio::IdleState:
+        strAudioState = "QAudio::IdleState";
+        break;
+    case QAudio::InterruptedState:
+        strAudioState = "QAudio::InterruptedState";
+        break;
+    default:
+        strAudioState = "UNKNOWN";
+        break;
+    }
+    LogUtil::Info(CODE_LOCATION, "Audio input state changed.  state=%s", strAudioState.toUtf8().data());
+}
+
+void MiscellaneousTimeCode::SlotAudioIoDestroyed(QObject *pObj /* = Q_NULLPTR */)
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io destroyed 0x%08X", pObj);
+}
+
+void MiscellaneousTimeCode::SlotAudioIoAboutToClose()
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io about to close ...");
+}
+
+void MiscellaneousTimeCode::SlotAudioIoBytesWritten(qint64 bytes)
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io bytes written %lld ...", bytes);
+}
+
+void MiscellaneousTimeCode::SlotAudioIoReadyRead()
+{
+    if (mpAudioDeviceIO == Q_NULLPTR) return;
+
+    QByteArray audioBytes = mpAudioDeviceIO->readAll();
+    if (mpFilePcmAudioIn.isOpen())
+    {
+        mpFilePcmAudioIn.write(audioBytes);
+    }
+}
+
+void MiscellaneousTimeCode::SlotAudioIoChannelBytesWritten(int channel, qint64 bytes)
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io channel bytes written channel:%d bytes:%lld ...", channel, bytes);
+}
+
+void MiscellaneousTimeCode::SlotAudioIoChannelReadyRead(int channel)
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io channel ready read channel:%d ...", channel);
+}
+
+void MiscellaneousTimeCode::SlotAudioIoReadChannelFinished()
+{
+    LogUtil::Debug(CODE_LOCATION, "Audio device io channel read finished ...");
+}
+
 void MiscellaneousTimeCode::on_btnTransferTest_clicked()
 {
     QDateTime testTime(QDate(2021, 8, 4), QTime(15, 30, 20, 0));
@@ -710,7 +854,8 @@ void MiscellaneousTimeCode::on_cbAudioDevicesIn_currentIndexChanged(int index)
     QVariant userData = ui->cbAudioDevicesIn->currentData();
     if (!userData.isNull() && userData.isValid())
     {
-        mAudioDeviceIn = userData.value<QAudioDeviceInfo>();
+        mAudioDeviceInfoIn = userData.value<QAudioDeviceInfo>();
+        mbAudioInputChanged = true;
     }
 }
 
@@ -721,13 +866,99 @@ void MiscellaneousTimeCode::on_cbAudioDevicesOut_currentIndexChanged(int index)
     QVariant userData = ui->cbAudioDevicesOut->currentData();
     if (!userData.isNull() && userData.isValid())
     {
-        mAudioDeviceOut = userData.value<QAudioDeviceInfo>();
+        mAudioDeviceInfoOut = userData.value<QAudioDeviceInfo>();
+        mbAudioOutputChanged = true;
     }
 }
 
 void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
 {
-    ;
+    if (mAudioDeviceInfoIn.isNull())
+    {
+        LogUtil::Warn(CODE_LOCATION, "Audio device info is NULL");
+        return;
+    }
+
+    // 音频格式  LTC  双声道  48KHZ  有符号8bit （QAudio 实测检验）
+    QAudioFormat testFormat;
+    testFormat.setSampleRate(44100);
+    testFormat.setByteOrder(QAudioFormat::LittleEndian);
+    testFormat.setSampleType(QAudioFormat::SignedInt);
+    testFormat.setChannelCount(1);
+    testFormat.setSampleSize(8);
+    testFormat.setCodec("audio/pcm"); // Linear PCM
+
+    QList<int> sampleRates = mAudioDeviceInfoIn.supportedSampleRates();
+    QList<QAudioFormat::Endian> endians = mAudioDeviceInfoIn.supportedByteOrders();
+    QList<QAudioFormat::SampleType> sampleTypes = mAudioDeviceInfoIn.supportedSampleTypes();
+    QList<int> channelCounts = mAudioDeviceInfoIn.supportedChannelCounts();
+    QList<int> sizes = mAudioDeviceInfoIn.supportedSampleSizes();
+    QStringList codecs = mAudioDeviceInfoIn.supportedCodecs();
+
+    if (!mAudioDeviceInfoIn.isFormatSupported(testFormat))
+    {
+        LogUtil::Warn(CODE_LOCATION, "Audio format is not supported. Will reset as nearest format ...");
+        // Old Format
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old   SampleRate: %d", testFormat.sampleRate());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old    ByteOrder: %d", testFormat.byteOrder());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old   SampleType: %d", testFormat.sampleType());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old ChannelCount: %d", testFormat.channelCount());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old   SampleSize: %d", testFormat.sampleSize());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old        Codec: %s", testFormat.codec().toUtf8().data());
+
+        mAudioFormatIn = mAudioDeviceInfoIn.nearestFormat(testFormat);
+
+        // New Format
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleRate: %d", mAudioFormatIn.sampleRate());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New    ByteOrder: %d", mAudioFormatIn.byteOrder());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleType: %d", mAudioFormatIn.sampleType());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New ChannelCount: %d", mAudioFormatIn.channelCount());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleSize: %d", mAudioFormatIn.sampleSize());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New        Codec: %s", mAudioFormatIn.codec().toUtf8().data());
+    }
+
+    if (mbAudioInputChanged)
+    {
+        mbAudioInputChanged = false;
+
+        if (mpAudioInput != Q_NULLPTR)
+        {
+            mpAudioInput->deleteLater();
+            mpAudioInput = Q_NULLPTR;
+        }
+    }
+    if (mpAudioInput == Q_NULLPTR)
+    {
+        mpAudioInput = new QAudioInput(mAudioDeviceInfoIn, mAudioFormatIn, this);
+        QString devName = mAudioDeviceInfoIn.deviceName();
+        LogUtil::Debug(CODE_LOCATION, "Audio device input create 0x%08X %s", mpAudioInput, devName.toUtf8().data());
+        this->connect(mpAudioInput, SIGNAL(destroyed(QObject*)), this, SLOT(SlotAudioInputDestroyed(QObject*)));
+        this->connect(mpAudioInput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(SlotAudioInputStateChanged(QAudio::State)));
+        //this->connect(mpAudioInput, SIGNAL(notify()), this, SLOT(SlotAudioInputNotify())); // This signal is emitted when x ms of audio data has been processed the interval set by setNotifyInterval(x).
+
+        this->CloseFile(mpFilePcmAudioIn);
+        this->OpenFile(mpFilePcmAudioIn);
+    }
+
+    if (mbAudioInputStarted)
+    {
+        mpAudioInput->stop();
+        LogUtil::Debug(CODE_LOCATION, "Audio input after stop() error=%s", this->AudioErrorToString(mpAudioInput->error()).c_str());
+    }
+    else
+    {
+        mpAudioDeviceIO = mpAudioInput->start();
+        LogUtil::Debug(CODE_LOCATION, "Audio input after start() error=%s", this->AudioErrorToString(mpAudioInput->error()).c_str());
+        LogUtil::Debug(CODE_LOCATION, "Audio device io created 0x%08X", mpAudioDeviceIO);
+        this->connect(mpAudioDeviceIO, SIGNAL(destroyed(QObject*)), this, SLOT(SlotAudioIoDestroyed(QObject*)));
+        this->connect(mpAudioDeviceIO, SIGNAL(aboutToClose()), this, SLOT(SlotAudioIoAboutToClose()));
+        this->connect(mpAudioDeviceIO, SIGNAL(bytesWritten(qint64)), this, SLOT(SlotAudioIoBytesWritten(qint64)));
+        this->connect(mpAudioDeviceIO, SIGNAL(readyRead()), this, SLOT(SlotAudioIoReadyRead()));
+        this->connect(mpAudioDeviceIO, SIGNAL(channelReadyRead(int )), this, SLOT(SlotAudioIoChannelReadyRead(int)));
+        this->connect(mpAudioDeviceIO, SIGNAL(readChannelFinished()), this, SLOT(SlotAudioIoReadChannelFinished()));
+    }
+    mbAudioInputStarted = !mbAudioInputStarted;
+    ui->btnLtcStartStop->setText(mbAudioInputStarted ? "Stop" : "Start");
 }
 
 void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)

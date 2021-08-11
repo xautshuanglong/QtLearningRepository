@@ -24,7 +24,7 @@ QMutex DebugPanel::mMutexInstance;
 enum MenuItemType
 {
     MenuItemType_unknow = 0,
-    MenuItemType_menu = 1, // 作为父级菜单，点击没有动作
+    MenuItemType_menu = 1,   // 作为父级菜单，点击没有动作
     MenuItemType_action = 2, // 菜单项点击会有动作触发响应的处理函数
 };
 

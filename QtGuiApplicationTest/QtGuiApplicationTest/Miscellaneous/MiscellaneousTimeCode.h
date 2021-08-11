@@ -5,6 +5,7 @@
 #include <Mmddk.h>
 #include <QList>
 #include <QHash>
+#include <QFile>
 #include <QAudioDeviceInfo>
 
 #include "MiscellaneousBase.h"
@@ -14,6 +15,8 @@ namespace Ui {class MiscellaneousTimeCode;};
 
 class QTimer;
 class QSpinBox;
+class QAudioInput;
+class QAudioOutput;
 
 //struct MidiDeviceInfo
 //{
@@ -38,6 +41,8 @@ private:
     void InitUI();
     void UpdateComboxAudio();
     void UpdateComboxMidi();
+    void CloseFile(QFile& file);
+    void OpenFile(QFile& file);
     void AudioEnumerateDevices();
     bool MidiEnumerateDevices();
     bool MidiDevicesCloseIn();
@@ -46,6 +51,7 @@ private:
     bool MidiDevicesOpenOut(UINT deviceID);
     TimeCodeObj GetTimeCodeFromUI(QSpinBox* pSpbHour, QSpinBox* pSpbMinute, QSpinBox* pSpbSecond, QSpinBox* pSpbFrame);
 
+    std::string AudioErrorToString(QAudio::Error error);
     std::string MidiTechnologyToString(WORD wTechnology);
     std::string MidiSupportToString(DWORD dwSupport);
     std::string MidiMsgTypeToString(MMRESULT errorCode);
@@ -56,6 +62,16 @@ private:
 private slots:
     void TimeCodeEmiter_TimeOut();
     void SlotTimeCodeChanged(const TimeCodeObj timecode);
+    void SlotAudioInputDestroyed(QObject *pObj);
+    void SlotAudioInputStateChanged(QAudio::State state);
+    // QAudioInput IO
+    void SlotAudioIoDestroyed(QObject *pObj = Q_NULLPTR);
+    void SlotAudioIoAboutToClose();
+    void SlotAudioIoBytesWritten(qint64 bytes);
+    void SlotAudioIoReadyRead();
+    void SlotAudioIoChannelBytesWritten(int channel, qint64 bytes);
+    void SlotAudioIoChannelReadyRead(int channel);
+    void SlotAudioIoReadChannelFinished();
     // Common Button
     void on_btnTransferTest_clicked();
     void on_btnEventMapTest_clicked();
@@ -78,19 +94,28 @@ private:
     Ui::MiscellaneousTimeCode       *ui;
     QTimer                          *mpTimeCodeEmiter;
     int                              mMtcByteIndex;
-    bool                             mbTimeCodeEnable; // 发生器
-    bool                             mbTimeCodeStarted;
-    bool                             mbTimeCodeInputOn;
-    QString                          mBtnTimeEmiterText;
-    long long                        mCurFrequency;
-    QList<QPair<UINT, QString>>      mMidiDevPairIn;
-    QList<QPair<UINT, QString>>      mMidiDevPairOut;
+    bool                             mbTimeCodeEnable;    // 模拟时间码发生器使能
+    bool                             mbTimeCodeStarted;   // 启动 或 停止时间码发生设备（USB）
+    bool                             mbTimeCodeInputOn;   // 标记时间码设备读取功能是否已打开（USB）
+    bool                             mbAudioInputStarted; // 标记音频设备读取功能是否已打开
+    bool                             mbAudioInputChanged; // 选择其他音频输入设备
+    bool                             mbAudioOutputChanged;// 选择其他音频输出设备
+    QString                          mBtnTimeEmiterText;  // 模拟时间码发生器按钮显示文本
+    long long                        mCurFrequency;       // 高性能计数器工作频率
+    QList<QPair<UINT, QString>>      mMidiDevPairIn;      // 可用 MIDI 输入设备
+    QList<QPair<UINT, QString>>      mMidiDevPairOut;     // 可用 MIDI 输出设备
     QHash<QString, QAudioDeviceInfo> mHashAudioInput;
     QHash<QString, QAudioDeviceInfo> mHashAudioOutput;
     HMIDIIN                          mHandleMidiIn;
     HMIDIOUT                         mHandleMidiOut;
-    QAudioDeviceInfo                 mAudioDeviceIn;
-    QAudioDeviceInfo                 mAudioDeviceOut;
+    QAudioDeviceInfo                 mAudioDeviceInfoIn;
+    QAudioDeviceInfo                 mAudioDeviceInfoOut;
+    QAudioFormat                     mAudioFormatIn;
+    QAudioFormat                     mAudioFormatOut;
+    QAudioInput                     *mpAudioInput;
+    QAudioOutput                    *mpAudioOutput;
+    QIODevice                       *mpAudioDeviceIO;
+    QFile                            mpFilePcmAudioIn;
 };
 
 #endif // MISCELLANEOUS_TIME_CODE_H
