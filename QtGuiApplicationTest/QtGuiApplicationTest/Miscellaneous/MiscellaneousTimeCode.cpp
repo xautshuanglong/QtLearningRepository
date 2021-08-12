@@ -10,6 +10,8 @@
 #include <QAudioInput>
 #include <QAudioOutput>
 
+#include "ThirdParty/LTC/decoder.h"
+
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
 
@@ -25,11 +27,13 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     , mbAudioInputStarted(false)
     , mbAudioInputChanged(false)
     , mbAudioOutputChanged(false)
+    , mLtcStreamOffset(0)
     , mHandleMidiIn(NULL)
     , mHandleMidiOut(NULL)
     , mpAudioInput(Q_NULLPTR)
     , mpAudioOutput(Q_NULLPTR)
     , mpAudioDeviceIO(Q_NULLPTR)
+    , mpLtcDecoder(Q_NULLPTR)
 {
     ui->setupUi(this);
 
@@ -38,8 +42,10 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
     this->InitUI();
     // 高性能计数器
     mCurFrequency = TimeUtil::QueryPerformanceFrequency();
+    // LTC 解析
+    mpLtcDecoder = ::ltc_decoder_create(1920, 32);
 
-    this->connect(this, SIGNAL(SignalTimeCodeChanged(const TimeCodeObj)), this, SLOT(SlotTimeCodeChanged(const TimeCodeObj)));
+    this->connect(this, SIGNAL(SignalTimeCodeChanged(const TimeCodeObj)), this, SLOT(SlotTimeCodeMtcChanged(const TimeCodeObj)));
 }
 
 MiscellaneousTimeCode::~MiscellaneousTimeCode()
@@ -52,6 +58,12 @@ MiscellaneousTimeCode::~MiscellaneousTimeCode()
         mpAudioInput->stop();
     }
     this->CloseFile(mpFilePcmAudioIn);
+
+    if (mpLtcDecoder)
+    {
+        delete mpLtcDecoder;
+        mpLtcDecoder = NULL;
+    }
 
     delete ui;
 }
@@ -710,10 +722,15 @@ void MiscellaneousTimeCode::TimeCodeEmiter_TimeOut()
     }
 }
 
-void MiscellaneousTimeCode::SlotTimeCodeChanged(const TimeCodeObj timecode)
+void MiscellaneousTimeCode::SlotTimeCodeMtcChanged(const TimeCodeObj timecode)
 {
     ui->lcdTimeCodeMTC->display(QString::fromStdString(std::to_string(timecode)));
     ui->lcdFrameRate->display(timecode.getFrameRate());
+}
+
+void MiscellaneousTimeCode::SlotTimeCodeLtcChanged(const TimeCodeObj timecode)
+{
+    ui->lcdTimeCodeLTC->display(QString::fromStdString(std::to_string(timecode)));
 }
 
 void MiscellaneousTimeCode::SlotAudioInputDestroyed(QObject* pObj)
@@ -768,10 +785,29 @@ void MiscellaneousTimeCode::SlotAudioIoReadyRead()
     if (mpAudioDeviceIO == Q_NULLPTR) return;
 
     QByteArray audioBytes = mpAudioDeviceIO->readAll();
-    if (mpFilePcmAudioIn.isOpen())
+
+    ::ltc_decoder_write(mpLtcDecoder, (unsigned char*)audioBytes.data(), audioBytes.size(), mLtcStreamOffset);
+    mLtcStreamOffset += audioBytes.size();
+
+    LTCFrameExt ltcFrame;
+    SMPTETimecode ltcTimecode;
+
+    while (::ltc_decoder_read(mpLtcDecoder, &ltcFrame))
     {
-        mpFilePcmAudioIn.write(audioBytes);
+        // LTC_USE_DATE = 1,       ///< LTCFrame <> SMPTETimecode converter and LTCFrame increment/decrement use date, also set BGF2 to '1' when encoder is initialized or re-initialized (unless LTC_BGF_DONT_TOUCH is given)
+        // LTC_TC_CLOCK = 2,       ///< the Timecode is wall-clock aka freerun. This also sets BGF1 (unless LTC_BGF_DONT_TOUCH is given)
+        // LTC_BGF_DONT_TOUCH = 4, ///< encoder init or re-init does not touch the BGF bits (initial values after initialization is zero)
+        // LTC_NO_PARITY = 8       ///< parity bit is left untouched when setting or in/decrementing the encoder frame-number
+        ::ltc_frame_to_time(&ltcTimecode, &ltcFrame.ltc, LTC_USE_DATE);
+        
+        TimeCodeObj timecode(ltcTimecode.hours, ltcTimecode.mins, ltcTimecode.secs, ltcTimecode.frame, 30);
+        this->SlotTimeCodeLtcChanged(timecode);
     }
+
+    //if (mpFilePcmAudioIn.isOpen())
+    //{
+    //    mpFilePcmAudioIn.write(audioBytes);
+    //}
 }
 
 void MiscellaneousTimeCode::SlotAudioIoChannelBytesWritten(int channel, qint64 bytes)
@@ -949,7 +985,6 @@ void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
     {
         mpAudioDeviceIO = mpAudioInput->start();
         LogUtil::Debug(CODE_LOCATION, "Audio input after start() error=%s", this->AudioErrorToString(mpAudioInput->error()).c_str());
-        LogUtil::Debug(CODE_LOCATION, "Audio device io created 0x%08X", mpAudioDeviceIO);
         this->connect(mpAudioDeviceIO, SIGNAL(destroyed(QObject*)), this, SLOT(SlotAudioIoDestroyed(QObject*)));
         this->connect(mpAudioDeviceIO, SIGNAL(aboutToClose()), this, SLOT(SlotAudioIoAboutToClose()));
         this->connect(mpAudioDeviceIO, SIGNAL(bytesWritten(qint64)), this, SLOT(SlotAudioIoBytesWritten(qint64)));

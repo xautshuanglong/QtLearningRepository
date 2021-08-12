@@ -13,6 +13,8 @@
 
 namespace Ui {class MiscellaneousTimeCode;};
 
+struct LTCDecoder;
+
 class QTimer;
 class QSpinBox;
 class QAudioInput;
@@ -61,7 +63,8 @@ private:
 
 private slots:
     void TimeCodeEmiter_TimeOut();
-    void SlotTimeCodeChanged(const TimeCodeObj timecode);
+    void SlotTimeCodeMtcChanged(const TimeCodeObj timecode);
+    void SlotTimeCodeLtcChanged(const TimeCodeObj timecode);
     void SlotAudioInputDestroyed(QObject *pObj);
     void SlotAudioInputStateChanged(QAudio::State state);
     // QAudioInput IO
@@ -102,6 +105,7 @@ private:
     bool                             mbAudioOutputChanged;// 选择其他音频输出设备
     QString                          mBtnTimeEmiterText;  // 模拟时间码发生器按钮显示文本
     long long                        mCurFrequency;       // 高性能计数器工作频率
+    long long                        mLtcStreamOffset;    // LTC 音频流位置信息，全局累加
     QList<QPair<UINT, QString>>      mMidiDevPairIn;      // 可用 MIDI 输入设备
     QList<QPair<UINT, QString>>      mMidiDevPairOut;     // 可用 MIDI 输出设备
     QHash<QString, QAudioDeviceInfo> mHashAudioInput;
@@ -116,6 +120,7 @@ private:
     QAudioOutput                    *mpAudioOutput;
     QIODevice                       *mpAudioDeviceIO;
     QFile                            mpFilePcmAudioIn;
+    LTCDecoder                      *mpLtcDecoder;
 };
 
 #endif // MISCELLANEOUS_TIME_CODE_H
