@@ -17,8 +17,10 @@ struct LTCDecoder;
 
 class QTimer;
 class QSpinBox;
+class QComboBox;
 class QAudioInput;
 class QAudioOutput;
+class QStyledItemDelegate;
 
 //struct MidiDeviceInfo
 //{
@@ -41,11 +43,12 @@ public:
 
 private:
     void InitUI();
-    void UpdateComboxAudio();
+    void ChangeComboxStyle(QComboBox* pCombox, QStyledItemDelegate* pStyleDelegate);
+    void UpdateComboxAudio(QComboBox* pCombox, const QHash<QString, QAudioDeviceInfo> &audioDeviceInfoHash);
     void UpdateComboxMidi();
     void CloseFile(QFile& file);
     void OpenFile(QFile& file);
-    void AudioEnumerateDevices();
+    void AudioEnumerateDevices(QHash<QString, QAudioDeviceInfo> &audioDeviceHash, QAudio::Mode audioMode);
     bool MidiEnumerateDevices();
     bool MidiDevicesCloseIn();
     bool MidiDevicesCloseOut();
@@ -80,9 +83,13 @@ private slots:
     void on_btnEventMapTest_clicked();
     void on_btnTimeEmiterTest_clicked();
     void on_btnEnumerateDevices_clicked();
+    // Audio Input Output (Clock)
+    void on_cbAudioDevicesClockIn_currentIndexChanged(int index);
+    void on_cbAudioDevicesClockOut_currentIndexChanged(int index);
+    void on_btnClockStartStop_clicked();
     // Audio Input Output (LTC)
-    void on_cbAudioDevicesIn_currentIndexChanged(int index);
-    void on_cbAudioDevicesOut_currentIndexChanged(int index);
+    void on_cbAudioDevicesLtcIn_currentIndexChanged(int index);
+    void on_cbAudioDevicesLtcOut_currentIndexChanged(int index);
     void on_btnLtcStartStop_clicked();
     // MIDI InputOutput (MTC)
     void on_cbMidiDevicesIn_currentIndexChanged(int index);
@@ -99,7 +106,7 @@ private:
     int                              mMtcByteIndex;
     bool                             mbTimeCodeEnable;    // 模拟时间码发生器使能
     bool                             mbTimeCodeStarted;   // 启动 或 停止时间码发生设备（USB）
-    bool                             mbTimeCodeInputOn;   // 标记时间码设备读取功能是否已打开（USB）
+    bool                             mbTimeCodeInputOn;   // 标记时间码设备读取功能是否已打开（USB），设备改变后设为 FALSE，需重新开启
     bool                             mbAudioInputStarted; // 标记音频设备读取功能是否已打开
     bool                             mbAudioInputChanged; // 选择其他音频输入设备
     bool                             mbAudioOutputChanged;// 选择其他音频输出设备

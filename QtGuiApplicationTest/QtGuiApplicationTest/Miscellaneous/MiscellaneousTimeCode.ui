@@ -45,53 +45,11 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="btnEventMapTest">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Time Code Event Mapping</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="btnTransferTest">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>140</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Time Code Transfer</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnTimeEmiterTest">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Time Code Emiter</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item row="4" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="MidiInput">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -99,7 +57,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="lbMidiDeviceMTC">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -120,12 +78,12 @@
 }</string>
          </property>
          <property name="text">
-          <string>MIDI Device</string>
+          <string>MIDI Device (MTC)</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout" name="MidiDevices">
          <property name="spacing">
           <number>4</number>
          </property>
@@ -133,7 +91,7 @@
           <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <layout class="QHBoxLayout" name="MidiDeviceInput">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -193,7 +151,7 @@ QComboBox::drop-down
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <layout class="QHBoxLayout" name="MidiDeviceOutput">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -299,7 +257,7 @@ QComboBox::drop-down
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QHBoxLayout" name="MidiProgress">
          <property name="topMargin">
           <number>2</number>
          </property>
@@ -307,7 +265,7 @@ QComboBox::drop-down
           <number>2</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="MidiTimeBegin">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -391,7 +349,7 @@ QComboBox::drop-down
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <layout class="QHBoxLayout" name="MidiTimeEnd">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -470,7 +428,7 @@ QComboBox::drop-down
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="MidiLocate">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -481,7 +439,7 @@ QComboBox::drop-down
           <number>2</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <layout class="QHBoxLayout" name="MidiLocateTime">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -628,26 +586,25 @@ QComboBox::drop-down
        </item>
       </layout>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnEnumerateDevices">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <item row="3" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="AudioInputLTC">
+       <property name="spacing">
+        <number>0</number>
        </property>
-       <property name="text">
-        <string>Enumerate Audio and MIDI</string>
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="topMargin">
         <number>0</number>
        </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="lbAudioDeviceLTC">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -668,12 +625,12 @@ QComboBox::drop-down
 }</string>
          </property>
          <property name="text">
-          <string>Audio Input Device</string>
+          <string>Audio Input Device (LTC)</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <layout class="QHBoxLayout" name="AudioDeviceLTC">
          <property name="spacing">
           <number>4</number>
          </property>
@@ -681,7 +638,7 @@ QComboBox::drop-down
           <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <layout class="QHBoxLayout" name="AudioDeviceLtcInput">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -689,7 +646,7 @@ QComboBox::drop-down
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="lbAudioInput">
+            <widget class="QLabel" name="lbAudioInputLtc">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -702,7 +659,7 @@ QComboBox::drop-down
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cbAudioDevicesIn">
+            <widget class="QComboBox" name="cbAudioDevicesLtcIn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -741,7 +698,7 @@ QComboBox::drop-down
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <layout class="QHBoxLayout" name="AudioDeviceLtcOutput">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -749,7 +706,7 @@ QComboBox::drop-down
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="lbAudioOutput">
+            <widget class="QLabel" name="lbAudioOutputLtc">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -762,7 +719,7 @@ QComboBox::drop-down
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cbAudioDevicesOut">
+            <widget class="QComboBox" name="cbAudioDevicesLtcOut">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -827,6 +784,277 @@ QComboBox::drop-down
          </item>
          <item>
           <widget class="QPushButton" name="btnLtcStartStop">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="btnTransferTest">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>140</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Time Code Transfer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="btnEventMapTest">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Time Code Event Mapping</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnEnumerateDevices">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Enumerate Audio and MIDI</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnTimeEmiterTest">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Time Code Emiter</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="AudioInputClock">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbAudioDeviceClock">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel
+{
+	background-color: lightgray;
+}</string>
+         </property>
+         <property name="text">
+          <string>Audio Input Device (Clock)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="AudioDeviceClock">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="AudioDeviceClockInput">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbAudioInputClock">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Input:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbAudioDevicesClockIn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
+{
+	border: 1px solid gray;
+	border-radius: 10px;
+	color: rgb(75, 75, 75);
+	background-color: white;
+}
+
+QComboBox::drop-down
+{
+	width: 40px;
+	border-left: 1px solid gray;
+}</string>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>AudioInput</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="AudioDeviceClockOutput">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbAudioOutputClock">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Output:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbAudioDevicesClockOut">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox
+{
+	border: 1px solid gray;
+	border-radius: 10px;
+	color: rgb(75, 75, 75);
+	background-color: white;
+}
+
+QComboBox::drop-down
+{
+	width: 40px;
+	border-left: 1px solid gray;
+}</string>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+             <property name="placeholderText">
+              <string>Audio Output</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdTimeCodeClock">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>160</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="digitCount">
+            <number>11</number>
+           </property>
+           <property name="mode">
+            <enum>QLCDNumber::Dec</enum>
+           </property>
+           <property name="intValue" stdset="0">
+            <number>1234567890</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClockStartStop">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>

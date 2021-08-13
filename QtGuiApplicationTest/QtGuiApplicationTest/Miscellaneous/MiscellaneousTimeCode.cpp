@@ -37,7 +37,8 @@ MiscellaneousTimeCode::MiscellaneousTimeCode(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->AudioEnumerateDevices();
+    this->AudioEnumerateDevices(mHashAudioInput, QAudio::AudioInput);
+    this->AudioEnumerateDevices(mHashAudioOutput, QAudio::AudioOutput);
     this->MidiEnumerateDevices();
     this->InitUI();
     // 高性能计数器
@@ -92,21 +93,12 @@ void MiscellaneousTimeCode::InitUI()
 {
     // 下拉组合框样式
     QStyledItemDelegate* pItemDelegate = new QStyledItemDelegate();
-    ui->cbAudioDevicesIn->setItemDelegate(pItemDelegate);
-    ui->cbAudioDevicesIn->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-    ui->cbAudioDevicesIn->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
-
-    ui->cbAudioDevicesOut->setItemDelegate(pItemDelegate);
-    ui->cbAudioDevicesOut->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-    ui->cbAudioDevicesOut->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
-
-    ui->cbMidiDevicesIn->setItemDelegate(pItemDelegate);
-    ui->cbMidiDevicesIn->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-    ui->cbMidiDevicesIn->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
-
-    ui->cbMidiDevicesOut->setItemDelegate(pItemDelegate);
-    ui->cbMidiDevicesOut->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-    ui->cbMidiDevicesOut->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+    this->ChangeComboxStyle(ui->cbAudioDevicesClockIn, pItemDelegate);
+    this->ChangeComboxStyle(ui->cbAudioDevicesClockOut, pItemDelegate);
+    this->ChangeComboxStyle(ui->cbAudioDevicesLtcIn, pItemDelegate);
+    this->ChangeComboxStyle(ui->cbAudioDevicesLtcOut, pItemDelegate);
+    this->ChangeComboxStyle(ui->cbMidiDevicesIn, pItemDelegate);
+    this->ChangeComboxStyle(ui->cbMidiDevicesOut, pItemDelegate);
 
     // UI 控件初始化
     mBtnTimeEmiterText = ui->btnTimeEmiterTest->text();
@@ -115,7 +107,10 @@ void MiscellaneousTimeCode::InitUI()
     ui->lcdTimeCodeMTC->display("00:00:00:00");
     ui->lcdTimeCodeLTC->display("00:00:00:00");
     // 音频输入输出设备
-    this->UpdateComboxAudio();
+    this->UpdateComboxAudio(ui->cbAudioDevicesClockIn, mHashAudioInput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesClockOut, mHashAudioOutput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesLtcIn, mHashAudioInput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesLtcOut, mHashAudioOutput);
     // MIDI 设备列表选项
     this->UpdateComboxMidi();
 
@@ -127,26 +122,26 @@ void MiscellaneousTimeCode::InitUI()
     connect(mpTimeCodeEmiter, SIGNAL(timeout()), this, SLOT(TimeCodeEmiter_TimeOut()));
 }
 
-void MiscellaneousTimeCode::UpdateComboxAudio()
+void MiscellaneousTimeCode::ChangeComboxStyle(QComboBox* pCombox, QStyledItemDelegate* pStyleDelegate)
 {
+    if (pCombox == Q_NULLPTR) return;
 
-    QHash<QString, QAudioDeviceInfo>::const_iterator audioIt = mHashAudioInput.begin();
-    QHash<QString, QAudioDeviceInfo>::const_iterator audioEnd = mHashAudioInput.end();
-    ui->cbAudioDevicesIn->clear();
-    ui->cbAudioDevicesIn->addItem("None", QVariant::fromValue(QAudioDeviceInfo()));
-    while (audioIt != audioEnd)
-    {
-        ui->cbAudioDevicesIn->addItem(audioIt.key(), QVariant::fromValue(audioIt.value()));
-        ++audioIt;
-    }
+    pCombox->setItemDelegate(pStyleDelegate);
+    pCombox->view()->window()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    pCombox->view()->window()->setAttribute(Qt::WA_TranslucentBackground);
+}
 
-    QHashIterator<QString, QAudioDeviceInfo> audioOutput(mHashAudioOutput);
-    ui->cbAudioDevicesOut->clear();
-    ui->cbAudioDevicesOut->addItem("None", QVariant::fromValue(QAudioDeviceInfo()));
-    while (audioOutput.hasNext())
+void MiscellaneousTimeCode::UpdateComboxAudio(QComboBox *pCombox, const QHash<QString, QAudioDeviceInfo> &audioDeviceInfoHash)
+{
+    if (pCombox == Q_NULLPTR) return;
+
+    QHashIterator<QString, QAudioDeviceInfo> audioDevice(audioDeviceInfoHash);
+    pCombox->clear();
+    pCombox->addItem("None", QVariant::fromValue(QAudioDeviceInfo()));
+    while (audioDevice.hasNext())
     {
-        audioOutput.next();
-        ui->cbAudioDevicesOut->addItem(audioOutput.key(), QVariant::fromValue(audioOutput.value()));
+        audioDevice.next();
+        pCombox->addItem(audioDevice.key(), QVariant::fromValue(audioDevice.value()));
     }
 }
 
@@ -192,20 +187,13 @@ void MiscellaneousTimeCode::OpenFile(QFile& file)
     file.open(QIODevice::WriteOnly);
 }
 
-void MiscellaneousTimeCode::AudioEnumerateDevices()
+void MiscellaneousTimeCode::AudioEnumerateDevices(QHash<QString, QAudioDeviceInfo> &audioDeviceHash, QAudio::Mode audioMode)
 {
-    mHashAudioInput.clear();
-    QList<QAudioDeviceInfo> audioInput = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-    for (QAudioDeviceInfo audioInfo : audioInput)
+    audioDeviceHash.clear();
+    QList<QAudioDeviceInfo> audioDeviceInfos = QAudioDeviceInfo::availableDevices(audioMode);
+    for (QAudioDeviceInfo audioInfo : audioDeviceInfos)
     {
-        mHashAudioInput.insert(audioInfo.deviceName(), audioInfo);
-    }
-
-    mHashAudioOutput.clear();
-    QList<QAudioDeviceInfo> audioOutput = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-    for (QAudioDeviceInfo audioInfo : audioOutput)
-    {
-        mHashAudioOutput.insert(audioInfo.deviceName(), audioInfo);
+        audioDeviceHash.insert(audioInfo.deviceName(), audioInfo);
     }
 }
 
@@ -876,18 +864,31 @@ void MiscellaneousTimeCode::on_btnTimeEmiterTest_clicked()
 void MiscellaneousTimeCode::on_btnEnumerateDevices_clicked()
 {
     // 重新枚举音频设备
-    this->AudioEnumerateDevices();
-    this->UpdateComboxAudio();
+    this->AudioEnumerateDevices(mHashAudioInput, QAudio::AudioInput);
+    this->AudioEnumerateDevices(mHashAudioOutput, QAudio::AudioOutput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesClockIn, mHashAudioInput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesClockOut, mHashAudioOutput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesLtcIn, mHashAudioInput);
+    this->UpdateComboxAudio(ui->cbAudioDevicesLtcOut, mHashAudioOutput);
     // 重新枚举 MIDI 设备
     this->MidiEnumerateDevices();
     this->UpdateComboxMidi();
 }
 
-void MiscellaneousTimeCode::on_cbAudioDevicesIn_currentIndexChanged(int index)
+void MiscellaneousTimeCode::on_cbAudioDevicesClockIn_currentIndexChanged(int index)
+{}
+
+void MiscellaneousTimeCode::on_cbAudioDevicesClockOut_currentIndexChanged(int index)
+{}
+
+void MiscellaneousTimeCode::on_btnClockStartStop_clicked()
+{}
+
+void MiscellaneousTimeCode::on_cbAudioDevicesLtcIn_currentIndexChanged(int index)
 {
     if (index == -1) return;
 
-    QVariant userData = ui->cbAudioDevicesIn->currentData();
+    QVariant userData = ui->cbAudioDevicesLtcIn->currentData();
     if (!userData.isNull() && userData.isValid())
     {
         mAudioDeviceInfoIn = userData.value<QAudioDeviceInfo>();
@@ -895,11 +896,11 @@ void MiscellaneousTimeCode::on_cbAudioDevicesIn_currentIndexChanged(int index)
     }
 }
 
-void MiscellaneousTimeCode::on_cbAudioDevicesOut_currentIndexChanged(int index)
+void MiscellaneousTimeCode::on_cbAudioDevicesLtcOut_currentIndexChanged(int index)
 {
     if (index == -1) return;
 
-    QVariant userData = ui->cbAudioDevicesOut->currentData();
+    QVariant userData = ui->cbAudioDevicesLtcOut->currentData();
     if (!userData.isNull() && userData.isValid())
     {
         mAudioDeviceInfoOut = userData.value<QAudioDeviceInfo>();
@@ -1002,6 +1003,7 @@ void MiscellaneousTimeCode::on_cbMidiDevicesIn_currentIndexChanged(int index)
 
     UINT deviceID = ui->cbMidiDevicesIn->itemData(index).toUInt();
     this->MidiDevicesOpenIn(deviceID);
+    mbTimeCodeInputOn = false; // 重新打开新设备，需重新开启
 }
 
 void MiscellaneousTimeCode::on_cbMidiDevicesOut_currentIndexChanged(int index)
