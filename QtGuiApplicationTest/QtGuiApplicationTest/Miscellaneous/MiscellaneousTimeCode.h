@@ -121,8 +121,6 @@ private:
     HMIDIOUT                         mHandleMidiOut;
     QAudioDeviceInfo                 mAudioDeviceInfoIn;
     QAudioDeviceInfo                 mAudioDeviceInfoOut;
-    QAudioFormat                     mAudioFormatIn;
-    QAudioFormat                     mAudioFormatOut;
     QAudioInput                     *mpAudioInput;
     QAudioOutput                    *mpAudioOutput;
     QIODevice                       *mpAudioDeviceIO;

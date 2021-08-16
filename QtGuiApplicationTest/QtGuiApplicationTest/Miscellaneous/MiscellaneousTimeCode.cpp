@@ -917,7 +917,7 @@ void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
     }
 
     // 音频格式  LTC  双声道  48KHZ  有符号8bit （QAudio 实测检验）
-    QAudioFormat testFormat;
+    QAudioFormat testFormat, nearestFormat;
     testFormat.setSampleRate(44100);
     testFormat.setByteOrder(QAudioFormat::LittleEndian);
     testFormat.setSampleType(QAudioFormat::SignedInt);
@@ -943,15 +943,15 @@ void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
         LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old   SampleSize: %d", testFormat.sampleSize());
         LogUtil::Debug(CODE_LOCATION, "QAudioFormat Old        Codec: %s", testFormat.codec().toUtf8().data());
 
-        mAudioFormatIn = mAudioDeviceInfoIn.nearestFormat(testFormat);
+        nearestFormat = mAudioDeviceInfoIn.nearestFormat(testFormat);
 
         // New Format
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleRate: %d", mAudioFormatIn.sampleRate());
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New    ByteOrder: %d", mAudioFormatIn.byteOrder());
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleType: %d", mAudioFormatIn.sampleType());
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New ChannelCount: %d", mAudioFormatIn.channelCount());
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleSize: %d", mAudioFormatIn.sampleSize());
-        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New        Codec: %s", mAudioFormatIn.codec().toUtf8().data());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleRate: %d", nearestFormat.sampleRate());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New    ByteOrder: %d", nearestFormat.byteOrder());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleType: %d", nearestFormat.sampleType());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New ChannelCount: %d", nearestFormat.channelCount());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New   SampleSize: %d", nearestFormat.sampleSize());
+        LogUtil::Debug(CODE_LOCATION, "QAudioFormat New        Codec: %s", nearestFormat.codec().toUtf8().data());
     }
 
     if (mbAudioInputChanged)
@@ -966,7 +966,7 @@ void MiscellaneousTimeCode::on_btnLtcStartStop_clicked()
     }
     if (mpAudioInput == Q_NULLPTR)
     {
-        mpAudioInput = new QAudioInput(mAudioDeviceInfoIn, mAudioFormatIn, this);
+        mpAudioInput = new QAudioInput(mAudioDeviceInfoIn, nearestFormat, this);
         QString devName = mAudioDeviceInfoIn.deviceName();
         LogUtil::Debug(CODE_LOCATION, "Audio device input create 0x%08X %s", mpAudioInput, devName.toUtf8().data());
         this->connect(mpAudioInput, SIGNAL(destroyed(QObject*)), this, SLOT(SlotAudioInputDestroyed(QObject*)));
