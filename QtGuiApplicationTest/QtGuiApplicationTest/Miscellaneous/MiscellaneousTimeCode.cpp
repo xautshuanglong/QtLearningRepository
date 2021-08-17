@@ -2,6 +2,7 @@
 #include "ui_MiscellaneousTimeCode.h"
 
 #include <QDir>
+#include <QDataStream>
 #include <QMetaEnum>
 #include <QTimer>
 #include <QDateTime>
@@ -831,6 +832,35 @@ void MiscellaneousTimeCode::on_btnTransferTest_clicked()
     TimeCodeObj test2(1, 2, 3, 0, 0);
     test2.subSecond(53);
     std::string testStr2 = std::to_string(test2);
+
+    QString hello = "HelloWorld";
+    int value1 = 1;
+    int value2 = 2;
+    int value3 = 3;
+    QByteArray dataBytes;
+    QDataStream outStream(&dataBytes, QIODevice::WriteOnly);
+    outStream.setVersion(QDataStream::Qt_5_10);
+    outStream << hello << value1 << value2 << value3;
+
+    bool testFlag = false;
+    QString receiveHello;
+    int receiveValue1 = 0;
+    int receiveValue2 = 0;
+    int receiveValue3 = 0;
+    QDataStream inStream(&dataBytes, QIODevice::ReadOnly);
+    inStream.setVersion(QDataStream::Qt_5_10);
+    testFlag = inStream.atEnd();
+    inStream >> receiveHello;
+    testFlag = inStream.atEnd();
+    inStream >> receiveValue1;
+    testFlag = inStream.atEnd();
+    inStream >> receiveValue2;
+    testFlag = inStream.atEnd();
+    inStream >> receiveValue3;
+    testFlag = inStream.atEnd();
+
+    int anotherValue = 0;
+    inStream >> anotherValue;
 
     int i = 0;
 }
