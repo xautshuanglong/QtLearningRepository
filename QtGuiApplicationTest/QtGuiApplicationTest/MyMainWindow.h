@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <QSystemTrayIcon>
-#include "ui_QtGuiApplicationTest.h"
+#include "ui_MyMainWindow.h"
 
 class FramelessWindowHelper;
 class MainTabPageFirst;
@@ -23,7 +23,7 @@ public:
     ~MyMainWindow();
 
 private:
-    Ui::QtGuiApplicationTestClass    ui;
+    Ui::MyMainWindow                ui;
     FramelessWindowHelper           *mpFramelessWindow;
     MainTabPageFirst                *mpPageFirst;
     MainTabPageDicom                *mpPageDicom;

@@ -272,7 +272,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousZLib.ui" />
     <QtUic Include="NotifyWidget.ui">
     </QtUic>
-    <QtUic Include="QtGuiApplicationTest.ui" />
+    <QtUic Include="MyMainWindow.ui" />
     <QtUic Include="Reports\WinReportTesting.ui" />
   </ItemGroup>
   <ItemGroup>

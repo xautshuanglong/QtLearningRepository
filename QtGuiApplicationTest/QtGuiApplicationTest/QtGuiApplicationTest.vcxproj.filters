@@ -327,7 +327,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="QtGuiApplicationTest.ui">
+    <QtUic Include="MyMainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MainTabPageFirst.ui">
