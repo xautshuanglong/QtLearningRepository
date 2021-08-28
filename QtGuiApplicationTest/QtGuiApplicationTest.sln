@@ -310,6 +310,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtDicomLib", "QtDicomLib\Qt
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtQuickApplicationTest", "QtQuickApplicationTest\QtQuickApplicationTest.vcxproj", "{E2408897-9CCC-4F54-8C12-7720042CA5BF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JCB_Logger", "JCB_Logger\JCB_Logger\JCB_Logger.vcxproj", "{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.vcxitems*{138cd575-5a61-4c86-894c-96bd34b10d2b}*SharedItemsImports = 4
@@ -356,6 +358,14 @@ Global
 		{E2408897-9CCC-4F54-8C12-7720042CA5BF}.Release|x64.ActiveCfg = Release|x64
 		{E2408897-9CCC-4F54-8C12-7720042CA5BF}.Release|x64.Build.0 = Release|x64
 		{E2408897-9CCC-4F54-8C12-7720042CA5BF}.Release|x86.ActiveCfg = Release|x64
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Debug|x64.ActiveCfg = Debug|x64
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Debug|x64.Build.0 = Debug|x64
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Debug|x86.ActiveCfg = Debug|Win32
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Debug|x86.Build.0 = Debug|Win32
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Release|x64.ActiveCfg = Release|x64
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Release|x64.Build.0 = Release|x64
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Release|x86.ActiveCfg = Release|Win32
+		{CA613FD0-ACC7-4C94-A8FD-BFCE8BE5CC7A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -377,7 +387,7 @@ Global
 		{9CEFF4F4-1DD1-494F-ABF7-3D62515432D8} = {346B8552-4A66-4BC4-BC7E-3C838B6DEA7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = $(DefaultQtVersion)
 		SolutionGuid = {839AAF2B-8A92-42C0-8E3A-6C40946218FD}
+		Qt5Version = $(DefaultQtVersion)
 	EndGlobalSection
 EndGlobal
