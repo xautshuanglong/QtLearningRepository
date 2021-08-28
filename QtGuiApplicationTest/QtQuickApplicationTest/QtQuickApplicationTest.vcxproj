@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)QtLibarayCoreTest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)JCB_Logger\JCB_Logger;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -102,8 +102,8 @@
     <QtMoc Include="Miscellaneous\MiscellaneousSignalSlotBinding.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QtLibarayCoreTest\QtLibarayCoreTest.vcxproj">
-      <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
+    <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
+      <Project>{ca613fd0-acc7-4c94-a8fd-bfce8be5cc7a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

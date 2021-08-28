@@ -64,7 +64,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>WIN32;WIN64;QTLIBARAYCORETEST_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(SolutionDir)JCB_Logger\JCB_Logger;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -114,7 +114,6 @@
   <ItemGroup>
     <ClCompile Include="BackgroundWorkerTest.cpp" />
     <ClCompile Include="DllMain.cpp" />
-    <ClCompile Include="LogUtil.cpp" />
     <ClCompile Include="MemUtil.cpp" />
     <ClCompile Include="QObjectCastTest.cpp">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
@@ -125,11 +124,9 @@
     <ClCompile Include="TaskBase.cpp" />
     <ClCompile Include="unzip.cpp" />
     <ClCompile Include="zip.cpp" />
-    <ClCompile Include="zlog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundWorkerTest.h" />
-    <ClInclude Include="LogUtil.h" />
     <ClInclude Include="MemUtil.h" />
     <QtMoc Include="QObjectCastTest.h" />
     <ClInclude Include="TaskBase.h" />
@@ -137,9 +134,11 @@
     <ClInclude Include="qtlibaraycoretest_global.h" />
     <ClInclude Include="unzip.h" />
     <ClInclude Include="zip.h" />
-    <ClInclude Include="zlog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
+      <Project>{ca613fd0-acc7-4c94-a8fd-bfce8be5cc7a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

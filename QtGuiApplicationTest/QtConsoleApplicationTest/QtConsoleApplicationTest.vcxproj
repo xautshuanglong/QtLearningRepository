@@ -60,7 +60,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(SolutionDir)JCB_Logger\JCB_Logger;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -69,7 +69,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Networkd.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_d.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_d.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;Qt5Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <Define>WIN32;WIN64;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
@@ -93,7 +93,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Network.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_o.lib;Qt5Gui.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_o.lib;Qt5Gui.lib;CognexDataManSDK.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;Qt5Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <Define>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
@@ -128,8 +128,8 @@
     <ClInclude Include="TestManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QtLibarayCoreTest\QtLibarayCoreTest.vcxproj">
-      <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
+    <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
+      <Project>{ca613fd0-acc7-4c94-a8fd-bfce8be5cc7a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

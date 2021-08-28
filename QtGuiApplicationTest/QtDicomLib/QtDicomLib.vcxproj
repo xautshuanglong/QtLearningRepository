@@ -55,7 +55,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>WIN32;WIN64;QT_CORE_LIB;QTDICOMLIB_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)QtLibarayCoreTest;$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(SolutionDir)JCB_Logger\JCB_Logger;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -145,6 +145,9 @@
     <ClInclude Include="qtdicomlib_global.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
+      <Project>{ca613fd0-acc7-4c94-a8fd-bfce8be5cc7a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\QtLibarayCoreTest\QtLibarayCoreTest.vcxproj">
       <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
     </ProjectReference>

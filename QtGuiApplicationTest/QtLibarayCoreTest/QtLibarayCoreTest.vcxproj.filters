@@ -25,16 +25,8 @@
     <Filter Include="Core">
       <UniqueIdentifier>{c21784c5-7df5-484d-9043-d896e953df35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Logger">
-      <UniqueIdentifier>{f969a3e9-0eac-477d-abfa-182e28087385}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MiscellaneousTest">
       <UniqueIdentifier>{c79a2a9b-bac9-4f93-97cc-c1ca1c34a85e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Logger\Generated Files">
-      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
-      <Extensions>moc;h;cpp</Extensions>
-      <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Zip">
       <UniqueIdentifier>{7ad13db2-5e7c-4358-b23c-e41e48599ba0}</UniqueIdentifier>
@@ -56,12 +48,6 @@
     <ClInclude Include="BackgroundWorkerTest.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="LogUtil.h">
-      <Filter>Logger</Filter>
-    </ClInclude>
-    <ClInclude Include="zlog.h">
-      <Filter>Logger</Filter>
-    </ClInclude>
     <ClInclude Include="unzip.h">
       <Filter>Zip</Filter>
     </ClInclude>
@@ -81,12 +67,6 @@
     </ClCompile>
     <ClCompile Include="BackgroundWorkerTest.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="LogUtil.cpp">
-      <Filter>Logger</Filter>
-    </ClCompile>
-    <ClCompile Include="zlog.cpp">
-      <Filter>Logger</Filter>
     </ClCompile>
     <ClCompile Include="QObjectCastTest.cpp">
       <Filter>MiscellaneousTest</Filter>
