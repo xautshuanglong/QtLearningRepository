@@ -1,0 +1,3 @@
+[submodule "QtGuiApplicationTest/JCB_Logger"]
+	path = QtGuiApplicationTest/JCB_Logger
+	url = https://github.com/xautshuanglong/JCB_Logger.git
