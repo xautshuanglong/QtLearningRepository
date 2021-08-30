@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <process.h>
 
+#include "LogUtil.h"
+
 MiscellaneousWinThread::MiscellaneousWinThread(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)
     , m_threadStopFlag(true)
@@ -56,6 +58,60 @@ void MiscellaneousWinThread::on_btnWinApiThreadStop_clicked()
     m_threadStopFlag = true;
     ::WaitForSingleObject((HANDLE)m_beginThreadHandle, INFINITE);
     int i = 0;
+}
+
+void MiscellaneousWinThread::on_btnEmptyTest1_clicked()
+{
+    m_mutexTest.lock();
+    LogUtil::Debug(CODE_LOCATION, "Inside outer locker before .................");
+    this->TestHelperMutex();
+    LogUtil::Debug(CODE_LOCATION, "Inside outer locker after .................");
+    m_mutexTest.unlock();
+}
+
+void MiscellaneousWinThread::on_btnEmptyTest2_clicked()
+{
+    std::lock_guard<std::recursive_mutex> lock(m_recursiveMutexTest);
+    LogUtil::Debug(CODE_LOCATION, "Inside outer recursive locker before .................");
+
+    int count = 0;
+    while (count < 100000)
+    {
+        this->TestHelperRecursiveMutex();
+        ++count;
+    }
+
+    LogUtil::Debug(CODE_LOCATION, "Inside outer recursive locker after .................");
+
+    //m_recursiveMutexTest.lock();
+    //LogUtil::Debug(CODE_LOCATION, "Inside outer recursive locker before .................");
+    //this->TestHelperRecursiveMutex();
+    //LogUtil::Debug(CODE_LOCATION, "Inside outer recursive locker after .................");
+    //m_recursiveMutexTest.unlock();
+}
+
+void MiscellaneousWinThread::TestHelperMutex()
+{
+    try
+    {
+        m_mutexTest.lock();
+        LogUtil::Debug(CODE_LOCATION, "Inside inner locker .................");
+        m_mutexTest.unlock();
+    }
+    catch (std::system_error& e)
+    {
+        LogUtil::Debug(CODE_LOCATION, "Inner lock failed : %s", e.what());
+    }
+}
+
+void MiscellaneousWinThread::TestHelperRecursiveMutex()
+{
+    std::lock_guard<std::recursive_mutex> lock(m_recursiveMutexTest);
+    LogUtil::Debug(CODE_LOCATION, "Inside inner recursive locker .................");
+ 
+    //m_recursiveMutexTest.lock();
+    //LogUtil::Debug(CODE_LOCATION, "Inside inner recursive locker .................");
+    //m_recursiveMutexTest.unlock();
 }
 
 void MiscellaneousWinThread::Run()
