@@ -1,19 +1,17 @@
-#ifndef MISCELLANEOUS_QTIMER_TEST_H
-#define MISCELLANEOUS_QTIMER_TEST_H
+#ifndef MISCELLANEOUS_QNATIVE_WINDOW_H
+#define MISCELLANEOUS_QNATIVE_WINDOW_H
 
 #include "MiscellaneousBase.h"
 
-namespace Ui {class MiscellaneousQTimerTest;};
+namespace Ui {class MiscellaneousQNativeWindow;};
 
-class QTimer;
-
-class MiscellaneousQTimerTest : public MiscellaneousBase
+class MiscellaneousQNativeWindow : public MiscellaneousBase
 {
     Q_OBJECT
 
 public:
-    MiscellaneousQTimerTest(QWidget *parent = Q_NULLPTR);
-    ~MiscellaneousQTimerTest();
+    MiscellaneousQNativeWindow(QWidget *parent = Q_NULLPTR);
+    ~MiscellaneousQNativeWindow();
 
     virtual QString GetTitle() override;
     virtual QString GetTitleTooltip() override;
@@ -27,7 +25,7 @@ private slots:
     void on_btnEmptyTest_clicked();
 
 private:
-    Ui::MiscellaneousQTimerTest *ui;
+    Ui::MiscellaneousQNativeWindow*ui;
 };
 
-#endif // MISCELLANEOUS_QTIMER_TEST_H
+#endif // MISCELLANEOUS_QNATIVE_WINDOW_H

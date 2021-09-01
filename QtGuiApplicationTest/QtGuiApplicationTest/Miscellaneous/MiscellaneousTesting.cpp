@@ -32,6 +32,7 @@
 #include "Miscellaneous/MiscellaneousExcelReadWrite.h"
 #include "Miscellaneous/MiscellaneousQWebsocket.h"
 #include "Miscellaneous/MiscellaneousQTcpSocket.h"
+#include "Miscellaneous/MiscellaneousQNativeWindow.h"
 // Database
 #include "Miscellaneous/MiscellaneousWxSqlite3.h"
 #include "Miscellaneous/MiscellaneousSqlCipher.h"
@@ -108,6 +109,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousExcelReadWrite(this));
     this->AppendTestPage(new MiscellaneousQWebSocket(this));
     this->AppendTestPage(new MiscellaneousQTcpSocket(this));
+    this->AppendTestPage(new MiscellaneousQNativeWindow(this));
     this->AppendTestPage(new MiscellaneousWxSqlite3(this));
     this->AppendTestPage(new MiscellaneousSqlCipher(this));
     this->AppendTestPage(new MiscellaneousPostgresql(this));

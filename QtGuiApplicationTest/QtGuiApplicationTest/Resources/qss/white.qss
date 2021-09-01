@@ -53,6 +53,11 @@ QWidget#remoteWidget {
     background: transparent;
 }
 
+QWidget#nativeWindow {
+    background-color: lightgray;
+    border: 1px solid green;
+}
+
 TitleBarWidget {
     border: 2px solid rgb(111, 156, 207);
     background: rgb(187, 212, 238);

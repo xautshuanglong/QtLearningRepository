@@ -1,6 +1,7 @@
 #include "MiscellaneousQTimerTest.h"
 #include "ui_MiscellaneousQTimerTest.h"
 
+#include <Windows.h>
 #include <Mmddk.h>
 #include <QTimer>
 

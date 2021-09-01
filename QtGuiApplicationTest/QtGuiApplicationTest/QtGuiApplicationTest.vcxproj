@@ -179,6 +179,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousPrinterPDF.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousPrinterWidget.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQMimeType.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousQNativeWindow.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQObjectCast.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQTcpSocket.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQVirtualKeyboard.cpp" />
@@ -249,6 +250,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousPrinterPDF.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousPrinterWidget.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQMimeType.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousQNativeWindow.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQObjectCast.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQTcpSocket.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQVirtualKeyboard.ui" />
@@ -342,6 +344,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousFFmpeg.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousTimeCode.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousQTimerTest.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousQNativeWindow.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

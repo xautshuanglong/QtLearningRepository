@@ -41,6 +41,7 @@ enum class MiscellaneousTestItem
     QT_Excel_ReadWrite,               // QT Excel 文件读写
     QT_WebSocket_Client,              // QT QWebSocket 客户端测试
     QT_TcpSocket_Client,              // QT QTcpSocket 客户端测试
+    QT_Native_Window,                 // QT 原生窗口测试
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
     Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
     Database_Postgresql,              // 数据库操作 postgresql

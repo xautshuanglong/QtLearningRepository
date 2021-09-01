@@ -325,6 +325,9 @@
     <ClCompile Include="ThirdParty\LTC\timecode.c">
       <Filter>ThirdParty\LTC</Filter>
     </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousQNativeWindow.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -460,6 +463,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="Miscellaneous\MiscellaneousQTimerTest.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousQNativeWindow.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -698,6 +704,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="Miscellaneous\MiscellaneousQTimerTest.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousQNativeWindow.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
