@@ -740,6 +740,9 @@
     <None Include="Shaders\Triangle.hlsli">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\Cube.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtGuiApplicationTest.rc" />
@@ -771,6 +774,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Triangle_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Cube_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Cube_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -46,9 +46,10 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     this->InitializeDirect3D();
     this->InitializeDirectShaders();
     this->InitializeDirectResource();
+    this->ResizeBufferAndTargetView();
 
     QTimer* pUpdateTimer3D = new QTimer(this);
-    pUpdateTimer3D->setInterval(17);
+    pUpdateTimer3D->setInterval(1);
     pUpdateTimer3D->start();
     this->connect(pUpdateTimer3D, SIGNAL(timeout()), this, SLOT(SlotUpdateViewContent3D_TimeOut()));
 }
@@ -190,9 +191,6 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
     std::string swapChainName = "SwapChain";
     m_pSwapChain->SetPrivateData(WKPDID_D3DDebugObjectName, swapChainName.length(), swapChainName.c_str());
 
-    // 设置缓冲区 及 渲染目标试图的大小
-    this->ResizeBufferAndTargetView();
-
     m_bInitialized3D = true;
 }
 
@@ -201,49 +199,157 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
     ComPtr<ID3DBlob> blob;
     HRESULT hResult = S_OK;
 
-    hResult = CreateShaderFromFile(L"Triangle_VS.cso", L"Shaders\\Triangle_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
-    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader.GetAddressOf());
+    //------------------------------ triangle --------------------------------------
 
-    hResult = m_pDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout), blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout.GetAddressOf());
+    //hResult = CreateShaderFromFile(L"Triangle_VS.cso", L"Shaders\\Triangle_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
+    //hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader.GetAddressOf());
 
-    hResult = CreateShaderFromFile(L"Triangle_PS.cso", L"Shaders\\Triangle_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
-    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf());
+    //hResult = m_pDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout), blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout.GetAddressOf());
+
+    //hResult = CreateShaderFromFile(L"Triangle_PS.cso", L"Shaders\\Triangle_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
+    //hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf());
+
+    //------------------------------ cube --------------------------------------
+
+    hResult = CreateShaderFromFile(L"Cube_VS.cso", L"Shaders\\Cube_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShaderCube.GetAddressOf());
+
+    hResult = m_pDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout), blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayoutCube.GetAddressOf());
+
+    hResult = CreateShaderFromFile(L"Cube_PS.cso", L"Shaders\\Cube_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCube.GetAddressOf());
 }
 
 void MiscellaneousQNativeWindow::InitializeDirectResource()
 {
+    //         0           y     z
+    //        /\           |    /
+    //       /  \          |   /
+    //      /    \         | /
+    //     /______\        |/_________
+    //    2        1       O          x
     HRESULT hResult = S_OK;
+    //VertexPosColor vertices[] =
+    //{
+    //    { DirectX::XMFLOAT3( 0.0f,  0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3( 0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }
+    //};
 
-    VertexPosColor vertices[] =
+    //D3D11_BUFFER_DESC vbd;
+    //ZeroMemory(&vbd, sizeof(vbd));
+    //vbd.Usage = D3D11_USAGE_IMMUTABLE;
+    //vbd.ByteWidth = sizeof vertices;
+    //vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    //vbd.CPUAccessFlags = 0;
+
+    //D3D11_SUBRESOURCE_DATA InitData;
+    //ZeroMemory(&InitData, sizeof(InitData));
+    //InitData.pSysMem = vertices;
+    //hResult = m_pDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf());
+
+    //UINT stride = sizeof(VertexPosColor);
+    //UINT offset = 0;
+
+    //m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+    //m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
+
+    //m_pDeviceContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
+    //m_pDeviceContext->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
+
+    //    5________ 6      y     z
+    //    /|      /|       |    /
+    //   /_|_____/ |       |   /
+    //  1|4|_ _ 2|_|7      |  /
+    //   | /     | /       | /
+    //   |/______|/        |/_________
+    //  0       3          O          x
+    VertexPosColor verticesCube[] =
     {
-        { DirectX::XMFLOAT3( 0.0f,  0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }
+        { DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
     };
 
     D3D11_BUFFER_DESC vbd;
     ZeroMemory(&vbd, sizeof(vbd));
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof vertices;
+    vbd.ByteWidth = sizeof verticesCube;
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
 
     D3D11_SUBRESOURCE_DATA InitData;
     ZeroMemory(&InitData, sizeof(InitData));
-    InitData.pSysMem = vertices;
-    hResult = m_pDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf());
+    InitData.pSysMem = verticesCube;
+    hResult = m_pDevice->CreateBuffer(&vbd, &InitData, m_pVertexBufferCube.GetAddressOf());
 
-    // 输入装配阶段的顶点缓冲区设置
+    DWORD indices[] =
+    {
+        // 正面
+        0, 1, 2,
+        2, 3, 0,
+        // 左面
+        4, 5, 1,
+        1, 0, 4,
+        // 顶面
+        1, 5, 6,
+        6, 2, 1,
+        // 背面
+        7, 6, 5,
+        5, 4, 7,
+        // 右面
+        3, 2, 6,
+        6, 7, 3,
+        // 底面
+        4, 0, 3,
+        3, 7, 4
+    };
+
+    D3D11_BUFFER_DESC ibd;
+    ZeroMemory(&ibd, sizeof(ibd));
+    ibd.Usage = D3D11_USAGE_IMMUTABLE;
+    ibd.ByteWidth = sizeof indices;
+    ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    ibd.CPUAccessFlags = 0;
+
+    InitData.pSysMem = indices;
+    hResult = m_pDevice->CreateBuffer(&ibd, &InitData, m_pIndexBuffer.GetAddressOf());
+    m_pDeviceContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+    D3D11_BUFFER_DESC cbd;
+    ZeroMemory(&cbd, sizeof(cbd));
+    cbd.Usage = D3D11_USAGE_DYNAMIC;
+    cbd.ByteWidth = sizeof(ConstantBuffer);
+    cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    hResult = m_pDevice->CreateBuffer(&cbd, nullptr, m_pConstantBuffer.GetAddressOf());
+
+    m_CBuffer.world = DirectX::XMMatrixIdentity();
+    m_CBuffer.view = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(
+        DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
+        DirectX::XMVectorSet(0.0f, 0.0f,  0.0f, 0.0f),
+        DirectX::XMVectorSet(0.0f, 1.0f,  0.0f, 0.0f)
+    ));
+    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
+    m_CBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
+
     UINT stride = sizeof(VertexPosColor);
     UINT offset = 0;
 
-    m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
-
+    m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCube.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
-
-    m_pDeviceContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
-    m_pDeviceContext->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
+    m_pDeviceContext->IASetInputLayout(m_pVertexLayoutCube.Get());
+    m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
+    m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
 }
 
 void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
@@ -284,7 +390,6 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
     depthStencilDesc.ArraySize = 1;
     depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-    // 要使用 4X MSAA? --需要给交换链设置MASS参数
     if (m_4xMsaaEnabled)
     {
         depthStencilDesc.SampleDesc.Count = 4;
@@ -327,12 +432,28 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 
 void MiscellaneousQNativeWindow::UpdateViewContent3D()
 {
+    static float phi = 0.0f, theta = 0.0f;
+    phi += 0.0001f, theta += 0.00015f;
+    m_CBuffer.world = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationX(phi) * DirectX::XMMatrixRotationY(theta));
+    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
+    m_CBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
+    
+    HRESULT hResult = S_OK;
+    D3D11_MAPPED_SUBRESOURCE mappedData;
+    hResult = m_pDeviceContext->Map(m_pConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData);
+    memcpy_s(mappedData.pData, sizeof(m_CBuffer), &m_CBuffer, sizeof(m_CBuffer));
+    m_pDeviceContext->Unmap(m_pConstantBuffer.Get(), 0);
+}
+
+void MiscellaneousQNativeWindow::PresentViewContent3D()
+{
     assert(m_pDeviceContext);
     assert(m_pSwapChain);
-    static float blue[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-    m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), blue);
+    static float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), black);
     m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    m_pDeviceContext->Draw(3, 0);
+    //m_pDeviceContext->Draw(3, 0);
+    m_pDeviceContext->DrawIndexed(36, 0, 0);
     m_pSwapChain->Present(0, 0);
 }
 
@@ -379,6 +500,7 @@ void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()
     if (m_bInitialized3D)
     {
         this->UpdateViewContent3D();
+        this->PresentViewContent3D();
     }
 }
 

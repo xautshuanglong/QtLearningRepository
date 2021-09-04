@@ -21,6 +21,13 @@ class MiscellaneousQNativeWindow : public MiscellaneousBase
         static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
     };
 
+    struct ConstantBuffer
+    {
+        DirectX::XMMATRIX world;
+        DirectX::XMMATRIX view;
+        DirectX::XMMATRIX projection;
+    };
+
     Q_OBJECT
 
 public:
@@ -41,6 +48,7 @@ private:
     void InitializeDirectResource();
     void ResizeBufferAndTargetView();
     void UpdateViewContent3D();
+    void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
 
 private slots:
@@ -70,6 +78,15 @@ private:
     ComPtr<ID3D11Buffer>             m_pVertexBuffer;
     ComPtr<ID3D11VertexShader>       m_pVertexShader;
     ComPtr<ID3D11PixelShader>        m_pPixelShader;
+
+    ComPtr<ID3D11InputLayout>        m_pVertexLayoutCube;
+    ComPtr<ID3D11Buffer>             m_pVertexBufferCube;
+    ComPtr<ID3D11Buffer>             m_pIndexBuffer;
+    ComPtr<ID3D11Buffer>             m_pConstantBuffer;
+
+    ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
+    ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
+    ConstantBuffer                   m_CBuffer;
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;
