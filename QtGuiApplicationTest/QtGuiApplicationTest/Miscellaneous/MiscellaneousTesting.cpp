@@ -79,6 +79,7 @@ MiscellaneousTesting::~MiscellaneousTesting()
 
 void MiscellaneousTesting::InitializeUI()
 {
+    ui->statusBar->setVisible(false);
     ui->twMiscellaneousTesting->clear();
     for (int i=0; i<static_cast<int>(MiscellaneousTestGroup::Max_Size); ++i)
     {

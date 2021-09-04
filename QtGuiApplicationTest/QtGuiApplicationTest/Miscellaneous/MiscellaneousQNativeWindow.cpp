@@ -1,6 +1,9 @@
 #include "MiscellaneousQNativeWindow.h"
 #include "ui_MiscellaneousQNativeWindow.h"
 
+#include <QWindow>
+#include <QTimer>
+
 #include "Utils/TimeUtil.h"
 #include "LogUtil.h"
 
@@ -20,11 +23,21 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     , m_pDepthStencilView(nullptr)
     , m_4xMsaaQuality(0)
     , m_4xMsaaEnabled(true)
+    , m_bInitialized3D(false)
 {
     ui->setupUi(this);
     ZeroMemory(&m_ScreenViewport, sizeof(D3D11_VIEWPORT));
 
+    this->setAttribute(Qt::WA_NativeWindow, true);
+    this->setAttribute(Qt::WA_DontCreateNativeAncestors, true);
+    ////QGuiApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
+
     this->InitializeDirect3D();
+
+    QTimer* pUpdateTimer3D = new QTimer(this);
+    pUpdateTimer3D->setInterval(17);
+    pUpdateTimer3D->start();
+    this->connect(pUpdateTimer3D, SIGNAL(timeout()), this, SLOT(SlotUpdateViewContent3D_TimeOut()));
 }
 
 MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
@@ -50,6 +63,11 @@ MiscellaneousTestGroup MiscellaneousQNativeWindow::GetGroupID()
 MiscellaneousTestItem MiscellaneousQNativeWindow::GetItemID()
 {
     return MiscellaneousTestItem::QT_Native_Window;
+}
+
+void MiscellaneousQNativeWindow::resizeEvent(QResizeEvent* event)
+{
+    this->ResizeBufferAndTargetView();
 }
 
 void MiscellaneousQNativeWindow::InitializeDirect3D()
@@ -144,38 +162,29 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
         }
         sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         sd.BufferCount = 1;
-        sd.OutputWindow = (HWND)this->winId();
+        sd.OutputWindow = (HWND)ui->nativeWindow->winId();
         sd.Windowed = TRUE;
         sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
         sd.Flags = 0;
         hResult = dxgiFactory1->CreateSwapChain(m_pDevice.Get(), &sd, m_pSwapChain.GetAddressOf());
     }
 
-    dxgiFactory1->MakeWindowAssociation((HWND)this->winId(), DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
+    dxgiFactory1->MakeWindowAssociation((HWND)ui->nativeWindow->winId(), DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
     // 设置调试对象名
     std::string contextName = "ImmediateContext";
     m_pDeviceContext->SetPrivateData(WKPDID_D3DDebugObjectName, contextName.length(), contextName.c_str());
     std::string swapChainName = "SwapChain";
     m_pSwapChain->SetPrivateData(WKPDID_D3DDebugObjectName, swapChainName.length(), swapChainName.c_str());
+
+    // 设置缓冲区 及 渲染目标试图的大小
+    this->ResizeBufferAndTargetView();
+
+    m_bInitialized3D = true;
 }
 
-void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
+void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 {
-    // 模拟重绘
-
-    assert(m_pDeviceContext);
-    assert(m_pSwapChain);
-    static float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };	// RGBA = (0,0,255,255)
-    m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), blue);
-    m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-    HRESULT hResult = m_pSwapChain->Present(0, 0);
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
-{
-    // 模拟窗口缩放
     assert(m_pDevice);
     assert(m_pDeviceContext);
     assert(m_pSwapChain);
@@ -254,8 +263,42 @@ void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
     //D3D11SetDebugObjectName(m_pRenderTargetView.Get(), "BackBufferRTV[0]");
 }
 
+void MiscellaneousQNativeWindow::UpdateViewContent3D()
+{
+    assert(m_pDeviceContext);
+    assert(m_pSwapChain);
+    static float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };	// RGBA = (0,0,255,255)
+    m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), blue);
+    m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    m_pSwapChain->Present(0, 0);
+}
+
+void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()
+{
+    if (m_bInitialized3D)
+    {
+        this->UpdateViewContent3D();
+    }
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
+{
+    // 模拟重绘
+    //this->UpdateViewContent3D();
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
+{
+}
+
 void MiscellaneousQNativeWindow::on_btnEmptyTest3_clicked()
 {
+    QWindowList windowList = QGuiApplication::allWindows();
+    int windowCount = windowList.count();
+    for (int i = 0; i < windowCount; ++i)
+    {
+        QWindow *pWindow = windowList[i];
+    }
     int i = 0;
 }
 

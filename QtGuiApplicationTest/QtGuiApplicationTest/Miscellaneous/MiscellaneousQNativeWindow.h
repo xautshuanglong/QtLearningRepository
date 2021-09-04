@@ -24,10 +24,17 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
+protected:
+    virtual void resizeEvent(QResizeEvent* event) override;
+
 private:
     void InitializeDirect3D();
+    void ResizeBufferAndTargetView();
+    void UpdateViewContent3D();
 
 private slots:
+    void SlotUpdateViewContent3D_TimeOut();
+
     void on_btnEmptyTest1_clicked();
     void on_btnEmptyTest2_clicked();
     void on_btnEmptyTest3_clicked();
@@ -50,6 +57,7 @@ private:
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;
+    bool                             m_bInitialized3D;
 };
 
 #endif // MISCELLANEOUS_QNATIVE_WINDOW_H
