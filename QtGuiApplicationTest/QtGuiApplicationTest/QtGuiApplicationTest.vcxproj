@@ -81,7 +81,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;D3D11.lib;DXGI.lib;DXGUID.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
     <QtMoc>
@@ -377,6 +377,9 @@
     <None Include="Resources\qss\dark_orange.qss" />
     <None Include="Resources\qss\mainTabWidget.qss" />
     <None Include="Resources\qss\white.qss" />
+    <None Include="Shaders\Triangle.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
@@ -394,6 +397,24 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtGuiApplicationTest.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\Triangle_PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Triangle_VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

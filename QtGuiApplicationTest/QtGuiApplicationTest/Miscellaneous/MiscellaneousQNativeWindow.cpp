@@ -1,6 +1,7 @@
 #include "MiscellaneousQNativeWindow.h"
 #include "ui_MiscellaneousQNativeWindow.h"
 
+#include <d3dcompiler.h>
 #include <QWindow>
 #include <QTimer>
 
@@ -8,6 +9,12 @@
 #include "LogUtil.h"
 
 using namespace Shuanglong::Utils;
+
+const D3D11_INPUT_ELEMENT_DESC MiscellaneousQNativeWindow::VertexPosColor::inputLayout[2] =
+{
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
 
 MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     : MiscellaneousBase(parent)
@@ -21,6 +28,10 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     , m_pDepthStencilBuffer(nullptr)
     , m_pRenderTargetView(nullptr)
     , m_pDepthStencilView(nullptr)
+    , m_pVertexLayout(nullptr)
+    , m_pVertexBuffer(nullptr)
+    , m_pVertexShader(nullptr)
+    , m_pPixelShader(nullptr)
     , m_4xMsaaQuality(0)
     , m_4xMsaaEnabled(true)
     , m_bInitialized3D(false)
@@ -33,6 +44,8 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     ////QGuiApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
 
     this->InitializeDirect3D();
+    this->InitializeDirectShaders();
+    this->InitializeDirectResource();
 
     QTimer* pUpdateTimer3D = new QTimer(this);
     pUpdateTimer3D->setInterval(17);
@@ -183,6 +196,56 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
     m_bInitialized3D = true;
 }
 
+void MiscellaneousQNativeWindow::InitializeDirectShaders()
+{
+    ComPtr<ID3DBlob> blob;
+    HRESULT hResult = S_OK;
+
+    hResult = CreateShaderFromFile(L"Triangle_VS.cso", L"Shaders\\Triangle_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader.GetAddressOf());
+
+    hResult = m_pDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout), blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout.GetAddressOf());
+
+    hResult = CreateShaderFromFile(L"Triangle_PS.cso", L"Shaders\\Triangle_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf());
+}
+
+void MiscellaneousQNativeWindow::InitializeDirectResource()
+{
+    HRESULT hResult = S_OK;
+
+    VertexPosColor vertices[] =
+    {
+        { DirectX::XMFLOAT3( 0.0f,  0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }
+    };
+
+    D3D11_BUFFER_DESC vbd;
+    ZeroMemory(&vbd, sizeof(vbd));
+    vbd.Usage = D3D11_USAGE_IMMUTABLE;
+    vbd.ByteWidth = sizeof vertices;
+    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbd.CPUAccessFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA InitData;
+    ZeroMemory(&InitData, sizeof(InitData));
+    InitData.pSysMem = vertices;
+    hResult = m_pDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf());
+
+    // 输入装配阶段的顶点缓冲区设置
+    UINT stride = sizeof(VertexPosColor);
+    UINT offset = 0;
+
+    m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+    m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
+
+    m_pDeviceContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
+    m_pDeviceContext->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
+}
+
 void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 {
     assert(m_pDevice);
@@ -212,7 +275,6 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
     //D3D11SetDebugObjectName(backBuffer.Get(), "BackBuffer[0]");
 
     backBuffer.Reset();
-
 
     D3D11_TEXTURE2D_DESC depthStencilDesc;
 
@@ -267,10 +329,49 @@ void MiscellaneousQNativeWindow::UpdateViewContent3D()
 {
     assert(m_pDeviceContext);
     assert(m_pSwapChain);
-    static float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };	// RGBA = (0,0,255,255)
+    static float blue[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
     m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), blue);
     m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    m_pDeviceContext->Draw(3, 0);
     m_pSwapChain->Present(0, 0);
+}
+
+HRESULT MiscellaneousQNativeWindow::CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut)
+{
+    HRESULT hResult = S_OK;
+
+    if (csoFileNameInOut && D3DReadFileToBlob(csoFileNameInOut, ppBlobOut) == S_OK)
+    {
+        return hResult;
+    }
+
+    DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#ifdef _DEBUG
+    dwShaderFlags |= D3DCOMPILE_DEBUG;
+    dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION; // 禁用优化以避免出现一些不合理的情况
+#endif
+    ID3DBlob* errorBlob = nullptr;
+    hResult = D3DCompileFromFile(hlslFileName, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint, shaderModel, dwShaderFlags, 0, ppBlobOut, &errorBlob);
+    if (FAILED(hResult))
+    {
+        if (errorBlob != nullptr)
+        {
+            OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
+        }
+        if (errorBlob)
+        {
+            errorBlob->Release();
+            errorBlob = nullptr;
+        }
+        return hResult;
+    }
+
+    if (csoFileNameInOut)
+    {
+        return D3DWriteBlobToFile(*ppBlobOut, csoFileNameInOut, FALSE);
+    }
+
+    return hResult;
 }
 
 void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()

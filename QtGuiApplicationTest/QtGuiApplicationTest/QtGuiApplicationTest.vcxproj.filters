@@ -74,6 +74,9 @@
     <Filter Include="ThirdParty\LTC">
       <UniqueIdentifier>{f753e890-f382-4efb-aa0e-dd9c52eb133f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{a1eeb6bb-4744-4ce0-be85-4a339d28ce82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -734,6 +737,9 @@
     <None Include="ProtocolBuffers\MessageTest.proto">
       <Filter>ProtoBuf</Filter>
     </None>
+    <None Include="Shaders\Triangle.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtGuiApplicationTest.rc" />
@@ -759,5 +765,13 @@
     <QtMoc Include="MyMainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\Triangle_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Triangle_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -292,6 +292,7 @@ dmypy.json
 */.idea/
 *_ui.py
 *_rc.py
+*.cso
 
 # Trace by Shuanglong
 !**/libs/*/[Dd]ebug/

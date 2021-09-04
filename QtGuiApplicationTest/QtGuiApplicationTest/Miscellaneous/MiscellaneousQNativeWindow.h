@@ -3,6 +3,7 @@
 
 #include <wrl/client.h>
 #include <d3d11_1.h>
+#include <DirectXMath.h>
 
 #include "MiscellaneousBase.h"
 
@@ -12,6 +13,13 @@ class MiscellaneousQNativeWindow : public MiscellaneousBase
 {
     template <class T>
     using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+    struct VertexPosColor
+    {
+        DirectX::XMFLOAT3 pos;
+        DirectX::XMFLOAT4 color;
+        static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
+    };
 
     Q_OBJECT
 
@@ -29,8 +37,11 @@ protected:
 
 private:
     void InitializeDirect3D();
+    void InitializeDirectShaders();
+    void InitializeDirectResource();
     void ResizeBufferAndTargetView();
     void UpdateViewContent3D();
+    HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
 
 private slots:
     void SlotUpdateViewContent3D_TimeOut();
@@ -54,6 +65,11 @@ private:
     ComPtr<ID3D11RenderTargetView>   m_pRenderTargetView;
     ComPtr<ID3D11DepthStencilView>   m_pDepthStencilView;
     D3D11_VIEWPORT                   m_ScreenViewport;
+
+    ComPtr<ID3D11InputLayout>        m_pVertexLayout;
+    ComPtr<ID3D11Buffer>             m_pVertexBuffer;
+    ComPtr<ID3D11VertexShader>       m_pVertexShader;
+    ComPtr<ID3D11PixelShader>        m_pPixelShader;
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;

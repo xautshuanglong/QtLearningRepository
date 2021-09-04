@@ -54,7 +54,7 @@ QWidget#remoteWidget {
 }
 
 QWidget#nativeWindow {
-    background-color: lightgray;
+    background-color: black;
     border: 1px solid green;
 }
 
