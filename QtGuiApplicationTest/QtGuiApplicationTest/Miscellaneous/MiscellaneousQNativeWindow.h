@@ -45,9 +45,10 @@ protected:
 private:
     void InitializeDirect3D();
     void InitializeDirectShaders();
-    void InitializeDirectResource();
+    void InitializeDirectVertices();
     void ResizeBufferAndTargetView();
     void UpdateViewContent3D();
+    void DrawViewContent3D();
     void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
 
@@ -87,6 +88,8 @@ private:
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
     ConstantBuffer                   m_CBuffer;
+
+    ComPtr<ID3D11Buffer>             m_pVertexBufferCoor; // ×ø±êÏµ
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;
