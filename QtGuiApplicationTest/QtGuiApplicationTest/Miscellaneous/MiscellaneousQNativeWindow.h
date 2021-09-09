@@ -47,7 +47,7 @@ private:
     void InitializeDirectShaders();
     void InitializeDirectVertices();
     void ResizeBufferAndTargetView();
-    void UpdateViewContent3D();
+    void UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix);
     void DrawViewContent3D();
     void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
@@ -75,21 +75,29 @@ private:
     ComPtr<ID3D11DepthStencilView>   m_pDepthStencilView;
     D3D11_VIEWPORT                   m_ScreenViewport;
 
+    // 定点布局，通用
     ComPtr<ID3D11InputLayout>        m_pVertexLayout;
-    ComPtr<ID3D11Buffer>             m_pVertexBuffer;
-    ComPtr<ID3D11VertexShader>       m_pVertexShader;
-    ComPtr<ID3D11PixelShader>        m_pPixelShader;
 
-    ComPtr<ID3D11InputLayout>        m_pVertexLayoutCube;
+    // 三角形绘制
+    ComPtr<ID3D11Buffer>             m_pVertexBufferTriangle;
+    ComPtr<ID3D11VertexShader>       m_pVertexShaderTriangle;
+    ComPtr<ID3D11PixelShader>        m_pPixelShaderTriangle;
+
+    // 立方体绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCube;
-    ComPtr<ID3D11Buffer>             m_pIndexBuffer;
+    ComPtr<ID3D11Buffer>             m_pIndexBufferCube;
     ComPtr<ID3D11Buffer>             m_pConstantBuffer;
-
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
     ConstantBuffer                   m_CBuffer;
 
+    // 坐标系绘制
+    ComPtr<ID3D11VertexShader>       m_pVertexShaderCoorSystem;
+    ComPtr<ID3D11PixelShader>        m_pPixelShaderCoorSystem;
+
     ComPtr<ID3D11Buffer>             m_pVertexBufferCoor; // 坐标系
+
+    DirectX::XMMATRIX                m_matrixWorld;
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;

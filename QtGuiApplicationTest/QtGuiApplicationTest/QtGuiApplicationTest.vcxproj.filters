@@ -737,10 +737,7 @@
     <None Include="ProtocolBuffers\MessageTest.proto">
       <Filter>ProtoBuf</Filter>
     </None>
-    <None Include="Shaders\Triangle.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\Cube.hlsli">
+    <None Include="Shaders\Common.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
@@ -780,6 +777,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Cube_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\CoordinateSystem_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\CoordinateSystem_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
