@@ -161,6 +161,12 @@
     <ClCompile Include="DICOM\DicomDownloadWigdet.cpp" />
     <ClCompile Include="DICOM\DicomServerBrowserWidget.cpp" />
     <ClCompile Include="DICOM\DicomWindow.cpp" />
+    <ClCompile Include="DirectX\DDSTextureLoader.cpp" />
+    <ClCompile Include="DirectX\DXTrace.cpp" />
+    <ClCompile Include="DirectX\GameTimer.cpp" />
+    <ClCompile Include="DirectX\Keyboard.cpp" />
+    <ClCompile Include="DirectX\Mouse.cpp" />
+    <ClCompile Include="DirectX\WICTextureLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
     <ClCompile Include="MainTabPageFirst.cpp" />
@@ -310,6 +316,12 @@
     <ClInclude Include="Core\TimeCodeObj.h" />
     <ClInclude Include="Debugger\DebugMenuEvent.h" />
     <QtMoc Include="Debugger\DebugPanel.h" />
+    <ClInclude Include="DirectX\DDSTextureLoader.h" />
+    <ClInclude Include="DirectX\DXTrace.h" />
+    <ClInclude Include="DirectX\GameTimer.h" />
+    <ClInclude Include="DirectX\Keyboard.h" />
+    <ClInclude Include="DirectX\Mouse.h" />
+    <ClInclude Include="DirectX\WICTextureLoader.h" />
     <ClInclude Include="Miscellaneous\MiscellaneousBase.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousCustomTextEdit.h" />
     <ClInclude Include="Miscellaneous\MiscellaneousDefines.h" />
