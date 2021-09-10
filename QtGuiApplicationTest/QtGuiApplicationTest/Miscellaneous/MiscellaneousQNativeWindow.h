@@ -46,9 +46,19 @@ private:
     void InitializeDirect3D();
     void InitializeDirectShaders();
     void InitializeDirectVertices();
+    HRESULT InitializeDirectVertices_Coordinate();
+    HRESULT InitializeDirectVertices_Triangle();
+    HRESULT InitializeDirectVertices_TriangleTexture();
+    HRESULT InitializeDirectVertices_Cube();
+    HRESULT InitializeDirectVertices_CubeTexture();
     void ResizeBufferAndTargetView();
     void UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix);
     void DrawViewContent3D();
+    void DrawViewContent3D_Coordinate();
+    void DrawViewContent3D_Triangle();
+    void DrawViewContent3D_TriangleTexture();
+    void DrawViewContent3D_Cube();
+    void DrawViewContent3D_CubeTexture();
     void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
 
@@ -85,18 +95,18 @@ private:
 
     // 立方体绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCube;
+    ComPtr<ID3D11Buffer>             m_pVertexBufferCubeTexture;
     ComPtr<ID3D11Buffer>             m_pIndexBufferCube;
     ComPtr<ID3D11Buffer>             m_pConstantBuffer;
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
-    ConstantBuffer                   m_CBuffer;
 
     // 坐标系绘制
+    ComPtr<ID3D11Buffer>             m_pVertexBufferCoor;
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCoorSystem;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCoorSystem;
 
-    ComPtr<ID3D11Buffer>             m_pVertexBufferCoor; // 坐标系
-
+    ConstantBuffer                   m_CBuffer;
     DirectX::XMMATRIX                m_matrixWorld;
 
     UINT                             m_4xMsaaQuality;
