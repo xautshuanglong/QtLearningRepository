@@ -13,7 +13,7 @@
 #include <QMainWindow>
 #include <QRubberBand>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 FramelessWindowHelper::FramelessWindowHelper(QWidget* parent)
     : QObject(parent)

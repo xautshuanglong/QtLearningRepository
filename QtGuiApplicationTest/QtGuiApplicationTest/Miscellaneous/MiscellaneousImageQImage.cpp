@@ -4,7 +4,7 @@
 // QT Headers
 #include <QImage>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousImageQImage::MiscellaneousImageQImage(QWidget *parent)
     : MiscellaneousBase(parent)

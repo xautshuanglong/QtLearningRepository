@@ -1,6 +1,6 @@
 #include "MiscellaneousStdCLanguageFeatures.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousStdCLanguageFeatures::MiscellaneousStdCLanguageFeatures(QWidget *parent)
     : MiscellaneousBase(parent)

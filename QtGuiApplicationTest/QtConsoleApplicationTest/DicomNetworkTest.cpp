@@ -6,7 +6,7 @@
 #include <dcmtk/dcmnet/diutil.h>
 #include <dcmtk/dcmtls/tlsopt.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 static char rcsid[] = "$dcmtk: DicomNetworkTest v" OFFIS_DCMTK_VERSION " " OFFIS_DCMTK_RELEASEDATE " $";
 

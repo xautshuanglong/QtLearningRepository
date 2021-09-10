@@ -23,7 +23,7 @@
 
 // Self Define
 #include <MemUtil.h>
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "Core/FramelessWindowHelper.h"
 #include "Core/SuspendedScrollBar.h"
 #include "Reports/XmlReportGenerator.h"

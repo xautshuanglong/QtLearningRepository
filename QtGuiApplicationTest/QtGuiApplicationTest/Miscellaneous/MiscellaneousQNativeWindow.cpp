@@ -6,7 +6,9 @@
 #include <QTimer>
 
 #include "Utils/TimeUtil.h"
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
+
+#include "DirectX/DDSTextureLoader.h"
 
 using namespace Shuanglong::Utils;
 
@@ -32,9 +34,17 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     , m_pVertexBufferTriangle(nullptr)
     , m_pVertexShaderTriangle(nullptr)
     , m_pPixelShaderTriangle(nullptr)
-    , m_pVertexBufferCoor(nullptr)
     , m_pVertexBufferCube(nullptr)
+    , m_pIndexBufferCube(nullptr)
+    , m_pConstantBuffer(nullptr)
+    , m_pVertexShaderCube(nullptr)
+    , m_pPixelShaderCube(nullptr)
     , m_pVertexBufferCubeTexture(nullptr)
+    , m_pResourceViewWood(nullptr)
+    , m_pSamplerState(nullptr)
+    , m_pVertexBufferCoor(nullptr)
+    , m_pVertexShaderCoor(nullptr)
+    , m_pPixelShaderCoor(nullptr)
     , m_4xMsaaQuality(0)
     , m_4xMsaaEnabled(true)
     , m_bInitialized3D(false)
@@ -215,10 +225,10 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
     //------------------------------ coordinate system --------------------------------------
 
     hResult = CreateShaderFromFile(L"CoordinateSystem_VS.cso", L"Shaders\\CoordinateSystem_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
-    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShaderCoorSystem.GetAddressOf());
+    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShaderCoor.GetAddressOf());
 
     hResult = CreateShaderFromFile(L"CoordinateSystem_PS.cso", L"Shaders\\CoordinateSystem_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
-    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCoorSystem.GetAddressOf());
+    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCoor.GetAddressOf());
 
     //------------------------------ cube --------------------------------------
 
@@ -227,6 +237,36 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
 
     hResult = CreateShaderFromFile(L"Cube_PS.cso", L"Shaders\\Cube_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
     hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCube.GetAddressOf());
+}
+
+void MiscellaneousQNativeWindow::InitializeDirectTextures()
+{
+    HRESULT hResult = S_OK;
+    // 初始化木箱纹理
+    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), L"..\\Texture\\WoodCrate.dds", nullptr, m_pResourceViewWood.GetAddressOf());
+    // 初始化火焰纹理
+    //WCHAR strFile[40];
+    //m_pFireAnims.resize(120);
+    //for (int i = 1; i <= 120; ++i)
+    //{
+    //    wsprintf(strFile, L"..\\Texture\\FireAnim\\Fire%03d.bmp", i);
+    //    HR(CreateWICTextureFromFile(m_pd3dDevice.Get(), strFile, nullptr, m_pFireAnims[static_cast<size_t>(i) - 1].GetAddressOf()));
+    //}
+}
+
+void MiscellaneousQNativeWindow::InitializeDirectSamplers()
+{
+    HRESULT hResult = S_OK;
+    D3D11_SAMPLER_DESC sampDesc;
+    ZeroMemory(&sampDesc, sizeof(sampDesc));
+    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    sampDesc.MinLOD = 0;
+    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    hResult = m_pDevice->CreateSamplerState(&sampDesc, m_pSamplerState.GetAddressOf());
 }
 
 void MiscellaneousQNativeWindow::InitializeDirectVertices()
@@ -255,6 +295,9 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
 
     // 旋转矩阵初始化
     m_matrixWorld = DirectX::XMMatrixIdentity();
+
+    // 采样器初始化
+    this->InitializeDirectSamplers();
 
     // 模型定点初始化
     this->InitializeDirectVertices_Coordinate();
@@ -314,7 +357,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
     D3D11_BUFFER_DESC vbd;
     ZeroMemory(&vbd, sizeof(vbd));
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof vertices;
+    vbd.ByteWidth = sizeof(vertices);
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
 
@@ -358,7 +401,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
     D3D11_BUFFER_DESC vbd;
     ZeroMemory(&vbd, sizeof(vbd));
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof verticesCube;
+    vbd.ByteWidth = sizeof(verticesCube);
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
 
@@ -392,7 +435,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
     D3D11_BUFFER_DESC ibd;
     ZeroMemory(&ibd, sizeof(ibd));
     ibd.Usage = D3D11_USAGE_IMMUTABLE;
-    ibd.ByteWidth = sizeof indices;
+    ibd.ByteWidth = sizeof(indices);
     ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     ibd.CPUAccessFlags = 0;
 
@@ -427,7 +470,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     D3D11_BUFFER_DESC vbd;
     ZeroMemory(&vbd, sizeof(vbd));
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof verticesCube;
+    vbd.ByteWidth = sizeof(verticesCube);
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
 
@@ -461,7 +504,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     D3D11_BUFFER_DESC ibd;
     ZeroMemory(&ibd, sizeof(ibd));
     ibd.Usage = D3D11_USAGE_IMMUTABLE;
-    ibd.ByteWidth = sizeof indices;
+    ibd.ByteWidth = sizeof(indices);
     ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     ibd.CPUAccessFlags = 0;
 
@@ -586,8 +629,8 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Coordinate()
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCoor.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
-    m_pDeviceContext->VSSetShader(m_pVertexShaderCoorSystem.Get(), nullptr, 0);
-    m_pDeviceContext->PSSetShader(m_pPixelShaderCoorSystem.Get(), nullptr, 0);
+    m_pDeviceContext->VSSetShader(m_pVertexShaderCoor.Get(), nullptr, 0);
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCoor.Get(), nullptr, 0);
     m_pDeviceContext->Draw(6, 0);
 }
 

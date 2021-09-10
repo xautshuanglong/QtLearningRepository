@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 AppListItemWidget::AppListItemWidget(QWidget *parent)
     : QWidget(parent)

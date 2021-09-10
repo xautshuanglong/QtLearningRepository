@@ -21,7 +21,7 @@ DEFINE_GUID(IID_ITipInvocation, 0x37c994e7, 0x432b, 0x4834, 0xa2, 0xf7, 0xdc, 0x
 #include <QKeyEvent>
 #include <QRandomGenerator>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousQVirtualKeyboard::MiscellaneousQVirtualKeyboard(QWidget *parent)
     : MiscellaneousBase(parent)

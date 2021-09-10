@@ -1,7 +1,7 @@
 #include "MiscellaneousStdSharedPointer.h"
 #include "ui_MiscellaneousStdSharedPointer.h"
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousStdSharedPointer::MiscellaneousStdSharedPointer(QWidget *parent)
     : MiscellaneousBase(parent)

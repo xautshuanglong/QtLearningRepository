@@ -18,7 +18,7 @@
 //#include <windowsx.h>
 //#endif
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #include "Core/FramelessWindowHelper.h"
 #include "Debugger/DebugPanel.h"

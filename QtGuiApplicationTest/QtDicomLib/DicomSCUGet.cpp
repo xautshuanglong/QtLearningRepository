@@ -1,6 +1,6 @@
 #include "DicomSCUGet.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include <dcmtk/dcmdata/dcdeftag.h>
 #include <dcmtk/dcmdata/dcfilefo.h>
 #include <dcmtk/dcmdata/dcuid.h>

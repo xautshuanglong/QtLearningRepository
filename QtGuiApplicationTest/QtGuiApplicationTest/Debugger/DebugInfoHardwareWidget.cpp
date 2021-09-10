@@ -11,7 +11,7 @@
 #include <QChartView>
 #include <QValueAxis>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "Debugger/DebugMenuEvent.h"
 #include "Debugger/DebugPanel.h"
 #include "Debugger/DebugInfoTestWidget.h"

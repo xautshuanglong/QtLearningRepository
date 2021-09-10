@@ -3,7 +3,7 @@
 #include <iostream>
 #include <thread>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 namespace SL::Core
 {

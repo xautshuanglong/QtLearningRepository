@@ -5,7 +5,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousExcelReadWrite::MiscellaneousExcelReadWrite(QWidget *parent)
     : MiscellaneousBase(parent)

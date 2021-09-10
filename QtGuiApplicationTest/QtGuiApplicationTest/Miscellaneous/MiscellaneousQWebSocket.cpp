@@ -6,7 +6,7 @@
 #include <QMetaEnum>
 #include <QTimer>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #define WEBSOCKET_SERVER_PORT  1259
 #define CERT_FILE_NAME  "server.crt"

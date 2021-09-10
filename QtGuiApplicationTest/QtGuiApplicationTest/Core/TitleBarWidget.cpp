@@ -10,7 +10,7 @@
 #include <QRubberBand>
 #include <QWindowStateChangeEvent>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 TitleBarWidget::TitleBarWidget(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)

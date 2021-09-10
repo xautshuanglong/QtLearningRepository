@@ -1,6 +1,6 @@
 #include "DicomClient.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "DicomSCUEcho.h"
 #include "DicomSCUFind.h"
 #include "DicomSCUGet.h"

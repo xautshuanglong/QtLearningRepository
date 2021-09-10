@@ -1,6 +1,6 @@
 #include "MiscellaneousStdConstructor.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousStdConstructor::MiscellaneousStdConstructor(QWidget *parent)
     : MiscellaneousBase(parent)

@@ -1,6 +1,6 @@
 #include "MiscellaneousRegularExpression.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousRegularExpression::MiscellaneousRegularExpression(QWidget *parent)
     : MiscellaneousBase(parent)

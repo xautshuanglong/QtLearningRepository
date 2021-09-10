@@ -5,7 +5,7 @@
 #include <QMetaType>
 #include <QMetaMethod>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousSignalSlot::MiscellaneousSignalSlot(QWidget *parent)
     : MiscellaneousBase(parent)

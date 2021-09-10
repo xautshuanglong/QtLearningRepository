@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "DebugMenuEvent.h"
 
 DebugInfoBaseWidget::DebugInfoBaseWidget(QWidget *parent)

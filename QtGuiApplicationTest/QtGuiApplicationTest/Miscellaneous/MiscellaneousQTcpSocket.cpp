@@ -5,7 +5,7 @@
 #include <QMetaEnum>
 #include <QTimer>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #define TCP_SERVER_PORT         1259
 #define TCP_SERVER_THREAD_PORT  1258

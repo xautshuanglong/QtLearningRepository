@@ -1,7 +1,7 @@
 #include "MiscellaneousDirectShow.h"
 #include "ui_MiscellaneousDirectShow.h"
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousDirectShow::MiscellaneousDirectShow(QWidget *parent)
     : MiscellaneousBase(parent)

@@ -8,7 +8,7 @@
 #include <QPrintPreviewDialog>
 #include <QPageSetupDialog>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousPrinterPDF::MiscellaneousPrinterPDF(QWidget *parent)
     : MiscellaneousBase(parent)

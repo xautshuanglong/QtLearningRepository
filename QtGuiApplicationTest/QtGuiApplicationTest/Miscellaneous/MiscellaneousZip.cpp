@@ -13,7 +13,7 @@
 #include <unzip.h>
 #include <libzip/zip.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousZip::MiscellaneousZip(QWidget *parent)
     : MiscellaneousBase(parent)

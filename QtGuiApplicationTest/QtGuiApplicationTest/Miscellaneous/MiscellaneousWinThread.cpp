@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <process.h>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousWinThread::MiscellaneousWinThread(QWidget *parent /* = Q_NULLPTR */)
     : MiscellaneousBase(parent)

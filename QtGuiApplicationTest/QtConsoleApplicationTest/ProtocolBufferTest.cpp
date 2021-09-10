@@ -6,7 +6,7 @@
 
 // Protocol Buffer
 #include "AddressBook.pb.h"
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 using namespace com::genomics::protobuf;
 

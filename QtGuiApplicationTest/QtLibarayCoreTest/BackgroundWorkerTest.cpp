@@ -4,7 +4,7 @@
 #include <thread>
 #include <functional>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 namespace SL::Core
 {

@@ -8,7 +8,7 @@
 #define SQLITE_HAS_CODEC
 #include <sqlcipher/sqlite3.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousSqlCipher::MiscellaneousSqlCipher(QWidget *parent)
     : MiscellaneousBase(parent)

@@ -7,7 +7,7 @@
 #include <dcmtk/ofstd/oflist.h>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 class QTDICOMLIB_EXPORT DicomEnv
 {

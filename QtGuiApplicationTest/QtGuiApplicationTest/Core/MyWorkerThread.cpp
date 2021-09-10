@@ -1,6 +1,6 @@
 #include "MyWorkerThread.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "MyWorkerThreadPool.h"
 
 MyWorkerThread::MyWorkerThread(QObject *parent /* = Q_NULLPTR */)

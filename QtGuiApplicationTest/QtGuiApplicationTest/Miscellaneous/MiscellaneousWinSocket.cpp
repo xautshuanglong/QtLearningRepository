@@ -7,7 +7,7 @@
 
 #include <QWindow>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 #pragma warning (disable: 6387)
 

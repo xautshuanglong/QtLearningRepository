@@ -12,7 +12,7 @@ class TestManager
 private:
     DicomFileParserTest    *mpDicomFileParserTest;
     DicomNetworkTest       *mpDicomNetworkTest;
-    CognexDataManSDKTest   *mpCognexDataManSDKTest;
+    //CognexDataManSDKTest   *mpCognexDataManSDKTest;
     //ImportComTest          *mpImportComTest;
     OpensslTest            *mpOpensslTest;
     ProtocolBufferTest     *mpProtoBufTest;

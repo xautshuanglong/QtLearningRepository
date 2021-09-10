@@ -1,7 +1,7 @@
 #include "WorkerTaskBase.h"
 
 #include <QThread>
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 WorkerTaskBase::WorkerTaskBase(QObject *parent /* = Q_NULLPTR */)
     : QObject(parent)

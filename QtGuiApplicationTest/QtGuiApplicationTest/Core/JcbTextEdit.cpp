@@ -4,7 +4,7 @@
 #include <QPaintEvent>
 #include <QComboBox>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 JcbTextEdit::JcbTextEdit(QWidget *parent)
     : QTextEdit(parent)

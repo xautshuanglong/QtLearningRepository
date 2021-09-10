@@ -7,7 +7,7 @@
 #include <QStyleOption>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 SuspendedScrollBar::SuspendedScrollBar(QScrollBar *pShadowScrollBar, QWidget *parent /* = Q_NULLPTR */)
     : QScrollBar(parent)

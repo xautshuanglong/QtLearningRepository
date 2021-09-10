@@ -22,7 +22,7 @@
 //    return QDateTime::fromString(QString(this->c_str()).left(23), "yyyy-MM-dd hh:mm:ss.z");
 //}
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousPostgresql::MiscellaneousPostgresql(QWidget *parent)
     : MiscellaneousBase(parent)

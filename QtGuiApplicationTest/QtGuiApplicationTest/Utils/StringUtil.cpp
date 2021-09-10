@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdlib.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #define BASE64_COUNT 65 // A-Z a-z 0-9 + - =
 

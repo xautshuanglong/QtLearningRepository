@@ -302,8 +302,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libi2d", "libi2d", "{9CEFF4
 		libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h = libs\include\dcmtk\dcmdata\libi2d\i2dplvlp.h
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CognexDataManSDK", "CognexDataManSDK\CognexDataManSDK.vcxproj", "{5492B3C6-9E0C-4304-86DE-1D650E22C214}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtLibarayCoreTest", "QtLibarayCoreTest\QtLibarayCoreTest.vcxproj", "{DBE3666B-5BAB-4D98-84E6-AF03523B008C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtDicomLib", "QtDicomLib\QtDicomLib.vcxproj", "{37B56BB3-5E9A-4170-9EF3-4C7433D10F76}"
@@ -336,10 +334,6 @@ Global
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x64.ActiveCfg = Release|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x64.Build.0 = Release|x64
 		{138CD575-5A61-4C86-894C-96BD34B10D2B}.Release|x86.ActiveCfg = Release|x64
-		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x64.ActiveCfg = Debug|x64
-		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Debug|x86.ActiveCfg = Debug|Win32
-		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x64.ActiveCfg = Release|x64
-		{5492B3C6-9E0C-4304-86DE-1D650E22C214}.Release|x86.ActiveCfg = Release|Win32
 		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x64.ActiveCfg = Debug|x64
 		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x64.Build.0 = Debug|x64
 		{DBE3666B-5BAB-4D98-84E6-AF03523B008C}.Debug|x86.ActiveCfg = Debug|x64
@@ -387,7 +381,7 @@ Global
 		{9CEFF4F4-1DD1-494F-ABF7-3D62515432D8} = {346B8552-4A66-4BC4-BC7E-3C838B6DEA7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {839AAF2B-8A92-42C0-8E3A-6C40946218FD}
 		Qt5Version = $(DefaultQtVersion)
+		SolutionGuid = {839AAF2B-8A92-42C0-8E3A-6C40946218FD}
 	EndGlobalSection
 EndGlobal

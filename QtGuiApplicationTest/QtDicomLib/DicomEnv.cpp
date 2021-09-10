@@ -15,7 +15,7 @@
 #include <dcmtk/ofstd/ofcmdln.h>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 bool DicomEnv::isNetworkInitialized = false;
 bool DicomEnv::isLog4CplusInitialized = false;

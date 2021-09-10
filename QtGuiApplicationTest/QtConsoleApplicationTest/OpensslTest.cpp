@@ -3,7 +3,7 @@
 #include <openssl/bn.h>
 #include <openssl/bio.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 typedef struct tagX
 {

@@ -6,7 +6,7 @@
 #include <dcmtk/dcmnet/diutil.h>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 DicomSCUStore::DicomSCUStore()
     : DicomSCUBase()

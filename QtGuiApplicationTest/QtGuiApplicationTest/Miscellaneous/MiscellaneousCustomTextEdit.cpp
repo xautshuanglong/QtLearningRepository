@@ -6,7 +6,7 @@
 #include <QTextBlock>
 #include <QDateTime>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousCustomTextEdit::MiscellaneousCustomTextEdit(QWidget *parent)
     : MiscellaneousBase(parent)

@@ -14,7 +14,7 @@
 #include <dcmtk/dcmsr/dsrtypes.h>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include <DicomTest.h>
 #include <DicomClient.h>
 

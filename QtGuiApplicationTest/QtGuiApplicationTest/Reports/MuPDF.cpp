@@ -6,7 +6,7 @@
 #include <QApplication>
 #include <QScreen>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MuPDF::MuPDF()
     : mPageSize(100, 100)

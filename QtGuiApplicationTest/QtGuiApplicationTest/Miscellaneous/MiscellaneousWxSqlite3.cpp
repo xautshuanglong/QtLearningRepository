@@ -16,7 +16,7 @@
 #endif
 #include <wx/wxsqlite3.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousWxSqlite3::MiscellaneousWxSqlite3(QWidget *parent)
     : MiscellaneousBase(parent)

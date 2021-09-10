@@ -2,7 +2,7 @@
 
 #include <QThread>
 #include <QThreadPool>
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 QThreadStorage<QCache<int, int>>  MyBackgroundWorker::m_ThreadLocalTest;
 

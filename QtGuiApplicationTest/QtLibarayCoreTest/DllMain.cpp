@@ -1,6 +1,6 @@
 #include <windows.h>
 
-//#include <LogUtil.h>
+//#include "JCB_Logger/LogUtil.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD  ul_reason_for_call,

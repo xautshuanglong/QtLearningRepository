@@ -1,7 +1,7 @@
 #include "DicomTaskData.h"
 
 #include <dcmtk/dcmdata/dcdatset.h>
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 /************************************************************************/
 /* C-ECHO                                                               */

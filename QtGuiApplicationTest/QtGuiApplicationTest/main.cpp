@@ -13,7 +13,7 @@
 //#include <vld/vld.h>
 
 // Self Headers
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #include "NotifyWidget.h"
 

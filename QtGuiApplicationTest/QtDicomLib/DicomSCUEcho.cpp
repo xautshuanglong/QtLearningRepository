@@ -1,6 +1,6 @@
 #include "DicomSCUEcho.h"
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include <dcmtk/dcmnet/diutil.h>
 
 DicomSCUEcho::DicomSCUEcho()

@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 #include <QMetaEnum>
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 // Protocol Buffer
 #include "ProtocolBuffers/MessageInfo.pb.h"

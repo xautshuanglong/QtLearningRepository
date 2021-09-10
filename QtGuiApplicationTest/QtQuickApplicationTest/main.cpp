@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 #include "Miscellaneous/MiscellaneousSignalSlotBinding.h"
 
 void ExitCallback()

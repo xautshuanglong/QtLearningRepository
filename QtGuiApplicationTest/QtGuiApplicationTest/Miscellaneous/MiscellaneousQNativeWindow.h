@@ -45,6 +45,8 @@ protected:
 private:
     void InitializeDirect3D();
     void InitializeDirectShaders();
+    void InitializeDirectTextures();
+    void InitializeDirectSamplers();
     void InitializeDirectVertices();
     HRESULT InitializeDirectVertices_Coordinate();
     HRESULT InitializeDirectVertices_Triangle();
@@ -83,7 +85,6 @@ private:
     ComPtr<ID3D11Texture2D>          m_pDepthStencilBuffer;
     ComPtr<ID3D11RenderTargetView>   m_pRenderTargetView;
     ComPtr<ID3D11DepthStencilView>   m_pDepthStencilView;
-    D3D11_VIEWPORT                   m_ScreenViewport;
 
     // 定点布局，通用
     ComPtr<ID3D11InputLayout>        m_pVertexLayout;
@@ -95,19 +96,24 @@ private:
 
     // 立方体绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCube;
-    ComPtr<ID3D11Buffer>             m_pVertexBufferCubeTexture;
     ComPtr<ID3D11Buffer>             m_pIndexBufferCube;
     ComPtr<ID3D11Buffer>             m_pConstantBuffer;
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
 
+    // 立方体绘制（带木箱纹理）
+    ComPtr<ID3D11Buffer>             m_pVertexBufferCubeTexture;
+    ComPtr<ID3D11ShaderResourceView> m_pResourceViewWood;
+    ComPtr<ID3D11SamplerState>       m_pSamplerState;
+
     // 坐标系绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCoor;
-    ComPtr<ID3D11VertexShader>       m_pVertexShaderCoorSystem;
-    ComPtr<ID3D11PixelShader>        m_pPixelShaderCoorSystem;
+    ComPtr<ID3D11VertexShader>       m_pVertexShaderCoor;
+    ComPtr<ID3D11PixelShader>        m_pPixelShaderCoor;
 
     ConstantBuffer                   m_CBuffer;
     DirectX::XMMATRIX                m_matrixWorld;
+    D3D11_VIEWPORT                   m_ScreenViewport;
 
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;

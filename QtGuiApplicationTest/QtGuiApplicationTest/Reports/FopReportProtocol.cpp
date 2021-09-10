@@ -6,7 +6,7 @@
 #include "ProtocolBuffers/MessageInfo.pb.h"
 using namespace com::genomics::protobuf;
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 int FopReportProtocol::gMsgID = 0;
 

@@ -26,7 +26,7 @@
 #include <dcmtk/dcmdata/libi2d/i2djpgs.h>
 #include <dcmtk/dcmdata/libi2d/i2dbmps.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 MainTabPageDicom::MainTabPageDicom(QWidget *parent /* = Q_NULLPTR */)
     : QWidget(parent)

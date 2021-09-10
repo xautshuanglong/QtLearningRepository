@@ -10,7 +10,7 @@
 #include <QNetworkInterface>
 #include <QStyledItemDelegate>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 #include "Core/JcbMessageBox.h"
 #include "NotifyWidget.h"

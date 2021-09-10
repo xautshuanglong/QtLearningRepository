@@ -13,7 +13,7 @@
 #include <QSignalMapper>
 #include <QTimer>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "Debugger/DebugMenuEvent.h"
 #include "Debugger/DebugInfoBaseWidget.h"
 #include "Core/TitleBarWidget.h"

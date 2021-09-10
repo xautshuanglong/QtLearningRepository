@@ -7,7 +7,7 @@
 // QT
 #include <QList>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 
 bool Win32PerformanceUtil::GetCpuUsageProcess(double &outCpuPercent)
 {

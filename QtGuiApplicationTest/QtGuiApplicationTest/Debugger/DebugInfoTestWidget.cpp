@@ -4,7 +4,7 @@
 #include <QMetaEnum>
 #include <QTimer>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include "Debugger/DebugMenuEvent.h"
 #include "Debugger/DebugPanel.h"
 #include "Utils/Win32PerformanceUtil.h"

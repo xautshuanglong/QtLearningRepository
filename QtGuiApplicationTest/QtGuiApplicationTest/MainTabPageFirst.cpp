@@ -36,7 +36,7 @@
 //#include <dcmtk/dcmdata/libi2d/i2djpgs.h>
 //#include <dcmtk/dcmdata/libi2d/i2dbmps.h>
 
-#include <LogUtil.h>
+#include "JCB_Logger/LogUtil.h"
 #include <BackgroundWorkerTest.h>
 #include <TaskBase.h>
 

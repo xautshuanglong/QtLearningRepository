@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include "Utils/TimeUtil.h"
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 using namespace Shuanglong::Utils;
 

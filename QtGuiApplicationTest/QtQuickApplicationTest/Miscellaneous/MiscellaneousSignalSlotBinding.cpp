@@ -2,7 +2,7 @@
 
 #include <QQmlEngine>
 
-#include "LogUtil.h"
+#include "JCB_Logger/LogUtil.h"
 
 MiscellaneousSignalSlotBinding::MiscellaneousSignalSlotBinding(QObject *parent /* = Q_NULLPTR */)
     : QObject(parent)
