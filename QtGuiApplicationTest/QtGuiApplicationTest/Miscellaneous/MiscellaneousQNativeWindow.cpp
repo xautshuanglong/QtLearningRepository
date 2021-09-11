@@ -243,7 +243,7 @@ void MiscellaneousQNativeWindow::InitializeDirectTextures()
 {
     HRESULT hResult = S_OK;
     // 初始化木箱纹理
-    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), L"..\\Texture\\WoodCrate.dds", nullptr, m_pResourceViewWood.GetAddressOf());
+    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), L"Textures\\WoodCrate.dds", nullptr, m_pResourceViewWood.GetAddressOf());
     // 初始化火焰纹理
     //WCHAR strFile[40];
     //m_pFireAnims.resize(120);
@@ -683,15 +683,17 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
     DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(phi) * DirectX::XMMatrixRotationY(theta);
     DirectX::XMMATRIX translateAfter = DirectX::XMMatrixTranslation(0.5f, -0.5f, -0.5f);
     this->UpdateViewContent3D(translateBefore * rotation * translateAfter);
-    // ------------------ Draw Cube --------------------
+    // ------------------ Draw Cube Texture --------------------
     UINT stride = sizeof(VertexPosColor);
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCubeTexture.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
     m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
-    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCube.Get(), DXGI_FORMAT_R32_UINT, 0);
+    m_pDeviceContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+    m_pDeviceContext->PSSetShaderResources(0, 1, m_pResourceViewWood.GetAddressOf());
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
 
