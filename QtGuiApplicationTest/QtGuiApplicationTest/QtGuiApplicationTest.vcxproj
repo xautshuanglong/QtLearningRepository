@@ -166,6 +166,7 @@
     <ClCompile Include="DirectX\GameTimer.cpp" />
     <ClCompile Include="DirectX\Keyboard.cpp" />
     <ClCompile Include="DirectX\Mouse.cpp" />
+    <ClCompile Include="DirectX\Vertex.cpp" />
     <ClCompile Include="DirectX\WICTextureLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTabPageDicom.cpp" />
@@ -320,7 +321,9 @@
     <ClInclude Include="DirectX\DXTrace.h" />
     <ClInclude Include="DirectX\GameTimer.h" />
     <ClInclude Include="DirectX\Keyboard.h" />
+    <ClInclude Include="DirectX\LightHelper.h" />
     <ClInclude Include="DirectX\Mouse.h" />
+    <ClInclude Include="DirectX\Vertex.h" />
     <ClInclude Include="DirectX\WICTextureLoader.h" />
     <ClInclude Include="Miscellaneous\MiscellaneousBase.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousCustomTextEdit.h" />
@@ -390,6 +393,7 @@
     <None Include="Resources\qss\mainTabWidget.qss" />
     <None Include="Resources\qss\white.qss" />
     <None Include="Shaders\Common.hlsli" />
+    <None Include="Shaders\LightHelper.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
@@ -428,6 +432,26 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\CubeTexture_PS.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\CubeTexture_VS.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\Cube_PS.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>

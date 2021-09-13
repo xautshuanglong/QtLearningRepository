@@ -6,19 +6,15 @@
 #include <QTimer>
 
 #include "Utils/TimeUtil.h"
+#include "Utils/StringUtil.h"
 #include "JCB_Logger/LogUtil.h"
 
 #include "DirectX/DDSTextureLoader.h"
+#include "DirectX/Vertex.h"
 
 using namespace Shuanglong::Utils;
 
-const D3D11_INPUT_ELEMENT_DESC MiscellaneousQNativeWindow::VertexPosColor::inputLayout[2] =
-{
-    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-};
-
-MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
+MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousQNativeWindow())
     , m_pDevice(nullptr)
@@ -31,20 +27,25 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
     , m_pRenderTargetView(nullptr)
     , m_pDepthStencilView(nullptr)
     , m_pVertexLayout(nullptr)
+    , m_pVertexLayoutCubeTexture(nullptr)
     , m_pVertexBufferTriangle(nullptr)
     , m_pVertexShaderTriangle(nullptr)
     , m_pPixelShaderTriangle(nullptr)
     , m_pVertexBufferCube(nullptr)
     , m_pIndexBufferCube(nullptr)
-    , m_pConstantBuffer(nullptr)
     , m_pVertexShaderCube(nullptr)
     , m_pPixelShaderCube(nullptr)
     , m_pVertexBufferCubeTexture(nullptr)
+    , m_pIndexBufferCubeTexture(nullptr)
     , m_pResourceViewWood(nullptr)
     , m_pSamplerState(nullptr)
+    , m_pVertexShaderCubeTexture(nullptr)
+    , m_pPixelShaderCubeTexture(nullptr)
     , m_pVertexBufferCoor(nullptr)
     , m_pVertexShaderCoor(nullptr)
     , m_pPixelShaderCoor(nullptr)
+    , m_pConstantBufferVertice(nullptr)
+    , m_pConstantBufferPixel(nullptr)
     , m_4xMsaaQuality(0)
     , m_4xMsaaEnabled(true)
     , m_bInitialized3D(false)
@@ -58,6 +59,7 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget *parent)
 
     this->InitializeDirect3D();
     this->InitializeDirectShaders();
+    this->InitializeDirectTextures();
     this->InitializeDirectVertices();
     this->ResizeBufferAndTargetView();
 
@@ -237,13 +239,27 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
 
     hResult = CreateShaderFromFile(L"Cube_PS.cso", L"Shaders\\Cube_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
     hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCube.GetAddressOf());
+
+    //------------------------------ cube texture --------------------------------------
+
+    hResult = CreateShaderFromFile(L"CubeTexture_VS.cso", L"Shaders\\CubeTexture_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShaderCubeTexture.GetAddressOf());
+
+    hResult = m_pDevice->CreateInputLayout(VertexPosNormalTex::inputLayout, ARRAYSIZE(VertexPosNormalTex::inputLayout), blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayoutCubeTexture.GetAddressOf());
+
+    hResult = CreateShaderFromFile(L"CubeTexture_PS.cso", L"Shaders\\CubeTexture_PS.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf());
+    hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCubeTexture.GetAddressOf());
 }
 
 void MiscellaneousQNativeWindow::InitializeDirectTextures()
 {
     HRESULT hResult = S_OK;
+
+    QString appDir = QCoreApplication::applicationDirPath();
+    QString textureWood = appDir + "/resource/Textures/WoodCrate.dds";
+    std::wstring textureWoodStr = StringUtil::StringToWString(textureWood.toStdString());
     // 初始化木箱纹理
-    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), L"Textures\\WoodCrate.dds", nullptr, m_pResourceViewWood.GetAddressOf());
+    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), textureWoodStr.c_str(), nullptr, m_pResourceViewWood.GetAddressOf());
     // 初始化火焰纹理
     //WCHAR strFile[40];
     //m_pFireAnims.resize(120);
@@ -277,21 +293,49 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
     D3D11_BUFFER_DESC cbd;
     ZeroMemory(&cbd, sizeof(cbd));
     cbd.Usage = D3D11_USAGE_DYNAMIC;
-    cbd.ByteWidth = sizeof(ConstantBuffer);
+    cbd.ByteWidth = sizeof(VSConstantBuffer);
     cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    hResult = m_pDevice->CreateBuffer(&cbd, nullptr, m_pConstantBuffer.GetAddressOf());
-    m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+    hResult = m_pDevice->CreateBuffer(&cbd, nullptr, m_pConstantBufferVertice.GetAddressOf());
 
     float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
-    m_CBuffer.world = DirectX::XMMatrixIdentity();
-    m_CBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
-    m_CBuffer.view = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(
-        DirectX::XMVectorSet(0.3f, 0.5f, -2.3f, 0.0f),
+    m_VSConstantBuffer.world = DirectX::XMMatrixIdentity();
+    m_VSConstantBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
+    m_VSConstantBuffer.view = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(
+        DirectX::XMVectorSet(0.2f, 0.3f, -2.3f, 0.0f),
         DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
+    m_VSConstantBuffer.worldInvTranspose = DirectX::XMMatrixIdentity();
+
+    // 立方体（带纹理），常量缓冲区。
+    // 新建用于VS和PS的常量缓冲区
+    cbd.ByteWidth = sizeof(PSConstantBuffer);
+    hResult = m_pDevice->CreateBuffer(&cbd, nullptr, m_pConstantBufferPixel.GetAddressOf());
+
+    // 初始化用于PS的常量缓冲区的值
+    // 这里只使用一盏点光来演示
+    m_PSConstantBuffer.pointLight[0].position = DirectX::XMFLOAT3(0.0f, 0.0f, -10.0f);
+    m_PSConstantBuffer.pointLight[0].ambient = DirectX::XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+    m_PSConstantBuffer.pointLight[0].diffuse = DirectX::XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+    m_PSConstantBuffer.pointLight[0].specular = DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_PSConstantBuffer.pointLight[0].att = DirectX::XMFLOAT3(0.0f, 0.1f, 0.0f);
+    m_PSConstantBuffer.pointLight[0].range = 25.0f;
+    m_PSConstantBuffer.numDirLight = 0;
+    m_PSConstantBuffer.numPointLight = 1;
+    m_PSConstantBuffer.numSpotLight = 0;
+    // 初始化材质
+    m_PSConstantBuffer.material.ambient = DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_PSConstantBuffer.material.diffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_PSConstantBuffer.material.specular = DirectX::XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
+    // 注意不要忘记设置此处的观察位置，否则高亮部分会有问题
+    m_PSConstantBuffer.eyePos = DirectX::XMFLOAT4(0.2f, 0.2f, -2.3f, 0.0f);
+
+    // 更新PS常量缓冲区资源
+    D3D11_MAPPED_SUBRESOURCE mappedData;
+    hResult = m_pDeviceContext->Map(m_pConstantBufferPixel.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData);
+    memcpy_s(mappedData.pData, sizeof(PSConstantBuffer), &m_PSConstantBuffer, sizeof(PSConstantBuffer));
+    m_pDeviceContext->Unmap(m_pConstantBufferPixel.Get(), 0);
 
     // 旋转矩阵初始化
     m_matrixWorld = DirectX::XMMatrixIdentity();
@@ -313,11 +357,11 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Coordinate()
     VertexPosColor verticesCoor[] =
     {
         { DirectX::XMFLOAT3(-1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.0f, -1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.0f,  1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.0f,  0.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.0f,  0.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+        { DirectX::XMFLOAT3( 1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 0.0f, -1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 0.0f,  1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 0.0f,  0.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3( 0.0f,  0.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
     };
 
     D3D11_BUFFER_DESC vbd_coor;
@@ -386,7 +430,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
     //   | /     | /       | /
     //   |/______|/        |/_________
     //  0       3          O          x
-    VertexPosColor verticesCube[] =
+    VertexPosColor verticesCube[8] =
     {
         { DirectX::XMFLOAT3(0.25f, 0.25f, 0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
         { DirectX::XMFLOAT3(0.25f, 0.75f, 0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
@@ -413,23 +457,17 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
     DWORD indices[] =
     {
         // 正面
-        0, 1, 2,
-        2, 3, 0,
+        0, 1, 2, 2, 3, 0,
         // 左面
-        4, 5, 1,
-        1, 0, 4,
+        4, 5, 1, 1, 0, 4,
         // 顶面
-        1, 5, 6,
-        6, 2, 1,
+        1, 5, 6, 6, 2, 1,
         // 背面
-        7, 6, 5,
-        5, 4, 7,
+        7, 6, 5, 5, 4, 7,
         // 右面
-        3, 2, 6,
-        6, 7, 3,
+        3, 2, 6, 6, 7, 3,
         // 底面
-        4, 0, 3,
-        3, 7, 4
+        4, 0, 3, 3, 7, 4
     };
 
     D3D11_BUFFER_DESC ibd;
@@ -455,17 +493,129 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     //   | /     | /       | /
     //   |/______|/        |/_________
     //  0       3          O          x
-    VertexPosColor verticesCube[] =
+
+    // 配合样例中纹理映射，改变立方体定点定义方式
+    //VertexPosNormalTex verticesCube[24] =
+    //{
+    //    // 正面 (-Z)
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 00 vertex 0
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 01 vertex 1
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 02 vertex 2
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 03 vertex 3
+
+    //    // 背面 (+Z)
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 04 vertex 7
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 05 vertex 6
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 06 vertex 5
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 07 vertex 4
+
+    //    // 顶面 (+Y)
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 08 vertex 1
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 09 vertex 5
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 10 vertex 6
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 11 vertex 2
+
+    //    // 底面 (-Y)
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 12 vertex 3
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 13 vertex 7
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 14 vertex 4
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 15 vertex 0
+
+    //    // 左面 (-X)
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 16 vertex 0
+    //    { DirectX::XMFLOAT3(-1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 17 vertex 4
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 18 vertex 5
+    //    { DirectX::XMFLOAT3(-1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 19 vertex 1
+
+    //    // 右面 (+X)
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 20 vertex 3
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, -1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 21 vertex 2
+    //    { DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 22 vertex 6
+    //    { DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 23 vertex 7
+    //};
+    VertexPosNormalTex verticesCube[24] =
     {
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
+        // 正面 (-Z)
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 00 vertex 0
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 01 vertex 1
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 02 vertex 2
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 03 vertex 3
+
+        // 背面 (+Z)
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 04 vertex 7
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 05 vertex 6
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 06 vertex 5
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 07 vertex 4
+
+        // 顶面 (+Y)
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 08 vertex 1
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 09 vertex 5
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 10 vertex 6
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 11 vertex 2
+
+        // 底面 (-Y)
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 12 vertex 3
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 13 vertex 7
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 14 vertex 4
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 15 vertex 0
+
+        // 左面 (-X)
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 16 vertex 0
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 17 vertex 4
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 18 vertex 5
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 19 vertex 1
+
+        // 右面 (+X)
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 20 vertex 3
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 21 vertex 2
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 22 vertex 6
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 23 vertex 7
     };
+
+    //VertexPosColor verticesCube[] =
+    //{
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
+    //};
+
+    //VertexPosColor verticesCube[24] =
+    //{
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 0
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 1
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 2
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 3
+
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 7
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 6
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 5
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 4
+
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 1
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 5
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 6
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 2
+
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 3
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 7
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 4
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 0
+
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 0
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 4
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 5
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 1
+
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 3
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 2
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 6
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 7
+    //};
 
     D3D11_BUFFER_DESC vbd;
     ZeroMemory(&vbd, sizeof(vbd));
@@ -482,23 +632,17 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     DWORD indices[] =
     {
         // 正面
-        0, 1, 2,
-        2, 3, 0,
-        // 左面
-        4, 5, 1,
-        1, 0, 4,
-        // 顶面
-        1, 5, 6,
-        6, 2, 1,
+        0, 1, 2, 2, 3, 0,
         // 背面
-        7, 6, 5,
-        5, 4, 7,
-        // 右面
-        3, 2, 6,
-        6, 7, 3,
+        4, 5, 6, 6, 7, 4,
+        // 顶面
+        8, 9, 10, 10, 11, 8,
         // 底面
-        4, 0, 3,
-        3, 7, 4
+        12, 13, 14, 14, 15, 12,
+        // 左面
+        16, 17, 18, 18, 19, 16,
+        // 右面
+        20, 21, 22, 22, 23, 20
     };
 
     D3D11_BUFFER_DESC ibd;
@@ -509,7 +653,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     ibd.CPUAccessFlags = 0;
 
     InitData.pSysMem = indices;
-    hResult = m_pDevice->CreateBuffer(&ibd, &InitData, m_pIndexBufferCube.GetAddressOf());
+    hResult = m_pDevice->CreateBuffer(&ibd, &InitData, m_pIndexBufferCubeTexture.GetAddressOf());
 
     return hResult;
 }
@@ -594,15 +738,21 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 
 void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix)
 {
-    m_CBuffer.world = DirectX::XMMatrixTranspose(modelMatrix * m_matrixWorld);
-    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
-    m_CBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
-    
     HRESULT hResult = S_OK;
     D3D11_MAPPED_SUBRESOURCE mappedData;
-    hResult = m_pDeviceContext->Map(m_pConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData);
-    memcpy_s(mappedData.pData, sizeof(m_CBuffer), &m_CBuffer, sizeof(m_CBuffer));
-    m_pDeviceContext->Unmap(m_pConstantBuffer.Get(), 0);
+
+    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
+
+    m_VSConstantBuffer.world = DirectX::XMMatrixTranspose(modelMatrix * m_matrixWorld);
+    m_VSConstantBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
+
+    DirectX::XMMATRIX tempMatrix = m_matrixWorld;
+    tempMatrix.r[3] = DirectX::g_XMIdentityR3;
+    m_VSConstantBuffer.worldInvTranspose = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, tempMatrix));
+
+    hResult = m_pDeviceContext->Map(m_pConstantBufferVertice.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData);
+    memcpy_s(mappedData.pData, sizeof(VSConstantBuffer), &m_VSConstantBuffer, sizeof(m_VSConstantBuffer));
+    m_pDeviceContext->Unmap(m_pConstantBufferVertice.Get(), 0);
 }
 
 void MiscellaneousQNativeWindow::DrawViewContent3D()
@@ -665,12 +815,14 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Cube()
     // ------------------ Draw Cube --------------------
     UINT stride = sizeof(VertexPosColor);
     UINT offset = 0;
+
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCube.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
-    m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
-    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCube.Get(), DXGI_FORMAT_R32_UINT, 0);
+    m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
+    m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBufferVertice.GetAddressOf());
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
 
@@ -688,12 +840,16 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCubeTexture.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
-    m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
-    m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCube.Get(), DXGI_FORMAT_R32_UINT, 0);
+    m_pDeviceContext->IASetInputLayout(m_pVertexLayoutCubeTexture.Get());
+    m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCubeTexture.Get(), DXGI_FORMAT_R32_UINT, 0);
+    m_pDeviceContext->VSSetShader(m_pVertexShaderCubeTexture.Get(), nullptr, 0);
+    //m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
+    m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBufferVertice.GetAddressOf());
+    m_pDeviceContext->PSSetConstantBuffers(1, 1, m_pConstantBufferPixel.GetAddressOf());
     m_pDeviceContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
     m_pDeviceContext->PSSetShaderResources(0, 1, m_pResourceViewWood.GetAddressOf());
-    m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
+    //m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCubeTexture.Get(), nullptr, 0);
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
 

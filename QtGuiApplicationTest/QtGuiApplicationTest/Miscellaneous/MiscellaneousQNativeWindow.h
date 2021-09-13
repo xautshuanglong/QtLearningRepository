@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 
 #include "MiscellaneousBase.h"
+#include "DirectX/LightHelper.h"
 
 namespace Ui {class MiscellaneousQNativeWindow;};
 
@@ -14,18 +15,25 @@ class MiscellaneousQNativeWindow : public MiscellaneousBase
     template <class T>
     using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-    struct VertexPosColor
-    {
-        DirectX::XMFLOAT3 pos;
-        DirectX::XMFLOAT4 color;
-        static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
-    };
-
-    struct ConstantBuffer
+    struct VSConstantBuffer
     {
         DirectX::XMMATRIX world;
         DirectX::XMMATRIX view;
         DirectX::XMMATRIX projection;
+        DirectX::XMMATRIX worldInvTranspose;
+    };
+
+    struct PSConstantBuffer
+    {
+        DirectionalLight dirLight[10];
+        PointLight pointLight[10];
+        SpotLight spotLight[10];
+        Material material;
+        int numDirLight;
+        int numPointLight;
+        int numSpotLight;
+        float pad;
+        DirectX::XMFLOAT4 eyePos;
     };
 
     Q_OBJECT
@@ -88,6 +96,7 @@ private:
 
     // 定点布局，通用
     ComPtr<ID3D11InputLayout>        m_pVertexLayout;
+    ComPtr<ID3D11InputLayout>        m_pVertexLayoutCubeTexture;
 
     // 三角形绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferTriangle;
@@ -97,21 +106,26 @@ private:
     // 立方体绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCube;
     ComPtr<ID3D11Buffer>             m_pIndexBufferCube;
-    ComPtr<ID3D11Buffer>             m_pConstantBuffer;
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
 
     // 立方体绘制（带木箱纹理）
     ComPtr<ID3D11Buffer>             m_pVertexBufferCubeTexture;
+    ComPtr<ID3D11Buffer>             m_pIndexBufferCubeTexture;
     ComPtr<ID3D11ShaderResourceView> m_pResourceViewWood;
     ComPtr<ID3D11SamplerState>       m_pSamplerState;
+    ComPtr<ID3D11VertexShader>       m_pVertexShaderCubeTexture;
+    ComPtr<ID3D11PixelShader>        m_pPixelShaderCubeTexture;
 
     // 坐标系绘制
     ComPtr<ID3D11Buffer>             m_pVertexBufferCoor;
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCoor;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCoor;
 
-    ConstantBuffer                   m_CBuffer;
+    ComPtr<ID3D11Buffer>             m_pConstantBufferVertice;
+    ComPtr<ID3D11Buffer>             m_pConstantBufferPixel;
+    VSConstantBuffer                 m_VSConstantBuffer;
+    PSConstantBuffer                 m_PSConstantBuffer; // 用于修改用于PS的GPU常量缓冲区的变量
     DirectX::XMMATRIX                m_matrixWorld;
     D3D11_VIEWPORT                   m_ScreenViewport;
 

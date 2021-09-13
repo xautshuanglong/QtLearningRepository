@@ -352,6 +352,9 @@
     <ClCompile Include="DirectX\WICTextureLoader.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="DirectX\Vertex.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -587,6 +590,12 @@
     <ClInclude Include="DirectX\WICTextureLoader.h">
       <Filter>DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="DirectX\Vertex.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\LightHelper.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainTabPageDicom.h">
@@ -779,6 +788,9 @@
     <None Include="Shaders\Common.hlsli">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\LightHelper.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtGuiApplicationTest.rc" />
@@ -822,6 +834,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\CoordinateSystem_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\CubeTexture_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\CubeTexture_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
