@@ -329,7 +329,7 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
     m_PSConstantBuffer.material.diffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
     m_PSConstantBuffer.material.specular = DirectX::XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
     // 注意不要忘记设置此处的观察位置，否则高亮部分会有问题
-    m_PSConstantBuffer.eyePos = DirectX::XMFLOAT4(0.2f, 0.2f, -2.3f, 0.0f);
+    m_PSConstantBuffer.eyePos = DirectX::XMFLOAT4(0.2f, 0.3f, -2.3f, 0.0f);
 
     // 更新PS常量缓冲区资源
     D3D11_MAPPED_SUBRESOURCE mappedData;
