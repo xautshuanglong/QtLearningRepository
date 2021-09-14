@@ -114,13 +114,14 @@ struct VertexPosNormalTex
 	VertexPosNormalTex& operator=(VertexPosNormalTex&&) = default;
 
 	constexpr VertexPosNormalTex(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT3& _normal,
-		const DirectX::XMFLOAT2& _tex) :
-		pos(_pos), normal(_normal), tex(_tex) {}
+		const DirectX::XMFLOAT2& _tex, const DirectX::XMFLOAT4& _color) :
+		pos(_pos), normal(_normal), tex(_tex), color(_color) {}
 
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMFLOAT3 normal;
 	DirectX::XMFLOAT2 tex;
-	static const D3D11_INPUT_ELEMENT_DESC inputLayout[3];
+	DirectX::XMFLOAT4 color;
+    static const D3D11_INPUT_ELEMENT_DESC inputLayout[4];
 };
 
 struct VertexPosNormalTangentTex

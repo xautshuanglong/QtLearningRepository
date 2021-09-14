@@ -533,44 +533,84 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     //    { DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 22 vertex 6
     //    { DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 23 vertex 7
     //};
+
     VertexPosNormalTex verticesCube[24] =
     {
         // 正面 (-Z)
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 00 vertex 0
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 01 vertex 1
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 02 vertex 2
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 03 vertex 3
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 00 vertex 0
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 01 vertex 1
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 02 vertex 2
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, +0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 03 vertex 3
 
         // 背面 (+Z)
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 04 vertex 7
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 05 vertex 6
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 06 vertex 5
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 07 vertex 4
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 04 vertex 7
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 05 vertex 6
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 06 vertex 5
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, +0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 07 vertex 4
 
         // 顶面 (+Y)
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 08 vertex 1
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 09 vertex 5
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 10 vertex 6
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 11 vertex 2
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 08 vertex 1
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 09 vertex 5
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 10 vertex 6
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+0.0f, +1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 11 vertex 2
 
         // 底面 (-Y)
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 12 vertex 3
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 13 vertex 7
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 14 vertex 4
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 15 vertex 0
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 12 vertex 3
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 13 vertex 7
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 14 vertex 4
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(+0.0f, -1.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 15 vertex 0
 
         // 左面 (-X)
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 16 vertex 0
-        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 17 vertex 4
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 18 vertex 5
-        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 19 vertex 1
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 16 vertex 0
+        { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 17 vertex 4
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 18 vertex 5
+        { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT3(-1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 19 vertex 1
 
         // 右面 (+X)
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }, // 20 vertex 3
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) }, // 21 vertex 2
-        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) }, // 22 vertex 6
-        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) }, // 23 vertex 7
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 20 vertex 3
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 21 vertex 2
+        { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 22 vertex 6
+        { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT3(+1.0f, +0.0f, +0.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 23 vertex 7
     };
+
+    //VertexPosNormalTex verticesCube[24] =
+    //{
+    //    // 正面 (-Z)
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 00 vertex 0
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 01 vertex 1
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 02 vertex 2
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 03 vertex 3
+
+    //    // 背面 (+Z)
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 04 vertex 7
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 05 vertex 6
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 06 vertex 5
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 07 vertex 4
+
+    //    // 顶面 (+Y)
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 08 vertex 1
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 09 vertex 5
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 10 vertex 6
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 11 vertex 2
+
+    //    // 底面 (-Y)
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 12 vertex 3
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 13 vertex 7
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 14 vertex 4
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 15 vertex 0
+
+    //    // 左面 (-X)
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }, // 16 vertex 0
+    //    { DirectX::XMFLOAT3(0.25f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 17 vertex 4
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }, // 18 vertex 5
+    //    { DirectX::XMFLOAT3(0.25f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) }, // 19 vertex 1
+
+    //    // 右面 (+X)
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.75f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // 20 vertex 3
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.75f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) }, // 21 vertex 2
+    //    { DirectX::XMFLOAT3(0.75f, -0.25f, -0.25f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) }, // 22 vertex 6
+    //    { DirectX::XMFLOAT3(0.75f, -0.75f, -0.25f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }, // 23 vertex 7
+    //};
 
     //VertexPosColor verticesCube[] =
     //{
@@ -830,7 +870,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
 {
     // ------------------ Update Cube model matrix --------------------
     static float phi = 0.0f, theta = 0.0f;
-    phi += 0.001f, theta += 0.0015f;
+    //phi += 0.001f, theta += 0.0015f;
     DirectX::XMMATRIX translateBefore = DirectX::XMMatrixTranslation(-0.5f, 0.5f, 0.5f);
     DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(phi) * DirectX::XMMatrixRotationY(theta);
     DirectX::XMMATRIX translateAfter = DirectX::XMMatrixTranslation(0.5f, -0.5f, -0.5f);
@@ -840,6 +880,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCubeTexture.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
     m_pDeviceContext->IASetInputLayout(m_pVertexLayoutCubeTexture.Get());
     m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCubeTexture.Get(), DXGI_FORMAT_R32_UINT, 0);
     m_pDeviceContext->VSSetShader(m_pVertexShaderCubeTexture.Get(), nullptr, 0);
