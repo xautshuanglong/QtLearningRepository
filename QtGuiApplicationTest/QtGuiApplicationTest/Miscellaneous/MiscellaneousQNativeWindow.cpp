@@ -786,7 +786,7 @@ void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& mo
     m_VSConstantBuffer.world = DirectX::XMMatrixTranspose(modelMatrix * m_matrixWorld);
     m_VSConstantBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
 
-    DirectX::XMMATRIX tempMatrix = m_matrixWorld;
+    DirectX::XMMATRIX tempMatrix = m_VSConstantBuffer.world;
     tempMatrix.r[3] = DirectX::g_XMIdentityR3;
     m_VSConstantBuffer.worldInvTranspose = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, tempMatrix));
 
@@ -870,26 +870,23 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
 {
     // ------------------ Update Cube model matrix --------------------
     static float phi = 0.0f, theta = 0.0f;
-    //phi += 0.001f, theta += 0.0015f;
+    phi += 0.0005f, theta += 0.00075f;
     DirectX::XMMATRIX translateBefore = DirectX::XMMatrixTranslation(-0.5f, 0.5f, 0.5f);
     DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(phi) * DirectX::XMMatrixRotationY(theta);
     DirectX::XMMATRIX translateAfter = DirectX::XMMatrixTranslation(0.5f, -0.5f, -0.5f);
     this->UpdateViewContent3D(translateBefore * rotation * translateAfter);
     // ------------------ Draw Cube Texture --------------------
-    UINT stride = sizeof(VertexPosColor);
+    UINT stride = sizeof(VertexPosNormalTex);
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferCubeTexture.GetAddressOf(), &stride, &offset);
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    //m_pDeviceContext->IASetInputLayout(m_pVertexLayout.Get());
     m_pDeviceContext->IASetInputLayout(m_pVertexLayoutCubeTexture.Get());
     m_pDeviceContext->IASetIndexBuffer(m_pIndexBufferCubeTexture.Get(), DXGI_FORMAT_R32_UINT, 0);
     m_pDeviceContext->VSSetShader(m_pVertexShaderCubeTexture.Get(), nullptr, 0);
-    //m_pDeviceContext->VSSetShader(m_pVertexShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBufferVertice.GetAddressOf());
     m_pDeviceContext->PSSetConstantBuffers(1, 1, m_pConstantBufferPixel.GetAddressOf());
     m_pDeviceContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
     m_pDeviceContext->PSSetShaderResources(0, 1, m_pResourceViewWood.GetAddressOf());
-    //m_pDeviceContext->PSSetShader(m_pPixelShaderCube.Get(), nullptr, 0);
     m_pDeviceContext->PSSetShader(m_pPixelShaderCubeTexture.Get(), nullptr, 0);
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
