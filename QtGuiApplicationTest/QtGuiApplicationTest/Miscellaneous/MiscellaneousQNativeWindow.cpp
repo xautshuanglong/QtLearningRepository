@@ -35,6 +35,8 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     , m_pIndexBufferCube(nullptr)
     , m_pVertexShaderCube(nullptr)
     , m_pPixelShaderCube(nullptr)
+    , m_pVertexBufferTriangleTexture(nullptr)
+    , m_pResourceViewWarn(nullptr)
     , m_pVertexBufferCubeTexture(nullptr)
     , m_pIndexBufferCubeTexture(nullptr)
     , m_pResourceViewWood(nullptr)
@@ -256,10 +258,17 @@ void MiscellaneousQNativeWindow::InitializeDirectTextures()
     HRESULT hResult = S_OK;
 
     QString appDir = QCoreApplication::applicationDirPath();
+
+    // 初始化警告牌纹理
+    QString textureWarn = appDir + "/resource/Textures/WarnFlag.dds";
+    std::wstring textureWarnStr = StringUtil::StringToWString(textureWarn.toStdString());
+    hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), textureWarnStr.c_str(), nullptr, m_pResourceViewWarn.GetAddressOf());
+
+    // 初始化木箱纹理
     QString textureWood = appDir + "/resource/Textures/WoodCrate.dds";
     std::wstring textureWoodStr = StringUtil::StringToWString(textureWood.toStdString());
-    // 初始化木箱纹理
     hResult = DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), textureWoodStr.c_str(), nullptr, m_pResourceViewWood.GetAddressOf());
+
     // 初始化火焰纹理
     //WCHAR strFile[40];
     //m_pFireAnims.resize(120);
@@ -416,6 +425,33 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_TriangleTexture()
 {
     HRESULT hResult = S_OK;
+    //         0           y     z
+    //        /\           |    /
+    //       /  \          |   /
+    //      /    \         | /
+    //     /______\        |/_________
+    //    2        1       O          x
+    VertexPosNormalTex vertices[] =
+    {
+        { DirectX::XMFLOAT3(-0.50f, -0.25f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f), DirectX::XMFLOAT2(0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.25f, -0.75f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.75f, -0.75f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.50f, -0.25f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, +1.0f), DirectX::XMFLOAT2(0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.75f, -0.75f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, +1.0f), DirectX::XMFLOAT2(0.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(-0.25f, -0.75f, -0.5f), DirectX::XMFLOAT3(0.0f, 0.0f, +1.0f), DirectX::XMFLOAT2(1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+    };
+
+    D3D11_BUFFER_DESC vbd;
+    ZeroMemory(&vbd, sizeof(vbd));
+    vbd.Usage = D3D11_USAGE_IMMUTABLE;
+    vbd.ByteWidth = sizeof(vertices);
+    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbd.CPUAccessFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA InitData;
+    ZeroMemory(&InitData, sizeof(InitData));
+    InitData.pSysMem = vertices;
+    hResult = m_pDevice->CreateBuffer(&vbd, &InitData, m_pVertexBufferTriangleTexture.GetAddressOf());
 
     return hResult;
 }
@@ -841,13 +877,30 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Triangle()
 }
 
 void MiscellaneousQNativeWindow::DrawViewContent3D_TriangleTexture()
-{}
+{
+    // ------------------ Update Triangle model matrix --------------------
+    this->UpdateViewContent3D(DirectX::XMMatrixIdentity());
+    // ------------------ Draw Triangle --------------------
+    UINT stride = sizeof(VertexPosNormalTex);
+    UINT offset = 0;
+    m_pDeviceContext->IASetVertexBuffers(0, 1, m_pVertexBufferTriangleTexture.GetAddressOf(), &stride, &offset);
+    m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pDeviceContext->IASetInputLayout(m_pVertexLayoutCubeTexture.Get());
+    m_pDeviceContext->VSSetShader(m_pVertexShaderCubeTexture.Get(), nullptr, 0);
+    m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pConstantBufferVertice.GetAddressOf());
+    m_pDeviceContext->PSSetConstantBuffers(1, 1, m_pConstantBufferPixel.GetAddressOf());
+    m_pDeviceContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+    m_pDeviceContext->PSSetShaderResources(0, 1, m_pResourceViewWarn.GetAddressOf());
+    m_pDeviceContext->PSSetShader(m_pPixelShaderCubeTexture.Get(), nullptr, 0);
+    m_pDeviceContext->Draw(3, 0);
+    m_pDeviceContext->Draw(3, 3);
+}
 
 void MiscellaneousQNativeWindow::DrawViewContent3D_Cube()
 {
     // ------------------ Update Cube model matrix --------------------
     static float phi = 0.0f, theta = 0.0f;
-    phi += 0.001f, theta += 0.0015f;
+    phi += 0.0005f, theta += 0.00075f;
     DirectX::XMMATRIX translateBefore = DirectX::XMMatrixTranslation(-0.5f, -0.5f, -0.5f);
     DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(phi) * DirectX::XMMatrixRotationY(theta);
     DirectX::XMMATRIX translateAfter = DirectX::XMMatrixTranslation(0.5f, 0.5f, 0.5f);

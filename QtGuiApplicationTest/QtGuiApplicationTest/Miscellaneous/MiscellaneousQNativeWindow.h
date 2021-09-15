@@ -109,6 +109,10 @@ private:
     ComPtr<ID3D11VertexShader>       m_pVertexShaderCube;
     ComPtr<ID3D11PixelShader>        m_pPixelShaderCube;
 
+    // 三角形绘制（带警告牌纹理）
+    ComPtr<ID3D11Buffer>             m_pVertexBufferTriangleTexture;
+    ComPtr<ID3D11ShaderResourceView> m_pResourceViewWarn;
+
     // 立方体绘制（带木箱纹理）
     ComPtr<ID3D11Buffer>             m_pVertexBufferCubeTexture;
     ComPtr<ID3D11Buffer>             m_pIndexBufferCubeTexture;
