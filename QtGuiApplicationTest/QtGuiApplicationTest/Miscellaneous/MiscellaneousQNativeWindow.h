@@ -38,9 +38,9 @@ private slots:
     void on_btnEmptyTest4_clicked();
 
 signals:
-    void SignalUpdateContent();
     void SignalWorldRotate(float x, float y, float z);
     void SignalResizeWindow(const QSize winSize);
+    void SignalUpdateContent();
 
 private:
     Ui::MiscellaneousQNativeWindow *ui;
@@ -107,6 +107,9 @@ private:
     void DrawViewContent3D_CubeTexture();
     void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
+
+signals:
+    void SignalUpdateContent();
 
 private:
     ComPtr<ID3D11Device>             m_pDevice;

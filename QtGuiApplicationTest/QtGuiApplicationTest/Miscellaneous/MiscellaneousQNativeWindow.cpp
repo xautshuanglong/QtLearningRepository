@@ -32,13 +32,14 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     m_pD3DWorker->moveToThread(m_pWorkerThread);
     this->connect(this, SIGNAL(SignalWorldRotate(float, float, float)), m_pD3DWorker, SLOT(SlotWorldRotate(float, float, float)));
     this->connect(this, SIGNAL(SignalResizeWindow(const QSize)), m_pD3DWorker, SLOT(SlotResizeWindow(const QSize)));
+    this->connect(this, SIGNAL(SignalUpdateContent()), m_pD3DWorker, SLOT(SlotUpdateContent()));
     this->connect(m_pWorkerThread, SIGNAL(started()), m_pD3DWorker, SLOT(SlotInitialize()));
     m_pWorkerThread->start();
 
-    QTimer* pUpdateTimer3D = new QTimer(this);
-    pUpdateTimer3D->setInterval(1);
-    pUpdateTimer3D->start();
-    this->connect(pUpdateTimer3D, SIGNAL(timeout()), m_pD3DWorker, SLOT(SlotUpdateContent()));
+    //QTimer* pUpdateTimer3D = new QTimer(this);
+    //pUpdateTimer3D->setInterval(1);
+    //pUpdateTimer3D->start();
+    //this->connect(pUpdateTimer3D, SIGNAL(timeout()), m_pD3DWorker, SLOT(SlotUpdateContent()));
 }
 
 MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
@@ -52,6 +53,7 @@ MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
     {
         m_pWorkerThread->quit();
         m_pWorkerThread->wait(500);
+        delete m_pWorkerThread;
     }
 }
 
@@ -79,6 +81,7 @@ void MiscellaneousQNativeWindow::resizeEvent(QResizeEvent* event)
 {
     QSize nativeWinSize(ui->nativeWindow->geometry().width(), ui->nativeWindow->geometry().height());
     emit SignalResizeWindow(nativeWinSize);
+    emit SignalUpdateContent();
 }
 
 void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
@@ -150,6 +153,8 @@ D3DWorker::D3DWorker(HWND winID, QObject* parent /* = nullptr */)
     , m_windowHeight(1080)
 {
     ZeroMemory(&m_ScreenViewport, sizeof(D3D11_VIEWPORT));
+
+    this->connect(this, SIGNAL(SignalUpdateContent()), this, SLOT(SlotUpdateContent()), Qt::QueuedConnection);
 }
 
 D3DWorker::~D3DWorker()
@@ -172,6 +177,7 @@ void D3DWorker::SlotUpdateContent()
         this->DrawViewContent3D();
         this->PresentViewContent3D();
     }
+    emit SignalUpdateContent();
 }
 
 void D3DWorker::SlotWorldRotate(float x, float y, float z)
