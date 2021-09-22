@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <QWindow>
 #include <QTimer>
+#include <QThread>
 
 #include "Utils/TimeUtil.h"
 #include "Utils/StringUtil.h"
@@ -17,6 +18,100 @@ using namespace Shuanglong::Utils;
 MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousQNativeWindow())
+    , m_pWorkerThread(Q_NULLPTR)
+    , m_pD3DWorker(Q_NULLPTR)
+{
+    ui->setupUi(this);
+
+    ui->nativeWindow->setAttribute(Qt::WA_NativeWindow, true);
+    ui->nativeWindow->setAttribute(Qt::WA_DontCreateNativeAncestors, true);
+    ////QGuiApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
+
+    m_pWorkerThread = new QThread(this);
+    m_pD3DWorker = new D3DWorker((HWND)(ui->nativeWindow->winId()));
+    m_pD3DWorker->moveToThread(m_pWorkerThread);
+    this->connect(this, SIGNAL(SignalWorldRotate(float, float, float)), m_pD3DWorker, SLOT(SlotWorldRotate(float, float, float)));
+    this->connect(this, SIGNAL(SignalResizeWindow(const QSize & winSize)), this, SLOT(SlotResizeWindow(const QSize & winSize)));
+    this->connect(m_pWorkerThread, SIGNAL(started()), m_pD3DWorker, SLOT(SlotInitialize()));
+    m_pWorkerThread->start();
+
+    QTimer* pUpdateTimer3D = new QTimer(this);
+    pUpdateTimer3D->setInterval(1);
+    pUpdateTimer3D->start();
+    this->connect(pUpdateTimer3D, SIGNAL(timeout()), m_pWorkerThread, SLOT(SlotUpdateContent()));
+}
+
+MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
+{
+    delete ui;
+    if (m_pD3DWorker)
+    {
+        m_pD3DWorker->deleteLater();
+    }
+    if (m_pWorkerThread)
+    {
+        m_pWorkerThread->quit();
+        m_pWorkerThread->wait(500);
+    }
+}
+
+QString MiscellaneousQNativeWindow::GetTitle()
+{
+    return QObject::tr("Native Window Test");
+}
+
+QString MiscellaneousQNativeWindow::GetTitleTooltip()
+{
+    return QObject::tr("How to embed a native window in QT application.");
+}
+
+MiscellaneousTestGroup MiscellaneousQNativeWindow::GetGroupID()
+{
+    return MiscellaneousTestGroup::QT_Test;
+}
+
+MiscellaneousTestItem MiscellaneousQNativeWindow::GetItemID()
+{
+    return MiscellaneousTestItem::QT_Native_Window;
+}
+
+void MiscellaneousQNativeWindow::resizeEvent(QResizeEvent* event)
+{
+    QSize nativeWinSize(ui->nativeWindow->geometry().width(), ui->nativeWindow->geometry().height());
+    emit SignalResizeWindow(nativeWinSize);
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
+{
+    // 更新世界坐标系
+    static float phi = 0.0f;
+    phi += 0.05f;
+    emit SignalWorldRotate(0.0f, phi, 0.0f);
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
+{
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest3_clicked()
+{
+    QWindowList windowList = QGuiApplication::allWindows();
+    int windowCount = windowList.count();
+    for (int i = 0; i < windowCount; ++i)
+    {
+        QWindow *pWindow = windowList[i];
+    }
+    int i = 0;
+}
+
+void MiscellaneousQNativeWindow::on_btnEmptyTest4_clicked()
+{
+    int i = 0;
+}
+
+D3DWorker::D3DWorker(HWND winID, QObject* parent /* = nullptr */)
+    : QObject(parent)
+    , m_winHandle(winID)
     , m_pDevice(nullptr)
     , m_pDeviceContext(nullptr)
     , m_pSwapChain(nullptr)
@@ -52,56 +147,45 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     , m_4xMsaaEnabled(true)
     , m_bInitialized3D(false)
 {
-    ui->setupUi(this);
     ZeroMemory(&m_ScreenViewport, sizeof(D3D11_VIEWPORT));
+}
 
-    this->setAttribute(Qt::WA_NativeWindow, true);
-    this->setAttribute(Qt::WA_DontCreateNativeAncestors, true);
-    ////QGuiApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
+D3DWorker::~D3DWorker()
+{
+}
 
+void D3DWorker::SlotInitialize()
+{
     this->InitializeDirect3D();
     this->InitializeDirectShaders();
     this->InitializeDirectTextures();
     this->InitializeDirectVertices();
     this->ResizeBufferAndTargetView();
-
-    QTimer* pUpdateTimer3D = new QTimer(this);
-    pUpdateTimer3D->setInterval(1);
-    pUpdateTimer3D->start();
-    this->connect(pUpdateTimer3D, SIGNAL(timeout()), this, SLOT(SlotUpdateViewContent3D_TimeOut()));
 }
 
-MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
+void D3DWorker::SlotUpdateContent()
 {
-    delete ui;
+    if (m_bInitialized3D)
+    {
+        this->DrawViewContent3D();
+        this->PresentViewContent3D();
+    }
 }
 
-QString MiscellaneousQNativeWindow::GetTitle()
+void D3DWorker::SlotWorldRotate(float x, float y, float z)
 {
-    return QObject::tr("Native Window Test");
+    m_matrixWorld = DirectX::XMMatrixRotationY(y);
 }
 
-QString MiscellaneousQNativeWindow::GetTitleTooltip()
+void D3DWorker::SlotResizeWindow(const QSize& winSize)
 {
-    return QObject::tr("How to embed a native window in QT application.");
-}
+    m_windowWidth = winSize.width();
+    m_windowHeight = winSize.height();
 
-MiscellaneousTestGroup MiscellaneousQNativeWindow::GetGroupID()
-{
-    return MiscellaneousTestGroup::QT_Test;
-}
-
-MiscellaneousTestItem MiscellaneousQNativeWindow::GetItemID()
-{
-    return MiscellaneousTestItem::QT_Native_Window;
-}
-
-void MiscellaneousQNativeWindow::resizeEvent(QResizeEvent* event)
-{
     this->ResizeBufferAndTargetView();
 }
 
-void MiscellaneousQNativeWindow::InitializeDirect3D()
+void D3DWorker::InitializeDirect3D()
 {
     HRESULT hResult = S_OK;
     UINT createFlags = D3D11_CREATE_DEVICE_DEBUG;
@@ -141,8 +225,8 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
         hResult = m_pDeviceContext.As(&m_pDeviceContext1);
         DXGI_SWAP_CHAIN_DESC1 sd;
         ZeroMemory(&sd, sizeof(sd));
-        sd.Width = ui->nativeWindow->geometry().width();
-        sd.Height = ui->nativeWindow->geometry().height();
+        sd.Width = m_windowWidth;
+        sd.Height = m_windowHeight;
         sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
         if (m_4xMsaaEnabled)
         {
@@ -166,7 +250,7 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
         fd.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
         fd.Windowed = TRUE;
         // 为当前窗口创建交换链
-        hResult = dxgiFactory2->CreateSwapChainForHwnd(m_pDevice.Get(), (HWND)ui->nativeWindow->winId(), &sd, &fd, nullptr, m_pSwapChain1.GetAddressOf());
+        hResult = dxgiFactory2->CreateSwapChainForHwnd(m_pDevice.Get(), m_winHandle, &sd, &fd, nullptr, m_pSwapChain1.GetAddressOf());
         hResult = m_pSwapChain1.As(&m_pSwapChain);
     }
     else
@@ -174,8 +258,8 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
         // 填充DXGI_SWAP_CHAIN_DESC用以描述交换链
         DXGI_SWAP_CHAIN_DESC sd;
         ZeroMemory(&sd, sizeof(sd));
-        sd.BufferDesc.Width = ui->nativeWindow->geometry().width();
-        sd.BufferDesc.Height = ui->nativeWindow->geometry().height();
+        sd.BufferDesc.Width = m_windowWidth;
+        sd.BufferDesc.Height = m_windowHeight;
         sd.BufferDesc.RefreshRate.Numerator = 60;
         sd.BufferDesc.RefreshRate.Denominator = 1;
         sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -193,14 +277,14 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
         }
         sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         sd.BufferCount = 1;
-        sd.OutputWindow = (HWND)ui->nativeWindow->winId();
+        sd.OutputWindow = m_winHandle;
         sd.Windowed = TRUE;
         sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
         sd.Flags = 0;
         hResult = dxgiFactory1->CreateSwapChain(m_pDevice.Get(), &sd, m_pSwapChain.GetAddressOf());
     }
 
-    dxgiFactory1->MakeWindowAssociation((HWND)ui->nativeWindow->winId(), DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
+    dxgiFactory1->MakeWindowAssociation(m_winHandle, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
     // 设置调试对象名
     std::string contextName = "ImmediateContext";
@@ -211,7 +295,7 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
     m_bInitialized3D = true;
 }
 
-void MiscellaneousQNativeWindow::InitializeDirectShaders()
+void D3DWorker::InitializeDirectShaders()
 {
     ComPtr<ID3DBlob> blob;
     HRESULT hResult = S_OK;
@@ -253,7 +337,7 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
     hResult = m_pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShaderCubeTexture.GetAddressOf());
 }
 
-void MiscellaneousQNativeWindow::InitializeDirectTextures()
+void D3DWorker::InitializeDirectTextures()
 {
     HRESULT hResult = S_OK;
 
@@ -279,7 +363,7 @@ void MiscellaneousQNativeWindow::InitializeDirectTextures()
     //}
 }
 
-void MiscellaneousQNativeWindow::InitializeDirectSamplers()
+void D3DWorker::InitializeDirectSamplers()
 {
     HRESULT hResult = S_OK;
     D3D11_SAMPLER_DESC sampDesc;
@@ -294,7 +378,7 @@ void MiscellaneousQNativeWindow::InitializeDirectSamplers()
     hResult = m_pDevice->CreateSamplerState(&sampDesc, m_pSamplerState.GetAddressOf());
 }
 
-void MiscellaneousQNativeWindow::InitializeDirectVertices()
+void D3DWorker::InitializeDirectVertices()
 {
     HRESULT hResult = S_OK;
 
@@ -307,7 +391,7 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
     cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     hResult = m_pDevice->CreateBuffer(&cbd, nullptr, m_pConstantBufferVertice.GetAddressOf());
 
-    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
+    float ratio = m_windowWidth * 1.0 / m_windowHeight;
     m_VSConstantBuffer.world = DirectX::XMMatrixIdentity();
     m_VSConstantBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
     m_VSConstantBuffer.view = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(
@@ -360,17 +444,17 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
     this->InitializeDirectVertices_CubeTexture();
 }
 
-HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Coordinate()
+HRESULT D3DWorker::InitializeDirectVertices_Coordinate()
 {
     HRESULT hResult = S_OK;
     VertexPosColor verticesCoor[] =
     {
         { DirectX::XMFLOAT3(-1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 0.0f, -1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 0.0f,  1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 0.0f,  0.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-        { DirectX::XMFLOAT3( 0.0f,  0.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+        { DirectX::XMFLOAT3(1.0f,  0.0f,  0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(0.0f, -1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(0.0f,  1.0f,  0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { DirectX::XMFLOAT3(0.0f,  0.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { DirectX::XMFLOAT3(0.0f,  0.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
     };
 
     D3D11_BUFFER_DESC vbd_coor;
@@ -388,7 +472,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Coordinate()
     return hResult;
 }
 
-HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
+HRESULT D3DWorker::InitializeDirectVertices_Triangle()
 {
     HRESULT hResult = S_OK;
     //         0           y     z
@@ -422,7 +506,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
     return hResult;
 }
 
-HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_TriangleTexture()
+HRESULT D3DWorker::InitializeDirectVertices_TriangleTexture()
 {
     HRESULT hResult = S_OK;
     //         0           y     z
@@ -456,7 +540,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_TriangleTexture()
     return hResult;
 }
 
-HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
+HRESULT D3DWorker::InitializeDirectVertices_Cube()
 {
     HRESULT hResult = S_OK;
     //    5________ 6      y     z
@@ -519,7 +603,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
     return hResult;
 }
 
-HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
+HRESULT D3DWorker::InitializeDirectVertices_CubeTexture()
 {
     HRESULT hResult = S_OK;
     //    5________ 6      y     z
@@ -734,7 +818,7 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
     return hResult;
 }
 
-void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
+void D3DWorker::ResizeBufferAndTargetView()
 {
     assert(m_pDevice);
     assert(m_pDeviceContext);
@@ -755,7 +839,7 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
     // 重设交换链并且重新创建渲染目标视图
     HRESULT hResult = S_OK;
     ComPtr<ID3D11Texture2D> backBuffer;
-    hResult = m_pSwapChain->ResizeBuffers(1, ui->nativeWindow->geometry().width(), ui->nativeWindow->geometry().height(), DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+    hResult = m_pSwapChain->ResizeBuffers(1, m_windowWidth, m_windowHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
     hResult = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
     hResult = m_pDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, m_pRenderTargetView.GetAddressOf());
 
@@ -766,8 +850,8 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 
     D3D11_TEXTURE2D_DESC depthStencilDesc;
 
-    depthStencilDesc.Width = ui->nativeWindow->geometry().width();
-    depthStencilDesc.Height = ui->nativeWindow->geometry().height();
+    depthStencilDesc.Width = m_windowWidth;
+    depthStencilDesc.Height = m_windowHeight;
     depthStencilDesc.MipLevels = 1;
     depthStencilDesc.ArraySize = 1;
     depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -799,8 +883,8 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
     // 设置视口变换
     m_ScreenViewport.TopLeftX = 0;
     m_ScreenViewport.TopLeftY = 0;
-    m_ScreenViewport.Width = static_cast<float>(ui->nativeWindow->geometry().width());
-    m_ScreenViewport.Height = static_cast<float>(ui->nativeWindow->geometry().height());
+    m_ScreenViewport.Width = static_cast<float>(m_windowWidth);
+    m_ScreenViewport.Height = static_cast<float>(m_windowHeight);
     m_ScreenViewport.MinDepth = 0.0f;
     m_ScreenViewport.MaxDepth = 1.0f;
 
@@ -812,12 +896,12 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
     //D3D11SetDebugObjectName(m_pRenderTargetView.Get(), "BackBufferRTV[0]");
 }
 
-void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix)
+void D3DWorker::UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix)
 {
     HRESULT hResult = S_OK;
     D3D11_MAPPED_SUBRESOURCE mappedData;
 
-    float ratio = ui->nativeWindow->geometry().width() * 1.0 / ui->nativeWindow->geometry().height();
+    float ratio = m_windowWidth * 1.0 / m_windowHeight;
 
     m_VSConstantBuffer.world = DirectX::XMMatrixTranspose(modelMatrix * m_matrixWorld);
     m_VSConstantBuffer.projection = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, ratio, 1.0f, 1000.0f));
@@ -831,7 +915,7 @@ void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& mo
     m_pDeviceContext->Unmap(m_pConstantBufferVertice.Get(), 0);
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D()
+void D3DWorker::DrawViewContent3D()
 {
     assert(m_pDeviceContext);
     static float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -845,7 +929,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D()
     this->DrawViewContent3D_CubeTexture();
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D_Coordinate()
+void D3DWorker::DrawViewContent3D_Coordinate()
 {
     // ------------------ Update Coordinates model matrix --------------------
     this->UpdateViewContent3D(DirectX::XMMatrixIdentity());
@@ -860,7 +944,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Coordinate()
     m_pDeviceContext->Draw(6, 0);
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D_Triangle()
+void D3DWorker::DrawViewContent3D_Triangle()
 {
     // ------------------ Update Triangle model matrix --------------------
     this->UpdateViewContent3D(DirectX::XMMatrixIdentity());
@@ -876,7 +960,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Triangle()
     m_pDeviceContext->Draw(3, 3);
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D_TriangleTexture()
+void D3DWorker::DrawViewContent3D_TriangleTexture()
 {
     // ------------------ Update Triangle model matrix --------------------
     this->UpdateViewContent3D(DirectX::XMMatrixIdentity());
@@ -896,7 +980,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_TriangleTexture()
     m_pDeviceContext->Draw(3, 3);
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D_Cube()
+void D3DWorker::DrawViewContent3D_Cube()
 {
     // ------------------ Update Cube model matrix --------------------
     static float phi = 0.0f, theta = 0.0f;
@@ -919,7 +1003,7 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_Cube()
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
 
-void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
+void D3DWorker::DrawViewContent3D_CubeTexture()
 {
     // ------------------ Update Cube model matrix --------------------
     static float phi = 0.0f, theta = 0.0f;
@@ -944,13 +1028,13 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
     m_pDeviceContext->DrawIndexed(36, 0, 0);
 }
 
-void MiscellaneousQNativeWindow::PresentViewContent3D()
+void D3DWorker::PresentViewContent3D()
 {
     assert(m_pSwapChain);
     m_pSwapChain->Present(0, 0);
 }
 
-HRESULT MiscellaneousQNativeWindow::CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut)
+HRESULT D3DWorker::CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut)
 {
     HRESULT hResult = S_OK;
 
@@ -988,39 +1072,3 @@ HRESULT MiscellaneousQNativeWindow::CreateShaderFromFile(const WCHAR* csoFileNam
     return hResult;
 }
 
-void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()
-{
-    if (m_bInitialized3D)
-    {
-        this->DrawViewContent3D();
-        this->PresentViewContent3D();
-    }
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
-{
-    // 更新世界坐标系
-    static float phi = 0.0f;
-    phi += 0.05f;
-    m_matrixWorld = DirectX::XMMatrixRotationY(phi);
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
-{
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest3_clicked()
-{
-    QWindowList windowList = QGuiApplication::allWindows();
-    int windowCount = windowList.count();
-    for (int i = 0; i < windowCount; ++i)
-    {
-        QWindow *pWindow = windowList[i];
-    }
-    int i = 0;
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest4_clicked()
-{
-    int i = 0;
-}

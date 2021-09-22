@@ -5,12 +5,50 @@
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 
+#include <QResizeEvent>
+
 #include "MiscellaneousBase.h"
 #include "DirectX/LightHelper.h"
 
-namespace Ui {class MiscellaneousQNativeWindow;};
+class QThread;
+class D3DWorker;
+
+namespace Ui { class MiscellaneousQNativeWindow; };
 
 class MiscellaneousQNativeWindow : public MiscellaneousBase
+{
+    Q_OBJECT
+
+public:
+    MiscellaneousQNativeWindow(QWidget *parent = Q_NULLPTR);
+    ~MiscellaneousQNativeWindow();
+
+    virtual QString GetTitle() override;
+    virtual QString GetTitleTooltip() override;
+    virtual MiscellaneousTestGroup GetGroupID() override;
+    virtual MiscellaneousTestItem GetItemID() override;
+
+protected:
+    virtual void resizeEvent(QResizeEvent* event) override;
+
+private slots:
+    void on_btnEmptyTest1_clicked();
+    void on_btnEmptyTest2_clicked();
+    void on_btnEmptyTest3_clicked();
+    void on_btnEmptyTest4_clicked();
+
+signals:
+    void SignalUpdateContent();
+    void SignalWorldRotate(float x, float y, float z);
+    void SignalResizeWindow(const QSize& winSize);
+
+private:
+    Ui::MiscellaneousQNativeWindow *ui;
+    QThread                        *m_pWorkerThread;
+    D3DWorker                      *m_pD3DWorker;
+};
+
+class D3DWorker : public QObject
 {
     template <class T>
     using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -39,16 +77,14 @@ class MiscellaneousQNativeWindow : public MiscellaneousBase
     Q_OBJECT
 
 public:
-    MiscellaneousQNativeWindow(QWidget *parent = Q_NULLPTR);
-    ~MiscellaneousQNativeWindow();
+    D3DWorker(HWND winID, QObject* parent = nullptr);
+    ~D3DWorker();
 
-    virtual QString GetTitle() override;
-    virtual QString GetTitleTooltip() override;
-    virtual MiscellaneousTestGroup GetGroupID() override;
-    virtual MiscellaneousTestItem GetItemID() override;
-
-protected:
-    virtual void resizeEvent(QResizeEvent* event) override;
+public slots:
+    void SlotInitialize();
+    void SlotUpdateContent();
+    void SlotWorldRotate(float x, float y, float z);
+    void SlotResizeWindow(const QSize& winSize);
 
 private:
     void InitializeDirect3D();
@@ -72,16 +108,7 @@ private:
     void PresentViewContent3D();
     HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFileName, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** ppBlobOut);
 
-private slots:
-    void SlotUpdateViewContent3D_TimeOut();
-
-    void on_btnEmptyTest1_clicked();
-    void on_btnEmptyTest2_clicked();
-    void on_btnEmptyTest3_clicked();
-    void on_btnEmptyTest4_clicked();
-
 private:
-    Ui::MiscellaneousQNativeWindow   *ui;
     ComPtr<ID3D11Device>             m_pDevice;
     ComPtr<ID3D11DeviceContext>      m_pDeviceContext;
     ComPtr<IDXGISwapChain>           m_pSwapChain;
@@ -136,6 +163,10 @@ private:
     UINT                             m_4xMsaaQuality;
     bool                             m_4xMsaaEnabled;
     bool                             m_bInitialized3D;
+
+    int                              m_windowWidth;
+    int                              m_windowHeight;
+    HWND                             m_winHandle;
 };
 
 #endif // MISCELLANEOUS_QNATIVE_WINDOW_H
