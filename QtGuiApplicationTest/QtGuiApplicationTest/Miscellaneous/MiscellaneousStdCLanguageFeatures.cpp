@@ -122,6 +122,41 @@ void MiscellaneousStdCLanguageFeatures::on_btnCountIncrease_clicked()
     */
 }
 
+void MiscellaneousStdCLanguageFeatures::on_btnStructBitField_clicked()
+{
+    struct S
+    {
+        // will usually occupy 2 bytes:
+        // 3 bits: value of b1
+        // 5 bits: unused
+        // 6 bits: value of b2
+        // 2 bits: value of b3
+        unsigned char b1 : 3;
+        unsigned char : 0; // start a new byte
+        unsigned char b2 : 6;
+        unsigned char b3 : 2;
+    };
+    int size1 = sizeof(S);
+
+    int a;
+    const int b = 0;
+    struct S2
+    {
+        // simple cases
+        int x1 : 8 = 42;                 // OK; "= 42" is brace-or-equal-initializer
+        int x2 : 8 { 42 };               // OK; "{ 42 }" is brace-or-equal-initializer
+        // ambiguities
+        int y1 : true ? 8 : a = 42;      // OK; brace-or-equal-initializer is absent
+        //int y2 : true ? 8 : b = 42;      // error: cannot assign to const int
+        //int y2 : true ? 8 : 42;      // error: cannot assign to const int
+        int y3 : (true ? 8 : b) = 42;    // OK; "= 42" is brace-or-equal-initializer
+        int z : 1 || new int{ 0 };       // OK; brace-or-equal-initializer is absent
+    };
+    int size2 = sizeof(S2);
+
+    int i = 0;
+}
+
 IUnknownImplementTest::IUnknownImplementTest()
 {
     LogUtil::Debug(CODE_LOCATION, "Inside Func IUnknownImplementTest Construct ...");

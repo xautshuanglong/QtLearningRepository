@@ -21,6 +21,7 @@ private slots:
     void on_btnIfCondition_clicked();
     void on_btnVirtualInheritance_clicked();
     void on_btnCountIncrease_clicked();
+    void on_btnStructBitField_clicked();
 
 private:
     Ui::MiscellaneousStdCLanguageFeatures ui;
