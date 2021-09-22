@@ -31,14 +31,14 @@ MiscellaneousQNativeWindow::MiscellaneousQNativeWindow(QWidget* parent)
     m_pD3DWorker = new D3DWorker((HWND)(ui->nativeWindow->winId()));
     m_pD3DWorker->moveToThread(m_pWorkerThread);
     this->connect(this, SIGNAL(SignalWorldRotate(float, float, float)), m_pD3DWorker, SLOT(SlotWorldRotate(float, float, float)));
-    this->connect(this, SIGNAL(SignalResizeWindow(const QSize & winSize)), this, SLOT(SlotResizeWindow(const QSize & winSize)));
+    this->connect(this, SIGNAL(SignalResizeWindow(const QSize)), m_pD3DWorker, SLOT(SlotResizeWindow(const QSize)));
     this->connect(m_pWorkerThread, SIGNAL(started()), m_pD3DWorker, SLOT(SlotInitialize()));
     m_pWorkerThread->start();
 
     QTimer* pUpdateTimer3D = new QTimer(this);
     pUpdateTimer3D->setInterval(1);
     pUpdateTimer3D->start();
-    this->connect(pUpdateTimer3D, SIGNAL(timeout()), m_pWorkerThread, SLOT(SlotUpdateContent()));
+    this->connect(pUpdateTimer3D, SIGNAL(timeout()), m_pD3DWorker, SLOT(SlotUpdateContent()));
 }
 
 MiscellaneousQNativeWindow::~MiscellaneousQNativeWindow()
@@ -146,6 +146,8 @@ D3DWorker::D3DWorker(HWND winID, QObject* parent /* = nullptr */)
     , m_4xMsaaQuality(0)
     , m_4xMsaaEnabled(true)
     , m_bInitialized3D(false)
+    , m_windowWidth(1920)
+    , m_windowHeight(1080)
 {
     ZeroMemory(&m_ScreenViewport, sizeof(D3D11_VIEWPORT));
 }
@@ -177,7 +179,7 @@ void D3DWorker::SlotWorldRotate(float x, float y, float z)
     m_matrixWorld = DirectX::XMMatrixRotationY(y);
 }
 
-void D3DWorker::SlotResizeWindow(const QSize& winSize)
+void D3DWorker::SlotResizeWindow(const QSize winSize)
 {
     m_windowWidth = winSize.width();
     m_windowHeight = winSize.height();

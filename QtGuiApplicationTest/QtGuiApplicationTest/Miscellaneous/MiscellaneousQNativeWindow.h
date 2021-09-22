@@ -40,7 +40,7 @@ private slots:
 signals:
     void SignalUpdateContent();
     void SignalWorldRotate(float x, float y, float z);
-    void SignalResizeWindow(const QSize& winSize);
+    void SignalResizeWindow(const QSize winSize);
 
 private:
     Ui::MiscellaneousQNativeWindow *ui;
@@ -84,7 +84,7 @@ public slots:
     void SlotInitialize();
     void SlotUpdateContent();
     void SlotWorldRotate(float x, float y, float z);
-    void SlotResizeWindow(const QSize& winSize);
+    void SlotResizeWindow(const QSize winSize);
 
 private:
     void InitializeDirect3D();
