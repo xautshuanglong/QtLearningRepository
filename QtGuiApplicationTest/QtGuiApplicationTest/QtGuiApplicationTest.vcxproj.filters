@@ -355,6 +355,9 @@
     <ClCompile Include="DirectX\Vertex.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="DirectX\D3DModelFactory.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -594,6 +597,9 @@
       <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="DirectX\LightHelper.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\D3DModelFactory.h">
       <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Utils\ScopeGuardUtil.h">

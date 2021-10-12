@@ -161,6 +161,7 @@
     <ClCompile Include="DICOM\DicomDownloadWigdet.cpp" />
     <ClCompile Include="DICOM\DicomServerBrowserWidget.cpp" />
     <ClCompile Include="DICOM\DicomWindow.cpp" />
+    <ClCompile Include="DirectX\D3DModelFactory.cpp" />
     <ClCompile Include="DirectX\DDSTextureLoader.cpp" />
     <ClCompile Include="DirectX\DXTrace.cpp" />
     <ClCompile Include="DirectX\GameTimer.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="Core\TimeCodeObj.h" />
     <ClInclude Include="Debugger\DebugMenuEvent.h" />
     <QtMoc Include="Debugger\DebugPanel.h" />
+    <ClInclude Include="DirectX\D3DModelFactory.h" />
     <ClInclude Include="DirectX\DDSTextureLoader.h" />
     <ClInclude Include="DirectX\DXTrace.h" />
     <ClInclude Include="DirectX\GameTimer.h" />
