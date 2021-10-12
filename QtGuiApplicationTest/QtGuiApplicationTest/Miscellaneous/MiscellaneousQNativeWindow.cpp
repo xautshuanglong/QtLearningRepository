@@ -278,7 +278,7 @@ void D3DWorker::InitializeDirect3D()
 {
     HRESULT hResult = S_OK;
     UINT createFlags = D3D11_CREATE_DEVICE_DEBUG;
-    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE;
+    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_WARP;
     D3D_FEATURE_LEVEL featureLevel;
     D3D_FEATURE_LEVEL featureLevels[] =
     {
@@ -1187,38 +1187,3 @@ HRESULT D3DWorker::CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCH
     return hResult;
 }
 
-void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()
-{
-    if (!m_bInitialized3D) return;
-
-    this->DrawViewContent3D();
-    this->PresentViewContent3D();
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()
-{
-    // 更新世界坐标系
-    static float phi = 0.0f;
-    phi += 0.05f;
-    m_matrixWorld = DirectX::XMMatrixRotationY(phi);
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest2_clicked()
-{
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest3_clicked()
-{
-    QWindowList windowList = QGuiApplication::allWindows();
-    int windowCount = windowList.count();
-    for (int i = 0; i < windowCount; ++i)
-    {
-        QWindow *pWindow = windowList[i];
-    }
-    int i = 0;
-}
-
-void MiscellaneousQNativeWindow::on_btnEmptyTest4_clicked()
-{
-    int i = 0;
-}
