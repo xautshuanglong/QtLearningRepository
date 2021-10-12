@@ -371,6 +371,7 @@
     <ClInclude Include="ThirdParty\LTC\encoder.h" />
     <ClInclude Include="ThirdParty\LTC\ltc.h" />
     <ClInclude Include="Utils\PrintUtil.h" />
+    <ClInclude Include="Utils\ScopeGuardUtil.h" />
     <ClInclude Include="Utils\StreamUtil.h" />
     <ClInclude Include="Utils\StringUtil.h" />
     <ClInclude Include="Utils\TimeUtil.h" />

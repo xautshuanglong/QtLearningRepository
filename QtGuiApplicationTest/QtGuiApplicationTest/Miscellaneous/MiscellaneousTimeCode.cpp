@@ -14,6 +14,7 @@
 #include "ThirdParty/LTC/decoder.h"
 
 #include "Utils/TimeUtil.h"
+#include "Utils/ScopeGuardUtil.h"
 #include "JCB_Logger/LogUtil.h"
 
 using namespace Shuanglong::Utils;
@@ -867,6 +868,11 @@ void MiscellaneousTimeCode::on_btnTransferTest_clicked()
 
 void MiscellaneousTimeCode::on_btnEventMapTest_clicked()
 {
+    SCOPEGUARD_DESTROY(aaa)
+    {
+        int ii = 0;
+    };
+
     int i = 0;
 }
 

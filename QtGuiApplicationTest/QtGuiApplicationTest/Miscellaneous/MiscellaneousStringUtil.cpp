@@ -6,6 +6,8 @@
 
 #include "Utils/StringUtil.h"
 
+using namespace Shuanglong::Utils;
+
 struct CharacterTypes
 {
     uint TypeID;

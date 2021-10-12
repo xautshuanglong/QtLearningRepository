@@ -596,6 +596,9 @@
     <ClInclude Include="DirectX\LightHelper.h">
       <Filter>DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\ScopeGuardUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainTabPageDicom.h">

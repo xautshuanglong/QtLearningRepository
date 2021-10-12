@@ -103,7 +103,8 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
 {
     HRESULT hResult = S_OK;
     UINT createFlags = D3D11_CREATE_DEVICE_DEBUG;
-    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE;
+    //D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE;
+    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_WARP;
     D3D_FEATURE_LEVEL featureLevel;
     D3D_FEATURE_LEVEL featureLevels[] =
     {
@@ -211,6 +212,8 @@ void MiscellaneousQNativeWindow::InitializeDirect3D()
 
 void MiscellaneousQNativeWindow::InitializeDirectShaders()
 {
+    if (!m_bInitialized3D) return;
+
     ComPtr<ID3DBlob> blob;
     HRESULT hResult = S_OK;
 
@@ -253,6 +256,8 @@ void MiscellaneousQNativeWindow::InitializeDirectShaders()
 
 void MiscellaneousQNativeWindow::InitializeDirectTextures()
 {
+    if (!m_bInitialized3D) return;
+
     HRESULT hResult = S_OK;
 
     QString appDir = QCoreApplication::applicationDirPath();
@@ -272,6 +277,8 @@ void MiscellaneousQNativeWindow::InitializeDirectTextures()
 
 void MiscellaneousQNativeWindow::InitializeDirectSamplers()
 {
+    if (!m_bInitialized3D) return;
+
     HRESULT hResult = S_OK;
     D3D11_SAMPLER_DESC sampDesc;
     ZeroMemory(&sampDesc, sizeof(sampDesc));
@@ -287,6 +294,8 @@ void MiscellaneousQNativeWindow::InitializeDirectSamplers()
 
 void MiscellaneousQNativeWindow::InitializeDirectVertices()
 {
+    if (!m_bInitialized3D) return;
+
     HRESULT hResult = S_OK;
 
     // 常量缓冲区 世界坐标系、投影、视图（相机位置 视线朝向 相机方向）。
@@ -353,6 +362,8 @@ void MiscellaneousQNativeWindow::InitializeDirectVertices()
 
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Coordinate()
 {
+    if (!m_bInitialized3D) return S_FALSE;
+
     HRESULT hResult = S_OK;
     VertexPosColor verticesCoor[] =
     {
@@ -381,6 +392,8 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Coordinate()
 
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
 {
+    if (!m_bInitialized3D) return S_FALSE;
+
     HRESULT hResult = S_OK;
     //         0           y     z
     //        /\           |    /
@@ -415,6 +428,8 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Triangle()
 
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_TriangleTexture()
 {
+    if (!m_bInitialized3D) return S_FALSE;
+
     HRESULT hResult = S_OK;
 
     return hResult;
@@ -422,6 +437,8 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_TriangleTexture()
 
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
 {
+    if (!m_bInitialized3D) return S_FALSE;
+
     HRESULT hResult = S_OK;
     //    5________ 6      y     z
     //    /|      /|       |    /
@@ -485,6 +502,8 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_Cube()
 
 HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
 {
+    if (!m_bInitialized3D) return S_FALSE;
+
     HRESULT hResult = S_OK;
     //    5________ 6      y     z
     //    /|      /|       |    /
@@ -700,6 +719,8 @@ HRESULT MiscellaneousQNativeWindow::InitializeDirectVertices_CubeTexture()
 
 void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 {
+    if (!m_bInitialized3D) return;
+
     assert(m_pDevice);
     assert(m_pDeviceContext);
     assert(m_pSwapChain);
@@ -778,6 +799,8 @@ void MiscellaneousQNativeWindow::ResizeBufferAndTargetView()
 
 void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& modelMatrix)
 {
+    if (!m_bInitialized3D) return;
+
     HRESULT hResult = S_OK;
     D3D11_MAPPED_SUBRESOURCE mappedData;
 
@@ -797,6 +820,8 @@ void MiscellaneousQNativeWindow::UpdateViewContent3D(const DirectX::XMMATRIX& mo
 
 void MiscellaneousQNativeWindow::DrawViewContent3D()
 {
+    if (!m_bInitialized3D) return;
+
     assert(m_pDeviceContext);
     static float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
     m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), black);
@@ -896,6 +921,8 @@ void MiscellaneousQNativeWindow::DrawViewContent3D_CubeTexture()
 
 void MiscellaneousQNativeWindow::PresentViewContent3D()
 {
+    if (!m_bInitialized3D) return;
+
     assert(m_pSwapChain);
     m_pSwapChain->Present(0, 0);
 }
@@ -940,11 +967,10 @@ HRESULT MiscellaneousQNativeWindow::CreateShaderFromFile(const WCHAR* csoFileNam
 
 void MiscellaneousQNativeWindow::SlotUpdateViewContent3D_TimeOut()
 {
-    if (m_bInitialized3D)
-    {
-        this->DrawViewContent3D();
-        this->PresentViewContent3D();
-    }
+    if (!m_bInitialized3D) return;
+
+    this->DrawViewContent3D();
+    this->PresentViewContent3D();
 }
 
 void MiscellaneousQNativeWindow::on_btnEmptyTest1_clicked()

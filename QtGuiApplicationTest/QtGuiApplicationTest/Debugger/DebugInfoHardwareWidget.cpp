@@ -19,6 +19,8 @@
 
 QT_CHARTS_USE_NAMESPACE
 
+using namespace Shuanglong::Utils;
+
 DebugInfoHardwareWidget::DebugInfoHardwareWidget(QWidget *parent /* = 0 */)
     : DebugInfoBaseWidget(parent)
     , ui(new Ui::DebugInfoHardwareWidget)

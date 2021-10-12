@@ -2,17 +2,20 @@
 
 #include <QString>
 
-class UrlUtil
+namespace Shuanglong::Utils
 {
-private:
-    static QString applicationPath;
+    class UrlUtil
+    {
+    private:
+        static QString applicationPath;
 
-public:
-    UrlUtil() = delete;
-    ~UrlUtil() = delete;
+    public:
+        UrlUtil() = delete;
+        ~UrlUtil() = delete;
 
-    static QString GetApplicationPath();
-    static QString GetAppIconPath(int appID);
-    static QString GetConfigPath();
-};
+        static QString GetApplicationPath();
+        static QString GetAppIconPath(int appID);
+        static QString GetConfigPath();
+    };
+}
 

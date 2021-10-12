@@ -2,23 +2,26 @@
 
 #include <QApplication>
 
-QString UrlUtil::applicationPath = "";
-
-QString UrlUtil::GetApplicationPath()
+namespace Shuanglong::Utils
 {
-    if (applicationPath.isEmpty())
+    QString UrlUtil::applicationPath = "";
+
+    QString UrlUtil::GetApplicationPath()
     {
-        applicationPath = QApplication::applicationDirPath();
+        if (applicationPath.isEmpty())
+        {
+            applicationPath = QApplication::applicationDirPath();
+        }
+        return applicationPath;
     }
-    return applicationPath;
-}
 
-QString UrlUtil::GetAppIconPath(int appID)
-{
-    return GetApplicationPath() + QString("/resource/icon/%1.png").arg(appID);
-}
+    QString UrlUtil::GetAppIconPath(int appID)
+    {
+        return GetApplicationPath() + QString("/resource/icon/%1.png").arg(appID);
+    }
 
-QString UrlUtil::GetConfigPath()
-{
-    return GetApplicationPath().append("/config");
+    QString UrlUtil::GetConfigPath()
+    {
+        return GetApplicationPath().append("/config");
+    }
 }

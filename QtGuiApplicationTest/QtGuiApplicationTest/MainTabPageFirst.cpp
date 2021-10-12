@@ -52,6 +52,8 @@
 #include "Utils/UrlUtil.h"
 #include "ProtocolBuffers/MessageTest.pb.h"
 
+using namespace Shuanglong::Utils;
+
 //static OFLogger gLogger = OFLog::getLogger("DicomTestLog");
 
 MainTabPageFirst::MainTabPageFirst(QWidget *parent /* = Q_NULLPTR */)
