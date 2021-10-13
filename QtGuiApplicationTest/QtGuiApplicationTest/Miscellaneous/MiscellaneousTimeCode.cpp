@@ -823,7 +823,7 @@ void MiscellaneousTimeCode::on_btnTransferTest_clicked()
     QDateTime testTimeBig(QDate(2021, 8, 4), QTime(16, 32, 25, 0));
     int secondDiff = testTimeBig.secsTo(testTime);
 
-    testTime.addSecs(50);
+    QDateTime temp = testTime.addSecs(50);
     QString timeString_2 = testTime.toString("yyyy-MM-dd hh:mm:ss");
 
     TimeCodeObj test1(1, 2, 3, 0, 0);
@@ -868,7 +868,17 @@ void MiscellaneousTimeCode::on_btnTransferTest_clicked()
 
 void MiscellaneousTimeCode::on_btnEventMapTest_clicked()
 {
-    SCOPEGUARD_DESTROY(aaa)
+    SCOPEGUARD_DESTROY_X(aaa)
+    {
+        int ii = 0;
+    };
+
+    SCOPEGUARD_DESTROY_X(bbb)
+    {
+        int ii = 0;
+    };
+
+    SCOPEGUARD_DESTROY
     {
         int ii = 0;
     };
