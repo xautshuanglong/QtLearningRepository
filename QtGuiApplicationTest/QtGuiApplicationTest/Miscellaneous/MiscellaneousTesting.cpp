@@ -43,6 +43,7 @@
 #include "Miscellaneous/MiscellaneousZip.h"
 #include "Miscellaneous/MiscellaneousZLib.h"
 #include "Miscellaneous/MiscellaneousDirectShow.h"
+#include "Miscellaneous/MiscellaneousMemory.h"
 #include "Miscellaneous/MiscellaneousFFmpeg.h"
 #include "Miscellaneous/MiscellaneousTimeCode.h"
 
@@ -117,6 +118,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousZip(this));
     this->AppendTestPage(new MiscellaneousZLib(this));
     this->AppendTestPage(new MiscellaneousDirectShow(this));
+    this->AppendTestPage(new MiscellaneousMemory(this));
     this->AppendTestPage(new MiscellaneousFFmpeg(this));
     this->AppendTestPage(new MiscellaneousTimeCode(this));
     this->AppendTestPage(new MiscellaneousStringUtil(this));

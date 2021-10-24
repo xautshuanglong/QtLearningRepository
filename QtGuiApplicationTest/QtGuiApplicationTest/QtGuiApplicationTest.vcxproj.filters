@@ -358,6 +358,9 @@
     <ClCompile Include="DirectX\D3DModelFactory.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousMemory.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -496,6 +499,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="Miscellaneous\MiscellaneousQNativeWindow.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousMemory.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -767,6 +773,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="Miscellaneous\MiscellaneousQNativeWindow.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousMemory.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

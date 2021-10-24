@@ -183,6 +183,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageQImage.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageQPixmap.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousMemory.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousPostgresql.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousPrinterPDF.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousPrinterWidget.cpp" />
@@ -254,6 +255,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageQImage.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageQPixmap.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousMemory.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousPostgresql.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousPrinterPDF.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousPrinterWidget.ui" />
@@ -362,6 +364,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousTimeCode.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousQTimerTest.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousQNativeWindow.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousMemory.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />
