@@ -4,7 +4,21 @@
 #include <thread>
 #include <functional>
 
+#include <Windows.h>
+
 #include "JCB_Logger/LogUtil.h"
+
+// 调试器中线程命名测试
+const DWORD MS_VC_EXCEPTION = 0x406D1388;
+#pragma pack(push,8)
+typedef struct tagTHREADNAME_INFO
+{
+    DWORD dwType; // Must be 0x1000.
+    LPCSTR szName; // Pointer to name (in user addr space).
+    DWORD dwThreadID; // Thread ID (-1=caller thread).
+    DWORD dwFlags; // Reserved for future use, must be zero.
+} THREADNAME_INFO;
+#pragma pack(pop)
 
 namespace SL::Core
 {
@@ -26,7 +40,21 @@ namespace SL::Core
             unsigned int cpuCount = std::thread::hardware_concurrency();
             for (int i = 0; i < cpuCount; ++i)
             {
-                mVectorThread.push_back(std::thread(std::bind(&BackgroundWorkerTest::ThreadFunc, this)));
+                //mVectorThread.push_back(std::thread(std::bind(&BackgroundWorkerTest::ThreadFunc, this))); // 替换如下
+
+                std::thread workThread(std::bind(&BackgroundWorkerTest::ThreadFunc, this));
+                std::thread::id tid = workThread.get_id();
+                DWORD dwThreadID = ::GetThreadId(static_cast<HANDLE>(workThread.native_handle()));
+                mVectorThread.push_back(std::forward<std::thread>(workThread));
+                std::string strThreadName = "Shuanglong test " + std::to_string(i);
+
+                THREADNAME_INFO info;
+                info.dwType = 0x1000;
+                info.szName = strThreadName.c_str();
+                info.dwThreadID = dwThreadID;
+                info.dwFlags = 0;
+
+                RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
             }
         }
     }

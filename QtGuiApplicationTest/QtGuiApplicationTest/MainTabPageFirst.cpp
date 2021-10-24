@@ -307,7 +307,7 @@ void MainTabPageFirst::on_btnBrowserImg_clicked()
     //this->ReadJpegAndCopyToDicom();
     //this->ReadImageByQImage();
     //this->ReadImageByQImageMulti();
-    //this->BackgroundWorkerTest();
+    this->BackgroundWorkerTest(); return;
     //this->QThreadPoolTest();
     //this->MyThradPoolTest();
 
