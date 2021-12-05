@@ -3,7 +3,7 @@
 
 #include "MiscellaneousBase.h"
 
-namespace Ui {class MiscellaneousMemory;};
+namespace Ui { class MiscellaneousMemory; };
 
 class MiscellaneousMemory : public MiscellaneousBase
 {

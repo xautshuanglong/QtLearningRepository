@@ -15,6 +15,7 @@ enum class MiscellaneousTestGroup
     Others,          // 其他未知分类
     Max_Size
 };
+
 Q_DECLARE_METATYPE(MiscellaneousTestGroup)
 
 enum class MiscellaneousTestItem
@@ -22,6 +23,7 @@ enum class MiscellaneousTestItem
     WinAPI_Thread_BeginThreadEx,      // Windows API 线程操作
     WinAPI_Thread_WinPrintDlg,        // Windows API 打印机设置对话框
     WinAPI_Thread_WinSocket,          // Windows API socket 网络编程
+    WinAPI_EVent_Trace,               // ETW : Event Trace for Windows 事件追踪机制测试
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_STL_Container,             // 标准库 容器
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值
@@ -43,8 +45,8 @@ enum class MiscellaneousTestItem
     QT_TcpSocket_Client,              // QT QTcpSocket 客户端测试
     QT_Native_Window,                 // QT 原生窗口测试
     Database_Sqlite_wxSqlite3,        // 数据库操作 wxSqlite3
-    Database_Sqlite_SqlCipher,        // 数据库操作 sqlcipher
-    Database_Postgresql,              // 数据库操作 postgresql
+    Database_Sqlite_SqlCipher,        // 数据库操作 SqlCipher
+    Database_Postgresql,              // 数据库操作 PostgreSQL
     Utility_StringUtil,               // 工具类 - 字符串操作
     Others_Zip,                       // 使用 ZLib 归档/提取文件
     Others_ZLib,                      // 使用 ZLib 压缩/解压文件

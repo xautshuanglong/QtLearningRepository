@@ -10,6 +10,7 @@
 #include "Miscellaneous/MiscellaneousWinThread.h"
 #include "Miscellaneous/MiscellaneousWinPrintDlg.h"
 #include "Miscellaneous/MiscellaneousWinSocket.h"
+#include "Miscellaneous/MiscellaneousEventTrace.h"
 // Standard CPP
 #include "Miscellaneous/MiscellaneousStdSharedPointer.h"
 #include "Miscellaneous/MiscellaneousStdContainer.h"
@@ -92,6 +93,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousWinThread(this));
     this->AppendTestPage(new MiscellaneousWinPrintDlg(this));
     this->AppendTestPage(new MiscellaneousWinSocket(this));
+    this->AppendTestPage(new MiscellaneousEventTrace(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdContainer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));
