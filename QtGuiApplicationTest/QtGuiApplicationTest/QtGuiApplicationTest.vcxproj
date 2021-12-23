@@ -179,7 +179,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousCustomTextEdit.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDirectShow.cpp" />
-    <ClCompile Include="Miscellaneous\MiscellaneousEventTrace.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinEventTrace.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageQImage.cpp" />
@@ -205,6 +205,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousTesting.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousTimeCode.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousQTimerTest.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinRegistry.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinThread.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
@@ -252,7 +253,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousDirectShow.ui" />
-    <QtUic Include="Miscellaneous\MiscellaneousEventTrace.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinEventTrace.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageQImage.ui" />
@@ -278,6 +279,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousTesting.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousTimeCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousQTimerTest.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinRegistry.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinThread.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
@@ -367,7 +369,8 @@
     <QtMoc Include="Miscellaneous\MiscellaneousQTimerTest.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousQNativeWindow.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousMemory.h" />
-    <QtMoc Include="Miscellaneous\MiscellaneousEventTrace.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinEventTrace.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinRegistry.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

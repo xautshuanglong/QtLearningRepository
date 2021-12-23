@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MiscellaneousEventTrace</class>
- <widget class="MiscellaneousBase" name="MiscellaneousEventTrace">
+ <class>MiscellaneousWinRegistry</class>
+ <widget class="MiscellaneousBase" name="MiscellaneousWinRegistry">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MiscellaneousEventTrace</string>
+   <string>MiscellaneousWinRegistry</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -30,7 +30,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Miscellaneous Event Trace Testing</string>
+      <string>Miscellaneous Registry Operation And Monitor Testing</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="btnEventSubscript">
+      <widget class="QPushButton" name="btnRegNotifyChange">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -67,7 +67,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Event Subscribe</string>
+        <string>RegNotifyChangeKeyValue</string>
        </property>
       </widget>
      </item>

@@ -1,5 +1,5 @@
-#include "MiscellaneousEventTrace.h"
-#include "ui_MiscellaneousEventTrace.h"
+#include "MiscellaneousWinEventTrace.h"
+#include "ui_MiscellaneousWinEventTrace.h"
 
 #include "JCB_Logger/LogUtil.h"
 
@@ -66,49 +66,49 @@ typedef struct _namedvalue {
     USHORT value;
 } NAMEDVALUE, * PNAMEDVALUE;
 
-MiscellaneousEventTrace::MiscellaneousEventTrace(QWidget *parent)
+MiscellaneousWinEventTrace::MiscellaneousWinEventTrace(QWidget *parent)
     : MiscellaneousBase(parent)
-    , ui(new Ui::MiscellaneousEventTrace())
+    , ui(new Ui::MiscellaneousWinEventTrace())
 {
     ui->setupUi(this);
 }
 
-MiscellaneousEventTrace::~MiscellaneousEventTrace()
+MiscellaneousWinEventTrace::~MiscellaneousWinEventTrace()
 {
     delete ui;
 }
 
-QString MiscellaneousEventTrace::GetTitle()
+QString MiscellaneousWinEventTrace::GetTitle()
 {
     return QObject::tr("Event Trace");
 }
 
-QString MiscellaneousEventTrace::GetTitleTooltip()
+QString MiscellaneousWinEventTrace::GetTitleTooltip()
 {
     return QObject::tr("How to use event trace for windows.");
 }
 
-MiscellaneousTestGroup MiscellaneousEventTrace::GetGroupID()
+MiscellaneousTestGroup MiscellaneousWinEventTrace::GetGroupID()
 {
     return MiscellaneousTestGroup::WinAPI_Test;
 }
 
-MiscellaneousTestItem MiscellaneousEventTrace::GetItemID()
+MiscellaneousTestItem MiscellaneousWinEventTrace::GetItemID()
 {
     return MiscellaneousTestItem::WinAPI_EVent_Trace;
 }
 
-void MiscellaneousEventTrace::on_btnEventSubscript_clicked()
+void MiscellaneousWinEventTrace::on_btnEventSubscript_clicked()
 {
     int i = 0;
 }
 
-void MiscellaneousEventTrace::on_btnEventExport_clicked()
+void MiscellaneousWinEventTrace::on_btnEventExport_clicked()
 {
     int i = 0;
 }
 
-void MiscellaneousEventTrace::on_btnEventWrite_clicked()
+void MiscellaneousWinEventTrace::on_btnEventWrite_clicked()
 {
     DWORD status = ERROR_SUCCESS;
     REGHANDLE RegistrationHandle = NULL;
@@ -205,7 +205,7 @@ cleanup:
     EventUnregister(RegistrationHandle);
 }
 
-void MiscellaneousEventTrace::on_btnEmptyTest_clicked()
+void MiscellaneousWinEventTrace::on_btnEmptyTest_clicked()
 {
     int i = 0;
 }

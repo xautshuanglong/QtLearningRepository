@@ -1,17 +1,17 @@
-#ifndef MISCELLANEOUS_EVENT_TRACE_H
-#define MISCELLANEOUS_EVENT_TRACE_H
+#ifndef MISCELLANEOUS_WIN_EVENT_TRACE_H
+#define MISCELLANEOUS_WIN_EVENT_TRACE_H
 
 #include "MiscellaneousBase.h"
 
-namespace Ui { class MiscellaneousEventTrace; };
+namespace Ui { class MiscellaneousWinEventTrace; };
 
-class MiscellaneousEventTrace : public MiscellaneousBase
+class MiscellaneousWinEventTrace : public MiscellaneousBase
 {
     Q_OBJECT
 
 public:
-    MiscellaneousEventTrace(QWidget *parent = Q_NULLPTR);
-    ~MiscellaneousEventTrace();
+    MiscellaneousWinEventTrace(QWidget *parent = Q_NULLPTR);
+    ~MiscellaneousWinEventTrace();
 
     virtual QString GetTitle() override;
     virtual QString GetTitleTooltip() override;
@@ -25,7 +25,7 @@ private slots:
     void on_btnEmptyTest_clicked();
 
 private:
-    Ui::MiscellaneousEventTrace *ui;
+    Ui::MiscellaneousWinEventTrace *ui;
 };
 
-#endif // MISCELLANEOUS_EVENT_TRACE_H
+#endif // MISCELLANEOUS_WIN_EVENT_TRACE_H
