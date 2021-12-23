@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>588</width>
-    <height>325</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="btnRegNotifyChange">
+      <widget class="QPushButton" name="btnMonitorRegStart">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -67,12 +67,12 @@
         </size>
        </property>
        <property name="text">
-        <string>RegNotifyChangeKeyValue</string>
+        <string>Monitor Registry Change (Start)</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="btnEventExport">
+      <widget class="QPushButton" name="btnMonitorRegStop">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -80,7 +80,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Event Export</string>
+        <string>Monitor registry Change（stop）</string>
        </property>
       </widget>
      </item>
@@ -93,7 +93,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Event Write</string>
+        <string>Monitor Registry Change (Single)</string>
        </property>
       </widget>
      </item>
