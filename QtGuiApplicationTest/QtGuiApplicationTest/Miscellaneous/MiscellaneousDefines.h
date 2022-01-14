@@ -25,6 +25,7 @@ enum class MiscellaneousTestItem
     WinAPI_Thread_WinSocket,          // Windows API socket 网络编程
     WinAPI_EVent_Trace,               // ETW : Event Trace for Windows 事件追踪机制测试
     WinAPI_Registry,                  // 注冊表操作 和 监听变更事件
+    WinAPI_Hook,                      // 注冊系统钩子
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_STL_Container,             // 标准库 容器
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值
