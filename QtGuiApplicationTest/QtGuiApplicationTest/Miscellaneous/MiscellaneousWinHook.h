@@ -6,6 +6,8 @@
 #include <string>
 #include <thread>
 
+#include <Windows.h>
+
 namespace Ui { class MiscellaneousWinHook; };
 
 class MiscellaneousWinHook : public MiscellaneousBase
@@ -25,15 +27,17 @@ private slots:
     void on_btnWindowsHookStart_clicked();
     void on_btnWindowsHookStop_clicked();
 
-private:
-    void MonitorRegChange_RegNotifyChangeValue(const std::string& mainKey, const std::string& subKey);
-    void MonitorRegChange_RegNotifyChangeValueLoop(const std::string& mainKey, const std::string& subKey);
-    void MonitorRegChange_RegNotifyChangeValueMultiple();
+public:
+    static LRESULT CALLBACK CallWndProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK GetMsgProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK DebugProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK CBTProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK MessageProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 private:
     Ui::MiscellaneousWinHook *ui;
-    bool mIsMonitorRegRunning;
-    std::thread* mpRegMonitorThread;
 };
 
 #endif // MISCELLANEOUS_WIN_HOOK_H

@@ -6,11 +6,39 @@
 
 #include "JCB_Logger/LogUtil.h"
 
+enum gHookData_INDEX
+{
+    MHDI_WH_CALLWNDPROC,
+    MHDI_WH_CBT,
+    MHDI_WH_DEBUG,
+    MHDI_WH_GETMESSAGE,
+    MHDI_WH_KEYBOARD,
+    MHDI_WH_MOUSE,
+    MHDI_WH_MSGFILTER,
+};
+
+typedef struct _MYHOOKDATA
+{
+    int nType;
+    HOOKPROC hkprc;
+    HHOOK hhook;
+} MYHOOKDATA;
+
+static MYHOOKDATA gHookData[] =
+{
+    {WH_CALLWNDPROC, MiscellaneousWinHook::CallWndProc,  NULL},
+    {WH_CBT,         MiscellaneousWinHook::CBTProc,      NULL},
+    {WH_DEBUG,       MiscellaneousWinHook::DebugProc,    NULL},
+    {WH_GETMESSAGE,  MiscellaneousWinHook::GetMsgProc,   NULL},
+    {WH_KEYBOARD,    MiscellaneousWinHook::KeyboardProc, NULL},
+    {WH_MOUSE,       MiscellaneousWinHook::MouseProc,    NULL},
+    {WH_MSGFILTER,   MiscellaneousWinHook::MessageProc,  NULL},
+};
+int gHookDataSize = sizeof(gHookData) / sizeof(MYHOOKDATA);
+
 MiscellaneousWinHook::MiscellaneousWinHook(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousWinHook())
-    , mIsMonitorRegRunning(false)
-    , mpRegMonitorThread(nullptr)
 {
     ui->setupUi(this);
 }
@@ -42,319 +70,472 @@ MiscellaneousTestItem MiscellaneousWinHook::GetItemID()
 
 void MiscellaneousWinHook::on_btnWindowsHookStart_clicked()
 {
+    for (int i = 0; i < gHookDataSize; ++i)
+    {
+        gHookData[i].hhook = SetWindowsHookEx(gHookData[i].nType, gHookData[i].hkprc, (HINSTANCE)NULL, GetCurrentThreadId());
+    }
     int i = 0;
 }
 
 void MiscellaneousWinHook::on_btnWindowsHookStop_clicked()
 {
+
+    for (int i = 0; i < gHookDataSize; ++i)
+    {
+        if (gHookData[i].hhook)
+        {
+            UnhookWindowsHookEx(gHookData[i].hhook);
+        }
+    }
     int i = 0;
 }
 
-void MiscellaneousWinHook::MonitorRegChange_RegNotifyChangeValue(const std::string& mainKey, const std::string& subKey)
+/****************************************************************
+  WH_CALLWNDPROC hook procedure
+ ****************************************************************/
+LRESULT CALLBACK MiscellaneousWinHook::CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
+    CHAR szCWPBuf[256];
+    CHAR szMsg[16];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
 
-    DWORD  dwFilter = REG_NOTIFY_CHANGE_NAME |
-        REG_NOTIFY_CHANGE_ATTRIBUTES |
-        REG_NOTIFY_CHANGE_LAST_SET |
-        REG_NOTIFY_CHANGE_SECURITY;
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_CALLWNDPROC].hhook, nCode, wParam, lParam);
 
-    HANDLE hEvent;
-    HKEY   hMainKey;
-    HKEY   hKey;
-    LONG   lErrorCode;
+    // Call an application-defined function that converts a message 
+    // constant to a string and copies it to a buffer. 
 
-    // Convert parameters to appropriate handles.
-    if (_tcscmp(TEXT("HKLM"), mainKey.c_str()) == 0) hMainKey = HKEY_LOCAL_MACHINE;
-    else if (_tcscmp(TEXT("HKU"), mainKey.c_str()) == 0) hMainKey = HKEY_USERS;
-    else if (_tcscmp(TEXT("HKCU"), mainKey.c_str()) == 0) hMainKey = HKEY_CURRENT_USER;
-    else if (_tcscmp(TEXT("HKCR"), mainKey.c_str()) == 0) hMainKey = HKEY_CLASSES_ROOT;
-    else if (_tcscmp(TEXT("HCC"), mainKey.c_str()) == 0) hMainKey = HKEY_CURRENT_CONFIG;
-    else
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Usage: notify [HKLM|HKU|HKCU|HKCR|HCC] [<subkey>]"));
-        return;
-    }
+    //LookUpTheMessage((PMSG)lParam, szMsg);
 
-    // Open a key.
-    lErrorCode = RegOpenKeyEx(hMainKey, subKey.c_str(), 0, KEY_NOTIFY, &hKey);
-    if (lErrorCode != ERROR_SUCCESS)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegOpenKeyEx (%d)."), lErrorCode);
-        return;
-    }
+    //hdc = GetDC(gh_hwndMain);
 
-    // Create an event.
-    hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-    if (hEvent == NULL)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in CreateEvent (%d)."), GetLastError());
-        return;
-    }
+    //switch (nCode)
+    //{
+    //case HC_ACTION:
+    //    hResult = StringCchPrintf(szCWPBuf, 256 / sizeof(TCHAR),
+    //        "CALLWNDPROC - tsk: %ld, msg: %s, %d times   ",
+    //        wParam, szMsg, c++);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: writer error handler
+    //    }
+    //    hResult = StringCchLength(szCWPBuf, 256 / sizeof(TCHAR), &cch);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    TextOut(hdc, 2, 15, szCWPBuf, cch);
+    //    break;
 
-    // Watch the registry key for a change of value.
-    lErrorCode = RegNotifyChangeKeyValue(hKey,
-        TRUE,
-        dwFilter,
-        hEvent,
-        TRUE);
-    if (lErrorCode != ERROR_SUCCESS)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegNotifyChangeKeyValue (%d)."), lErrorCode);
-        return;
-    }
+    //default:
+    //    break;
+    //}
 
-    // Wait for an event to occur.
-    LogUtil::Debug(CODE_LOCATION, TEXT("Waiting for a change in the specified key..."));
-    if (WaitForSingleObject(hEvent, INFINITE) == WAIT_FAILED)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in WaitForSingleObject (%d)."), GetLastError());
-        return;
-    }
-    else
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Change has occurred."));
-    }
+    //ReleaseDC(gh_hwndMain, hdc);
 
-    // Close the key.
-    lErrorCode = RegCloseKey(hKey);
-    if (lErrorCode != ERROR_SUCCESS)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegCloseKey (%d)."), GetLastError());
-        return;
-    }
-
-    // Close the handle.
-    if (!CloseHandle(hEvent))
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in CloseHandle."));
-        return;
-    }
+    return CallNextHookEx(gHookData[MHDI_WH_CALLWNDPROC].hhook, nCode, wParam, lParam);
 }
 
+/****************************************************************
+  WH_GETMESSAGE hook procedure
+ ****************************************************************/
 
-void MiscellaneousWinHook::MonitorRegChange_RegNotifyChangeValueLoop(const std::string& mainKey, const std::string& subKey)
+LRESULT CALLBACK MiscellaneousWinHook::GetMsgProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
+    CHAR szMSGBuf[256];
+    CHAR szRem[16];
+    CHAR szMsg[16];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
 
-    DWORD  dwFilter = REG_NOTIFY_CHANGE_NAME |
-        REG_NOTIFY_CHANGE_ATTRIBUTES |
-        REG_NOTIFY_CHANGE_LAST_SET |
-        REG_NOTIFY_CHANGE_SECURITY;
+    if (nCode < 0) // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_GETMESSAGE].hhook, nCode,
+            wParam, lParam);
 
-    HANDLE hEvent;
-    HKEY   hMainKey;
-    HKEY   hKey;
-    LONG   lErrorCode;
+    //switch (nCode)
+    //{
+    //case HC_ACTION:
+    //    switch (wParam)
+    //    {
+    //    case PM_REMOVE:
+    //        hResult = StringCchCopy(szRem, 16 / sizeof(TCHAR), "PM_REMOVE");
+    //        if (FAILED(hResult))
+    //        {
+    //            // TODO: write error handler
+    //        }
+    //        break;
 
-    // Convert parameters to appropriate handles.
-    if (_tcscmp(TEXT("HKLM"), mainKey.c_str()) == 0) hMainKey = HKEY_LOCAL_MACHINE;
-    else if (_tcscmp(TEXT("HKU"), mainKey.c_str()) == 0) hMainKey = HKEY_USERS;
-    else if (_tcscmp(TEXT("HKCU"), mainKey.c_str()) == 0) hMainKey = HKEY_CURRENT_USER;
-    else if (_tcscmp(TEXT("HKCR"), mainKey.c_str()) == 0) hMainKey = HKEY_CLASSES_ROOT;
-    else if (_tcscmp(TEXT("HCC"), mainKey.c_str()) == 0) hMainKey = HKEY_CURRENT_CONFIG;
-    else
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Usage: notify [HKLM|HKU|HKCU|HKCR|HCC] [<subkey>]"));
-        return;
-    }
+    //    case PM_NOREMOVE:
+    //        hResult = StringCchCopy(szRem, 16 / sizeof(TCHAR), "PM_NOREMOVE");
+    //        if (FAILED(hResult))
+    //        {
+    //            // TODO: write error handler
+    //        }
+    //        break;
 
-    // Open a key.
-    lErrorCode = RegOpenKeyEx(hMainKey, subKey.c_str(), 0, KEY_NOTIFY, &hKey);
-    if (lErrorCode != ERROR_SUCCESS)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegOpenKeyEx (%d)."), lErrorCode);
-        return;
-    }
+    //    default:
+    //        hResult = StringCchCopy(szRem, 16 / sizeof(TCHAR), "Unknown");
+    //        if (FAILED(hResult))
+    //        {
+    //            // TODO: write error handler
+    //        }
+    //        break;
+    //    }
 
-    // Create an event.
-    hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-    if (hEvent == NULL)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in CreateEvent (%d)."), GetLastError());
-        return;
-    }
+    //    // Call an application-defined function that converts a 
+    //    // message constant to a string and copies it to a 
+    //    // buffer. 
 
-    int monitorCount = 0;
-    do 
-    {
-        ++monitorCount;
+    //    LookUpTheMessage((PMSG)lParam, szMsg);
 
-        // Watch the registry key for a change of value.
-        lErrorCode = RegNotifyChangeKeyValue(hKey,
-            TRUE,
-            dwFilter,
-            hEvent,
-            TRUE);
-        if (lErrorCode != ERROR_SUCCESS)
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegNotifyChangeKeyValue (%d)."), lErrorCode);
-            return;
-        }
+    //    hdc = GetDC(gh_hwndMain);
+    //    hResult = StringCchPrintf(szMSGBuf, 256 / sizeof(TCHAR),
+    //        "GETMESSAGE - wParam: %s, msg: %s, %d times   ",
+    //        szRem, szMsg, c++);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    hResult = StringCchLength(szMSGBuf, 256 / sizeof(TCHAR), &cch);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    TextOut(hdc, 2, 35, szMSGBuf, cch);
+    //    break;
 
-        // Wait for an event to occur.
-        LogUtil::Debug(CODE_LOCATION, TEXT("Waiting for a change in the specified key..."));
-        if (WaitForSingleObject(hEvent, INFINITE) == WAIT_FAILED)
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Error in WaitForSingleObject (%d)."), GetLastError());
-            return;
-        }
-        else
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Change has occurred."));
-        }
-    } while (monitorCount <= 10);
+    //default:
+    //    break;
+    //}
 
-    // Close the key.
-    lErrorCode = RegCloseKey(hKey);
-    if (lErrorCode != ERROR_SUCCESS)
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegCloseKey (%d)."), GetLastError());
-        return;
-    }
+    //ReleaseDC(gh_hwndMain, hdc);
 
-    // Close the handle.
-    if (!CloseHandle(hEvent))
-    {
-        LogUtil::Debug(CODE_LOCATION, TEXT("Error in CloseHandle."));
-        return;
-    }
+    return CallNextHookEx(gHookData[MHDI_WH_GETMESSAGE].hhook, nCode, wParam, lParam);
 }
 
-void MiscellaneousWinHook::MonitorRegChange_RegNotifyChangeValueMultiple()
+/****************************************************************
+  WH_DEBUG hook procedure
+ ****************************************************************/
+
+LRESULT CALLBACK MiscellaneousWinHook::DebugProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    struct MonitorRegKeyInfo
-    {
-        HKEY monitorKey;
-        HKEY mainKey;
-        std::string subKey;
-        HANDLE waitEvent;
-        bool isRegistered;
-    };
+    CHAR szBuf[128];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
 
-    MonitorRegKeyInfo allMonRegKeyInfos[] =
-    {
-        {NULL,HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", INVALID_HANDLE_VALUE,false},
-        {NULL,HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", INVALID_HANDLE_VALUE,false}
-    };
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_DEBUG].hhook, nCode,
+            wParam, lParam);
 
-    DWORD  dwFilter = REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_ATTRIBUTES | REG_NOTIFY_CHANGE_LAST_SET | REG_NOTIFY_CHANGE_SECURITY;
-    LONG   lErrorCode = ERROR_SUCCESS;
+    //hdc = GetDC(gh_hwndMain);
 
-    int monitorKeyCount = sizeof(allMonRegKeyInfos) / sizeof(allMonRegKeyInfos[0]);
-    for (int i = 0; i < monitorKeyCount; ++i)
-    {
-        // Open a key.
-        if (allMonRegKeyInfos[i].monitorKey == NULL)
-        {
-            lErrorCode = RegOpenKeyEx(allMonRegKeyInfos[i].mainKey, allMonRegKeyInfos[i].subKey.c_str(), 0, KEY_NOTIFY, &allMonRegKeyInfos[i].monitorKey);
-            if (lErrorCode != ERROR_SUCCESS)
-            {
-                LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegOpenKeyEx (%d)."), lErrorCode);
-            }
-        }
+    //switch (nCode)
+    //{
+    //case HC_ACTION:
+    //    hResult = StringCchPrintf(szBuf, 128 / sizeof(TCHAR),
+    //        "DEBUG - nCode: %d, tsk: %ld, %d times   ",
+    //        nCode, wParam, c++);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    hResult = StringCchLength(szBuf, 128 / sizeof(TCHAR), &cch);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    TextOut(hdc, 2, 55, szBuf, cch);
+    //    break;
 
-        // Create an event.
-        if (allMonRegKeyInfos[i].waitEvent == INVALID_HANDLE_VALUE)
-        {
-            HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-            if (hEvent == NULL)
-            {
-                LogUtil::Debug(CODE_LOCATION, TEXT("Error in CreateEvent (%d)."), GetLastError());
-                return;
-            }
-            else
-            {
-                allMonRegKeyInfos[i].waitEvent = hEvent;
-            }
-        }
-    }
+    //default:
+    //    break;
+    //}
 
-    do
-    {
-        std::vector<HANDLE> waitEnvents;
-        for (int i = 0; i < monitorKeyCount; ++i)
-        {
-            // Watch the registry key for a change of value.
-            if (!allMonRegKeyInfos[i].isRegistered)
-            {
-                lErrorCode = RegNotifyChangeKeyValue(allMonRegKeyInfos[i].monitorKey, TRUE, dwFilter, allMonRegKeyInfos[i].waitEvent, TRUE);
-                if (lErrorCode != ERROR_SUCCESS)
-                {
-                    LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegNotifyChangeKeyValue (%d)."), lErrorCode);
-                    return;
-                }
-                else
-                {
-                    allMonRegKeyInfos[i].isRegistered = true;
-                    if (allMonRegKeyInfos[i].waitEvent)
-                    {
-                        waitEnvents.push_back(allMonRegKeyInfos[i].waitEvent);
-                    }
-                }
-            }
-            else
-            {
-                waitEnvents.push_back(allMonRegKeyInfos[i].waitEvent);
-            }
-        }
+    //ReleaseDC(gh_hwndMain, hdc);
 
-        // Wait for an event to occur.
-        DWORD evtCount = waitEnvents.size();
-        const HANDLE* pAllEvents = waitEnvents.data();
-        LogUtil::Debug(CODE_LOCATION, TEXT("Waiting for a change in the specified key..."));
-        DWORD waitResult = WaitForMultipleObjects(evtCount, pAllEvents, FALSE, 1000);
-        if (waitResult == WAIT_TIMEOUT)
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Wait time out"));
-        }
-        else
-        {
-            int evtIndex = waitResult - WAIT_OBJECT_0;
-            if (0 <= evtIndex && evtIndex < evtCount)
-            {
-                std::string occurSubkey = "unknown";
-                waitEnvents.clear();
-                for (int i = 0; i < monitorKeyCount; ++i)
-                {
-                    if (allMonRegKeyInfos[i].waitEvent == *(pAllEvents + evtIndex))
-                    {
-                        occurSubkey = allMonRegKeyInfos[i].subKey;
-                        allMonRegKeyInfos[i].isRegistered = false;
-                    }
-                    else if (allMonRegKeyInfos[i].waitEvent != INVALID_HANDLE_VALUE)
-                    {
-                        waitEnvents.push_back(allMonRegKeyInfos[i].waitEvent);
-                    }
-                }
-                LogUtil::Debug(CODE_LOCATION, TEXT("Change has occurred. subkey=%s"), occurSubkey.c_str());
-            }
-            else
-            {
-                LogUtil::Error(CODE_LOCATION, TEXT("wait result a unknown handle"));
-            }
-        }
-    } while (mIsMonitorRegRunning);
+    return CallNextHookEx(gHookData[MHDI_WH_DEBUG].hhook, nCode, wParam, lParam);
+}
 
-    for (int i = 0; i < monitorKeyCount; ++i)
-    {
-        // Close the key.
-        lErrorCode = RegCloseKey(allMonRegKeyInfos[i].monitorKey);
-        if (lErrorCode != ERROR_SUCCESS)
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Error in RegCloseKey (%d)."), GetLastError());
-        }
-        else
-        {
-            allMonRegKeyInfos[i].monitorKey = NULL;
-        }
+/****************************************************************
+  WH_CBT hook procedure
+ ****************************************************************/
 
-        // Close the handle.
-        if (!CloseHandle(allMonRegKeyInfos[i].waitEvent))
-        {
-            LogUtil::Debug(CODE_LOCATION, TEXT("Error in CloseHandle."));
-        }
-        else
-        {
-            allMonRegKeyInfos[i].waitEvent = INVALID_HANDLE_VALUE;
-        }
-    }
+LRESULT CALLBACK MiscellaneousWinHook::CBTProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    CHAR szBuf[128];
+    CHAR szCode[128];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
+
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_CBT].hhook, nCode, wParam,
+            lParam);
+
+    //hdc = GetDC(gh_hwndMain);
+
+    //switch (nCode)
+    //{
+    //case HCBT_ACTIVATE:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_ACTIVATE");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_CLICKSKIPPED:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_CLICKSKIPPED");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_CREATEWND:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_CREATEWND");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_DESTROYWND:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_DESTROYWND");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_KEYSKIPPED:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_KEYSKIPPED");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_MINMAX:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_MINMAX");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_MOVESIZE:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_MOVESIZE");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_QS:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_QS");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_SETFOCUS:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_SETFOCUS");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case HCBT_SYSCOMMAND:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "HCBT_SYSCOMMAND");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //default:
+    //    hResult = StringCchCopy(szCode, 128 / sizeof(TCHAR), "Unknown");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+    //}
+    //hResult = StringCchPrintf(szBuf, 128 / sizeof(TCHAR), "CBT -  nCode: %s, tsk: %ld, %d times   ",
+    //    szCode, wParam, c++);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //hResult = StringCchLength(szBuf, 128 / sizeof(TCHAR), &cch);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //TextOut(hdc, 2, 75, szBuf, cch);
+    //ReleaseDC(gh_hwndMain, hdc);
+
+    return CallNextHookEx(gHookData[MHDI_WH_CBT].hhook, nCode, wParam, lParam);
+}
+
+/****************************************************************
+  WH_MOUSE hook procedure
+ ****************************************************************/
+
+LRESULT CALLBACK MiscellaneousWinHook::MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    CHAR szBuf[128];
+    CHAR szMsg[16];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
+
+    if (nCode < 0)  // do not process the message 
+        return CallNextHookEx(gHookData[MHDI_WH_MOUSE].hhook, nCode,
+            wParam, lParam);
+
+    // Call an application-defined function that converts a message 
+    // constant to a string and copies it to a buffer. 
+
+    //LookUpTheMessage((PMSG)lParam, szMsg);
+
+    //hdc = GetDC(gh_hwndMain);
+    //hResult = StringCchPrintf(szBuf, 128 / sizeof(TCHAR),
+    //    "MOUSE - nCode: %d, msg: %s, x: %d, y: %d, %d times   ",
+    //    nCode, szMsg, LOWORD(lParam), HIWORD(lParam), c++);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //hResult = StringCchLength(szBuf, 128 / sizeof(TCHAR), &cch);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //TextOut(hdc, 2, 95, szBuf, cch);
+    //ReleaseDC(gh_hwndMain, hdc);
+
+    return CallNextHookEx(gHookData[MHDI_WH_MOUSE].hhook, nCode, wParam, lParam);
+}
+
+/****************************************************************
+  WH_KEYBOARD hook procedure
+ ****************************************************************/
+
+LRESULT CALLBACK MiscellaneousWinHook::KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    CHAR szBuf[128];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
+
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_KEYBOARD].hhook, nCode,
+            wParam, lParam);
+
+    //hdc = GetDC(gh_hwndMain);
+    //hResult = StringCchPrintf(szBuf, 128 / sizeof(TCHAR), "KEYBOARD - nCode: %d, vk: %d, %d times ", nCode, wParam, c++);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //hResult = StringCchLength(szBuf, 128 / sizeof(TCHAR), &cch);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //TextOut(hdc, 2, 115, szBuf, cch);
+    //ReleaseDC(gh_hwndMain, hdc);
+
+    return CallNextHookEx(gHookData[MHDI_WH_KEYBOARD].hhook, nCode, wParam, lParam);
+}
+
+/****************************************************************
+  WH_MSGFILTER hook procedure
+ ****************************************************************/
+
+LRESULT CALLBACK MiscellaneousWinHook::MessageProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    CHAR szBuf[128];
+    CHAR szMsg[16];
+    CHAR szCode[32];
+    HDC hdc;
+    static int c = 0;
+    size_t cch;
+    HRESULT hResult;
+
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(gHookData[MHDI_WH_MSGFILTER].hhook, nCode,
+            wParam, lParam);
+
+    //switch (nCode)
+    //{
+    //case MSGF_DIALOGBOX:
+    //    hResult = StringCchCopy(szCode, 32 / sizeof(TCHAR), "MSGF_DIALOGBOX");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case MSGF_MENU:
+    //    hResult = StringCchCopy(szCode, 32 / sizeof(TCHAR), "MSGF_MENU");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //case MSGF_SCROLLBAR:
+    //    hResult = StringCchCopy(szCode, 32 / sizeof(TCHAR), "MSGF_SCROLLBAR");
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+
+    //default:
+    //    hResult = StringCchPrintf(szCode, 128 / sizeof(TCHAR), "Unknown: %d", nCode);
+    //    if (FAILED(hResult))
+    //    {
+    //        // TODO: write error handler
+    //    }
+    //    break;
+    //}
+
+    //// Call an application-defined function that converts a message 
+    //// constant to a string and copies it to a buffer. 
+
+    //LookUpTheMessage((PMSG)lParam, szMsg);
+
+    //hdc = GetDC(gh_hwndMain);
+    //hResult = StringCchPrintf(szBuf, 128 / sizeof(TCHAR),
+    //    "MSGFILTER  nCode: %s, msg: %s, %d times    ",
+    //    szCode, szMsg, c++);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //hResult = StringCchLength(szBuf, 128 / sizeof(TCHAR), &cch);
+    //if (FAILED(hResult))
+    //{
+    //    // TODO: write error handler
+    //}
+    //TextOut(hdc, 2, 135, szBuf, cch);
+    //ReleaseDC(gh_hwndMain, hdc);
+
+    return CallNextHookEx(gHookData[MHDI_WH_MSGFILTER].hhook, nCode, wParam, lParam);
 }
