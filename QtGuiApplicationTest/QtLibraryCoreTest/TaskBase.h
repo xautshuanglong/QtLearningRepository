@@ -1,12 +1,12 @@
 #ifndef TASK_BASE_H
 #define TASK_BASE_H
 
-#include "qtlibaraycoretest_global.h"
+#include "qtlibrarycoretest_global.h"
 #include "ITaskInterface.h"
 
 namespace SL::Core
 {
-    class QTLIBARAYCORETEST_EXPORT TaskBase : public ITaskInterface
+    class QTLIBRARYCORETEST_EXPORT TaskBase : public ITaskInterface
     {
     public:
         TaskBase();

@@ -15,6 +15,7 @@
     <Keyword>QtVS_v303</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <ProjectName>QtLibraryCoreTest</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -63,7 +64,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QTLIBARAYCORETEST_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;QTLIBRARYCORETEST_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(SolutionDir)JCB_Logger;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -89,7 +90,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QTLIBARAYCORETEST_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QTLIBRARYCORETEST_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.\GeneratedFiles;.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)SharedCode;$(SolutionDir)libs\include;$(SolutionDir)JCB_Logger;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -114,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="BackgroundWorkerTest.cpp" />
     <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="HookProcedure.cpp" />
     <ClCompile Include="MemUtil.cpp" />
     <ClCompile Include="QObjectCastTest.cpp">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
@@ -127,11 +129,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundWorkerTest.h" />
+    <ClInclude Include="HookProcedure.h" />
     <ClInclude Include="MemUtil.h" />
     <QtMoc Include="QObjectCastTest.h" />
+    <ClInclude Include="qtlibrarycoretest_global.h" />
     <ClInclude Include="TaskBase.h" />
     <ClInclude Include="ITaskInterface.h" />
-    <ClInclude Include="qtlibaraycoretest_global.h" />
     <ClInclude Include="unzip.h" />
     <ClInclude Include="zip.h" />
   </ItemGroup>

@@ -148,9 +148,6 @@
     <ProjectReference Include="..\JCB_Logger\JCB_Logger\JCB_Logger.vcxproj">
       <Project>{ca613fd0-acc7-4c94-a8fd-bfce8be5cc7a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\QtLibarayCoreTest\QtLibarayCoreTest.vcxproj">
-      <Project>{dbe3666b-5bab-4d98-84e6-af03523b008c}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

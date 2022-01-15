@@ -1,7 +1,7 @@
 #ifndef BACKGROUND_WORKER_TEST_H
 #define BACKGROUND_WORKER_TEST_H
 
-#include "qtlibaraycoretest_global.h"
+#include "qtlibrarycoretest_global.h"
 
 #include <atomic>
 #include <list>
@@ -16,7 +16,7 @@ namespace SL::Core
     /************************************************************************/
     /*    在后台处理耗时任务                                                 */
     /************************************************************************/
-    class QTLIBARAYCORETEST_EXPORT BackgroundWorkerTest
+    class QTLIBRARYCORETEST_EXPORT BackgroundWorkerTest
     {
         typedef std::shared_ptr<ITaskInterface>            SPTaskInterface;
         typedef std::list<std::shared_ptr<ITaskInterface>> SPTaskList;

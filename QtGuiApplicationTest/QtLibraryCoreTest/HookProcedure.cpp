@@ -1,11 +1,6 @@
-#include "MiscellaneousWinHook.h"
-#include "ui_MiscellaneousWinHook.h"
-
-#include <windows.h>
-#include <tchar.h>
+#include "HookProcedure.h"
 
 #include "JCB_Logger/LogUtil.h"
-#include "HookProcedure.h"
 
 enum gHookData_INDEX
 {
@@ -27,60 +22,36 @@ typedef struct _MYHOOKDATA
 
 static MYHOOKDATA gHookData[] =
 {
-    {WH_CALLWNDPROC, MiscellaneousWinHook::CallWndProc,  NULL},
-    {WH_CBT,         MiscellaneousWinHook::CBTProc,      NULL},
-    {WH_DEBUG,       MiscellaneousWinHook::DebugProc,    NULL},
-    {WH_GETMESSAGE,  MiscellaneousWinHook::GetMsgProc,   NULL},
-    {WH_KEYBOARD,    MiscellaneousWinHook::KeyboardProc, NULL},
-    {WH_MOUSE,       MiscellaneousWinHook::MouseProc,    NULL},
-    {WH_MSGFILTER,   MiscellaneousWinHook::MessageProc,  NULL},
+    {WH_CALLWNDPROC, HookProcedure::CallWndProc,  NULL},
+    {WH_CBT,         HookProcedure::CBTProc,      NULL},
+    {WH_DEBUG,       HookProcedure::DebugProc,    NULL},
+    {WH_GETMESSAGE,  HookProcedure::GetMsgProc,   NULL},
+    {WH_KEYBOARD,    HookProcedure::KeyboardProc, NULL},
+    {WH_MOUSE,       HookProcedure::MouseProc,    NULL},
+    {WH_MSGFILTER,   HookProcedure::MessageProc,  NULL},
 };
+
 int gHookDataSize = sizeof(gHookData) / sizeof(MYHOOKDATA);
+HINSTANCE HookProcedure::gModuleHandle = nullptr;
 
-MiscellaneousWinHook::MiscellaneousWinHook(QWidget *parent)
-    : MiscellaneousBase(parent)
-    , ui(new Ui::MiscellaneousWinHook())
+void HookProcedure::SetModuleHandle(HINSTANCE hMod)
 {
-    ui->setupUi(this);
+    gModuleHandle = hMod;
 }
 
-MiscellaneousWinHook::~MiscellaneousWinHook()
+void HookProcedure::InstallHook()
 {
-    delete ui;
-}
-
-QString MiscellaneousWinHook::GetTitle()
-{
-    return QObject::tr("Hook");
-}
-
-QString MiscellaneousWinHook::GetTitleTooltip()
-{
-    return QObject::tr("How to operate hook and monitor events.");
-}
-
-MiscellaneousTestGroup MiscellaneousWinHook::GetGroupID()
-{
-    return MiscellaneousTestGroup::WinAPI_Test;
-}
-
-MiscellaneousTestItem MiscellaneousWinHook::GetItemID()
-{
-    return MiscellaneousTestItem::WinAPI_Hook;
-}
-
-void MiscellaneousWinHook::on_btnWindowsHookStart_clicked()
-{
-    HookProcedure::InstallHook();
-    return;
-
+    if(gModuleHandle == nullptr)
+    {
+        return;
+    }
     for (int i = 0; i < gHookDataSize; ++i)
     {
         if (gHookData[i].hhook != nullptr)
         {
             continue;
         }
-        gHookData[i].hhook = SetWindowsHookEx(gHookData[i].nType, gHookData[i].hkprc, (HINSTANCE)NULL, GetCurrentThreadId()); // 只监听本进程内
+        gHookData[i].hhook = SetWindowsHookEx(gHookData[i].nType, gHookData[i].hkprc, gModuleHandle, 0);
         if (gHookData[i].hhook == nullptr)
         {
             DWORD errorCode = GetLastError();
@@ -90,11 +61,8 @@ void MiscellaneousWinHook::on_btnWindowsHookStart_clicked()
     int i = 0;
 }
 
-void MiscellaneousWinHook::on_btnWindowsHookStop_clicked()
+void HookProcedure::UninstallHook()
 {
-    HookProcedure::UninstallHook();
-    return;
-
     for (int i = 0; i < gHookDataSize; ++i)
     {
         if (gHookData[i].hhook)
@@ -108,7 +76,7 @@ void MiscellaneousWinHook::on_btnWindowsHookStop_clicked()
 /****************************************************************
   WH_CALLWNDPROC hook procedure
  ****************************************************************/
-LRESULT CALLBACK MiscellaneousWinHook::CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szCWPBuf[256];
     CHAR szMsg[16];
@@ -158,7 +126,7 @@ LRESULT CALLBACK MiscellaneousWinHook::CallWndProc(int nCode, WPARAM wParam, LPA
   WH_GETMESSAGE hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::GetMsgProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::GetMsgProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szMSGBuf[256];
     CHAR szRem[16];
@@ -237,7 +205,7 @@ LRESULT CALLBACK MiscellaneousWinHook::GetMsgProc(int nCode, WPARAM wParam, LPAR
   WH_DEBUG hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::DebugProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::DebugProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szBuf[128];
     HDC hdc;
@@ -282,7 +250,7 @@ LRESULT CALLBACK MiscellaneousWinHook::DebugProc(int nCode, WPARAM wParam, LPARA
   WH_CBT hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::CBTProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::CBTProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szBuf[128];
     CHAR szCode[128];
@@ -408,7 +376,7 @@ LRESULT CALLBACK MiscellaneousWinHook::CBTProc(int nCode, WPARAM wParam, LPARAM 
   WH_MOUSE hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szBuf[128];
     CHAR szMsg[16];
@@ -418,8 +386,9 @@ LRESULT CALLBACK MiscellaneousWinHook::MouseProc(int nCode, WPARAM wParam, LPARA
     HRESULT hResult;
 
     if (nCode < 0)  // do not process the message 
-        return CallNextHookEx(gHookData[MHDI_WH_MOUSE].hhook, nCode,
-            wParam, lParam);
+    {
+        return CallNextHookEx(gHookData[MHDI_WH_MOUSE].hhook, nCode, wParam, lParam);
+    }
 
     switch (nCode)
     {
@@ -431,9 +400,18 @@ LRESULT CALLBACK MiscellaneousWinHook::MouseProc(int nCode, WPARAM wParam, LPARA
         break;
     }
 
-    MOUSEHOOKSTRUCT* pMouseHookEvent = static_cast<MOUSEHOOKSTRUCT*>((void*)lParam);
-    LogUtil::Debug(CODE_LOCATION, "MouseMsg = 0x%02X", wParam);
-    LogUtil::Debug(CODE_LOCATION, "MouseHookStructPtr = 0x%08X   MousePoint(%d, %d)", lParam, pMouseHookEvent->pt.x, pMouseHookEvent->pt.y); // MOUSEHOOKSTRUCT
+    static int logCount = 0;
+    if (logCount >= 50)
+    {
+        logCount = 0;
+        MOUSEHOOKSTRUCT* pMouseHookEvent = static_cast<MOUSEHOOKSTRUCT*>((void*)lParam);
+        LogUtil::Debug(CODE_LOCATION, "MouseMsg = 0x%02X", wParam);
+        LogUtil::Debug(CODE_LOCATION, "MouseHookStructPtr = 0x%08X   MousePoint(%d, %d)", lParam, pMouseHookEvent->pt.x, pMouseHookEvent->pt.y); // MOUSEHOOKSTRUCT
+    }
+    else
+    {
+        ++logCount;
+    }
 
     // Call an application-defined function that converts a message 
     // constant to a string and copies it to a buffer. 
@@ -463,7 +441,7 @@ LRESULT CALLBACK MiscellaneousWinHook::MouseProc(int nCode, WPARAM wParam, LPARA
   WH_KEYBOARD hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szBuf[128];
     HDC hdc;
@@ -511,7 +489,7 @@ LRESULT CALLBACK MiscellaneousWinHook::KeyboardProc(int nCode, WPARAM wParam, LP
   WH_MSGFILTER hook procedure
  ****************************************************************/
 
-LRESULT CALLBACK MiscellaneousWinHook::MessageProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure::MessageProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     CHAR szBuf[128];
     CHAR szMsg[16];
@@ -583,3 +561,4 @@ LRESULT CALLBACK MiscellaneousWinHook::MessageProc(int nCode, WPARAM wParam, LPA
 
     return CallNextHookEx(gHookData[MHDI_WH_MSGFILTER].hhook, nCode, wParam, lParam);
 }
+

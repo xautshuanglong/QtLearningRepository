@@ -31,11 +31,11 @@
     <Filter Include="Zip">
       <UniqueIdentifier>{7ad13db2-5e7c-4358-b23c-e41e48599ba0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hook">
+      <UniqueIdentifier>{1a5d0e9c-8a17-41c9-8fe1-f3c6867235be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="qtlibaraycoretest_global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MemUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -53,6 +53,12 @@
     </ClInclude>
     <ClInclude Include="zip.h">
       <Filter>Zip</Filter>
+    </ClInclude>
+    <ClInclude Include="HookProcedure.h">
+      <Filter>Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="qtlibrarycoretest_global.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="zip.cpp">
       <Filter>Zip</Filter>
+    </ClCompile>
+    <ClCompile Include="HookProcedure.cpp">
+      <Filter>Hook</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

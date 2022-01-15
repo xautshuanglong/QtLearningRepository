@@ -1,6 +1,6 @@
 #pragma once
 
-#include "qtlibaraycoretest_global.h"
+#include "qtlibrarycoretest_global.h"
 
 namespace SL::Core
 {

@@ -14,7 +14,7 @@
 #include <windows.h>
 
 #ifndef BUILD_STATIC
-# if defined(QTLIBARAYCORETEST_LIB)
+# if defined(QTLIBRARYCORETEST_LIB)
 #  define ZIP_EXTERN _declspec(dllexport)
 # else
 #  define ZIP_EXTERN _declspec(dllimport)

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "qtlibaraycoretest_global.h"
+#include "qtlibrarycoretest_global.h"
 #include <QObject>
 
-class QTLIBARAYCORETEST_EXPORT DllCastBaseQObject : public QObject
+class QTLIBRARYCORETEST_EXPORT DllCastBaseQObject : public QObject
 {
 	Q_OBJECT
 
@@ -12,7 +12,7 @@ public:
 	virtual ~DllCastBaseQObject();
 };
 
-class QTLIBARAYCORETEST_EXPORT DllCastDeriveQObject : public DllCastBaseQObject
+class QTLIBRARYCORETEST_EXPORT DllCastDeriveQObject : public DllCastBaseQObject
 {
 	Q_OBJECT
 
@@ -21,14 +21,14 @@ public:
 	virtual ~DllCastDeriveQObject();
 };
 
-class QTLIBARAYCORETEST_EXPORT DllCastExtra
+class QTLIBRARYCORETEST_EXPORT DllCastExtra
 {
 public:
 	DllCastExtra();
 	virtual ~DllCastExtra();
 };
 
-class QTLIBARAYCORETEST_EXPORT DllCastExtraInterface
+class QTLIBRARYCORETEST_EXPORT DllCastExtraInterface
 {
 public:
 	DllCastExtraInterface() {}
@@ -36,7 +36,7 @@ public:
 	virtual void TestFunc() = 0;
 };
 
-class QTLIBARAYCORETEST_EXPORT DllCastBaseQObjectExtra : public QObject, public DllCastExtraInterface
+class QTLIBRARYCORETEST_EXPORT DllCastBaseQObjectExtra : public QObject, public DllCastExtraInterface
 {
 	Q_OBJECT
 
@@ -47,7 +47,7 @@ public:
 	virtual void TestFunc() override;
 };
 
-class QTLIBARAYCORETEST_EXPORT DllCastDeriveQObjectExtra : public DllCastBaseQObjectExtra
+class QTLIBRARYCORETEST_EXPORT DllCastDeriveQObjectExtra : public DllCastBaseQObjectExtra
 {
 	Q_OBJECT
 
