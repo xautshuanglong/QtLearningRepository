@@ -370,6 +370,9 @@
     <ClCompile Include="Miscellaneous\MiscellaneousWinHook.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWinWMI.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -520,6 +523,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="Miscellaneous\MiscellaneousWinHook.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousWinWMI.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -803,6 +809,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="Miscellaneous\MiscellaneousWinHook.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWinWMI.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>

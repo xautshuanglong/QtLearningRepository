@@ -12,6 +12,7 @@
 #include "Miscellaneous/MiscellaneousWinSocket.h"
 #include "Miscellaneous/MiscellaneousWinEventTrace.h"
 #include "Miscellaneous/MiscellaneousWinRegistry.h"
+#include "Miscellaneous/MiscellaneousWinWMI.h"
 #include "Miscellaneous/MiscellaneousWinHook.h"
 // Standard CPP
 #include "Miscellaneous/MiscellaneousStdSharedPointer.h"
@@ -97,6 +98,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousWinSocket(this));
     this->AppendTestPage(new MiscellaneousWinEventTrace(this));
     this->AppendTestPage(new MiscellaneousWinRegistry(this));
+    this->AppendTestPage(new MiscellaneousWinWMI(this));
     this->AppendTestPage(new MiscellaneousWinHook(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdContainer(this));

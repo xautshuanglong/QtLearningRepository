@@ -210,6 +210,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousWinThread.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinWMI.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWxSqlite3.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousZip.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousZLib.cpp" />
@@ -285,6 +286,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousWinThread.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinWMI.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWxSqlite3.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousZip.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousZLib.ui" />
@@ -374,6 +376,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousWinEventTrace.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinRegistry.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinHook.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinWMI.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />
