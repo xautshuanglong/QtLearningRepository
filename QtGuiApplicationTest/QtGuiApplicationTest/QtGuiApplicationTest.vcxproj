@@ -179,6 +179,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousCustomTextEdit.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDirectShow.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousImageGrabber.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinEventTrace.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp" />
@@ -255,6 +256,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousAlgorithmLeetCode.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousDirectShow.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousImageGrabber.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinEventTrace.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui" />
@@ -377,6 +379,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousWinRegistry.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinHook.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinWMI.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousImageGrabber.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

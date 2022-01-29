@@ -29,6 +29,7 @@
 #include "Miscellaneous/MiscellaneousQVirtualKeyboard.h"
 #include "Miscellaneous/MiscellaneousImageQImage.h"
 #include "Miscellaneous/MiscellaneousImageQPixmap.h"
+#include "Miscellaneous/MiscellaneousImageGrabber.h"
 #include "Miscellaneous/MiscellaneousQObjectCast.h"
 #include "Miscellaneous/MiscellaneousQTimerTest.h"
 #include "Miscellaneous/MiscellaneousRegularExpression.h"
@@ -112,6 +113,7 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousQVirtualKeyboard(this));
     this->AppendTestPage(new MiscellaneousImageQImage(this));
     this->AppendTestPage(new MiscellaneousImageQPixmap(this));
+    this->AppendTestPage(new MiscellaneousImageGrabber(this));
     this->AppendTestPage(new MiscellaneousQObjectCast(this));
     this->AppendTestPage(new MiscellaneousQTimerTest(this));
     this->AppendTestPage(new MiscellaneousRegularExpression(this));

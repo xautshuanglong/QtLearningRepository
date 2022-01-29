@@ -39,6 +39,7 @@ enum class MiscellaneousTestItem
     QT_Virtual_Keyboard,              // QT 自定义文本编辑框
     QT_Image_QImage,                  // QT 图像操作 QImage
     QT_Image_QPixmap,                 // QT 图像操作 QPixmap
+    QT_Image_Grabber,                 // QT 图像操作 Grab
     QT_Object_Cast,                   // QT 跨越动态链接库 qobject_cast
     QT_Timer,                         // QT Timer 定时器测试
     QT_Regular_Expression,            // QT 正则表达式训练
