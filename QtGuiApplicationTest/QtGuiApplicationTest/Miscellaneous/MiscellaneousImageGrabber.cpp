@@ -3,6 +3,11 @@
 
 // QT Headers
 #include <QImage>
+#include <QPixmap>
+#include <QDateTime>
+#include <QThread>
+#include <QScreen>
+#include <QDesktopWidget>
 
 #include "JCB_Logger/LogUtil.h"
 
@@ -45,17 +50,44 @@ void MiscellaneousImageGrabber::on_btnGrabWindow_clicked()
 
 void MiscellaneousImageGrabber::on_btnGrabDesktop_clicked()
 {
-    int i = 0;
+    QDesktopWidget* pDesktop = QApplication::desktop();
+    QString filename = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+    QPixmap shotImag = pDesktop->grab();
+    shotImag.save(filename);
+
+    QString filename1 = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+    QPixmap pixmap1(pDesktop->size());
+    pDesktop->render(&pixmap1);
+    pixmap1.save(filename1);
+
+    QString filename2 = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+    QPixmap pixmap2 = QPixmap::grabWindow(pDesktop->screen()->winId());
+    pixmap2.save(filename2);
 }
 
 void MiscellaneousImageGrabber::on_btnGrabScreen_clicked()
 {
-    int i = 0;
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    QString filename = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+    QPixmap shotImag = primaryScreen->grabWindow(0);
+    shotImag.save(filename);
 }
 
 void MiscellaneousImageGrabber::on_btnGrabWidget_clicked()
 {
-    int i = 0;
+    QWidget* pWidget = this;
+    while (pWidget != nullptr)
+    {
+        QString filename = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+            .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+        QPixmap shotImag = pWidget->grab(QRect(QPoint(0, 0), pWidget->size()));
+        shotImag.save(filename);
+        pWidget = pWidget->parentWidget();
+    }
 }
 
 void MiscellaneousImageGrabber::on_btnGrabScreenAll_clicked()
