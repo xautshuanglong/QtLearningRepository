@@ -9,19 +9,35 @@
 #include <QScreen>
 #include <QDesktopWidget>
 #include <QMouseEvent>
+#include <QPainter>
 
 #include "JCB_Logger/LogUtil.h"
 
 MiscellaneousImageGrabber::MiscellaneousImageGrabber(QWidget* parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousImageGrabber())
+    , mCurMouseWin(nullptr)
 {
     ui->setupUi(this);
     this->setMouseTracking(true);
+
+    mpScreenShotEditer = new ScreenShotEditer();
+
+    //QWidget *pWidget = new QWidget(this);
+    //QPalette palette2 = pWidget->palette();
+    //pWidget->setGeometry(0, 0, 300, 200);
+    //palette2.setColor(QPalette::Background, Qt::green);
+    //pWidget->setAutoFillBackground(true);
+    //pWidget->setPalette(palette2);
 }
 
 MiscellaneousImageGrabber::~MiscellaneousImageGrabber()
 {
+    if (mpScreenShotEditer)
+    {
+        delete mpScreenShotEditer;
+        mpScreenShotEditer = nullptr;
+    }
     delete ui;
 }
 
@@ -63,8 +79,18 @@ void MiscellaneousImageGrabber::on_btnGrabWindow_clicked()
     HWND desktopWnd = ::GetDesktopWindow();
     this->mWinRectList.clear();
     this->GetWindowClassName(desktopWnd, deskClassName);
-    this->EnumChildWindowRecursively(desktopWnd);
+    //this->EnumChildWindowRecursively(desktopWnd);
+    this->EnumTopLevelWindow();
     this->UpdateLogInfo();
+
+    QScreen* primaryScreen = QGuiApplication::primaryScreen();
+    QString filename = QString("E:\\Temp\\ScreenShots\\QtGrabberTest_%1.png")
+        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz"));
+    QPixmap shotImag = primaryScreen->grabWindow(0);
+
+    mpScreenShotEditer->SetScreenShotImage(shotImag);
+    mpScreenShotEditer->SetWindowRectList(mWinRectList);
+    mpScreenShotEditer->show();
 
     //HWINSTA hWinStation = GetProcessWindowStation();
     //::GetUserObjectInformation(hWinStation, UOI_NAME, objName, 128, &bufLenNeed);
@@ -132,7 +158,7 @@ void MiscellaneousImageGrabber::UpdateLogInfo()
     ::GetWindowRect(mCurMouseWin, &curWinRect);
 
     QString logContent = QString("LogInfo Test %1\n").arg(++i);
-    logContent += QString("Cur Win : 0x%1\n").arg(QString("%1").arg(reinterpret_cast<long>(mCurMouseWin), 8, 16, QChar('0')).toUpper());;
+    logContent += QString("Cur Win : 0x%1\n").arg(QString("%1").arg(reinterpret_cast<qulonglong>(mCurMouseWin), 8, 16, QChar('0')).toUpper());;
     logContent += QString("Mouse Point : (%1, %2)\n").arg(mMousePoint.x()).arg(mMousePoint.y());
     logContent += QString("Mouse Win Rect : (%1, %2) (%3, %4)")
         .arg(curWinRect.left).arg(curWinRect.top).arg(curWinRect.right - curWinRect.left).arg(curWinRect.bottom - curWinRect.top);
@@ -146,6 +172,21 @@ void MiscellaneousImageGrabber::GetWindowClassName(HWND hWnd, std::string& wndCl
     wndClassName = className;
 }
 
+void MiscellaneousImageGrabber::EnumTopLevelWindow()
+{
+    HWND desktopWnd = ::GetDesktopWindow();
+    HWND winTopLevel = ::GetTopWindow(nullptr);
+    do 
+    {
+        RECT winRect = { 0 };
+        if (::GetWindowRect(winTopLevel, &winRect) && winRect.right > winRect.left && winRect.bottom > winRect.top)
+        {
+            mWinRectList.push_back(winRect);
+        }
+        winTopLevel = ::GetNextWindow(winTopLevel, GW_HWNDNEXT);
+    } while (winTopLevel != nullptr && winTopLevel != desktopWnd);
+}
+
 void MiscellaneousImageGrabber::EnumChildWindowRecursively(HWND parentWnd)
 {
     ::EnumChildWindows(parentWnd, EnumChildWindowProc, reinterpret_cast<LPARAM>(this));
@@ -155,6 +196,9 @@ BOOL MiscellaneousImageGrabber::EnumChildWindowProcShadow(HWND childWnd)
 {
     std::string wndClassName;
     this->GetWindowClassName(childWnd, wndClassName);
+    //LogUtil::Debug(CODE_LOCATION, "childWnd=0x%08X wndClassName=%s", childWnd, wndClassName.c_str());
+
+    ::EnumChildWindows(childWnd, EnumChildWindowProc, reinterpret_cast<LPARAM>(this));
 
     if (::IsWindow(childWnd) && ::IsWindowVisible(childWnd))
     {
@@ -163,9 +207,6 @@ BOOL MiscellaneousImageGrabber::EnumChildWindowProcShadow(HWND childWnd)
         mWinRectList.emplace_back(winRect);
         //LogUtil::Debug(CODE_LOCATION, "childWnd=0x%08X wndClassName=%s", childWnd, wndClassName.c_str());
     }
-    //LogUtil::Debug(CODE_LOCATION, "childWnd=0x%08X wndClassName=%s", childWnd, wndClassName.c_str());
-
-    ::EnumChildWindows(childWnd, EnumChildWindowProc, reinterpret_cast<LPARAM>(this));
 
     return TRUE;
 }
@@ -198,4 +239,94 @@ BOOL CALLBACK MiscellaneousImageGrabber::EnumWindowStationProc(_In_ LPTSTR lpszW
 {
     MiscellaneousImageGrabber* pThis = reinterpret_cast<MiscellaneousImageGrabber*>(lParam);
     return pThis->EnumWindowStationProcShadow(lpszWindowStation);
+}
+
+ScreenShotEditer::ScreenShotEditer(QWidget* parent /* = nullptr */)
+    : QWidget(parent)
+{
+    if (this->objectName().isEmpty())
+    {
+        this->setObjectName("ScreenShotEditer-Testing");
+    }
+    QDesktopWidget* pDesktop = QApplication::desktop();
+    QPalette palette1 = this->palette();
+    palette1.setColor(QPalette::Background, Qt::transparent);
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint);
+    this->setGeometry(0, 0, pDesktop->width(), pDesktop->height());
+    this->setAutoFillBackground(true);
+    this->setPalette(palette1);
+    this->setMouseTracking(true);
+
+    mDesktopRect = pDesktop->rect();
+}
+
+ScreenShotEditer::~ScreenShotEditer()
+{
+    ;
+}
+
+void ScreenShotEditer::SetScreenShotImage(const QPixmap& pixmap)
+{
+    mScreenShot = pixmap;
+}
+
+void ScreenShotEditer::SetWindowRectList(const std::list<RECT>& winRectList)
+{
+    mWinRectList = winRectList;
+}
+
+void ScreenShotEditer::mouseMoveEvent(QMouseEvent* event)
+{
+    mCurMousePos = event->pos();
+    int x = mCurMousePos.x();
+    int y = mCurMousePos.y();
+
+    auto winRectIt = mWinRectList.begin();
+    auto winRectEnd = mWinRectList.end();
+    while (winRectIt != winRectEnd)
+    {
+        if (winRectIt->left <= x && x <= winRectIt->right && winRectIt->top <= y && y <= winRectIt->bottom)
+        {
+            mCurWinRect = QRect(QPoint(winRectIt->left, winRectIt->top), QPoint(winRectIt->right, winRectIt->bottom));;
+            this->update();
+            break;
+        }
+        winRectIt++;
+    }
+
+    //auto winRectIt = mWinRectList.rbegin();
+    //auto winRectEnd = mWinRectList.rend();
+    //mCurWinRect = mDesktopRect;
+    //while (winRectIt != winRectEnd)
+    //{
+    //    if (winRectIt->left <= x && x <= winRectIt->right && winRectIt->top <= y && y <= winRectIt->bottom)
+    //    {
+    //        QRect winRect(QPoint(winRectIt->left, winRectIt->top), QPoint(winRectIt->right, winRectIt->bottom));
+    //        if (mCurWinRect != winRect && mCurWinRect.contains(winRect.topLeft()) && mCurWinRect.contains(winRect.bottomRight()))
+    //        {
+    //            mCurWinRect = winRect;
+    //            this->update();
+    //        }
+    //    }
+    //    winRectIt++;
+    //}
+}
+
+void ScreenShotEditer::paintEvent(QPaintEvent* event)
+{
+    QPen rectPen(Qt::red);
+    rectPen.setWidth(3);
+    QPainter painter(this);
+    painter.drawPixmap(this->rect(), mScreenShot);
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(rectPen);
+    painter.drawRect(mCurWinRect);
+}
+
+void ScreenShotEditer::keyReleaseEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape)
+    {
+        this->hide();
+    }
 }

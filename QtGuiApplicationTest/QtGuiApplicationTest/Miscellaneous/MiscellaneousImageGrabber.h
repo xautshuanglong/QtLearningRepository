@@ -7,6 +7,8 @@
 
 namespace Ui {class MiscellaneousImageGrabber;};
 
+class ScreenShotEditer;
+
 class MiscellaneousImageGrabber : public MiscellaneousBase
 {
     Q_OBJECT
@@ -34,6 +36,7 @@ private slots:
 private:
     void UpdateLogInfo();
     void GetWindowClassName(HWND hWnd, std::string& wndClassName);
+    void EnumTopLevelWindow();
     void EnumChildWindowRecursively(HWND parentWnd);
     BOOL EnumChildWindowProcShadow(HWND childWnd);
     BOOL EnumDesktopProcShadow(LPTSTR lpszDesktop);
@@ -47,6 +50,32 @@ private:
     std::list<RECT>                mWinRectList;
     HWND                           mCurMouseWin;
     QPoint                         mMousePoint;
+    ScreenShotEditer              *mpScreenShotEditer;
+};
+
+
+class ScreenShotEditer : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ScreenShotEditer(QWidget* parent = nullptr);
+    ~ScreenShotEditer();
+
+    void SetScreenShotImage(const QPixmap& pixmap);
+    void SetWindowRectList(const std::list<RECT>& winRectList);
+
+protected:
+    virtual void mouseMoveEvent(QMouseEvent* event) override;
+    virtual void paintEvent(QPaintEvent* event) override;
+    virtual void keyReleaseEvent(QKeyEvent* event) override;
+
+private:
+    QRect                          mDesktopRect;
+    QRect                          mCurWinRect;
+    QPoint                         mCurMousePos;
+    QPixmap                        mScreenShot;
+    std::list<RECT>                mWinRectList;
 };
 
 #endif // MISCELLANEOUS_IMAGE_GRABBER_H
