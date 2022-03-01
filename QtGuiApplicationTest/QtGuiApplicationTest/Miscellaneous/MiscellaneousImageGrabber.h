@@ -32,15 +32,20 @@ private slots:
     void on_btnGrabWidget_clicked();
     void on_btnGrabScreenAll_clicked();
     void on_btnGrabScrollArea_clicked();
+    void on_btnEnumWindow_clicked();
 
 private:
     void UpdateLogInfo();
     void GetWindowClassName(HWND hWnd, std::string& wndClassName);
+    void GetWindowTitleString(HWND hWnd, std::string& wndTitle);
     void EnumTopLevelWindow();
+    void EnumZOrderWindow();
     void EnumChildWindowRecursively(HWND parentWnd);
+    BOOL EnumWindowProcShadow(HWND hwnd);
     BOOL EnumChildWindowProcShadow(HWND childWnd);
     BOOL EnumDesktopProcShadow(LPTSTR lpszDesktop);
     BOOL EnumWindowStationProcShadow(LPTSTR lpszWindowStation);
+    static BOOL CALLBACK EnumWindowsProc(_In_ HWND   hwnd, _In_ LPARAM lParam);
     static BOOL CALLBACK EnumChildWindowProc(_In_ HWND hwnd, _In_ LPARAM lParam);
     static BOOL CALLBACK EnumDesktopProc(_In_ LPTSTR lpszDesktop, _In_ LPARAM lParam);
     static BOOL CALLBACK EnumWindowStationProc(_In_ LPTSTR lpszWindowStation, _In_ LPARAM lParam);

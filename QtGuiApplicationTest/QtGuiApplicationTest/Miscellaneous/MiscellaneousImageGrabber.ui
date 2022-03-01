@@ -49,6 +49,19 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnGrabWidget">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Grab Widget</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="btnGrabDesktop">
        <property name="minimumSize">
@@ -75,6 +88,19 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnGrabScreenAll">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Grab Screen All</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="btnGrabWindow">
        <property name="minimumSize">
@@ -85,19 +111,6 @@
        </property>
        <property name="text">
         <string>Grab Window</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnGrabWidget">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Grab Widget</string>
        </property>
       </widget>
      </item>
@@ -114,8 +127,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnGrabScreenAll">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="btnEnumWindow">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -123,7 +136,20 @@
         </size>
        </property>
        <property name="text">
-        <string>Grab Screen All</string>
+        <string>Enumerate Top Level Window</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="btnEmptyTest">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Emptry Test</string>
        </property>
       </widget>
      </item>

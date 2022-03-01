@@ -80,6 +80,7 @@ void MiscellaneousImageGrabber::on_btnGrabWindow_clicked()
     this->mWinRectList.clear();
     this->GetWindowClassName(desktopWnd, deskClassName);
     //this->EnumChildWindowRecursively(desktopWnd);
+    //this->EnumZOrderWindow();
     this->EnumTopLevelWindow();
     this->UpdateLogInfo();
 
@@ -151,6 +152,11 @@ void MiscellaneousImageGrabber::on_btnGrabScrollArea_clicked()
     int i = 0;
 }
 
+void MiscellaneousImageGrabber::on_btnEnumWindow_clicked()
+{
+    this->EnumTopLevelWindow();
+}
+
 void MiscellaneousImageGrabber::UpdateLogInfo()
 {
     static int i = 0;
@@ -172,10 +178,22 @@ void MiscellaneousImageGrabber::GetWindowClassName(HWND hWnd, std::string& wndCl
     wndClassName = className;
 }
 
+void MiscellaneousImageGrabber::GetWindowTitleString(HWND hWnd, std::string& wndTitle)
+{
+    char titleStr[256] = { 0 };
+    ::GetWindowText(hWnd, titleStr, 256);
+    wndTitle = titleStr;
+}
+
 void MiscellaneousImageGrabber::EnumTopLevelWindow()
 {
-    HWND desktopWnd = ::GetDesktopWindow();
-    HWND winTopLevel = ::GetTopWindow(nullptr);
+    mWinRectList.clear();
+    ::EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(this));
+}
+
+void MiscellaneousImageGrabber::EnumZOrderWindow()
+{
+    HWND winTopLevel = ::GetForegroundWindow();
     do 
     {
         RECT winRect = { 0 };
@@ -184,12 +202,34 @@ void MiscellaneousImageGrabber::EnumTopLevelWindow()
             mWinRectList.push_back(winRect);
         }
         winTopLevel = ::GetNextWindow(winTopLevel, GW_HWNDNEXT);
-    } while (winTopLevel != nullptr && winTopLevel != desktopWnd);
+    } while (winTopLevel != nullptr);
 }
 
 void MiscellaneousImageGrabber::EnumChildWindowRecursively(HWND parentWnd)
 {
     ::EnumChildWindows(parentWnd, EnumChildWindowProc, reinterpret_cast<LPARAM>(this));
+}
+
+BOOL MiscellaneousImageGrabber::EnumWindowProcShadow(HWND hwnd)
+{
+    std::string wndClassName;
+    this->GetWindowClassName(hwnd, wndClassName);
+
+    std::string winTitle;
+    this->GetWindowTitleString(hwnd, winTitle);
+
+    if (::IsWindow(hwnd) && ::IsWindowVisible(hwnd))
+    {
+        RECT winRect = { 0 };
+        if (::GetWindowRect(hwnd, &winRect) && winRect.right > winRect.left && winRect.bottom > winRect.top)
+        {
+            mWinRectList.push_back(winRect);
+        }
+    }
+
+    LogUtil::Debug(CODE_LOCATION, "hwnd=0x%08X wndClassName=%s wndTitle=%s", hwnd, wndClassName.c_str(), winTitle.c_str());
+
+    return TRUE;
 }
 
 BOOL MiscellaneousImageGrabber::EnumChildWindowProcShadow(HWND childWnd)
@@ -221,6 +261,12 @@ BOOL MiscellaneousImageGrabber::EnumWindowStationProcShadow(LPTSTR lpszWindowSta
 {
     LogUtil::Debug(CODE_LOCATION, "lpszWindowStation=%s", lpszWindowStation);
     return TRUE;
+}
+
+BOOL CALLBACK MiscellaneousImageGrabber::EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
+{
+    MiscellaneousImageGrabber* pThis = reinterpret_cast<MiscellaneousImageGrabber*>(lParam);
+    return pThis->EnumWindowProcShadow(hwnd);
 }
 
 BOOL CALLBACK MiscellaneousImageGrabber::EnumChildWindowProc(_In_ HWND hwnd, _In_ LPARAM lParam)
