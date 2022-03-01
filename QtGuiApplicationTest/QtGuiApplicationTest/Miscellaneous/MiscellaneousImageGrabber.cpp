@@ -333,7 +333,7 @@ void ScreenShotEditer::mouseMoveEvent(QMouseEvent* event)
     {
         if (winRectIt->left <= x && x <= winRectIt->right && winRectIt->top <= y && y <= winRectIt->bottom)
         {
-            mCurWinRect = QRect(QPoint(winRectIt->left, winRectIt->top), QPoint(winRectIt->right, winRectIt->bottom));;
+            mCurWinRect = QRect(QPoint(winRectIt->left, winRectIt->top), QPoint(winRectIt->right - 1, winRectIt->bottom - 1)); // ¼õÈ¥±ß¿ò¿í¶È
             this->update();
             break;
         }
@@ -361,12 +361,16 @@ void ScreenShotEditer::mouseMoveEvent(QMouseEvent* event)
 void ScreenShotEditer::paintEvent(QPaintEvent* event)
 {
     QPen rectPen(Qt::red);
-    rectPen.setWidth(3);
+    rectPen.setWidth(1);
     QPainter painter(this);
     painter.drawPixmap(this->rect(), mScreenShot);
     painter.setBrush(Qt::NoBrush);
     painter.setPen(rectPen);
     painter.drawRect(mCurWinRect);
+
+    //rectPen.setColor(Qt::blue);
+    //painter.setPen(rectPen);
+    //painter.drawRect(QRect(100, 100, 300, 200));
 }
 
 void ScreenShotEditer::keyReleaseEvent(QKeyEvent* event)
