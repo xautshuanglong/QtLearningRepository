@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>558</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,8 +45,8 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnEmptyTest">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnCustomTimer">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -54,7 +54,33 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Empty Test</string>
+        <string>Custom Timer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnSetCoalescableTimer">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>SetCoalescableTimer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="btnTemporaryThread">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>QTimer temporary thread</string>
        </property>
       </widget>
      </item>
@@ -77,8 +103,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="btnTemporaryThread">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="btnEmptyTest1">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -86,12 +112,12 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>QTimer temporary thread</string>
+        <string>Empty Test</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnCustomTimer">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="btnEmptyTest2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -99,7 +125,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Custom Timer</string>
+        <string>Empty Test</string>
        </property>
       </widget>
      </item>

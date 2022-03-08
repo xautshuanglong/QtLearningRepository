@@ -13,6 +13,7 @@ using namespace Shuanglong::Utils;
 MiscellaneousQTimerTest::MiscellaneousQTimerTest(QWidget *parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousQTimerTest())
+    , mTimerEventID(0)
 {
     ui->setupUi(this);
 }
@@ -57,7 +58,26 @@ void MiscellaneousQTimerTest::on_btnTemporaryThread_clicked()
     int i = 0;
 }
 
+void MiscellaneousQTimerTest::on_btnSetCoalescableTimer_clicked()
+{
+    static int clickCount = 0;
+    ++clickCount;
+    if (clickCount % 2 == 0)
+    {
+        mTimerEventID = ::SetCoalescableTimer(nullptr, mTimerEventID, 10000, TimerProcdure, TIMERV_NO_COALESCING);
+    }
+    else
+    {
+        mTimerEventID = ::SetCoalescableTimer(nullptr, mTimerEventID, 5000, TimerProcdure, TIMERV_NO_COALESCING);
+    }
+}
+
 void MiscellaneousQTimerTest::on_btnEmptyTest_clicked()
+{
+    int i = 0;
+}
+
+void MiscellaneousQTimerTest::TimerProcdure(HWND unnamedParam1, UINT unnamedParam2, UINT_PTR unnamedParam3, DWORD unnamedParam4)
 {
     int i = 0;
 }
