@@ -4,6 +4,7 @@
 #include "MiscellaneousBase.h"
 
 #include <Windows.h>
+#include <d3d11_1.h>
 
 namespace Ui {class MiscellaneousImageGrabber;};
 
@@ -13,7 +14,7 @@ class MiscellaneousImageGrabber : public MiscellaneousBase
 {
     Q_OBJECT
 
-public:
+ public:
     MiscellaneousImageGrabber(QWidget *parent = 0);
     ~MiscellaneousImageGrabber();
 
@@ -32,9 +33,13 @@ private slots:
     void on_btnGrabWidget_clicked();
     void on_btnGrabScreenAll_clicked();
     void on_btnGrabScrollArea_clicked();
+    void on_btnGrabDxgi_clicked();
+    void on_btnDxgiEnum_clicked();
     void on_btnEnumWindow_clicked();
 
 private:
+    void Init3D();
+    void Uninit3D();
     void UpdateLogInfo();
     void GetWindowClassName(HWND hWnd, std::string& wndClassName);
     void GetWindowTitleString(HWND hWnd, std::string& wndTitle);
@@ -56,6 +61,9 @@ private:
     HWND                           mCurMouseWin;
     QPoint                         mMousePoint;
     ScreenShotEditer              *mpScreenShotEditer;
+    ID3D11Device                  *mpDevice;
+    ID3D11DeviceContext           *mpDeviceCtx;
+    IDXGIOutputDuplication        *mpDxgiOutputDuplication;
 };
 
 

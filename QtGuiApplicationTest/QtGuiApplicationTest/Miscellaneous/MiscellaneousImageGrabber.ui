@@ -49,19 +49,6 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnGrabWidget">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Grab Widget</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="btnGrabDesktop">
        <property name="minimumSize">
@@ -72,19 +59,6 @@
        </property>
        <property name="text">
         <string>Grab Desktop</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="btnGrabScreen">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Grab Screen</string>
        </property>
       </widget>
      </item>
@@ -101,6 +75,19 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="btnEnumWindow">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Enumerate Top Level Window</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="btnGrabWindow">
        <property name="minimumSize">
@@ -111,6 +98,45 @@
        </property>
        <property name="text">
         <string>Grab Window</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="btnCaptureScreen">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Capture Screen</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="btnGrabScreen">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Grab Screen</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnGrabWidget">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Grab Widget</string>
        </property>
       </widget>
      </item>
@@ -127,8 +153,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="btnEnumWindow">
+     <item row="1" column="4">
+      <widget class="QPushButton" name="btnGrabDxgi">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -136,12 +162,12 @@
         </size>
        </property>
        <property name="text">
-        <string>Enumerate Top Level Window</string>
+        <string>Grab DXGI</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="btnEmptyTest">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="btnDxgiEnum">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -149,7 +175,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Emptry Test</string>
+        <string>DXGI Enumerator</string>
        </property>
       </widget>
      </item>

@@ -1,6 +1,9 @@
 #include "MiscellaneousImageGrabber.h"
 #include "ui_MiscellaneousImageGrabber.h"
 
+// Windows Headers
+#include <d3d11_1.h>
+
 // QT Headers
 #include <QImage>
 #include <QPixmap>
@@ -17,11 +20,15 @@ MiscellaneousImageGrabber::MiscellaneousImageGrabber(QWidget* parent)
     : MiscellaneousBase(parent)
     , ui(new Ui::MiscellaneousImageGrabber())
     , mCurMouseWin(nullptr)
+    , mpDevice(nullptr)
+    , mpDeviceCtx(nullptr)
+    , mpDxgiOutputDuplication(nullptr)
 {
     ui->setupUi(this);
     this->setMouseTracking(true);
 
     mpScreenShotEditer = new ScreenShotEditer();
+    this->Init3D();
 
     //QWidget *pWidget = new QWidget(this);
     //QPalette palette2 = pWidget->palette();
@@ -38,6 +45,7 @@ MiscellaneousImageGrabber::~MiscellaneousImageGrabber()
         delete mpScreenShotEditer;
         mpScreenShotEditer = nullptr;
     }
+    this->Uninit3D();
     delete ui;
 }
 
@@ -152,9 +160,176 @@ void MiscellaneousImageGrabber::on_btnGrabScrollArea_clicked()
     int i = 0;
 }
 
+void MiscellaneousImageGrabber::on_btnGrabDxgi_clicked()
+{
+    IDXGIResource* pDesktopResource = nullptr;
+    DXGI_OUTDUPL_FRAME_INFO dxgiOutduplFrameInfo = { 0 };
+    mpDxgiOutputDuplication->AcquireNextFrame(0, &dxgiOutduplFrameInfo, &pDesktopResource);
+
+    ID3D11Texture2D* pD3dTexture2D = nullptr;
+    pDesktopResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pD3dTexture2D));
+    pDesktopResource->Release();
+
+    D3D11_TEXTURE2D_DESC d3d11Texture2dDesc = { 0 };
+    pD3dTexture2D->GetDesc(&d3d11Texture2dDesc);
+    d3d11Texture2dDesc.Usage = D3D11_USAGE_STAGING;
+    d3d11Texture2dDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+    d3d11Texture2dDesc.BindFlags = 0;
+    d3d11Texture2dDesc.MiscFlags = 0;
+    d3d11Texture2dDesc.MipLevels = 1;
+    d3d11Texture2dDesc.ArraySize = 1;
+    d3d11Texture2dDesc.SampleDesc.Count = 1;
+
+    ID3D11Texture2D* pNewDesktopImage = nullptr;
+    mpDevice->CreateTexture2D(&d3d11Texture2dDesc, nullptr, &pNewDesktopImage);
+
+    mpDeviceCtx->CopyResource(pNewDesktopImage, pD3dTexture2D);
+    pD3dTexture2D->Release();
+    mpDxgiOutputDuplication->ReleaseFrame();
+
+    IDXGISurface* pDxgiSurface = nullptr;
+    pNewDesktopImage->QueryInterface(__uuidof(IDXGISurface), reinterpret_cast<void**>(&pDxgiSurface));
+    pNewDesktopImage->Release();
+
+    DXGI_MAPPED_RECT mappedRect;
+    pDxgiSurface->Map(&mappedRect, DXGI_MAP_READ);
+    //memcpy((BYTE*)pImgData, mappedRect.pBits, dxgiOutputDesc.DesktopCoordinates.right * dxgiOutputDesc.DesktopCoordinates.bottom * 4);
+    pDxgiSurface->Unmap();
+    pDxgiSurface->Release();
+}
+
+void MiscellaneousImageGrabber::on_btnDxgiEnum_clicked()
+{
+    // √∂æŸ  ≈‰∆˜≤‚ ‘
+    IDXGIFactory *mpDxgiFactory = nullptr;
+    HRESULT hResult = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void **>(&mpDxgiFactory));
+    if (FAILED(hResult))
+    {
+        LogUtil::Error(CODE_LOCATION, "CreateDXGIFactory failed !");
+        return;
+    }
+    IDXGIAdapter *pTempAdapter = nullptr;
+    for (UINT i = 0; mpDxgiFactory->EnumAdapters(i, &pTempAdapter) != DXGI_ERROR_NOT_FOUND; ++i)
+    {
+        if (pTempAdapter)
+        {
+            DXGI_ADAPTER_DESC tempDxgiAdapterDesc = { 0 };
+            pTempAdapter->GetDesc(&tempDxgiAdapterDesc);
+
+
+            UINT outputNum = 0;
+            IDXGIOutput *pDxgiOutput = nullptr;
+            hResult = pTempAdapter->EnumOutputs(outputNum, &pDxgiOutput);
+            pTempAdapter->Release();
+            pTempAdapter = nullptr;
+
+            if (FAILED(hResult))
+            {
+                LogUtil::Error(CODE_LOCATION, "EnumOutputs failed !");
+                continue;;
+            }
+
+            DXGI_OUTPUT_DESC dxgiOutputDesc = { 0 };
+            pDxgiOutput->GetDesc(&dxgiOutputDesc);
+
+            int i = 0;
+        }
+    }
+    if (mpDxgiFactory)
+    {
+        mpDxgiFactory->Release();
+        mpDxgiFactory = nullptr;
+    }
+}
+
 void MiscellaneousImageGrabber::on_btnEnumWindow_clicked()
 {
     this->EnumTopLevelWindow();
+}
+
+void MiscellaneousImageGrabber::Init3D()
+{
+    HRESULT hResult = S_OK;
+    UINT createFlags = D3D11_CREATE_DEVICE_DEBUG;
+    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_WARP;
+    D3D_FEATURE_LEVEL featureLevel;
+    D3D_FEATURE_LEVEL featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_11_1,
+        D3D_FEATURE_LEVEL_11_0,
+    };
+    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+    hResult = ::D3D11CreateDevice(nullptr, driverType, nullptr, createFlags, featureLevels, numFeatureLevels, D3D11_SDK_VERSION, &mpDevice, &featureLevel, &mpDeviceCtx);
+    if (hResult == E_INVALIDARG)
+    {
+        hResult = ::D3D11CreateDevice(nullptr, driverType, nullptr, createFlags, &featureLevels[1], numFeatureLevels - 1, D3D11_SDK_VERSION, &mpDevice, &featureLevel, &mpDeviceCtx);
+    }
+    if (FAILED(hResult))
+    {
+        LogUtil::Error(CODE_LOCATION, "D3D11CreateDevice failed !");
+        return;
+    }
+
+    IDXGIDevice *pDxgiDevice = nullptr;
+    hResult = mpDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&pDxgiDevice));
+    IDXGIAdapter *pDxgiAdapter = nullptr;
+    hResult = pDxgiDevice->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void **>(&pDxgiAdapter));
+    //hResult = pDxgiDevice->GetAdapter(&pDxgiAdapter);
+
+    DXGI_ADAPTER_DESC dxgiAdapterDesc = { 0 };
+    pDxgiAdapter->GetDesc(&dxgiAdapterDesc);
+
+    UINT outputNum = 0;
+    IDXGIOutput* pDxgiOutput = nullptr;
+    hResult = pDxgiAdapter->EnumOutputs(outputNum, &pDxgiOutput);
+    pDxgiAdapter->Release();
+    if (FAILED(hResult))
+    {
+        LogUtil::Error(CODE_LOCATION, "EnumOutputs failed !");
+        return;
+    }
+
+    DXGI_OUTPUT_DESC dxgiOutputDesc = { 0 };
+    pDxgiOutput->GetDesc(&dxgiOutputDesc);
+
+    IDXGIOutput1 *pDxgiOuput1 = nullptr;
+    pDxgiOutput->QueryInterface(__uuidof(IDXGIOutput1), reinterpret_cast<void**>(&pDxgiOuput1));
+    pDxgiOutput->Release();
+
+    if (pDxgiDevice != nullptr)
+    {
+        pDxgiOuput1->DuplicateOutput(pDxgiDevice, &mpDxgiOutputDuplication);
+        pDxgiOuput1->Release();
+        pDxgiDevice->Release();
+    }
+
+    DXGI_OUTDUPL_DESC dxgiOutduplDesc = { 0 };
+    mpDxgiOutputDuplication->GetDesc(&dxgiOutduplDesc);
+    if (dxgiOutduplDesc.DesktopImageInSystemMemory)
+    {
+    } 
+    else
+    {
+    }
+}
+
+void MiscellaneousImageGrabber::Uninit3D()
+{
+    if (mpDxgiOutputDuplication)
+    {
+        mpDxgiOutputDuplication->Release();
+        mpDxgiOutputDuplication = nullptr;
+    }
+    if (mpDeviceCtx)
+    {
+        mpDeviceCtx->Release();
+        mpDeviceCtx = nullptr;
+    }
+    if (mpDevice)
+    {
+        mpDevice->Release();
+        mpDevice;
+    }
 }
 
 void MiscellaneousImageGrabber::UpdateLogInfo()
