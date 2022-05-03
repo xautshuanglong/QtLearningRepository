@@ -45,6 +45,15 @@ MiscellaneousImageGrabber::~MiscellaneousImageGrabber()
         delete mpScreenShotEditer;
         mpScreenShotEditer = nullptr;
     }
+    for (auto& monitorDxgiOutputIt : mMonitorDxgiOutput)
+    {
+        if (monitorDxgiOutputIt.second != nullptr)
+        {
+            monitorDxgiOutputIt.second->Release();
+            monitorDxgiOutputIt.second = nullptr;
+        }
+    }
+    mMonitorDxgiOutput.clear();
     this->Uninit3D();
     delete ui;
 }
@@ -200,6 +209,9 @@ void MiscellaneousImageGrabber::on_btnGrabDxgi_clicked()
 
 void MiscellaneousImageGrabber::on_btnDxgiEnum_clicked()
 {
+    POINT curMousePos = { 0,0 };
+    ::GetCursorPos(&curMousePos);
+    HMONITOR curMonitor = ::MonitorFromPoint(curMousePos, MONITOR_DEFAULTTONEAREST);
     // √∂æŸ  ≈‰∆˜≤‚ ‘
     IDXGIFactory *mpDxgiFactory = nullptr;
     HRESULT hResult = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void **>(&mpDxgiFactory));
@@ -215,22 +227,29 @@ void MiscellaneousImageGrabber::on_btnDxgiEnum_clicked()
         {
             DXGI_ADAPTER_DESC tempDxgiAdapterDesc = { 0 };
             pTempAdapter->GetDesc(&tempDxgiAdapterDesc);
-
-
             UINT outputNum = 0;
-            IDXGIOutput *pDxgiOutput = nullptr;
-            hResult = pTempAdapter->EnumOutputs(outputNum, &pDxgiOutput);
+
+            do 
+            {
+                IDXGIOutput *pDxgiOutput = nullptr;
+                hResult = pTempAdapter->EnumOutputs(outputNum, &pDxgiOutput);
+
+                if (SUCCEEDED(hResult))
+                {
+                    DXGI_OUTPUT_DESC dxgiOutputDesc = { 0 };
+                    pDxgiOutput->GetDesc(&dxgiOutputDesc);
+                    mMonitorDxgiOutput[dxgiOutputDesc.Monitor] = pDxgiOutput;
+
+                    if (curMonitor == dxgiOutputDesc.Monitor)
+                    {
+                        int i = 0;
+                    }
+                }
+                ++outputNum;
+            } while (hResult != DXGI_ERROR_NOT_FOUND);
+
             pTempAdapter->Release();
             pTempAdapter = nullptr;
-
-            if (FAILED(hResult))
-            {
-                LogUtil::Error(CODE_LOCATION, "EnumOutputs failed !");
-                continue;;
-            }
-
-            DXGI_OUTPUT_DESC dxgiOutputDesc = { 0 };
-            pDxgiOutput->GetDesc(&dxgiOutputDesc);
 
             int i = 0;
         }
@@ -374,7 +393,18 @@ void MiscellaneousImageGrabber::EnumZOrderWindow()
         RECT winRect = { 0 };
         if (::GetWindowRect(winTopLevel, &winRect) && winRect.right > winRect.left && winRect.bottom > winRect.top)
         {
-            mWinRectList.push_back(winRect);
+            std::string className, winTitle;
+            this->GetWindowClassName(winTopLevel, className);
+            this->GetWindowTitleString(winTopLevel, winTitle);
+            CaptureWindowInfo winInfo;
+            winInfo.winHandle = winTopLevel;
+            winInfo.winRect = winRect;
+            winInfo.className = className;
+            winInfo.winTitle = winTitle;
+            if (className != "popupshadow")
+            {
+                mWinRectList.push_back(winInfo);
+            }
         }
         winTopLevel = ::GetNextWindow(winTopLevel, GW_HWNDNEXT);
     } while (winTopLevel != nullptr);
@@ -396,9 +426,33 @@ BOOL MiscellaneousImageGrabber::EnumWindowProcShadow(HWND hwnd)
     if (::IsWindow(hwnd) && ::IsWindowVisible(hwnd))
     {
         RECT winRect = { 0 };
-        if (::GetWindowRect(hwnd, &winRect) && winRect.right > winRect.left && winRect.bottom > winRect.top)
+        RECT clientRect = { 0 };
+        WINDOWINFO windowInfo = { 0 };
+        if (::GetClientRect(hwnd, &clientRect) && ::GetWindowRect(hwnd, &winRect) && ::GetWindowInfo(hwnd, &windowInfo)
+            && winRect.right > winRect.left && winRect.bottom > winRect.top)
         {
-            mWinRectList.push_back(winRect);
+            RECT realRect = { 0 };
+            realRect.left = winRect.left + clientRect.left;
+            realRect.top = winRect.top;
+            realRect.right = winRect.left + clientRect.right;
+            realRect.bottom = winRect.top + clientRect.bottom;
+
+            std::string className, winTitle;
+            this->GetWindowClassName(hwnd, className);
+            this->GetWindowTitleString(hwnd, winTitle);
+            CaptureWindowInfo winInfo;
+            winInfo.winHandle = hwnd;
+            winInfo.winRect = winRect;
+            winInfo.clientRect = clientRect;
+            winInfo.realRect = realRect;
+            winInfo.rcWindow = windowInfo.rcWindow;
+            winInfo.rcClient = windowInfo.rcClient;
+            winInfo.className = className;
+            winInfo.winTitle = winTitle;
+            if (className != "popupshadow")
+            {
+                mWinRectList.push_back(winInfo);
+            }
         }
     }
 
@@ -419,7 +473,18 @@ BOOL MiscellaneousImageGrabber::EnumChildWindowProcShadow(HWND childWnd)
     {
         RECT winRect = { 0 };
         ::GetWindowRect(childWnd, &winRect);
-        mWinRectList.emplace_back(winRect);
+        std::string className, winTitle;
+        this->GetWindowClassName(childWnd, className);
+        this->GetWindowTitleString(childWnd, winTitle);
+        CaptureWindowInfo winInfo;
+        winInfo.winHandle = childWnd;
+        winInfo.winRect = winRect;
+        winInfo.className = className;
+        winInfo.winTitle = winTitle;
+        if (className != "popupshadow")
+        {
+            mWinRectList.push_back(winInfo);
+        }
         //LogUtil::Debug(CODE_LOCATION, "childWnd=0x%08X wndClassName=%s", childWnd, wndClassName.c_str());
     }
 
@@ -491,7 +556,7 @@ void ScreenShotEditer::SetScreenShotImage(const QPixmap& pixmap)
     mScreenShot = pixmap;
 }
 
-void ScreenShotEditer::SetWindowRectList(const std::list<RECT>& winRectList)
+void ScreenShotEditer::SetWindowRectList(const std::list<CaptureWindowInfo>& winRectList)
 {
     mWinRectList = winRectList;
 }
@@ -506,9 +571,9 @@ void ScreenShotEditer::mouseMoveEvent(QMouseEvent* event)
     auto winRectEnd = mWinRectList.end();
     while (winRectIt != winRectEnd)
     {
-        if (winRectIt->left <= x && x <= winRectIt->right && winRectIt->top <= y && y <= winRectIt->bottom)
+        if (winRectIt->winRect.left <= x && x <= winRectIt->winRect.right && winRectIt->winRect.top <= y && y <= winRectIt->winRect.bottom)
         {
-            mCurWinRect = QRect(QPoint(winRectIt->left, winRectIt->top), QPoint(winRectIt->right - 2, winRectIt->bottom - 2)); // ºı»•±ﬂøÚøÌ∂»
+            mCurWinRect = *winRectIt;
             this->update();
             break;
         }
@@ -541,7 +606,37 @@ void ScreenShotEditer::paintEvent(QPaintEvent* event)
     painter.drawPixmap(this->rect(), mScreenShot);
     painter.setBrush(Qt::NoBrush);
     painter.setPen(rectPen);
-    painter.drawRect(mCurWinRect);
+
+    QRect winRect = QRect(QPoint(mCurWinRect.winRect.left, mCurWinRect.winRect.top), QPoint(mCurWinRect.winRect.right - 2, mCurWinRect.winRect.bottom - 2)); // ºı»•±ﬂøÚøÌ∂»
+    painter.drawRect(winRect);
+
+    QFont textFont;
+    textFont.setBold(true);
+    textFont.setPointSize(16);
+    painter.setFont(textFont);
+    QString testStr = QString::fromLocal8Bit(mCurWinRect.winTitle.c_str());
+
+    QPoint textPoint(winRect.left() + 10, winRect.top() + 20);
+    painter.drawText(textPoint, QString("ClassName: %1").arg(QString::fromStdString(mCurWinRect.className)));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("WinTitle: %1").arg(QString::fromLocal8Bit(mCurWinRect.winTitle.c_str())));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("HWND: 0x%1").arg((ulong)mCurWinRect.winHandle, 8, 16, QChar('0')));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("WinRect: (%1, %2) (%3, %4)").arg(mCurWinRect.winRect.left).arg(mCurWinRect.winRect.top)
+        .arg(mCurWinRect.winRect.right - mCurWinRect.winRect.left).arg(mCurWinRect.winRect.bottom - mCurWinRect.winRect.top));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("ClientRect: (%1, %2) (%3, %4)").arg(mCurWinRect.clientRect.left).arg(mCurWinRect.clientRect.top)
+        .arg(mCurWinRect.clientRect.right - mCurWinRect.clientRect.left).arg(mCurWinRect.clientRect.bottom - mCurWinRect.clientRect.top));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("RealRect: (%1, %2) (%3, %4)").arg(mCurWinRect.realRect.left).arg(mCurWinRect.realRect.top)
+        .arg(mCurWinRect.realRect.right - mCurWinRect.realRect.left).arg(mCurWinRect.realRect.bottom - mCurWinRect.realRect.top));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("RcWindow: (%1, %2) (%3, %4)").arg(mCurWinRect.rcWindow.left).arg(mCurWinRect.rcWindow.top)
+        .arg(mCurWinRect.rcWindow.right - mCurWinRect.rcWindow.left).arg(mCurWinRect.rcWindow.bottom - mCurWinRect.rcWindow.top));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("RcClient: (%1, %2) (%3, %4)").arg(mCurWinRect.rcClient.left).arg(mCurWinRect.rcClient.top)
+        .arg(mCurWinRect.rcClient.right - mCurWinRect.rcClient.left).arg(mCurWinRect.rcClient.bottom - mCurWinRect.rcClient.top));
 
     //rectPen.setColor(Qt::blue);
     //painter.setPen(rectPen);

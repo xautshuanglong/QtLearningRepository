@@ -10,6 +10,18 @@ namespace Ui {class MiscellaneousImageGrabber;};
 
 class ScreenShotEditer;
 
+struct CaptureWindowInfo
+{
+    RECT winRect = { 0 };
+    RECT clientRect = { 0 };
+    RECT realRect = { 0 };
+    RECT rcWindow = { 0 };
+    RECT rcClient = { 0 };
+    HWND winHandle = 0;
+    std::string className = "";
+    std::string winTitle = "";
+};
+
 class MiscellaneousImageGrabber : public MiscellaneousBase
 {
     Q_OBJECT
@@ -57,13 +69,14 @@ private:
 
 private:
     Ui::MiscellaneousImageGrabber *ui;
-    std::list<RECT>                mWinRectList;
+    std::list<CaptureWindowInfo>   mWinRectList;
     HWND                           mCurMouseWin;
     QPoint                         mMousePoint;
     ScreenShotEditer              *mpScreenShotEditer;
     ID3D11Device                  *mpDevice;
     ID3D11DeviceContext           *mpDeviceCtx;
     IDXGIOutputDuplication        *mpDxgiOutputDuplication;
+    std::unordered_map<HMONITOR, IDXGIOutput *> mMonitorDxgiOutput;
 };
 
 
@@ -76,7 +89,7 @@ public:
     ~ScreenShotEditer();
 
     void SetScreenShotImage(const QPixmap& pixmap);
-    void SetWindowRectList(const std::list<RECT>& winRectList);
+    void SetWindowRectList(const std::list<CaptureWindowInfo>& winRectList);
 
 protected:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
@@ -85,10 +98,10 @@ protected:
 
 private:
     QRect                          mDesktopRect;
-    QRect                          mCurWinRect;
     QPoint                         mCurMousePos;
     QPixmap                        mScreenShot;
-    std::list<RECT>                mWinRectList;
+    CaptureWindowInfo              mCurWinRect;
+    std::list<CaptureWindowInfo>   mWinRectList;
 };
 
 #endif // MISCELLANEOUS_IMAGE_GRABBER_H
