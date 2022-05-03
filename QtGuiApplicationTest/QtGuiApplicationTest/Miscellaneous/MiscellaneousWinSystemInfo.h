@@ -1,6 +1,7 @@
 #ifndef MISCELLANEOUS_WIN_SYSTEM_INFO_H
 #define MISCELLANEOUS_WIN_SYSTEM_INFO_H
 
+#include <windows.h>
 #include <mutex>
 #include <shared_mutex>
 
@@ -20,13 +21,14 @@ public:
     virtual MiscellaneousTestGroup GetGroupID() override;
     virtual MiscellaneousTestItem GetItemID() override;
 
-private:
-
 private slots:
     void on_btnSystemInfo_clicked();
     void on_btnTotalMemory_clicked();
     void on_btnEmptyTest1_clicked();
     void on_btnEmptyTest2_clicked();
+
+private:
+    std::string TimeSpanFromMillisecond(ULONGLONG milliSeconds);
 
 private:
     Ui::MiscellaneousWinSystemInfo ui;
