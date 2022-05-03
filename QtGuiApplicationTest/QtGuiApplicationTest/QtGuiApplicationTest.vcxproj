@@ -208,6 +208,7 @@
     <ClCompile Include="Miscellaneous\MiscellaneousQTimerTest.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinHook.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinRegistry.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinSystemInfo.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinThread.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinPrintDlg.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinSocket.cpp" />
@@ -285,6 +286,7 @@
     <QtUic Include="Miscellaneous\MiscellaneousQTimerTest.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinHook.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinRegistry.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinSystemInfo.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinThread.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinPrintDlg.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinSocket.ui" />
@@ -380,6 +382,7 @@
     <QtMoc Include="Miscellaneous\MiscellaneousWinHook.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinWMI.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousImageGrabber.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinSystemInfo.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />

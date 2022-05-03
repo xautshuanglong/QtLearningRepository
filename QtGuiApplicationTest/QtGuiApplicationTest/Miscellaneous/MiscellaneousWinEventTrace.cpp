@@ -95,7 +95,7 @@ MiscellaneousTestGroup MiscellaneousWinEventTrace::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousWinEventTrace::GetItemID()
 {
-    return MiscellaneousTestItem::WinAPI_EVent_Trace;
+    return MiscellaneousTestItem::WinAPI_Event_Trace;
 }
 
 void MiscellaneousWinEventTrace::on_btnEventSubscript_clicked()

@@ -21,12 +21,13 @@ Q_DECLARE_METATYPE(MiscellaneousTestGroup)
 enum class MiscellaneousTestItem
 {
     WinAPI_Thread_BeginThreadEx,      // Windows API 线程操作
-    WinAPI_Thread_WinPrintDlg,        // Windows API 打印机设置对话框
-    WinAPI_Thread_WinSocket,          // Windows API socket 网络编程
-    WinAPI_EVent_Trace,               // ETW : Event Trace for Windows 事件追踪机制测试
+    WinAPI_Print_Dialog,              // Windows API 打印机设置对话框
+    WinAPI_Socket,                    // Windows API socket 网络编程
+    WinAPI_Event_Trace,               // ETW : Event Trace for Windows 事件追踪机制测试
     WinAPI_Registry,                  // 注冊表操作 和 监听变更事件
     WinAPI_WMI,                       // WMI 使用 和 监听事件
     WinAPI_Hook,                      // 注冊系统钩子
+    WinAPI_SystemInfo,                // 系统信息参数获取
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_STL_Container,             // 标准库 容器
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值

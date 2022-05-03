@@ -26,7 +26,7 @@ MiscellaneousWinThread::~MiscellaneousWinThread()
 
 QString MiscellaneousWinThread::GetTitle()
 {
-    return QObject::tr("BeginThreadEx");
+    return QObject::tr("Thread");
 }
 
 QString MiscellaneousWinThread::GetTitleTooltip()

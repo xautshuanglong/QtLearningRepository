@@ -88,7 +88,7 @@ MiscellaneousTestGroup MiscellaneousWinSocket::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousWinSocket::GetItemID()
 {
-    return MiscellaneousTestItem::WinAPI_Thread_WinSocket;
+    return MiscellaneousTestItem::WinAPI_Socket;
 }
 
 void MiscellaneousWinSocket::CStyleSelectStart()

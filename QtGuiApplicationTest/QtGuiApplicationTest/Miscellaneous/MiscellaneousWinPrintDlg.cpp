@@ -31,7 +31,7 @@ MiscellaneousTestGroup MiscellaneousWinPrintDlg::GetGroupID()
 
 MiscellaneousTestItem MiscellaneousWinPrintDlg::GetItemID()
 {
-    return MiscellaneousTestItem::WinAPI_Thread_WinPrintDlg;
+    return MiscellaneousTestItem::WinAPI_Print_Dialog;
 }
 
 void MiscellaneousWinPrintDlg::on_btnPrintDlg_clicked()
