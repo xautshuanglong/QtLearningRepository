@@ -1,5 +1,7 @@
 #include "MiscellaneousWinSystemInfo.h"
 
+#include <winternl.h>
+
 #include "JCB_Logger/LogUtil.h"
 
 MiscellaneousWinSystemInfo::MiscellaneousWinSystemInfo(QWidget *parent /* = Q_NULLPTR */)
@@ -55,6 +57,10 @@ void MiscellaneousWinSystemInfo::on_btnSystemInfo_clicked()
         DWORD errorCode = GetLastError();
         int i = 0;
     }
+
+    ULONG returnedLen = 0;
+    SYSTEM_TIMEOFDAY_INFORMATION si = { 0 };
+    NtQuerySystemInformation(SystemTimeOfDayInformation, &si, sizeof(SYSTEM_TIMEOFDAY_INFORMATION), &returnedLen);
     int i = 0;
 }
 
