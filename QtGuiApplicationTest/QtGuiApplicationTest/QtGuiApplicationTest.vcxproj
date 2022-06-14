@@ -81,7 +81,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;Dwmapi.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
     <QtMoc>
@@ -118,7 +118,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;Dwmapi.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>

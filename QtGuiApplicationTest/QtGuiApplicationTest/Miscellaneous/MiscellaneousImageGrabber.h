@@ -17,6 +17,7 @@ struct CaptureWindowInfo
     RECT realRect = { 0 };
     RECT rcWindow = { 0 };
     RECT rcClient = { 0 };
+    RECT dwmRect = { 0 };
     HWND winHandle = 0;
     std::string className = "";
     std::string winTitle = "";
@@ -95,6 +96,7 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void paintEvent(QPaintEvent* event) override;
     virtual void keyReleaseEvent(QKeyEvent* event) override;
+    virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     QRect                          mDesktopRect;

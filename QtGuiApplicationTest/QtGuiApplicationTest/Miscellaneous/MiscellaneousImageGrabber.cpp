@@ -3,6 +3,7 @@
 
 // Windows Headers
 #include <d3d11_1.h>
+#include <dwmapi.h>
 
 // QT Headers
 #include <QImage>
@@ -428,6 +429,9 @@ BOOL MiscellaneousImageGrabber::EnumWindowProcShadow(HWND hwnd)
         RECT winRect = { 0 };
         RECT clientRect = { 0 };
         WINDOWINFO windowInfo = { 0 };
+        RECT dwmRect = { 0 };
+        HRESULT dwmWniRes = DwmGetWindowAttribute(hwnd, DWMWA_EXTENDED_FRAME_BOUNDS, &dwmRect, sizeof(RECT));
+
         if (::GetClientRect(hwnd, &clientRect) && ::GetWindowRect(hwnd, &winRect) && ::GetWindowInfo(hwnd, &windowInfo)
             && winRect.right > winRect.left && winRect.bottom > winRect.top)
         {
@@ -447,9 +451,10 @@ BOOL MiscellaneousImageGrabber::EnumWindowProcShadow(HWND hwnd)
             winInfo.realRect = realRect;
             winInfo.rcWindow = windowInfo.rcWindow;
             winInfo.rcClient = windowInfo.rcClient;
+            winInfo.dwmRect = dwmRect;
             winInfo.className = className;
             winInfo.winTitle = winTitle;
-            if (className != "popupshadow")
+            if (className.find("shadow") == std::string::npos && className.find("Shadow") == std::string::npos)
             {
                 mWinRectList.push_back(winInfo);
             }
@@ -537,11 +542,12 @@ ScreenShotEditer::ScreenShotEditer(QWidget* parent /* = nullptr */)
     QDesktopWidget* pDesktop = QApplication::desktop();
     QPalette palette1 = this->palette();
     palette1.setColor(QPalette::Background, Qt::transparent);
-    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint);
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setGeometry(0, 0, pDesktop->width(), pDesktop->height());
     this->setAutoFillBackground(true);
     this->setPalette(palette1);
     this->setMouseTracking(true);
+    //this->installEventFilter(this);
 
     mDesktopRect = pDesktop->rect();
 }
@@ -607,8 +613,13 @@ void ScreenShotEditer::paintEvent(QPaintEvent* event)
     painter.setBrush(Qt::NoBrush);
     painter.setPen(rectPen);
 
-    QRect winRect = QRect(QPoint(mCurWinRect.winRect.left, mCurWinRect.winRect.top), QPoint(mCurWinRect.winRect.right - 2, mCurWinRect.winRect.bottom - 2)); // ¼õÈ¥±ß¿ò¿í¶È
+    //QRect winRect = QRect(QPoint(mCurWinRect.winRect.left, mCurWinRect.winRect.top), QPoint(mCurWinRect.winRect.right - 2, mCurWinRect.winRect.bottom - 2)); // ¼õÈ¥±ß¿ò¿í¶È
+    QRect winRect = QRect(QPoint(mCurWinRect.dwmRect.left, mCurWinRect.dwmRect.top), QPoint(mCurWinRect.dwmRect.right - 2, mCurWinRect.dwmRect.bottom - 2)); // ¼õÈ¥±ß¿ò¿í¶È
     painter.drawRect(winRect);
+
+    QPen textPen(qRgb(255, 0, 255));
+    textPen.setWidth(1);
+    painter.setPen(textPen);
 
     QFont textFont;
     textFont.setBold(true);
@@ -637,6 +648,9 @@ void ScreenShotEditer::paintEvent(QPaintEvent* event)
     textPoint += QPoint(0, 20);
     painter.drawText(textPoint, QString("RcClient: (%1, %2) (%3, %4)").arg(mCurWinRect.rcClient.left).arg(mCurWinRect.rcClient.top)
         .arg(mCurWinRect.rcClient.right - mCurWinRect.rcClient.left).arg(mCurWinRect.rcClient.bottom - mCurWinRect.rcClient.top));
+    textPoint += QPoint(0, 20);
+    painter.drawText(textPoint, QString("DwmRect: (%1, %2) (%3, %4)").arg(mCurWinRect.dwmRect.left).arg(mCurWinRect.dwmRect.top)
+        .arg(mCurWinRect.dwmRect.right - mCurWinRect.dwmRect.left).arg(mCurWinRect.dwmRect.bottom - mCurWinRect.dwmRect.top));
 
     //rectPen.setColor(Qt::blue);
     //painter.setPen(rectPen);
@@ -649,4 +663,26 @@ void ScreenShotEditer::keyReleaseEvent(QKeyEvent* event)
     {
         this->hide();
     }
+}
+
+bool ScreenShotEditer::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(event);
+        if (pKeyEvent->key() == Qt::Key_Escape)
+        {
+            this->hide();
+            return true;
+        }
+        else if (pKeyEvent->key() == Qt::Key_Menu)
+        {
+            int i = 0;
+        }
+        else if (pKeyEvent->key() == Qt::Key_SysReq)
+        {
+            int i = 0;
+        }
+    }
+    return false;
 }
