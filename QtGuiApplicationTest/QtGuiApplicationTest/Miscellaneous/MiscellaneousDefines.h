@@ -27,6 +27,7 @@ enum class MiscellaneousTestItem
     WinAPI_Registry,                  // 注冊表操作 和 监听变更事件
     WinAPI_WMI,                       // WMI 使用 和 监听事件
     WinAPI_Hook,                      // 注冊系统钩子
+    WinAPI_Process,                   // 进程操作 和 基于进程的其他操作
     WinAPI_SystemInfo,                // 系统信息参数获取
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_STL_Container,             // 标准库 容器

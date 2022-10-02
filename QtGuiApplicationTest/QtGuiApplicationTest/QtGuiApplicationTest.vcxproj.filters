@@ -379,6 +379,9 @@
     <ClCompile Include="Miscellaneous\MiscellaneousWinSystemInfo.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="Miscellaneous\MiscellaneousWinProcess.cpp">
+      <Filter>Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyMainWindow.ui">
@@ -538,6 +541,9 @@
       <Filter>Miscellaneous</Filter>
     </QtUic>
     <QtUic Include="Miscellaneous\MiscellaneousWinSystemInfo.ui">
+      <Filter>Miscellaneous</Filter>
+    </QtUic>
+    <QtUic Include="Miscellaneous\MiscellaneousWinProcess.ui">
       <Filter>Miscellaneous</Filter>
     </QtUic>
   </ItemGroup>
@@ -830,6 +836,9 @@
       <Filter>Miscellaneous</Filter>
     </QtMoc>
     <QtMoc Include="Miscellaneous\MiscellaneousWinSystemInfo.h">
+      <Filter>Miscellaneous</Filter>
+    </QtMoc>
+    <QtMoc Include="Miscellaneous\MiscellaneousWinProcess.h">
       <Filter>Miscellaneous</Filter>
     </QtMoc>
   </ItemGroup>
