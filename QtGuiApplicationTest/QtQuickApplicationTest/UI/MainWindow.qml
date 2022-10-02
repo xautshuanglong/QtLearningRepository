@@ -31,9 +31,17 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         id: menuBar
+        font.pixelSize: 20
+        font.family: "Î¢ÈíÑÅºÚ"
 
         Menu {
             title: qsTr("File")
+            font.pixelSize: 18
+            font.family: "Î¢ÈíÑÅºÚ"
+            Text {
+                renderType: Text.NativeRendering
+            }
+
             MenuItem {
                 text: qsTr("Open")
                 onTriggered: on_MenuBar_FileOpen()
@@ -54,6 +62,9 @@ ApplicationWindow {
 
         Menu {
             title: qsTr("View")
+            font.pixelSize: 18
+            font.family: "Î¢ÈíÑÅºÚ"
+
             MenuItem {
                 text: qsTr("Grid")
             }
@@ -66,13 +77,47 @@ ApplicationWindow {
     Text {
         anchors.centerIn: parent
         text: "Hello World __ Shuanglong"
-        font.bold: true
+        font.bold: false
         font.pixelSize: 32
         font.family: "Î¢ÈíÑÅºÚ"
 
         Component.onCompleted: {
             console.log("MainWindow.qml Text onCompleted ...")
             bindTest.slotMainWindowCompleted(300, "testing from MainWindow Text item Component.onCompleted")
+        }
+    }
+
+    Row{
+        anchors.centerIn: parent
+        Text {
+            id:textA
+            font.family: "Î¢ÈíÑÅºÚ"
+            text:"83"
+            color: "green"
+            renderType: Text.QtRendering
+        }
+
+        Text {
+            id:textB
+            font.family: "Î¢ÈíÑÅºÚ"
+            text:"83"
+            color: "green"
+            antialiasing: true
+            renderType: Text.NativeRendering
+        }
+    }
+
+    Slider{
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+        width: parent.width
+        height: 10
+        from: 6
+        to:1600
+        value:0
+        onValueChanged: {
+            textA.font.pixelSize = value
+            textB.font.pixelSize = value
         }
     }
 

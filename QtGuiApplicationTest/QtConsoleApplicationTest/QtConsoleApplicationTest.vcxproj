@@ -12,9 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{138CD575-5A61-4C86-894C-96BD34B10D2B}</ProjectGuid>
-    <Keyword>Qt4VSv1.0</Keyword>
+    <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
+  <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -27,21 +27,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
-    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
+  
+  
+  
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
   </Target>
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
-    <Import Project="$(QtMsBuild)\qt.props" />
-  </ImportGroup>
+  
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
     <Import Project="..\SharedCode\SharedCode.vcxitems" Label="Shared" />
@@ -52,55 +44,55 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')"><Import Project="$(QtMsBuild)\qt_defaults.props" /></ImportGroup><PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'"><OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir></PropertyGroup><PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"><OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir></PropertyGroup><PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'"><QtInstall>$(DefaultQtVersion)</QtInstall><QtModules>core;network;gui</QtModules></PropertyGroup><PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"><QtInstall>$(DefaultQtVersion)</QtInstall><QtModules>core;network;gui</QtModules></PropertyGroup><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)libs\include;$(SolutionDir)QtLibraryCoreTest;$(SolutionDir)JCB_Logger;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)libs\include;$(SolutionDir)QtLibraryCoreTest;$(SolutionDir)JCB_Logger;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_d.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;Qt5Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_d.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      
+      
+      
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-    </QtMoc>
+    <QtMocDir>.\GeneratedFiles\$(ConfigurationName)</QtMocDir><QtMocFileName>moc_%(Filename).cpp</QtMocFileName></QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;ZLOG_QT_VERSION;ZLOG_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)libs\include;$(SolutionDir)QtLibraryCoreTest;$(SolutionDir)JCB_Logger;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\GeneratedFiles\$(ConfigurationName);$(SolutionDir)libs\include;$(SolutionDir)QtLibraryCoreTest;$(SolutionDir)JCB_Logger;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\dcmtk-zlib-1.2.11;$(SolutionDir)libs\openssl\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)$(PlatformShortname)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_o.lib;Qt5Gui.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;Qt5Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Iphlpapi.lib;Netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmjpeg.lib;ijg8.lib;ijg12.lib;ijg16.lib;zlib_o.lib;libeay32.lib;ssleay32.lib;libprotobuf.lib;vld_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;ZLOG_QT_VERSION;ZLOG_LIBRARY;QT_GUI_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(SolutionDir)libs\include;$(SolutionDir)SharedCode;$(SolutionDir)CognexDataManSDK;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      
+      
+      
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-    </QtMoc>
+    <QtMocDir>.\GeneratedFiles\$(ConfigurationName)</QtMocDir><QtMocFileName>moc_%(Filename).cpp</QtMocFileName></QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddressBook.pb.cc" />
@@ -148,7 +140,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lreleaseOptions="" lupdateOnBuild="0" lupdateOptions="" MocDir=".\GeneratedFiles\$(ConfigurationName)" MocOptions="" Qt5Version_x0020_x64="$(DefaultQtVersion)" RccDir=".\GeneratedFiles" UicDir=".\GeneratedFiles" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
