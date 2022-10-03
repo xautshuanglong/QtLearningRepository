@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <tchar.h>
+#include <Psapi.h>
 
 #include "JCB_Logger/LogUtil.h"
 
@@ -40,10 +41,99 @@ MiscellaneousTestItem MiscellaneousWinProcess::GetItemID()
 
 void MiscellaneousWinProcess::on_btnEnumProcess_clicked()
 {
-    int i = 0;
+    this->PSAPI_EnumProcess();
 }
 
 void MiscellaneousWinProcess::on_btnEnumModule_clicked()
 {
     int i = 0;
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/psapi/enumerating-all-processes
+void MiscellaneousWinProcess::PSAPI_EnumProcess()
+{
+    const DWORD outPidCntStep = 100;
+    DWORD predictPidCnt = 0;
+    DWORD outBufSize = 0;
+    DWORD cbNeeded = 0;
+    DWORD* pOutProcPids = nullptr;
+
+    do
+    {
+        predictPidCnt += outPidCntStep;
+        outBufSize = predictPidCnt * sizeof(DWORD);
+        if (pOutProcPids)
+        {
+            delete[] pOutProcPids;
+            pOutProcPids = nullptr;
+        }
+        pOutProcPids = new DWORD[predictPidCnt];
+        BOOL resFlag = ::EnumProcesses(pOutProcPids, outBufSize, &cbNeeded);
+        if (!resFlag)
+        {
+            DWORD errCode = ::GetLastError();
+            LogUtil::Error(CODE_LOCATION, "EnumProcesses failed! ErrorCode=%08X", errCode);
+            int i = 0;
+        }
+    } while (cbNeeded == outBufSize);
+
+    DWORD realPidCount = cbNeeded / sizeof(DWORD);
+    for (DWORD i = 0; i < realPidCount; ++i)
+    {
+        this->PSAPI_PrintProcessNameAndID(pOutProcPids[i]);
+        //LogUtil::Debug(CODE_LOCATION, "PIDS[%u]=%u", i, pOutProcPids[i]);
+    }
+
+    if (pOutProcPids)
+    {
+        delete[] pOutProcPids;
+        pOutProcPids = nullptr;
+    }
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/psapi/enumerating-all-processes
+void MiscellaneousWinProcess::PSAPI_PrintProcessNameAndID(DWORD processID)
+{
+    TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+
+    // Get a handle to the process.
+    // If the specified process is the System Idle Process (0x00000000), the function fails and the last error code is ERROR_INVALID_PARAMETER.
+    // If the specified process is the System process or one of the Client Server Run-Time Subsystem (CSRSS) processes,
+    // this function fails and the last error code is ERROR_ACCESS_DENIED because their access restrictions prevent user-level code from opening them.
+    //HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID); // 存在一部分进程拒绝访问，错误码 0x00000005
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+
+    // Get the process name.
+    if (NULL != hProcess)
+    {
+        HMODULE hMod;
+        DWORD cbNeeded;
+
+        if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded))
+        {
+            DWORD copiedLen = GetModuleBaseName(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
+            if (copiedLen == 0)
+            {
+                LogUtil::Error(CODE_LOCATION, "GetModuleBaseName failed! ErrorCode=0x%08X", ::GetLastError());
+            }
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "EnumProcessModules failed! ErrorCode=0x%08X", ::GetLastError());
+        }
+
+        LogUtil::Debug(CODE_LOCATION, "PID:%-5u ProcessName:%s", processID, szProcessName);
+
+        // Release the handle to the process.
+        CloseHandle(hProcess);
+        hProcess = NULL;
+    }
+    else
+    {
+        LogUtil::Debug(CODE_LOCATION, "PID:%-5u ProcessName:%s  -- OpenProcess failed! ErrorCode=0x%08X",
+            processID, szProcessName, ::GetLastError());
+    }
+
+    // Print the process name and identifier.
+    //_tprintf(TEXT("%s  (PID: %u)\n"), szProcessName, processID);
 }

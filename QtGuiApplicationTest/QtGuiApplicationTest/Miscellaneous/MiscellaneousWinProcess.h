@@ -28,6 +28,10 @@ private slots:
     void on_btnEnumModule_clicked();
 
 private:
+    void PSAPI_EnumProcess();
+    void PSAPI_PrintProcessNameAndID(DWORD processID);
+
+private:
     Ui::MiscellaneousWinProcess *ui;
 };
 
