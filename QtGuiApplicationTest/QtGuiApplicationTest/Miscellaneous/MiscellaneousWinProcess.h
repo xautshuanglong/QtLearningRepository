@@ -31,6 +31,8 @@ private:
     void PSAPI_EnumProcess();
     void PSAPI_PrintProcessName(DWORD processID);
     void PSAPI_PrintProcessModule(DWORD processID);
+    // Tool Help Library
+    void TLAPI_ProcessSnapshot();
 
 private:
     Ui::MiscellaneousWinProcess *ui;

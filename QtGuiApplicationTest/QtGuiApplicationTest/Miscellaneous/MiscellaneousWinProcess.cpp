@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <Psapi.h>
+#include <TlHelp32.h>
 
 #include "JCB_Logger/LogUtil.h"
 
@@ -41,7 +42,8 @@ MiscellaneousTestItem MiscellaneousWinProcess::GetItemID()
 
 void MiscellaneousWinProcess::on_btnEnumProcess_clicked()
 {
-    this->PSAPI_EnumProcess();
+    //this->PSAPI_EnumProcess();
+    this->TLAPI_ProcessSnapshot();
 }
 
 void MiscellaneousWinProcess::on_btnEnumModule_clicked()
@@ -214,4 +216,57 @@ void MiscellaneousWinProcess::PSAPI_PrintProcessModule(DWORD processID)
 
     // Print the process name and identifier.
     //_tprintf(TEXT("%s  (PID: %u)\n"), szProcessName, processID);
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/toolhelp/taking-a-snapshot-and-viewing-processes
+void MiscellaneousWinProcess::TLAPI_ProcessSnapshot()
+{
+    HANDLE hProcessSnap = nullptr;
+    HANDLE hProcess = nullptr;
+    PROCESSENTRY32 procEntry32 = { 0 };
+    DWORD dwPriorityClass = 0;
+
+    hProcessSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hProcessSnap == INVALID_HANDLE_VALUE)
+    {
+        LogUtil::Error(CODE_LOCATION, "CreateToolhelp32Snapshot failed! ErrorCode=0x%08X", ::GetLastError());
+        return;
+    }
+
+    procEntry32.dwSize = sizeof(PROCESSENTRY32);
+    BOOL procWalkRes = ::Process32First(hProcessSnap, &procEntry32);
+    if (!procWalkRes)
+    {
+        LogUtil::Error(CODE_LOCATION, "Process32First failed! ErrorCode=0x%08X", ::GetLastError());
+    }
+    do 
+    {
+        LogUtil::Debug(CODE_LOCATION, "-------------------------------------------------------");
+        LogUtil::Debug(CODE_LOCATION, "ExeFilename   : %s", procEntry32.szExeFile);
+        LogUtil::Debug(CODE_LOCATION, "ParentID      : %u", procEntry32.th32ParentProcessID);
+        LogUtil::Debug(CODE_LOCATION, "ProcessID     : %u", procEntry32.th32ProcessID);
+        LogUtil::Debug(CODE_LOCATION, "ThreadCount   : %u", procEntry32.cntThreads);
+        LogUtil::Debug(CODE_LOCATION, "PriClassBase  : %ld", procEntry32.pcPriClassBase);
+
+        hProcess = ::OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, procEntry32.th32ProcessID);
+        if (hProcess != NULL)
+        {
+            DWORD priorityClass = ::GetPriorityClass(hProcess);
+            LogUtil::Debug(CODE_LOCATION, "PriorityClass : 0x%08X", priorityClass);
+        }
+        else
+        {
+            LogUtil::Error(CODE_LOCATION, "OpenProcess failed! ErrorCode=0x%08X", ::GetLastError());
+        }
+
+        procWalkRes = ::Process32Next(hProcessSnap, &procEntry32);
+        if (!procWalkRes)
+        {
+            DWORD errCode = ::GetLastError();
+            if (errCode != ERROR_NO_MORE_FILES)
+            {
+                LogUtil::Error(CODE_LOCATION, "Process32Next failed! ErrorCode=0x%08X", ::GetLastError());
+            }
+        }
+    } while (procWalkRes);
 }
