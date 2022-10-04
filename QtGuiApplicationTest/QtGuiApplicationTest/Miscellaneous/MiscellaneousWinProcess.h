@@ -29,7 +29,8 @@ private slots:
 
 private:
     void PSAPI_EnumProcess();
-    void PSAPI_PrintProcessNameAndID(DWORD processID);
+    void PSAPI_PrintProcessName(DWORD processID);
+    void PSAPI_PrintProcessModule(DWORD processID);
 
 private:
     Ui::MiscellaneousWinProcess *ui;
