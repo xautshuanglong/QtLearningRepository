@@ -47,7 +47,20 @@ namespace Shuanglong::Utils
     {
         char timeBuffer[64];
         GetMyCurrentTime();
-        strftime(timeBuffer, 64, "%Y-%m-%d %H:%M:%S", &m_tmCurTime);
+        strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S", &m_tmCurTime);
+        return std::string(timeBuffer);
+    }
+
+    //************************************************************************
+    //    Description: time string like YYYY-mm-dd HH:MM:SS
+    //    Arguments  : 
+    //************************************************************************
+    std::string TimeUtil::GetDateTimeString(SYSTEMTIME sysTime)
+    {
+        char timeBuffer[64];
+        sprintf_s(timeBuffer, sizeof(timeBuffer), "%04u-%02u-%02u %02u:%02u:%02u",
+            sysTime.wYear, sysTime.wMonth, sysTime.wDay,
+            sysTime.wHour, sysTime.wMinute, sysTime.wSecond);
         return std::string(timeBuffer);
     }
 

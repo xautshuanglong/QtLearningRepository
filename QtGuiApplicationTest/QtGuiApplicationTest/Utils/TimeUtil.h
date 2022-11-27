@@ -104,6 +104,7 @@ namespace Shuanglong::Utils
         static std::string GetDateString();
         static std::string GetTimeString();
         static std::string GetDateTimeString();
+        static std::string GetDateTimeString(SYSTEMTIME sysTime);
         static std::string GetFormatTimeString(const char* timeFormat);
 
         static std::string GetFullTimestampString();

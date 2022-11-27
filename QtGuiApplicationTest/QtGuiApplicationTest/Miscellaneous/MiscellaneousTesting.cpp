@@ -16,6 +16,8 @@
 #include "Miscellaneous/MiscellaneousWinHook.h"
 #include "Miscellaneous/MiscellaneousWinProcess.h"
 #include "Miscellaneous/MiscellaneousWinSystemInfo.h"
+#include "Miscellaneous/MiscellaneousWinAudio.h"
+#include "Miscellaneous/MiscellaneousWinBluetooth.h"
 // Standard CPP
 #include "Miscellaneous/MiscellaneousStdSharedPointer.h"
 #include "Miscellaneous/MiscellaneousStdContainer.h"
@@ -105,6 +107,8 @@ void MiscellaneousTesting::InitializeUI()
     this->AppendTestPage(new MiscellaneousWinHook(this));
     this->AppendTestPage(new MiscellaneousWinProcess(this));
     this->AppendTestPage(new MiscellaneousWinSystemInfo(this));
+    this->AppendTestPage(new MiscellaneousWinAudio(this));
+    this->AppendTestPage(new MiscellaneousWinBluetooth(this));
     this->AppendTestPage(new MiscellaneousStdSharedPointer(this));
     this->AppendTestPage(new MiscellaneousStdContainer(this));
     this->AppendTestPage(new MiscellaneousStdConstructor(this));

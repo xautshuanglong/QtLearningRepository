@@ -29,6 +29,8 @@ enum class MiscellaneousTestItem
     WinAPI_Hook,                      // 注冊系统钩子
     WinAPI_Process,                   // 进程操作 和 基于进程的其他操作
     WinAPI_SystemInfo,                // 系统信息参数获取
+    WinAPI_Audio,                     // 音频会话监控 与 音频流处理
+    WinAPI_Bluetooth,                 // 操作蓝牙设备 与 蓝牙通信练习
     StdCpp_Shared_Pointer,            // 标准库 共享指针
     StdCpp_STL_Container,             // 标准库 容器
     StdCpp_Constructor,               // 标准库 构造函数：拷贝、移动、赋值

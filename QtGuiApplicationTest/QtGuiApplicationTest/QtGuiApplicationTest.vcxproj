@@ -81,7 +81,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;Dwmapi.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;dwmapi.lib;bthprops.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;zlibd.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
     <QtMoc>
@@ -118,7 +118,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\dcmtk\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\google\protobuf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\mupdf\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\vld\$(PlatformShortname)\$(Configuration);$(SolutionDir)libs\wxsqlite3\$(PlatformShortname);$(SolutionDir)libs\pqxx\$(Configuration);$(SolutionDir)libs\libpq;$(SolutionDir)libs\zlib\$(Configuration);$(SolutionDir)libs\libzip\$(Configuration);$(SolutionDir)libs\sqlcipher\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;Dwmapi.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Iphlpapi.lib;Netapi32.lib;Ntdll.lib;Mincore.lib;D3D11.lib;DXGI.lib;DXGUID.lib;D3DCompiler.lib;dwmapi.lib;bthprops.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmjpeg.lib;dcmnet.lib;dcmtls.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;libprotobuf.lib;libmupdf.lib;vld_x64.lib;libpq.lib;pqxx.lib;zlib.lib;zip.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -180,6 +180,8 @@
     <ClCompile Include="Miscellaneous\MiscellaneousDefines.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousDirectShow.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousImageGrabber.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinAudio.cpp" />
+    <ClCompile Include="Miscellaneous\MiscellaneousWinBluetooth.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousWinEventTrace.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousExcelReadWrite.cpp" />
     <ClCompile Include="Miscellaneous\MiscellaneousFFmpeg.cpp" />
@@ -259,6 +261,8 @@
     <QtUic Include="Miscellaneous\MiscellaneousCustomTextEdit.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousDirectShow.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousImageGrabber.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinAudio.ui" />
+    <QtUic Include="Miscellaneous\MiscellaneousWinBluetooth.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousWinEventTrace.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousExcelReadWrite.ui" />
     <QtUic Include="Miscellaneous\MiscellaneousFFmpeg.ui" />
@@ -386,6 +390,8 @@
     <QtMoc Include="Miscellaneous\MiscellaneousImageGrabber.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinSystemInfo.h" />
     <QtMoc Include="Miscellaneous\MiscellaneousWinProcess.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinAudio.h" />
+    <QtMoc Include="Miscellaneous\MiscellaneousWinBluetooth.h" />
     <ClInclude Include="ProtocolBuffers\MessageInfo.pb.h" />
     <ClInclude Include="ProtocolBuffers\MessageTest.pb.h" />
     <ClInclude Include="Reports\FopReportProtocol.h" />
