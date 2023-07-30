@@ -8,7 +8,7 @@
 #include "AddressBook.pb.h"
 #include "JCB_Logger/LogUtil.h"
 
-using namespace com::genomics::protobuf;
+using namespace tutorial;
 
 ProtocolBufferTest::ProtocolBufferTest()
 {
