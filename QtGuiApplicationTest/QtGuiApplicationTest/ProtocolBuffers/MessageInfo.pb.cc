@@ -4,371 +4,380 @@
 #include "MessageInfo.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/port.h>
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/wire_format_lite_inl.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
-// This is a temporary google only hack
-#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-#include "third_party/protobuf/version.h"
-#endif
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
 
-namespace protobuf_MessageInfo_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageCommand;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageHeader;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessagePull;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessagePush;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageRequest;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageResponse;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_MessageInfo_2eproto ::google::protobuf::internal::SCCInfo<5> scc_info_MessageBody;
-}  // namespace protobuf_MessageInfo_2eproto
+// Must be included last.
+#include "google/protobuf/port_def.inc"
+PROTOBUF_PRAGMA_INIT_SEG
+namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace com {
 namespace genomics {
 namespace protobuf {
-class MessageRequestDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageRequest>
-      _instance;
-} _MessageRequest_default_instance_;
-class MessageResponseDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageResponse>
-      _instance;
-} _MessageResponse_default_instance_;
-class MessagePushDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessagePush>
-      _instance;
-} _MessagePush_default_instance_;
-class MessagePullDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessagePull>
-      _instance;
-} _MessagePull_default_instance_;
-class MessageCommandDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageCommand>
-      _instance;
-} _MessageCommand_default_instance_;
-class MessageHeaderDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageHeader>
-      _instance;
-} _MessageHeader_default_instance_;
-class MessageBodyDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageBody>
-      _instance;
-} _MessageBody_default_instance_;
-class MessageInfoDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageInfo>
-      _instance;
-} _MessageInfo_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageRequest::MessageRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.description_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.requestid_)*/ 0u
+
+  , /*decltype(_impl_.requesttype_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct MessageRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageRequestDefaultTypeInternal() {}
+  union {
+    MessageRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageRequestDefaultTypeInternal _MessageRequest_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageResponse::MessageResponse(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.description_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.responseid_)*/ 0u
+
+  , /*decltype(_impl_.responsetype_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct MessageResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageResponseDefaultTypeInternal() {}
+  union {
+    MessageResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageResponseDefaultTypeInternal _MessageResponse_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessagePush::MessagePush(
+    ::_pbi::ConstantInitialized) {}
+struct MessagePushDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessagePushDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessagePushDefaultTypeInternal() {}
+  union {
+    MessagePush _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessagePushDefaultTypeInternal _MessagePush_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessagePull::MessagePull(
+    ::_pbi::ConstantInitialized) {}
+struct MessagePullDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessagePullDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessagePullDefaultTypeInternal() {}
+  union {
+    MessagePull _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessagePullDefaultTypeInternal _MessagePull_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageCommand::MessageCommand(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.cmd_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.xmlfilename_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.xslfilename_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.outfilename_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct MessageCommandDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageCommandDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageCommandDefaultTypeInternal() {}
+  union {
+    MessageCommand _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageCommandDefaultTypeInternal _MessageCommand_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageHeader::MessageHeader(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.version_)*/ 0u
+
+  , /*decltype(_impl_.msgid_)*/ 0u
+
+  , /*decltype(_impl_.msgtype_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct MessageHeaderDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageHeaderDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageHeaderDefaultTypeInternal() {}
+  union {
+    MessageHeader _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageHeaderDefaultTypeInternal _MessageHeader_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageBody::MessageBody(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.msgrequest_)*/nullptr
+  , /*decltype(_impl_.msgresponse_)*/nullptr
+  , /*decltype(_impl_.msgpush_)*/nullptr
+  , /*decltype(_impl_.msgpull_)*/nullptr
+  , /*decltype(_impl_.msgcommand_)*/nullptr} {}
+struct MessageBodyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageBodyDefaultTypeInternal() {}
+  union {
+    MessageBody _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageBodyDefaultTypeInternal _MessageBody_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR MessageInfo::MessageInfo(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.msgheader_)*/nullptr
+  , /*decltype(_impl_.msgbody_)*/nullptr} {}
+struct MessageInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageInfoDefaultTypeInternal() {}
+  union {
+    MessageInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageInfoDefaultTypeInternal _MessageInfo_default_instance_;
 }  // namespace protobuf
 }  // namespace genomics
 }  // namespace com
-namespace protobuf_MessageInfo_2eproto {
-static void InitDefaultsMessageRequest() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageRequest_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessageRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessageRequest}, {}};
-
-static void InitDefaultsMessageResponse() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageResponse_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessageResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessageResponse}, {}};
-
-static void InitDefaultsMessagePush() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessagePush_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessagePush();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessagePush::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessagePush =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessagePush}, {}};
-
-static void InitDefaultsMessagePull() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessagePull_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessagePull();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessagePull::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessagePull =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessagePull}, {}};
-
-static void InitDefaultsMessageCommand() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageCommand_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageCommand();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageCommand::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessageCommand =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessageCommand}, {}};
-
-static void InitDefaultsMessageHeader() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageHeader_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageHeader();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageHeader::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_MessageHeader =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessageHeader}, {}};
-
-static void InitDefaultsMessageBody() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageBody_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageBody();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageBody::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<5> scc_info_MessageBody =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 5, InitDefaultsMessageBody}, {
-      &protobuf_MessageInfo_2eproto::scc_info_MessageRequest.base,
-      &protobuf_MessageInfo_2eproto::scc_info_MessageResponse.base,
-      &protobuf_MessageInfo_2eproto::scc_info_MessagePush.base,
-      &protobuf_MessageInfo_2eproto::scc_info_MessagePull.base,
-      &protobuf_MessageInfo_2eproto::scc_info_MessageCommand.base,}};
-
-static void InitDefaultsMessageInfo() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::com::genomics::protobuf::_MessageInfo_default_instance_;
-    new (ptr) ::com::genomics::protobuf::MessageInfo();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::com::genomics::protobuf::MessageInfo::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<2> scc_info_MessageInfo =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsMessageInfo}, {
-      &protobuf_MessageInfo_2eproto::scc_info_MessageHeader.base,
-      &protobuf_MessageInfo_2eproto::scc_info_MessageBody.base,}};
-
-void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessagePush.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessagePull.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageCommand.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageHeader.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageBody.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageInfo.base);
-}
-
-::google::protobuf::Metadata file_level_metadata[8];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[3];
-
-const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, requestid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, requesttype_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, description_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, responseid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, responsetype_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, description_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessagePush, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessagePull, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, cmd_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, xmlfilename_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, xslfilename_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, outfilename_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, version_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, msgid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, msgtype_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, msgrequest_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, msgresponse_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, msgpush_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, msgpull_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, msgcommand_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, msgheader_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, msgbody_),
-};
-static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::com::genomics::protobuf::MessageRequest)},
-  { 8, -1, sizeof(::com::genomics::protobuf::MessageResponse)},
-  { 16, -1, sizeof(::com::genomics::protobuf::MessagePush)},
-  { 21, -1, sizeof(::com::genomics::protobuf::MessagePull)},
-  { 26, -1, sizeof(::com::genomics::protobuf::MessageCommand)},
-  { 35, -1, sizeof(::com::genomics::protobuf::MessageHeader)},
-  { 43, -1, sizeof(::com::genomics::protobuf::MessageBody)},
-  { 53, -1, sizeof(::com::genomics::protobuf::MessageInfo)},
+static ::_pb::Metadata file_level_metadata_MessageInfo_2eproto[8];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_MessageInfo_2eproto[3];
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_MessageInfo_2eproto = nullptr;
+const ::uint32_t TableStruct_MessageInfo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, _impl_.requestid_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, _impl_.requesttype_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageRequest, _impl_.description_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, _impl_.responseid_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, _impl_.responsetype_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageResponse, _impl_.description_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessagePush, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessagePull, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _impl_.cmd_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _impl_.xmlfilename_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _impl_.xslfilename_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageCommand, _impl_.outfilename_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _impl_.version_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _impl_.msgid_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageHeader, _impl_.msgtype_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_.msgrequest_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_.msgresponse_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_.msgpush_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_.msgpull_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageBody, _impl_.msgcommand_),
+    0,
+    1,
+    2,
+    3,
+    4,
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, _impl_.msgheader_),
+    PROTOBUF_FIELD_OFFSET(::com::genomics::protobuf::MessageInfo, _impl_.msgbody_),
+    0,
+    1,
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessagePush_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessagePull_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageCommand_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageHeader_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageBody_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::com::genomics::protobuf::_MessageInfo_default_instance_),
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::com::genomics::protobuf::MessageRequest)},
+        { 11, -1, -1, sizeof(::com::genomics::protobuf::MessageResponse)},
+        { 22, -1, -1, sizeof(::com::genomics::protobuf::MessagePush)},
+        { 30, -1, -1, sizeof(::com::genomics::protobuf::MessagePull)},
+        { 38, -1, -1, sizeof(::com::genomics::protobuf::MessageCommand)},
+        { 50, -1, -1, sizeof(::com::genomics::protobuf::MessageHeader)},
+        { 61, 74, -1, sizeof(::com::genomics::protobuf::MessageBody)},
+        { 79, 89, -1, sizeof(::com::genomics::protobuf::MessageInfo)},
 };
 
-void protobuf_AssignDescriptors() {
-  AddDescriptors();
-  AssignDescriptors(
-      "MessageInfo.proto", schemas, file_default_instances, TableStruct::offsets,
-      file_level_metadata, file_level_enum_descriptors, NULL);
-}
+static const ::_pb::Message* const file_default_instances[] = {
+    &::com::genomics::protobuf::_MessageRequest_default_instance_._instance,
+    &::com::genomics::protobuf::_MessageResponse_default_instance_._instance,
+    &::com::genomics::protobuf::_MessagePush_default_instance_._instance,
+    &::com::genomics::protobuf::_MessagePull_default_instance_._instance,
+    &::com::genomics::protobuf::_MessageCommand_default_instance_._instance,
+    &::com::genomics::protobuf::_MessageHeader_default_instance_._instance,
+    &::com::genomics::protobuf::_MessageBody_default_instance_._instance,
+    &::com::genomics::protobuf::_MessageInfo_default_instance_._instance,
+};
+const char descriptor_table_protodef_MessageInfo_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\021MessageInfo.proto\022\025com.genomics.protob"
+    "uf\"q\n\016MessageRequest\022\021\n\trequestID\030\001 \001(\r\022"
+    "7\n\013requestType\030\002 \001(\0162\".com.genomics.prot"
+    "obuf.RequestType\022\023\n\013description\030\003 \001(\t\"u\n"
+    "\017MessageResponse\022\022\n\nresponseID\030\001 \001(\r\0229\n\014"
+    "responseType\030\002 \001(\0162#.com.genomics.protob"
+    "uf.ResponseType\022\023\n\013description\030\003 \001(\t\"\r\n\013"
+    "MessagePush\"\r\n\013MessagePull\"\\\n\016MessageCom"
+    "mand\022\013\n\003cmd\030\001 \001(\t\022\023\n\013xmlFilename\030\002 \001(\t\022\023"
+    "\n\013xslFilename\030\003 \001(\t\022\023\n\013outFilename\030\004 \001(\t"
+    "\"`\n\rMessageHeader\022\017\n\007version\030\001 \001(\r\022\r\n\005ms"
+    "gID\030\002 \001(\r\022/\n\007msgType\030\003 \001(\0162\036.com.genomic"
+    "s.protobuf.MsgType\"\252\002\n\013MessageBody\0229\n\nms"
+    "gRequest\030\001 \001(\0132%.com.genomics.protobuf.M"
+    "essageRequest\022;\n\013msgResponse\030\002 \001(\0132&.com"
+    ".genomics.protobuf.MessageResponse\0223\n\007ms"
+    "gPush\030\003 \001(\0132\".com.genomics.protobuf.Mess"
+    "agePush\0223\n\007msgPull\030\004 \001(\0132\".com.genomics."
+    "protobuf.MessagePull\0229\n\nmsgCommand\030\005 \001(\013"
+    "2%.com.genomics.protobuf.MessageCommand\""
+    "{\n\013MessageInfo\0227\n\tmsgHeader\030\001 \001(\0132$.com."
+    "genomics.protobuf.MessageHeader\0223\n\007msgBo"
+    "dy\030\002 \001(\0132\".com.genomics.protobuf.Message"
+    "Body*{\n\007MsgType\022\021\n\rMsgTypeUnknow\020\000\022\022\n\016Ms"
+    "gTypeRequest\020d\022\023\n\017MsgTypeResponse\020e\022\017\n\013M"
+    "sgTypePush\020f\022\017\n\013MsgTypePull\020g\022\022\n\016MsgType"
+    "Command\020h*J\n\013RequestType\022\021\n\rReqTypeUnkno"
+    "w\020\000\022\023\n\016ReqTypePdfFile\020\310\001\022\023\n\016ReqTypePdfPa"
+    "ge\020\311\001*\?\n\014ResponseType\022\026\n\022ResTypeSaveSucc"
+    "ess\020\000\022\027\n\023ResTypeFileNotFound\020\001B)\n\025com.ge"
+    "nomics.protobufB\020MessageInfoProtob\006proto"
+    "3"
+};
+static ::absl::once_flag descriptor_table_MessageInfo_2eproto_once;
+const ::_pbi::DescriptorTable descriptor_table_MessageInfo_2eproto = {
+    false,
+    false,
+    1241,
+    descriptor_table_protodef_MessageInfo_2eproto,
+    "MessageInfo.proto",
+    &descriptor_table_MessageInfo_2eproto_once,
+    nullptr,
+    0,
+    8,
+    schemas,
+    file_default_instances,
+    TableStruct_MessageInfo_2eproto::offsets,
+    file_level_metadata_MessageInfo_2eproto,
+    file_level_enum_descriptors_MessageInfo_2eproto,
+    file_level_service_descriptors_MessageInfo_2eproto,
+};
 
-void protobuf_AssignDescriptorsOnce() {
-  static ::google::protobuf::internal::once_flag once;
-  ::google::protobuf::internal::call_once(once, protobuf_AssignDescriptors);
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_MessageInfo_2eproto_getter() {
+  return &descriptor_table_MessageInfo_2eproto;
 }
-
-void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
-void protobuf_RegisterTypes(const ::std::string&) {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
-}
-
-void AddDescriptorsImpl() {
-  InitDefaults();
-  static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\021MessageInfo.proto\022\025com.genomics.protob"
-      "uf\"q\n\016MessageRequest\022\021\n\trequestID\030\001 \001(\r\022"
-      "7\n\013requestType\030\002 \001(\0162\".com.genomics.prot"
-      "obuf.RequestType\022\023\n\013description\030\003 \001(\t\"u\n"
-      "\017MessageResponse\022\022\n\nresponseID\030\001 \001(\r\0229\n\014"
-      "responseType\030\002 \001(\0162#.com.genomics.protob"
-      "uf.ResponseType\022\023\n\013description\030\003 \001(\t\"\r\n\013"
-      "MessagePush\"\r\n\013MessagePull\"\\\n\016MessageCom"
-      "mand\022\013\n\003cmd\030\001 \001(\t\022\023\n\013xmlFilename\030\002 \001(\t\022\023"
-      "\n\013xslFilename\030\003 \001(\t\022\023\n\013outFilename\030\004 \001(\t"
-      "\"`\n\rMessageHeader\022\017\n\007version\030\001 \001(\r\022\r\n\005ms"
-      "gID\030\002 \001(\r\022/\n\007msgType\030\003 \001(\0162\036.com.genomic"
-      "s.protobuf.MsgType\"\252\002\n\013MessageBody\0229\n\nms"
-      "gRequest\030\001 \001(\0132%.com.genomics.protobuf.M"
-      "essageRequest\022;\n\013msgResponse\030\002 \001(\0132&.com"
-      ".genomics.protobuf.MessageResponse\0223\n\007ms"
-      "gPush\030\003 \001(\0132\".com.genomics.protobuf.Mess"
-      "agePush\0223\n\007msgPull\030\004 \001(\0132\".com.genomics."
-      "protobuf.MessagePull\0229\n\nmsgCommand\030\005 \001(\013"
-      "2%.com.genomics.protobuf.MessageCommand\""
-      "{\n\013MessageInfo\0227\n\tmsgHeader\030\001 \001(\0132$.com."
-      "genomics.protobuf.MessageHeader\0223\n\007msgBo"
-      "dy\030\002 \001(\0132\".com.genomics.protobuf.Message"
-      "Body*{\n\007MsgType\022\021\n\rMsgTypeUnknow\020\000\022\022\n\016Ms"
-      "gTypeRequest\020d\022\023\n\017MsgTypeResponse\020e\022\017\n\013M"
-      "sgTypePush\020f\022\017\n\013MsgTypePull\020g\022\022\n\016MsgType"
-      "Command\020h*J\n\013RequestType\022\021\n\rReqTypeUnkno"
-      "w\020\000\022\023\n\016ReqTypePdfFile\020\310\001\022\023\n\016ReqTypePdfPa"
-      "ge\020\311\001*\?\n\014ResponseType\022\026\n\022ResTypeSaveSucc"
-      "ess\020\000\022\027\n\023ResTypeFileNotFound\020\001B)\n\025com.ge"
-      "nomics.protobufB\020MessageInfoProtob\006proto"
-      "3"
-  };
-  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1241);
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
-    "MessageInfo.proto", &protobuf_RegisterTypes);
-}
-
-void AddDescriptors() {
-  static ::google::protobuf::internal::once_flag once;
-  ::google::protobuf::internal::call_once(once, AddDescriptorsImpl);
-}
-// Force AddDescriptors() to be called at dynamic initialization time.
-struct StaticDescriptorInitializer {
-  StaticDescriptorInitializer() {
-    AddDescriptors();
-  }
-} static_descriptor_initializer;
-}  // namespace protobuf_MessageInfo_2eproto
+// Force running AddDescriptors() at dynamic initialization time.
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_MessageInfo_2eproto(&descriptor_table_MessageInfo_2eproto);
 namespace com {
 namespace genomics {
 namespace protobuf {
-const ::google::protobuf::EnumDescriptor* MsgType_descriptor() {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_MessageInfo_2eproto::file_level_enum_descriptors[0];
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MsgType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_MessageInfo_2eproto);
+  return file_level_enum_descriptors_MessageInfo_2eproto[0];
 }
 bool MsgType_IsValid(int value) {
   switch (value) {
@@ -383,10 +392,9 @@ bool MsgType_IsValid(int value) {
       return false;
   }
 }
-
-const ::google::protobuf::EnumDescriptor* RequestType_descriptor() {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_MessageInfo_2eproto::file_level_enum_descriptors[1];
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* RequestType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_MessageInfo_2eproto);
+  return file_level_enum_descriptors_MessageInfo_2eproto[1];
 }
 bool RequestType_IsValid(int value) {
   switch (value) {
@@ -398,10 +406,9 @@ bool RequestType_IsValid(int value) {
       return false;
   }
 }
-
-const ::google::protobuf::EnumDescriptor* ResponseType_descriptor() {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_MessageInfo_2eproto::file_level_enum_descriptors[2];
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ResponseType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_MessageInfo_2eproto);
+  return file_level_enum_descriptors_MessageInfo_2eproto[2];
 }
 bool ResponseType_IsValid(int value) {
   switch (value) {
@@ -412,301 +419,240 @@ bool ResponseType_IsValid(int value) {
       return false;
   }
 }
-
-
 // ===================================================================
 
-void MessageRequest::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageRequest::kRequestIDFieldNumber;
-const int MessageRequest::kRequestTypeFieldNumber;
-const int MessageRequest::kDescriptionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageRequest::_Internal {
+ public:
+};
 
-MessageRequest::MessageRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageRequest.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageRequest)
+MessageRequest::MessageRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageRequest)
 }
 MessageRequest::MessageRequest(const MessageRequest& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.description().size() > 0) {
-    description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  MessageRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_) {}
+
+    , decltype(_impl_.requestid_) {}
+
+    , decltype(_impl_.requesttype_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_description().empty()) {
+    _this->_impl_.description_.Set(from._internal_description(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&requestid_, &from.requestid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&requesttype_) -
-    reinterpret_cast<char*>(&requestid_)) + sizeof(requesttype_));
+  ::memcpy(&_impl_.requestid_, &from._impl_.requestid_,
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.requesttype_) -
+    reinterpret_cast<char*>(&_impl_.requestid_)) + sizeof(_impl_.requesttype_));
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageRequest)
 }
 
-void MessageRequest::SharedCtor() {
-  description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&requestid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&requesttype_) -
-      reinterpret_cast<char*>(&requestid_)) + sizeof(requesttype_));
+inline void MessageRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_) {}
+
+    , decltype(_impl_.requestid_) { 0u }
+
+    , decltype(_impl_.requesttype_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 MessageRequest::~MessageRequest() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageRequest::SharedDtor() {
-  description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void MessageRequest::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.description_.Destroy();
 }
 
 void MessageRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageRequest::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageRequest& MessageRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageRequest.base);
-  return *internal_default_instance();
-}
-
 
 void MessageRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&requestid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&requesttype_) -
-      reinterpret_cast<char*>(&requestid_)) + sizeof(requesttype_));
-  _internal_metadata_.Clear();
+  _impl_.description_.ClearToEmpty();
+  ::memset(&_impl_.requestid_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.requesttype_) -
+      reinterpret_cast<char*>(&_impl_.requestid_)) + sizeof(_impl_.requesttype_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-bool MessageRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageRequest)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+const char* MessageRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
       // uint32 requestID = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &requestid_)));
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.requestid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // .com.genomics.protobuf.RequestType requestType = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_requesttype(static_cast< ::com::genomics::protobuf::RequestType >(value));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+          _internal_set_requesttype(static_cast<::com::genomics::protobuf::RequestType>(val));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // string description = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->description().data(), static_cast<int>(this->description().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageRequest.description"));
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_description();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageRequest.description"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
     }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageRequest)
-  return true;
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageRequest)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint32 requestID = 1;
-  if (this->requestid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->requestid(), output);
-  }
-
-  // .com.genomics.protobuf.RequestType requestType = 2;
-  if (this->requesttype() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->requesttype(), output);
-  }
-
-  // string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), static_cast<int>(this->description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageRequest.description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->description(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageRequest)
-}
-
-::google::protobuf::uint8* MessageRequest::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 requestID = 1;
-  if (this->requestid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->requestid(), target);
+  if (this->_internal_requestid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_requestid(), target);
   }
 
   // .com.genomics.protobuf.RequestType requestType = 2;
-  if (this->requesttype() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->requesttype(), target);
+  if (this->_internal_requesttype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        2, this->_internal_requesttype(), target);
   }
 
   // string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), static_cast<int>(this->description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageRequest.description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->description(), target);
+  if (!this->_internal_description().empty()) {
+    const std::string& _s = this->_internal_description();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageRequest.description");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageRequest)
   return target;
 }
 
-size_t MessageRequest::ByteSizeLong() const {
+::size_t MessageRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   // string description = 3;
-  if (this->description().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->description());
+  if (!this->_internal_description().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_description());
   }
 
   // uint32 requestID = 1;
-  if (this->requestid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->requestid());
+  if (this->_internal_requestid() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_requestid());
   }
 
   // .com.genomics.protobuf.RequestType requestType = 2;
-  if (this->requesttype() != 0) {
+  if (this->_internal_requesttype() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->requesttype());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_requesttype());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageRequest>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageRequest)
-    MergeFrom(*source);
-  }
-}
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageRequest::GetClassData() const { return &_class_data_; }
 
-void MessageRequest::MergeFrom(const MessageRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+
+void MessageRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageRequest*>(&to_msg);
+  auto& from = static_cast<const MessageRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.description().size() > 0) {
-
-    description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
+  if (!from._internal_description().empty()) {
+    _this->_internal_set_description(from._internal_description());
   }
-  if (from.requestid() != 0) {
-    set_requestid(from.requestid());
+  if (from._internal_requestid() != 0) {
+    _this->_internal_set_requestid(from._internal_requestid());
   }
-  if (from.requesttype() != 0) {
-    set_requesttype(from.requesttype());
+  if (from._internal_requesttype() != 0) {
+    _this->_internal_set_requesttype(from._internal_requesttype());
   }
-}
-
-void MessageRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageRequest::CopyFrom(const MessageRequest& from) {
@@ -720,318 +666,260 @@ bool MessageRequest::IsInitialized() const {
   return true;
 }
 
-void MessageRequest::Swap(MessageRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageRequest::InternalSwap(MessageRequest* other) {
   using std::swap;
-  description_.Swap(&other->description_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(requestid_, other->requestid_);
-  swap(requesttype_, other->requesttype_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, lhs_arena,
+                                       &other->_impl_.description_, rhs_arena);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MessageRequest, _impl_.requesttype_)
+      + sizeof(MessageRequest::_impl_.requesttype_)
+      - PROTOBUF_FIELD_OFFSET(MessageRequest, _impl_.requestid_)>(
+          reinterpret_cast<char*>(&_impl_.requestid_),
+          reinterpret_cast<char*>(&other->_impl_.requestid_));
 }
 
-::google::protobuf::Metadata MessageRequest::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[0]);
 }
-
-
 // ===================================================================
 
-void MessageResponse::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageResponse::kResponseIDFieldNumber;
-const int MessageResponse::kResponseTypeFieldNumber;
-const int MessageResponse::kDescriptionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageResponse::_Internal {
+ public:
+};
 
-MessageResponse::MessageResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageResponse.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageResponse)
+MessageResponse::MessageResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageResponse)
 }
 MessageResponse::MessageResponse(const MessageResponse& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.description().size() > 0) {
-    description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  MessageResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_) {}
+
+    , decltype(_impl_.responseid_) {}
+
+    , decltype(_impl_.responsetype_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_description().empty()) {
+    _this->_impl_.description_.Set(from._internal_description(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&responseid_, &from.responseid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&responsetype_) -
-    reinterpret_cast<char*>(&responseid_)) + sizeof(responsetype_));
+  ::memcpy(&_impl_.responseid_, &from._impl_.responseid_,
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.responsetype_) -
+    reinterpret_cast<char*>(&_impl_.responseid_)) + sizeof(_impl_.responsetype_));
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageResponse)
 }
 
-void MessageResponse::SharedCtor() {
-  description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&responseid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&responsetype_) -
-      reinterpret_cast<char*>(&responseid_)) + sizeof(responsetype_));
+inline void MessageResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_) {}
+
+    , decltype(_impl_.responseid_) { 0u }
+
+    , decltype(_impl_.responsetype_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 MessageResponse::~MessageResponse() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageResponse::SharedDtor() {
-  description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void MessageResponse::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.description_.Destroy();
 }
 
 void MessageResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageResponse::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageResponse& MessageResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageResponse.base);
-  return *internal_default_instance();
-}
-
 
 void MessageResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&responseid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&responsetype_) -
-      reinterpret_cast<char*>(&responseid_)) + sizeof(responsetype_));
-  _internal_metadata_.Clear();
+  _impl_.description_.ClearToEmpty();
+  ::memset(&_impl_.responseid_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.responsetype_) -
+      reinterpret_cast<char*>(&_impl_.responseid_)) + sizeof(_impl_.responsetype_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-bool MessageResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageResponse)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+const char* MessageResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
       // uint32 responseID = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &responseid_)));
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.responseid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // .com.genomics.protobuf.ResponseType responseType = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_responsetype(static_cast< ::com::genomics::protobuf::ResponseType >(value));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+          _internal_set_responsetype(static_cast<::com::genomics::protobuf::ResponseType>(val));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // string description = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->description().data(), static_cast<int>(this->description().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageResponse.description"));
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_description();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageResponse.description"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
     }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageResponse)
-  return true;
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageResponse)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint32 responseID = 1;
-  if (this->responseid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->responseid(), output);
-  }
-
-  // .com.genomics.protobuf.ResponseType responseType = 2;
-  if (this->responsetype() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->responsetype(), output);
-  }
-
-  // string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), static_cast<int>(this->description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageResponse.description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->description(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageResponse)
-}
-
-::google::protobuf::uint8* MessageResponse::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 responseID = 1;
-  if (this->responseid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->responseid(), target);
+  if (this->_internal_responseid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_responseid(), target);
   }
 
   // .com.genomics.protobuf.ResponseType responseType = 2;
-  if (this->responsetype() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->responsetype(), target);
+  if (this->_internal_responsetype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        2, this->_internal_responsetype(), target);
   }
 
   // string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), static_cast<int>(this->description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageResponse.description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->description(), target);
+  if (!this->_internal_description().empty()) {
+    const std::string& _s = this->_internal_description();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageResponse.description");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageResponse)
   return target;
 }
 
-size_t MessageResponse::ByteSizeLong() const {
+::size_t MessageResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   // string description = 3;
-  if (this->description().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->description());
+  if (!this->_internal_description().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_description());
   }
 
   // uint32 responseID = 1;
-  if (this->responseid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->responseid());
+  if (this->_internal_responseid() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_responseid());
   }
 
   // .com.genomics.protobuf.ResponseType responseType = 2;
-  if (this->responsetype() != 0) {
+  if (this->_internal_responsetype() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->responsetype());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_responsetype());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageResponse>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageResponse)
-    MergeFrom(*source);
-  }
-}
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageResponse::GetClassData() const { return &_class_data_; }
 
-void MessageResponse::MergeFrom(const MessageResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+
+void MessageResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageResponse*>(&to_msg);
+  auto& from = static_cast<const MessageResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.description().size() > 0) {
-
-    description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
+  if (!from._internal_description().empty()) {
+    _this->_internal_set_description(from._internal_description());
   }
-  if (from.responseid() != 0) {
-    set_responseid(from.responseid());
+  if (from._internal_responseid() != 0) {
+    _this->_internal_set_responseid(from._internal_responseid());
   }
-  if (from.responsetype() != 0) {
-    set_responsetype(from.responsetype());
+  if (from._internal_responsetype() != 0) {
+    _this->_internal_set_responsetype(from._internal_responsetype());
   }
-}
-
-void MessageResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageResponse::CopyFrom(const MessageResponse& from) {
@@ -1045,763 +933,406 @@ bool MessageResponse::IsInitialized() const {
   return true;
 }
 
-void MessageResponse::Swap(MessageResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageResponse::InternalSwap(MessageResponse* other) {
   using std::swap;
-  description_.Swap(&other->description_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(responseid_, other->responseid_);
-  swap(responsetype_, other->responsetype_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, lhs_arena,
+                                       &other->_impl_.description_, rhs_arena);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MessageResponse, _impl_.responsetype_)
+      + sizeof(MessageResponse::_impl_.responsetype_)
+      - PROTOBUF_FIELD_OFFSET(MessageResponse, _impl_.responseid_)>(
+          reinterpret_cast<char*>(&_impl_.responseid_),
+          reinterpret_cast<char*>(&other->_impl_.responseid_));
 }
 
-::google::protobuf::Metadata MessageResponse::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[1]);
 }
-
-
 // ===================================================================
 
-void MessagePush::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessagePush::_Internal {
+ public:
+};
 
-MessagePush::MessagePush()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessagePush.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessagePush)
+MessagePush::MessagePush(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessagePush)
 }
 MessagePush::MessagePush(const MessagePush& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  MessagePush* const _this = this; (void)_this;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessagePush)
 }
 
-void MessagePush::SharedCtor() {
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessagePush::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessagePush::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata MessagePush::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[2]);
 }
-
-MessagePush::~MessagePush() {
-  // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessagePush)
-  SharedDtor();
-}
-
-void MessagePush::SharedDtor() {
-}
-
-void MessagePush::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* MessagePush::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessagePush& MessagePush::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessagePush.base);
-  return *internal_default_instance();
-}
-
-
-void MessagePush::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessagePush)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear();
-}
-
-bool MessagePush::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessagePush)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessagePush)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessagePush)
-  return false;
-#undef DO_
-}
-
-void MessagePush::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessagePush)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessagePush)
-}
-
-::google::protobuf::uint8* MessagePush::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessagePush)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessagePush)
-  return target;
-}
-
-size_t MessagePush::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessagePush)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void MessagePush::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessagePush)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessagePush* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessagePush>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessagePush)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessagePush)
-    MergeFrom(*source);
-  }
-}
-
-void MessagePush::MergeFrom(const MessagePush& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessagePush)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-}
-
-void MessagePush::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessagePush)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void MessagePush::CopyFrom(const MessagePush& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.genomics.protobuf.MessagePush)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool MessagePush::IsInitialized() const {
-  return true;
-}
-
-void MessagePush::Swap(MessagePush* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void MessagePush::InternalSwap(MessagePush* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata MessagePush::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
 // ===================================================================
 
-void MessagePull::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessagePull::_Internal {
+ public:
+};
 
-MessagePull::MessagePull()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessagePull.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessagePull)
+MessagePull::MessagePull(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessagePull)
 }
 MessagePull::MessagePull(const MessagePull& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  MessagePull* const _this = this; (void)_this;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessagePull)
 }
 
-void MessagePull::SharedCtor() {
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessagePull::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessagePull::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata MessagePull::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[3]);
 }
-
-MessagePull::~MessagePull() {
-  // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessagePull)
-  SharedDtor();
-}
-
-void MessagePull::SharedDtor() {
-}
-
-void MessagePull::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* MessagePull::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessagePull& MessagePull::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessagePull.base);
-  return *internal_default_instance();
-}
-
-
-void MessagePull::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessagePull)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear();
-}
-
-bool MessagePull::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessagePull)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessagePull)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessagePull)
-  return false;
-#undef DO_
-}
-
-void MessagePull::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessagePull)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessagePull)
-}
-
-::google::protobuf::uint8* MessagePull::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessagePull)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessagePull)
-  return target;
-}
-
-size_t MessagePull::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessagePull)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void MessagePull::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessagePull)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessagePull* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessagePull>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessagePull)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessagePull)
-    MergeFrom(*source);
-  }
-}
-
-void MessagePull::MergeFrom(const MessagePull& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessagePull)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-}
-
-void MessagePull::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessagePull)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void MessagePull::CopyFrom(const MessagePull& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.genomics.protobuf.MessagePull)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool MessagePull::IsInitialized() const {
-  return true;
-}
-
-void MessagePull::Swap(MessagePull* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void MessagePull::InternalSwap(MessagePull* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata MessagePull::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
 // ===================================================================
 
-void MessageCommand::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageCommand::kCmdFieldNumber;
-const int MessageCommand::kXmlFilenameFieldNumber;
-const int MessageCommand::kXslFilenameFieldNumber;
-const int MessageCommand::kOutFilenameFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageCommand::_Internal {
+ public:
+};
 
-MessageCommand::MessageCommand()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageCommand.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageCommand)
+MessageCommand::MessageCommand(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageCommand)
 }
 MessageCommand::MessageCommand(const MessageCommand& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  cmd_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.cmd().size() > 0) {
-    cmd_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.cmd_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  MessageCommand* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.cmd_) {}
+
+    , decltype(_impl_.xmlfilename_) {}
+
+    , decltype(_impl_.xslfilename_) {}
+
+    , decltype(_impl_.outfilename_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.cmd_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.cmd_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_cmd().empty()) {
+    _this->_impl_.cmd_.Set(from._internal_cmd(), _this->GetArenaForAllocation());
   }
-  xmlfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.xmlfilename().size() > 0) {
-    xmlfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xmlfilename_);
+  _impl_.xmlfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.xmlfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_xmlfilename().empty()) {
+    _this->_impl_.xmlfilename_.Set(from._internal_xmlfilename(), _this->GetArenaForAllocation());
   }
-  xslfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.xslfilename().size() > 0) {
-    xslfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xslfilename_);
+  _impl_.xslfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.xslfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_xslfilename().empty()) {
+    _this->_impl_.xslfilename_.Set(from._internal_xslfilename(), _this->GetArenaForAllocation());
   }
-  outfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.outfilename().size() > 0) {
-    outfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.outfilename_);
+  _impl_.outfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.outfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_outfilename().empty()) {
+    _this->_impl_.outfilename_.Set(from._internal_outfilename(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageCommand)
 }
 
-void MessageCommand::SharedCtor() {
-  cmd_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xmlfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xslfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  outfilename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void MessageCommand::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.cmd_) {}
+
+    , decltype(_impl_.xmlfilename_) {}
+
+    , decltype(_impl_.xslfilename_) {}
+
+    , decltype(_impl_.outfilename_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.cmd_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.cmd_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.xmlfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.xmlfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.xslfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.xslfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.outfilename_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.outfilename_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 MessageCommand::~MessageCommand() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageCommand)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageCommand::SharedDtor() {
-  cmd_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xmlfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xslfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  outfilename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void MessageCommand::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.cmd_.Destroy();
+  _impl_.xmlfilename_.Destroy();
+  _impl_.xslfilename_.Destroy();
+  _impl_.outfilename_.Destroy();
 }
 
 void MessageCommand::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageCommand::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageCommand& MessageCommand::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageCommand.base);
-  return *internal_default_instance();
-}
-
 
 void MessageCommand::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageCommand)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xmlfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  xslfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  outfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
+  _impl_.cmd_.ClearToEmpty();
+  _impl_.xmlfilename_.ClearToEmpty();
+  _impl_.xslfilename_.ClearToEmpty();
+  _impl_.outfilename_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-bool MessageCommand::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageCommand)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+const char* MessageCommand::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
       // string cmd = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_cmd()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->cmd().data(), static_cast<int>(this->cmd().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageCommand.cmd"));
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_cmd();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageCommand.cmd"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // string xmlFilename = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_xmlfilename()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageCommand.xmlFilename"));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_xmlfilename();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageCommand.xmlFilename"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // string xslFilename = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_xslfilename()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageCommand.xslFilename"));
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_xslfilename();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageCommand.xslFilename"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // string outFilename = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_outfilename()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->outfilename().data(), static_cast<int>(this->outfilename().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "com.genomics.protobuf.MessageCommand.outFilename"));
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_outfilename();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.genomics.protobuf.MessageCommand.outFilename"));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
     }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageCommand)
-  return true;
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageCommand)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageCommand::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageCommand)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string cmd = 1;
-  if (this->cmd().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->cmd().data(), static_cast<int>(this->cmd().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.cmd");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->cmd(), output);
-  }
-
-  // string xmlFilename = 2;
-  if (this->xmlfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.xmlFilename");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->xmlfilename(), output);
-  }
-
-  // string xslFilename = 3;
-  if (this->xslfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.xslFilename");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->xslfilename(), output);
-  }
-
-  // string outFilename = 4;
-  if (this->outfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->outfilename().data(), static_cast<int>(this->outfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.outFilename");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->outfilename(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageCommand)
-}
-
-::google::protobuf::uint8* MessageCommand::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageCommand::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageCommand)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string cmd = 1;
-  if (this->cmd().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->cmd().data(), static_cast<int>(this->cmd().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.cmd");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->cmd(), target);
+  if (!this->_internal_cmd().empty()) {
+    const std::string& _s = this->_internal_cmd();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageCommand.cmd");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string xmlFilename = 2;
-  if (this->xmlfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->xmlfilename().data(), static_cast<int>(this->xmlfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.xmlFilename");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->xmlfilename(), target);
+  if (!this->_internal_xmlfilename().empty()) {
+    const std::string& _s = this->_internal_xmlfilename();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageCommand.xmlFilename");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // string xslFilename = 3;
-  if (this->xslfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->xslfilename().data(), static_cast<int>(this->xslfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.xslFilename");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->xslfilename(), target);
+  if (!this->_internal_xslfilename().empty()) {
+    const std::string& _s = this->_internal_xslfilename();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageCommand.xslFilename");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   // string outFilename = 4;
-  if (this->outfilename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->outfilename().data(), static_cast<int>(this->outfilename().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "com.genomics.protobuf.MessageCommand.outFilename");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->outfilename(), target);
+  if (!this->_internal_outfilename().empty()) {
+    const std::string& _s = this->_internal_outfilename();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "com.genomics.protobuf.MessageCommand.outFilename");
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageCommand)
   return target;
 }
 
-size_t MessageCommand::ByteSizeLong() const {
+::size_t MessageCommand::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageCommand)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   // string cmd = 1;
-  if (this->cmd().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->cmd());
+  if (!this->_internal_cmd().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_cmd());
   }
 
   // string xmlFilename = 2;
-  if (this->xmlfilename().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->xmlfilename());
+  if (!this->_internal_xmlfilename().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_xmlfilename());
   }
 
   // string xslFilename = 3;
-  if (this->xslfilename().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->xslfilename());
+  if (!this->_internal_xslfilename().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_xslfilename());
   }
 
   // string outFilename = 4;
-  if (this->outfilename().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->outfilename());
+  if (!this->_internal_outfilename().empty()) {
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_outfilename());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageCommand::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageCommand)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageCommand* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageCommand>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageCommand)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageCommand)
-    MergeFrom(*source);
-  }
-}
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageCommand::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageCommand::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageCommand::GetClassData() const { return &_class_data_; }
 
-void MessageCommand::MergeFrom(const MessageCommand& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageCommand)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+
+void MessageCommand::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageCommand*>(&to_msg);
+  auto& from = static_cast<const MessageCommand&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageCommand)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.cmd().size() > 0) {
-
-    cmd_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.cmd_);
+  if (!from._internal_cmd().empty()) {
+    _this->_internal_set_cmd(from._internal_cmd());
   }
-  if (from.xmlfilename().size() > 0) {
-
-    xmlfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xmlfilename_);
+  if (!from._internal_xmlfilename().empty()) {
+    _this->_internal_set_xmlfilename(from._internal_xmlfilename());
   }
-  if (from.xslfilename().size() > 0) {
-
-    xslfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.xslfilename_);
+  if (!from._internal_xslfilename().empty()) {
+    _this->_internal_set_xslfilename(from._internal_xslfilename());
   }
-  if (from.outfilename().size() > 0) {
-
-    outfilename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.outfilename_);
+  if (!from._internal_outfilename().empty()) {
+    _this->_internal_set_outfilename(from._internal_outfilename());
   }
-}
-
-void MessageCommand::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageCommand)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageCommand::CopyFrom(const MessageCommand& from) {
@@ -1815,301 +1346,232 @@ bool MessageCommand::IsInitialized() const {
   return true;
 }
 
-void MessageCommand::Swap(MessageCommand* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageCommand::InternalSwap(MessageCommand* other) {
   using std::swap;
-  cmd_.Swap(&other->cmd_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  xmlfilename_.Swap(&other->xmlfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  xslfilename_.Swap(&other->xslfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  outfilename_.Swap(&other->outfilename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cmd_, lhs_arena,
+                                       &other->_impl_.cmd_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.xmlfilename_, lhs_arena,
+                                       &other->_impl_.xmlfilename_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.xslfilename_, lhs_arena,
+                                       &other->_impl_.xslfilename_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.outfilename_, lhs_arena,
+                                       &other->_impl_.outfilename_, rhs_arena);
 }
 
-::google::protobuf::Metadata MessageCommand::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageCommand::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[4]);
 }
-
-
 // ===================================================================
 
-void MessageHeader::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageHeader::kVersionFieldNumber;
-const int MessageHeader::kMsgIDFieldNumber;
-const int MessageHeader::kMsgTypeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageHeader::_Internal {
+ public:
+};
 
-MessageHeader::MessageHeader()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageHeader.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageHeader)
+MessageHeader::MessageHeader(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageHeader)
 }
 MessageHeader::MessageHeader(const MessageHeader& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::memcpy(&version_, &from.version_,
-    static_cast<size_t>(reinterpret_cast<char*>(&msgtype_) -
-    reinterpret_cast<char*>(&version_)) + sizeof(msgtype_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageHeader)
 }
 
-void MessageHeader::SharedCtor() {
-  ::memset(&version_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&msgtype_) -
-      reinterpret_cast<char*>(&version_)) + sizeof(msgtype_));
+inline void MessageHeader::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.version_) { 0u }
+
+    , decltype(_impl_.msgid_) { 0u }
+
+    , decltype(_impl_.msgtype_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 MessageHeader::~MessageHeader() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageHeader)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageHeader::SharedDtor() {
+inline void MessageHeader::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void MessageHeader::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageHeader::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageHeader& MessageHeader::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageHeader.base);
-  return *internal_default_instance();
-}
-
 
 void MessageHeader::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageHeader)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&version_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&msgtype_) -
-      reinterpret_cast<char*>(&version_)) + sizeof(msgtype_));
-  _internal_metadata_.Clear();
+  ::memset(&_impl_.version_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.msgtype_) -
+      reinterpret_cast<char*>(&_impl_.version_)) + sizeof(_impl_.msgtype_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-bool MessageHeader::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageHeader)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+const char* MessageHeader::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
       // uint32 version = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // uint32 msgID = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &msgid_)));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.msgid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
+        continue;
       // .com.genomics.protobuf.MsgType msgType = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_msgtype(static_cast< ::com::genomics::protobuf::MsgType >(value));
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+          _internal_set_msgtype(static_cast<::com::genomics::protobuf::MsgType>(val));
         } else {
           goto handle_unusual;
         }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
     }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageHeader)
-  return true;
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageHeader)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageHeader::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageHeader)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint32 version = 1;
-  if (this->version() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-
-  // uint32 msgID = 2;
-  if (this->msgid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->msgid(), output);
-  }
-
-  // .com.genomics.protobuf.MsgType msgType = 3;
-  if (this->msgtype() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      3, this->msgtype(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageHeader)
-}
-
-::google::protobuf::uint8* MessageHeader::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageHeader::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageHeader)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 version = 1;
-  if (this->version() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
+  if (this->_internal_version() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_version(), target);
   }
 
   // uint32 msgID = 2;
-  if (this->msgid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->msgid(), target);
+  if (this->_internal_msgid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        2, this->_internal_msgid(), target);
   }
 
   // .com.genomics.protobuf.MsgType msgType = 3;
-  if (this->msgtype() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      3, this->msgtype(), target);
+  if (this->_internal_msgtype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        3, this->_internal_msgtype(), target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageHeader)
   return target;
 }
 
-size_t MessageHeader::ByteSizeLong() const {
+::size_t MessageHeader::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageHeader)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   // uint32 version = 1;
-  if (this->version() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->version());
+  if (this->_internal_version() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_version());
   }
 
   // uint32 msgID = 2;
-  if (this->msgid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->msgid());
+  if (this->_internal_msgid() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_msgid());
   }
 
   // .com.genomics.protobuf.MsgType msgType = 3;
-  if (this->msgtype() != 0) {
+  if (this->_internal_msgtype() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->msgtype());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_msgtype());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageHeader::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageHeader)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageHeader* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageHeader>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageHeader)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageHeader)
-    MergeFrom(*source);
-  }
-}
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageHeader::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageHeader::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageHeader::GetClassData() const { return &_class_data_; }
 
-void MessageHeader::MergeFrom(const MessageHeader& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageHeader)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+
+void MessageHeader::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageHeader*>(&to_msg);
+  auto& from = static_cast<const MessageHeader&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageHeader)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.version() != 0) {
-    set_version(from.version());
+  if (from._internal_version() != 0) {
+    _this->_internal_set_version(from._internal_version());
   }
-  if (from.msgid() != 0) {
-    set_msgid(from.msgid());
+  if (from._internal_msgid() != 0) {
+    _this->_internal_set_msgid(from._internal_msgid());
   }
-  if (from.msgtype() != 0) {
-    set_msgtype(from.msgtype());
+  if (from._internal_msgtype() != 0) {
+    _this->_internal_set_msgtype(from._internal_msgtype());
   }
-}
-
-void MessageHeader::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageHeader)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageHeader::CopyFrom(const MessageHeader& from) {
@@ -2123,423 +1585,389 @@ bool MessageHeader::IsInitialized() const {
   return true;
 }
 
-void MessageHeader::Swap(MessageHeader* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageHeader::InternalSwap(MessageHeader* other) {
   using std::swap;
-  swap(version_, other->version_);
-  swap(msgid_, other->msgid_);
-  swap(msgtype_, other->msgtype_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MessageHeader, _impl_.msgtype_)
+      + sizeof(MessageHeader::_impl_.msgtype_)
+      - PROTOBUF_FIELD_OFFSET(MessageHeader, _impl_.version_)>(
+          reinterpret_cast<char*>(&_impl_.version_),
+          reinterpret_cast<char*>(&other->_impl_.version_));
 }
 
-::google::protobuf::Metadata MessageHeader::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageHeader::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[5]);
 }
-
-
 // ===================================================================
 
-void MessageBody::InitAsDefaultInstance() {
-  ::com::genomics::protobuf::_MessageBody_default_instance_._instance.get_mutable()->msgrequest_ = const_cast< ::com::genomics::protobuf::MessageRequest*>(
-      ::com::genomics::protobuf::MessageRequest::internal_default_instance());
-  ::com::genomics::protobuf::_MessageBody_default_instance_._instance.get_mutable()->msgresponse_ = const_cast< ::com::genomics::protobuf::MessageResponse*>(
-      ::com::genomics::protobuf::MessageResponse::internal_default_instance());
-  ::com::genomics::protobuf::_MessageBody_default_instance_._instance.get_mutable()->msgpush_ = const_cast< ::com::genomics::protobuf::MessagePush*>(
-      ::com::genomics::protobuf::MessagePush::internal_default_instance());
-  ::com::genomics::protobuf::_MessageBody_default_instance_._instance.get_mutable()->msgpull_ = const_cast< ::com::genomics::protobuf::MessagePull*>(
-      ::com::genomics::protobuf::MessagePull::internal_default_instance());
-  ::com::genomics::protobuf::_MessageBody_default_instance_._instance.get_mutable()->msgcommand_ = const_cast< ::com::genomics::protobuf::MessageCommand*>(
-      ::com::genomics::protobuf::MessageCommand::internal_default_instance());
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageBody::kMsgRequestFieldNumber;
-const int MessageBody::kMsgResponseFieldNumber;
-const int MessageBody::kMsgPushFieldNumber;
-const int MessageBody::kMsgPullFieldNumber;
-const int MessageBody::kMsgCommandFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageBody::_Internal {
+ public:
+  using HasBits = decltype(std::declval<MessageBody>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(MessageBody, _impl_._has_bits_);
+  static const ::com::genomics::protobuf::MessageRequest& msgrequest(const MessageBody* msg);
+  static void set_has_msgrequest(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static const ::com::genomics::protobuf::MessageResponse& msgresponse(const MessageBody* msg);
+  static void set_has_msgresponse(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static const ::com::genomics::protobuf::MessagePush& msgpush(const MessageBody* msg);
+  static void set_has_msgpush(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static const ::com::genomics::protobuf::MessagePull& msgpull(const MessageBody* msg);
+  static void set_has_msgpull(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static const ::com::genomics::protobuf::MessageCommand& msgcommand(const MessageBody* msg);
+  static void set_has_msgcommand(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
+};
 
-MessageBody::MessageBody()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageBody.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageBody)
+const ::com::genomics::protobuf::MessageRequest&
+MessageBody::_Internal::msgrequest(const MessageBody* msg) {
+  return *msg->_impl_.msgrequest_;
+}
+const ::com::genomics::protobuf::MessageResponse&
+MessageBody::_Internal::msgresponse(const MessageBody* msg) {
+  return *msg->_impl_.msgresponse_;
+}
+const ::com::genomics::protobuf::MessagePush&
+MessageBody::_Internal::msgpush(const MessageBody* msg) {
+  return *msg->_impl_.msgpush_;
+}
+const ::com::genomics::protobuf::MessagePull&
+MessageBody::_Internal::msgpull(const MessageBody* msg) {
+  return *msg->_impl_.msgpull_;
+}
+const ::com::genomics::protobuf::MessageCommand&
+MessageBody::_Internal::msgcommand(const MessageBody* msg) {
+  return *msg->_impl_.msgcommand_;
+}
+MessageBody::MessageBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageBody)
 }
 MessageBody::MessageBody(const MessageBody& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_msgrequest()) {
-    msgrequest_ = new ::com::genomics::protobuf::MessageRequest(*from.msgrequest_);
-  } else {
-    msgrequest_ = NULL;
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  MessageBody* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.msgrequest_){nullptr}
+    , decltype(_impl_.msgresponse_){nullptr}
+    , decltype(_impl_.msgpush_){nullptr}
+    , decltype(_impl_.msgpull_){nullptr}
+    , decltype(_impl_.msgcommand_){nullptr}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.msgrequest_ = new ::com::genomics::protobuf::MessageRequest(*from._impl_.msgrequest_);
   }
-  if (from.has_msgresponse()) {
-    msgresponse_ = new ::com::genomics::protobuf::MessageResponse(*from.msgresponse_);
-  } else {
-    msgresponse_ = NULL;
+  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    _this->_impl_.msgresponse_ = new ::com::genomics::protobuf::MessageResponse(*from._impl_.msgresponse_);
   }
-  if (from.has_msgpush()) {
-    msgpush_ = new ::com::genomics::protobuf::MessagePush(*from.msgpush_);
-  } else {
-    msgpush_ = NULL;
+  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    _this->_impl_.msgpush_ = new ::com::genomics::protobuf::MessagePush(*from._impl_.msgpush_);
   }
-  if (from.has_msgpull()) {
-    msgpull_ = new ::com::genomics::protobuf::MessagePull(*from.msgpull_);
-  } else {
-    msgpull_ = NULL;
+  if ((from._impl_._has_bits_[0] & 0x00000008u) != 0) {
+    _this->_impl_.msgpull_ = new ::com::genomics::protobuf::MessagePull(*from._impl_.msgpull_);
   }
-  if (from.has_msgcommand()) {
-    msgcommand_ = new ::com::genomics::protobuf::MessageCommand(*from.msgcommand_);
-  } else {
-    msgcommand_ = NULL;
+  if ((from._impl_._has_bits_[0] & 0x00000010u) != 0) {
+    _this->_impl_.msgcommand_ = new ::com::genomics::protobuf::MessageCommand(*from._impl_.msgcommand_);
   }
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageBody)
 }
 
-void MessageBody::SharedCtor() {
-  ::memset(&msgrequest_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&msgcommand_) -
-      reinterpret_cast<char*>(&msgrequest_)) + sizeof(msgcommand_));
+inline void MessageBody::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.msgrequest_){nullptr}
+    , decltype(_impl_.msgresponse_){nullptr}
+    , decltype(_impl_.msgpush_){nullptr}
+    , decltype(_impl_.msgpull_){nullptr}
+    , decltype(_impl_.msgcommand_){nullptr}
+  };
 }
 
 MessageBody::~MessageBody() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageBody)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageBody::SharedDtor() {
-  if (this != internal_default_instance()) delete msgrequest_;
-  if (this != internal_default_instance()) delete msgresponse_;
-  if (this != internal_default_instance()) delete msgpush_;
-  if (this != internal_default_instance()) delete msgpull_;
-  if (this != internal_default_instance()) delete msgcommand_;
+inline void MessageBody::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.msgrequest_;
+  if (this != internal_default_instance()) delete _impl_.msgresponse_;
+  if (this != internal_default_instance()) delete _impl_.msgpush_;
+  if (this != internal_default_instance()) delete _impl_.msgpull_;
+  if (this != internal_default_instance()) delete _impl_.msgcommand_;
 }
 
 void MessageBody::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageBody::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageBody& MessageBody::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageBody.base);
-  return *internal_default_instance();
-}
-
 
 void MessageBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && msgrequest_ != NULL) {
-    delete msgrequest_;
-  }
-  msgrequest_ = NULL;
-  if (GetArenaNoVirtual() == NULL && msgresponse_ != NULL) {
-    delete msgresponse_;
-  }
-  msgresponse_ = NULL;
-  if (GetArenaNoVirtual() == NULL && msgpush_ != NULL) {
-    delete msgpush_;
-  }
-  msgpush_ = NULL;
-  if (GetArenaNoVirtual() == NULL && msgpull_ != NULL) {
-    delete msgpull_;
-  }
-  msgpull_ = NULL;
-  if (GetArenaNoVirtual() == NULL && msgcommand_ != NULL) {
-    delete msgcommand_;
-  }
-  msgcommand_ = NULL;
-  _internal_metadata_.Clear();
-}
-
-bool MessageBody::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageBody)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .com.genomics.protobuf.MessageRequest msgRequest = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgrequest()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .com.genomics.protobuf.MessageResponse msgResponse = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgresponse()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .com.genomics.protobuf.MessagePush msgPush = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgpush()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .com.genomics.protobuf.MessagePull msgPull = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgpull()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .com.genomics.protobuf.MessageCommand msgCommand = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgcommand()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.msgrequest_ != nullptr);
+      _impl_.msgrequest_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.msgresponse_ != nullptr);
+      _impl_.msgresponse_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(_impl_.msgpush_ != nullptr);
+      _impl_.msgpush_->Clear();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      ABSL_DCHECK(_impl_.msgpull_ != nullptr);
+      _impl_.msgpull_->Clear();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      ABSL_DCHECK(_impl_.msgcommand_ != nullptr);
+      _impl_.msgcommand_->Clear();
     }
   }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageBody)
-  return true;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* MessageBody::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.genomics.protobuf.MessageRequest msgRequest = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgrequest(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .com.genomics.protobuf.MessageResponse msgResponse = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgresponse(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .com.genomics.protobuf.MessagePush msgPush = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgpush(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .com.genomics.protobuf.MessagePull msgPull = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgpull(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .com.genomics.protobuf.MessageCommand msgCommand = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgcommand(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageBody)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageBody::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .com.genomics.protobuf.MessageRequest msgRequest = 1;
-  if (this->has_msgrequest()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_msgrequest(), output);
-  }
-
-  // .com.genomics.protobuf.MessageResponse msgResponse = 2;
-  if (this->has_msgresponse()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->_internal_msgresponse(), output);
-  }
-
-  // .com.genomics.protobuf.MessagePush msgPush = 3;
-  if (this->has_msgpush()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->_internal_msgpush(), output);
-  }
-
-  // .com.genomics.protobuf.MessagePull msgPull = 4;
-  if (this->has_msgpull()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->_internal_msgpull(), output);
-  }
-
-  // .com.genomics.protobuf.MessageCommand msgCommand = 5;
-  if (this->has_msgcommand()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->_internal_msgcommand(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageBody)
-}
-
-::google::protobuf::uint8* MessageBody::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageBody::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .com.genomics.protobuf.MessageRequest msgRequest = 1;
-  if (this->has_msgrequest()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->_internal_msgrequest(), deterministic, target);
+  if (cached_has_bits & 0x00000001u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::msgrequest(this),
+        _Internal::msgrequest(this).GetCachedSize(), target, stream);
   }
 
   // .com.genomics.protobuf.MessageResponse msgResponse = 2;
-  if (this->has_msgresponse()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        2, this->_internal_msgresponse(), deterministic, target);
+  if (cached_has_bits & 0x00000002u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::msgresponse(this),
+        _Internal::msgresponse(this).GetCachedSize(), target, stream);
   }
 
   // .com.genomics.protobuf.MessagePush msgPush = 3;
-  if (this->has_msgpush()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        3, this->_internal_msgpush(), deterministic, target);
+  if (cached_has_bits & 0x00000004u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::msgpush(this),
+        _Internal::msgpush(this).GetCachedSize(), target, stream);
   }
 
   // .com.genomics.protobuf.MessagePull msgPull = 4;
-  if (this->has_msgpull()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        4, this->_internal_msgpull(), deterministic, target);
+  if (cached_has_bits & 0x00000008u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::msgpull(this),
+        _Internal::msgpull(this).GetCachedSize(), target, stream);
   }
 
   // .com.genomics.protobuf.MessageCommand msgCommand = 5;
-  if (this->has_msgcommand()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        5, this->_internal_msgcommand(), deterministic, target);
+  if (cached_has_bits & 0x00000010u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(5, _Internal::msgcommand(this),
+        _Internal::msgcommand(this).GetCachedSize(), target, stream);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageBody)
   return target;
 }
 
-size_t MessageBody::ByteSizeLong() const {
+::size_t MessageBody::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageBody)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // .com.genomics.protobuf.MessageRequest msgRequest = 1;
-  if (this->has_msgrequest()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgrequest_);
-  }
-
-  // .com.genomics.protobuf.MessageResponse msgResponse = 2;
-  if (this->has_msgresponse()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgresponse_);
-  }
-
-  // .com.genomics.protobuf.MessagePush msgPush = 3;
-  if (this->has_msgpush()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgpush_);
-  }
-
-  // .com.genomics.protobuf.MessagePull msgPull = 4;
-  if (this->has_msgpull()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgpull_);
-  }
-
-  // .com.genomics.protobuf.MessageCommand msgCommand = 5;
-  if (this->has_msgcommand()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgcommand_);
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void MessageBody::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageBody)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageBody* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageBody>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageBody)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageBody)
-    MergeFrom(*source);
-  }
-}
-
-void MessageBody::MergeFrom(const MessageBody& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageBody)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (from.has_msgrequest()) {
-    mutable_msgrequest()->::com::genomics::protobuf::MessageRequest::MergeFrom(from.msgrequest());
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    // .com.genomics.protobuf.MessageRequest msgRequest = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgrequest_);
+    }
+
+    // .com.genomics.protobuf.MessageResponse msgResponse = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgresponse_);
+    }
+
+    // .com.genomics.protobuf.MessagePush msgPush = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgpush_);
+    }
+
+    // .com.genomics.protobuf.MessagePull msgPull = 4;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgpull_);
+    }
+
+    // .com.genomics.protobuf.MessageCommand msgCommand = 5;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgcommand_);
+    }
+
   }
-  if (from.has_msgresponse()) {
-    mutable_msgresponse()->::com::genomics::protobuf::MessageResponse::MergeFrom(from.msgresponse());
-  }
-  if (from.has_msgpush()) {
-    mutable_msgpush()->::com::genomics::protobuf::MessagePush::MergeFrom(from.msgpush());
-  }
-  if (from.has_msgpull()) {
-    mutable_msgpull()->::com::genomics::protobuf::MessagePull::MergeFrom(from.msgpull());
-  }
-  if (from.has_msgcommand()) {
-    mutable_msgcommand()->::com::genomics::protobuf::MessageCommand::MergeFrom(from.msgcommand());
-  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageBody::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageBody)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageBody::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageBody::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageBody::GetClassData() const { return &_class_data_; }
+
+
+void MessageBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageBody*>(&to_msg);
+  auto& from = static_cast<const MessageBody&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageBody)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_mutable_msgrequest()->::com::genomics::protobuf::MessageRequest::MergeFrom(
+          from._internal_msgrequest());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_internal_mutable_msgresponse()->::com::genomics::protobuf::MessageResponse::MergeFrom(
+          from._internal_msgresponse());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_internal_mutable_msgpush()->::com::genomics::protobuf::MessagePush::MergeFrom(
+          from._internal_msgpush());
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_internal_mutable_msgpull()->::com::genomics::protobuf::MessagePull::MergeFrom(
+          from._internal_msgpull());
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _this->_internal_mutable_msgcommand()->::com::genomics::protobuf::MessageCommand::MergeFrom(
+          from._internal_msgcommand());
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageBody::CopyFrom(const MessageBody& from) {
@@ -2553,281 +1981,255 @@ bool MessageBody::IsInitialized() const {
   return true;
 }
 
-void MessageBody::Swap(MessageBody* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageBody::InternalSwap(MessageBody* other) {
   using std::swap;
-  swap(msgrequest_, other->msgrequest_);
-  swap(msgresponse_, other->msgresponse_);
-  swap(msgpush_, other->msgpush_);
-  swap(msgpull_, other->msgpull_);
-  swap(msgcommand_, other->msgcommand_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MessageBody, _impl_.msgcommand_)
+      + sizeof(MessageBody::_impl_.msgcommand_)
+      - PROTOBUF_FIELD_OFFSET(MessageBody, _impl_.msgrequest_)>(
+          reinterpret_cast<char*>(&_impl_.msgrequest_),
+          reinterpret_cast<char*>(&other->_impl_.msgrequest_));
 }
 
-::google::protobuf::Metadata MessageBody::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageBody::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[6]);
 }
-
-
 // ===================================================================
 
-void MessageInfo::InitAsDefaultInstance() {
-  ::com::genomics::protobuf::_MessageInfo_default_instance_._instance.get_mutable()->msgheader_ = const_cast< ::com::genomics::protobuf::MessageHeader*>(
-      ::com::genomics::protobuf::MessageHeader::internal_default_instance());
-  ::com::genomics::protobuf::_MessageInfo_default_instance_._instance.get_mutable()->msgbody_ = const_cast< ::com::genomics::protobuf::MessageBody*>(
-      ::com::genomics::protobuf::MessageBody::internal_default_instance());
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageInfo::kMsgHeaderFieldNumber;
-const int MessageInfo::kMsgBodyFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+class MessageInfo::_Internal {
+ public:
+  using HasBits = decltype(std::declval<MessageInfo>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(MessageInfo, _impl_._has_bits_);
+  static const ::com::genomics::protobuf::MessageHeader& msgheader(const MessageInfo* msg);
+  static void set_has_msgheader(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static const ::com::genomics::protobuf::MessageBody& msgbody(const MessageInfo* msg);
+  static void set_has_msgbody(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+};
 
-MessageInfo::MessageInfo()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_MessageInfo_2eproto::scc_info_MessageInfo.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:com.genomics.protobuf.MessageInfo)
+const ::com::genomics::protobuf::MessageHeader&
+MessageInfo::_Internal::msgheader(const MessageInfo* msg) {
+  return *msg->_impl_.msgheader_;
+}
+const ::com::genomics::protobuf::MessageBody&
+MessageInfo::_Internal::msgbody(const MessageInfo* msg) {
+  return *msg->_impl_.msgbody_;
+}
+MessageInfo::MessageInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:com.genomics.protobuf.MessageInfo)
 }
 MessageInfo::MessageInfo(const MessageInfo& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_msgheader()) {
-    msgheader_ = new ::com::genomics::protobuf::MessageHeader(*from.msgheader_);
-  } else {
-    msgheader_ = NULL;
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  MessageInfo* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.msgheader_){nullptr}
+    , decltype(_impl_.msgbody_){nullptr}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.msgheader_ = new ::com::genomics::protobuf::MessageHeader(*from._impl_.msgheader_);
   }
-  if (from.has_msgbody()) {
-    msgbody_ = new ::com::genomics::protobuf::MessageBody(*from.msgbody_);
-  } else {
-    msgbody_ = NULL;
+  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    _this->_impl_.msgbody_ = new ::com::genomics::protobuf::MessageBody(*from._impl_.msgbody_);
   }
   // @@protoc_insertion_point(copy_constructor:com.genomics.protobuf.MessageInfo)
 }
 
-void MessageInfo::SharedCtor() {
-  ::memset(&msgheader_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&msgbody_) -
-      reinterpret_cast<char*>(&msgheader_)) + sizeof(msgbody_));
+inline void MessageInfo::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.msgheader_){nullptr}
+    , decltype(_impl_.msgbody_){nullptr}
+  };
 }
 
 MessageInfo::~MessageInfo() {
   // @@protoc_insertion_point(destructor:com.genomics.protobuf.MessageInfo)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
 }
 
-void MessageInfo::SharedDtor() {
-  if (this != internal_default_instance()) delete msgheader_;
-  if (this != internal_default_instance()) delete msgbody_;
+inline void MessageInfo::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.msgheader_;
+  if (this != internal_default_instance()) delete _impl_.msgbody_;
 }
 
 void MessageInfo::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageInfo::descriptor() {
-  ::protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const MessageInfo& MessageInfo::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_MessageInfo_2eproto::scc_info_MessageInfo.base);
-  return *internal_default_instance();
-}
-
 
 void MessageInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:com.genomics.protobuf.MessageInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && msgheader_ != NULL) {
-    delete msgheader_;
-  }
-  msgheader_ = NULL;
-  if (GetArenaNoVirtual() == NULL && msgbody_ != NULL) {
-    delete msgbody_;
-  }
-  msgbody_ = NULL;
-  _internal_metadata_.Clear();
-}
-
-bool MessageInfo::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:com.genomics.protobuf.MessageInfo)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .com.genomics.protobuf.MessageHeader msgHeader = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgheader()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .com.genomics.protobuf.MessageBody msgBody = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_msgbody()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.msgheader_ != nullptr);
+      _impl_.msgheader_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.msgbody_ != nullptr);
+      _impl_.msgbody_->Clear();
     }
   }
-success:
-  // @@protoc_insertion_point(parse_success:com.genomics.protobuf.MessageInfo)
-  return true;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* MessageInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.genomics.protobuf.MessageHeader msgHeader = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgheader(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .com.genomics.protobuf.MessageBody msgBody = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_msgbody(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:com.genomics.protobuf.MessageInfo)
-  return false;
-#undef DO_
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
 }
 
-void MessageInfo::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:com.genomics.protobuf.MessageInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .com.genomics.protobuf.MessageHeader msgHeader = 1;
-  if (this->has_msgheader()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_msgheader(), output);
-  }
-
-  // .com.genomics.protobuf.MessageBody msgBody = 2;
-  if (this->has_msgbody()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->_internal_msgbody(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:com.genomics.protobuf.MessageInfo)
-}
-
-::google::protobuf::uint8* MessageInfo::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::uint8_t* MessageInfo::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:com.genomics.protobuf.MessageInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .com.genomics.protobuf.MessageHeader msgHeader = 1;
-  if (this->has_msgheader()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->_internal_msgheader(), deterministic, target);
+  if (cached_has_bits & 0x00000001u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::msgheader(this),
+        _Internal::msgheader(this).GetCachedSize(), target, stream);
   }
 
   // .com.genomics.protobuf.MessageBody msgBody = 2;
-  if (this->has_msgbody()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        2, this->_internal_msgbody(), deterministic, target);
+  if (cached_has_bits & 0x00000002u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::msgbody(this),
+        _Internal::msgbody(this).GetCachedSize(), target, stream);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:com.genomics.protobuf.MessageInfo)
   return target;
 }
 
-size_t MessageInfo::ByteSizeLong() const {
+::size_t MessageInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.genomics.protobuf.MessageInfo)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // .com.genomics.protobuf.MessageHeader msgHeader = 1;
-  if (this->has_msgheader()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgheader_);
-  }
-
-  // .com.genomics.protobuf.MessageBody msgBody = 2;
-  if (this->has_msgbody()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *msgbody_);
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void MessageInfo::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:com.genomics.protobuf.MessageInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  const MessageInfo* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageInfo>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:com.genomics.protobuf.MessageInfo)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:com.genomics.protobuf.MessageInfo)
-    MergeFrom(*source);
-  }
-}
-
-void MessageInfo::MergeFrom(const MessageInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (from.has_msgheader()) {
-    mutable_msgheader()->::com::genomics::protobuf::MessageHeader::MergeFrom(from.msgheader());
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // .com.genomics.protobuf.MessageHeader msgHeader = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgheader_);
+    }
+
+    // .com.genomics.protobuf.MessageBody msgBody = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.msgbody_);
+    }
+
   }
-  if (from.has_msgbody()) {
-    mutable_msgbody()->::com::genomics::protobuf::MessageBody::MergeFrom(from.msgbody());
-  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void MessageInfo::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:com.genomics.protobuf.MessageInfo)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MessageInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    MessageInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MessageInfo::GetClassData() const { return &_class_data_; }
+
+
+void MessageInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<MessageInfo*>(&to_msg);
+  auto& from = static_cast<const MessageInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.genomics.protobuf.MessageInfo)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_mutable_msgheader()->::com::genomics::protobuf::MessageHeader::MergeFrom(
+          from._internal_msgheader());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_internal_mutable_msgbody()->::com::genomics::protobuf::MessageBody::MergeFrom(
+          from._internal_msgbody());
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MessageInfo::CopyFrom(const MessageInfo& from) {
@@ -2841,54 +2243,60 @@ bool MessageInfo::IsInitialized() const {
   return true;
 }
 
-void MessageInfo::Swap(MessageInfo* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void MessageInfo::InternalSwap(MessageInfo* other) {
   using std::swap;
-  swap(msgheader_, other->msgheader_);
-  swap(msgbody_, other->msgbody_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MessageInfo, _impl_.msgbody_)
+      + sizeof(MessageInfo::_impl_.msgbody_)
+      - PROTOBUF_FIELD_OFFSET(MessageInfo, _impl_.msgheader_)>(
+          reinterpret_cast<char*>(&_impl_.msgheader_),
+          reinterpret_cast<char*>(&other->_impl_.msgheader_));
 }
 
-::google::protobuf::Metadata MessageInfo::GetMetadata() const {
-  protobuf_MessageInfo_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_MessageInfo_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata MessageInfo::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_MessageInfo_2eproto_getter, &descriptor_table_MessageInfo_2eproto_once,
+      file_level_metadata_MessageInfo_2eproto[7]);
 }
-
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protobuf
 }  // namespace genomics
 }  // namespace com
-namespace google {
-namespace protobuf {
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageRequest* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageRequest >(arena);
+PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageRequest*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageResponse* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageResponse >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageResponse*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessagePush* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessagePush >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessagePush >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessagePush*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessagePush >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessagePush >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessagePull* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessagePull >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessagePull >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessagePull*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessagePull >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessagePull >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageCommand* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageCommand >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageCommand >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageCommand*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageCommand >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageCommand >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageHeader* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageHeader >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageHeader >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageHeader*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageHeader >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageHeader >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageBody* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageBody >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageBody >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageBody*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageBody >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageBody >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::com::genomics::protobuf::MessageInfo* Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageInfo >(Arena* arena) {
-  return Arena::CreateInternal< ::com::genomics::protobuf::MessageInfo >(arena);
+template<> PROTOBUF_NOINLINE ::com::genomics::protobuf::MessageInfo*
+Arena::CreateMaybeMessage< ::com::genomics::protobuf::MessageInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::genomics::protobuf::MessageInfo >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
-
+PROTOBUF_NAMESPACE_CLOSE
 // @@protoc_insertion_point(global_scope)
+#include "google/protobuf/port_undef.inc"

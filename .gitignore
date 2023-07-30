@@ -313,6 +313,9 @@ dmypy.json
 **/libs/zlib/**
 **/libs/libzip/**
 **/libs/sqlcipher/**
+**/libs/utf8_range/**
+**/libs/google/**
+**/libs/absl/**
 
 # QT generated files
 **/GeneratedFiles/**
